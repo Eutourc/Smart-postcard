@@ -88,32 +88,57 @@
       <button onclick="checkPassword()">进入</button>
       <p id="errorMsg" style="color:red; display:none;">密码错误，请重试</p>
     </div>
-  </div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Smart Postcard</title>
+  <meta name="description" content="Smart Postcard — 初始版本演示页（移动端示意，黑边手机框 + 可控内屏背景）">
 
-  <header>Smart Postcard 手机版首页</header>
+  <!-- 强力避免编码/缓存问题 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:;">
+  <meta name="color-scheme" content="light dark">
 
-  <div class="content">
-    <div class="highlight">在这里制作属于你的专属明信片</div>
+  <style>
+    /* ========== 基础 ========== */
+    :root{
+      /* 你可以改这个变量来快速调整内屏背景（默认白色，已彻底去掉暗绿） */
+      --screen-bg: #ffffff;
 
-    <div class="postcard">
-      <img src="mobile_homepage.jpg" alt="明信片预览图">
-    </div>
+      /* 页面背景（模拟黑色外框环境），保持与“带黑边手机版设计图”一致的观感 */
+      --page-bg: #0A0A0A;
 
-    <button>上传照片</button><br>
-    <button>编辑文字</button><br>
-    <button>生成二维码</button><br>
-    <button>预览明信片</button>
-  </div>
+      /* 机身配色 */
+      --phone-body: #111;
+      --phone-shadow: rgba(0,0,0,.36);
 
-  <script>
-    function checkPassword() {
-      const input = document.getElementById("passwordInput").value;
-      if (input === "88888888") {
-        document.getElementById("passwordOverlay").style.display = "none";
-      } else {
-        document.getElementById("errorMsg").style.display = "block";
-      }
+      /* 文案 */
+      --text-main: #111;
+      --text-muted: #666;
     }
-  </script>
-</body>
-</html>
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.4;
+    }
+
+    /* ========== 居中舞台 ========== */
+    .stage {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    /* ========== 手机框（黑边） ========== */
+    .phone {
+      position: relative;
+      width: min(380px, 92vw);
+      aspect-ratio: 9 /
