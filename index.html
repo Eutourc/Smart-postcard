@@ -1,35 +1,88 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Smart Postcard – Mobile Preview</title>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <style>
-    html,body{margin:0;padding:0;height:100%;}
-    .wrap{height:100%;display:flex;align-items:center;justify-content:center;background:#111;}
-    img{max-width:100%;max-height:100vh;object-fit:contain;border-radius:22px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
-    .note{position:fixed;left:0;right:0;bottom:10px;text-align:center;color:#bbb;font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,PingFang SC,Helvetica,Arial;}
-  </style>
-  <script>
-    // 简易访问密码（你之前要求：8个8）
-    (function(){
-      var ok = sessionStorage.getItem('sp_ok');
-      if(!ok){
-        var p = prompt('请输入访问密码（8个8）：');
-        if(p === '88888888'){ sessionStorage.setItem('sp_ok','1'); }
-        else { document.write('<style>body{display:none}</style>'); location.reload(); }
-      }
-    })();
-  </script>
-</head>
-<body>
-  <div class="wrap">
-    <!-- 主页图：确保仓库根目录存在 mobile_homepage.jpg -->
-    <img src="mobile_homepage.jpg?v=1" alt="Mobile Home Preview" />
-  </div>
-  <div class="note">若未显示图片：请确认仓库根目录有 <code>mobile_homepage.jpg</code></div>
-</body>
-</html>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Smart Postcard – Mobile Home</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+
+<style>
+  /* ============ 8 套主题色（背景/主按钮/文字/次要色/芯片底） ============ */
+  :root{ --bg:#f6f8fa; --btn:#4A90E2; --btnText:#fff; --txt:#2a3b47; --muted:#6b7b86; --chip:#e9eef3; }
+  body.theme-a{ --bg:#f6f8fa; --btn:#4A90E2; --btnText:#fff; --txt:#2a3b47; --muted:#6b7b86; --chip:#e9eef3; } /* 清新蓝 */
+  body.theme-b{ --bg:#fff8ef; --btn:#FF7F50; --btnText:#fff; --txt:#3a2a1a; --muted:#8b6b5b; --chip:#ffe5cf; } /* 温暖橙 */
+  body.theme-c{ --bg:#f5f3fa; --btn:#8A5FFF; --btnText:#fff; --txt:#2f2942; --muted:#746a8f; --chip:#ece8f8; } /* 高雅紫 */
+  body.theme-d{ --bg:#f0fff6; --btn:#28a745; --btnText:#fff; --txt:#1f3a29; --muted:#5d7a67; --chip:#dff6e9; } /* 自然绿 */
+  body.theme-e{ --bg:#0f1216; --btn:#d7b46a; --btnText:#0f1216; --txt:#eaeaea; --muted:#b6b6b6; --chip:#1a1e24; } /* 典雅黑金 */
+  body.theme-f{ --bg:#ffffff; --btn:#5f6c7b; --btnText:#ffffff; --txt:#1e2329; --muted:#77808a; --chip:#eef2f6; } /* 极简白灰 */
+  body.theme-g{ --bg:#fff5f5; --btn:#cc1f2a; --btnText:#fff; --txt:#2b1111; --muted:#9f5b5b; --chip:#ffe1e1; } /* 活力红 */
+  body.theme-h{ --bg:#ecfbff; --btn:#08a6c9; --btnText:#fff; --txt:#08343f; --muted:#4f7f8b; --chip:#d8f3f9; } /* 海洋青绿 */
+
+  /* —— 基础排版 —— */
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Noto Sans SC",sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  /* 轻微“设备黑边”氛围 */
+  body::before{
+    content:""; position:fixed; inset:0;
+    background:radial-gradient(120% 120% at 50% -10%, rgba(0,0,0,0) 55%, rgba(0,0,0,.18) 85%, rgba(0,0,0,.26) 100%);
+    pointer-events:none; z-index:0;
+  }
+
+  .page{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; }
+
+  /* 顶部横幅（使用 header.jpg） */
+  .hero{
+    position:relative; height:96px;
+    background:#cfd9df url('header.jpg') center/cover no-repeat;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 16px; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.35);
+  }
+  .logo{ font-size:28px; font-weight:700; letter-spacing:.5px }
+  .top-icons{ display:flex; gap:12px; align-items:center }
+  .pill{
+    background:rgba(255,255,255,.25); backdrop-filter:saturate(1.2) blur(2px);
+    padding:6px 10px; border-radius:999px; font-size:14px
+  }
+  .lang{
+    background:rgba(255,255,255,.25); border:1px solid rgba(255,255,255,.4); color:#fff;
+    border-radius:999px; padding:6px 12px; font-size:14px
+  }
+
+  /* 主体卡片 */
+  .card{ flex:1; display:flex; flex-direction:column; gap:16px; padding:16px; max-width:540px; margin:0 auto }
+  .title{ margin:6px 0 4px; font-size:26px; line-height:1.25; text-align:center; color:var(--txt) }
+  .chip{
+    background:var(--chip); border-radius:12px; padding:12px 14px;
+    text-align:center; color:var(--txt); line-height:1.35
+  }
+
+  /* 预览图 / 轮播 */
+  .carousel{ position:relative; margin-top:2px }
+  .poster{
+    width:100%; aspect-ratio:3/2; display:block; object-fit:contain; background:#fff;
+    border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.1)
+  }
+  .arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:40px; height:40px; border-radius:50%;
+    display:grid; place-items:center; background:#ffffffcc; border:0; color:#3b4a55;
+    box-shadow:0 4px 12px rgba(0,0,0,.12)
+  }
+  .arrow.left{ left:-6px } .arrow.right{ right:-6px }
+  .hint{ position:absolute; right:12px; bottom:-10px; font-size:20px; color:#2abf4a; filter:drop-shadow(0 2px 3px rgba(0,0,0,.2)); }
+
+  .bullet{ margin-top:10px; text-align:center; color:var(--muted); font-size:13px }
+  .btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:4px }
+  .btn-grey{
+    background:rgba(0,0,0,.06); color:var(--txt);
+    border:none; border-radius:999px; padding:10px 16px; font-weight:600
+  }
+
+  .cta{ margin:16px auto 26px; max-width:540px; text-align:center }
+  .
