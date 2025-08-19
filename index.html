@@ -1,94 +1,4 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Postcard - 手机版首页</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #ffffff; /* 保持白色主背景 */
-      color: #333;
-      text-align: center;
-    }
-    header {
-      background-color: #FFD700; /* 金黄色顶部横条 */
-      padding: 15px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #000; /* 黑字配金色，醒目 */
-    }
-    .content {
-      padding: 20px;
-    }
-    .highlight {
-      background-color: #FFE87C; /* 柔和的浅金色背景块 */
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 8px;
-    }
-    button {
-      background-color: #FFD700; /* 金色按钮 */
-      border: none;
-      border-radius: 6px;
-      padding: 12px 20px;
-      font-size: 16px;
-      margin: 8px 0;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background-color: #FFC107; /* 按下更深一点的金色 */
-    }
-    .postcard {
-      margin: 20px auto;
-      max-width: 300px;
-      border: 2px solid #FFD700;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .postcard img {
-      width: 100%;
-      display: block;
-    }
-    .password-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(255, 215, 0, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 9999;
-    }
-    .password-box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    .password-box input {
-      padding: 10px;
-      font-size: 16px;
-      width: 200px;
-      margin-bottom: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div id="passwordOverlay" class="password-overlay">
-    <div class="password-box">
-      <h2>请输入密码</h2>
-      <input type="password" id="passwordInput" placeholder="输入密码">
-      <br>
-      <button onclick="checkPassword()">进入</button>
-      <p id="errorMsg" style="color:red; display:none;">密码错误，请重试</p>
-    </div>
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -141,4 +51,158 @@
     .phone {
       position: relative;
       width: min(380px, 92vw);
-      aspect-ratio: 9 /
+      aspect-ratio: 9 / 19.5; /* 近似手机比例 */
+      border-radius: 36px;
+      background: var(--phone-body);
+      box-shadow:
+        0 22px 40px var(--phone-shadow),
+        inset 0 0 0 2px rgba(255,255,255,.05);
+      padding: 14px; /* 边框厚度，控制外部黑边 */
+      display: flex;
+    }
+
+    /* 顶部听筒/摄像头简化装饰（可删） */
+    .notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32%;
+      height: 12px;
+      background: #000;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      opacity: .6;
+      pointer-events: none;
+    }
+
+    /* ========== 内屏区域（关键：背景统一可控） ========== */
+    .screen {
+      flex: 1;
+      border-radius: 28px;
+      overflow: hidden;
+
+      /* 彻底移除一切可能的暗绿色：纯净背景 + 无叠加层 */
+      background: var(--screen-bg);
+      position: relative;
+      isolation: isolate; /* 防止外部效果影响内部 */
+    }
+
+    /* 阻断任何“历史叠加层”的残留（如果以前有 ::before/::after） */
+    .screen::before,
+    .screen::after {
+      content: none !important;
+      display: none !important;
+    }
+
+    /* ========== 内容示意（可替换为你的设计截图） ========== */
+    .hero {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 1fr auto auto 1fr;
+      place-items: center;
+      padding: 20px 18px;
+    }
+    .logo {
+      width: 84px; height: 84px;
+      border-radius: 20px;
+      background: #111;
+      display: grid; place-items: center;
+      color: #fff; font-weight: 700;
+      letter-spacing: .5px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.16);
+      user-select: none;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: center;
+      margin-top: 8px;
+    }
+    .desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 4px;
+      padding: 0 12px;
+    }
+    .cta {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.18);
+    }
+
+    /* ========== 安全降级 ========== */
+    .no-js {
+      display: none;
+      position: absolute; inset: 0;
+      align-items: center; justify-content: center;
+      padding: 16px;
+      background: var(--screen-bg);
+      color: var(--text-main);
+      text-align: center;
+      font-size: 14px;
+    }
+    .no-js.active { display: flex; }
+
+    /* ========== 小屏兼容 ========== */
+    @media (max-height: 520px) {
+      .phone { padding: 10px; border-radius: 26px; }
+      .screen { border-radius: 20px; }
+      .logo { width: 66px; height: 66px; border-radius: 16px; font-size: 14px; }
+      .title { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="phone" aria-label="Smart Postcard 预览手机">
+      <div class="notch" aria-hidden="true"></div>
+
+      <!-- 关键容器：背景由 --screen-bg 控制，默认白色 -->
+      <div class="screen" id="screen">
+        <!-- 如果你有“设计截图”，可用下一行做背景图（可选）
+             把 URL 换成你的 assets 路径即可；保留背景色保证无绿底。
+             示例：
+             style="background: var(--screen-bg) url('./assets/your-mobile-mock.png') center/cover no-repeat;"
+        -->
+
+        <div class="hero" role="group" aria-label="Smart Postcard 内容示意">
+          <div></div>
+          <div class="logo" aria-label="Logo">SP</div>
+          <div>
+            <div class="title">Smart Postcard</div>
+            <div class="desc">“带黑边的手机版首页”安全重建版本。内屏背景已固定为白色，你只需覆盖本文件即可上线。</div>
+            <a class="cta" href="#" onclick="return false;">了解更多</a>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="no-js" id="noJs">
+          如果看不到内容，请刷新页面。此页面已简化为<strong>单文件</strong>版本，避免缓存与编码问题。
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 最小化脚本：保证 no-js 提示在极端环境下可见
+    (function(){
+      try {
+        var el = document.getElementById('noJs');
+        if (el) el.classList.remove('active');
+      } catch(e) {}
+    })();
+  </script>
+  <noscript>
+    <style>#noJs{display:flex!important}</style>
+  </noscript>
+</body>
+</html>
