@@ -1,208 +1,91 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Smart Postcard</title>
-  <meta name="description" content="Smart Postcard — 初始版本演示页（移动端示意，黑边手机框 + 可控内屏背景）">
-
-  <!-- 强力避免编码/缓存问题 -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:;">
-  <meta name="color-scheme" content="light dark">
-
-  <style>
-    /* ========== 基础 ========== */
-    :root{
-      /* 你可以改这个变量来快速调整内屏背景（默认白色，已彻底去掉暗绿） */
-      --screen-bg: #ffffff;
-
-      /* 页面背景（模拟黑色外框环境），保持与“带黑边手机版设计图”一致的观感 */
-      --page-bg: #0A0A0A;
-
-      /* 机身配色 */
-      --phone-body: #111;
-      --phone-shadow: rgba(0,0,0,.36);
-
-      /* 文案 */
-      --text-main: #111;
-      --text-muted: #666;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      background: var(--page-bg);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      line-height: 1.4;
-    }
-
-    /* ========== 居中舞台 ========== */
-    .stage {
-      min-height: 100%;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-    }
-
-    /* ========== 手机框（黑边） ========== */
-    .phone {
-      position: relative;
-      width: min(380px, 92vw);
-      aspect-ratio: 9 / 19.5; /* 近似手机比例 */
-      border-radius: 36px;
-      background: var(--phone-body);
-      box-shadow:
-        0 22px 40px var(--phone-shadow),
-        inset 0 0 0 2px rgba(255,255,255,.05);
-      padding: 14px; /* 边框厚度，控制外部黑边 */
-      display: flex;
-    }
-
-    /* 顶部听筒/摄像头简化装饰（可删） */
-    .notch {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 32%;
-      height: 12px;
-      background: #000;
-      border-radius: 8px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-      opacity: .6;
-      pointer-events: none;
-    }
-
-    /* ========== 内屏区域（关键：背景统一可控） ========== */
-    .screen {
-      flex: 1;
-      border-radius: 28px;
-      overflow: hidden;
-
-      /* 彻底移除一切可能的暗绿色：纯净背景 + 无叠加层 */
-      background: var(--screen-bg);
-      position: relative;
-      isolation: isolate; /* 防止外部效果影响内部 */
-    }
-
-    /* 阻断任何“历史叠加层”的残留（如果以前有 ::before/::after） */
-    .screen::before,
-    .screen::after {
-      content: none !important;
-      display: none !important;
-    }
-
-    /* ========== 内容示意（可替换为你的设计截图） ========== */
-    .hero {
-      height: 100%;
-      display: grid;
-      grid-template-rows: 1fr auto auto 1fr;
-      place-items: center;
-      padding: 20px 18px;
-    }
-    .logo {
-      width: 84px; height: 84px;
-      border-radius: 20px;
-      background: #111;
-      display: grid; place-items: center;
-      color: #fff; font-weight: 700;
-      letter-spacing: .5px;
-      box-shadow: 0 8px 18px rgba(0,0,0,.16);
-      user-select: none;
-    }
-    .title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-main);
-      text-align: center;
-      margin-top: 8px;
-    }
-    .desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 4px;
-      padding: 0 12px;
-    }
-    .cta {
-      display: inline-block;
-      margin-top: 18px;
-      padding: 10px 16px;
-      border-radius: 14px;
-      background: #111;
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-      box-shadow: 0 6px 14px rgba(0,0,0,.18);
-    }
-
-    /* ========== 安全降级 ========== */
-    .no-js {
-      display: none;
-      position: absolute; inset: 0;
-      align-items: center; justify-content: center;
-      padding: 16px;
-      background: var(--screen-bg);
-      color: var(--text-main);
-      text-align: center;
-      font-size: 14px;
-    }
-    .no-js.active { display: flex; }
-
-    /* ========== 小屏兼容 ========== */
-    @media (max-height: 520px) {
-      .phone { padding: 10px; border-radius: 26px; }
-      .screen { border-radius: 20px; }
-      .logo { width: 66px; height: 66px; border-radius: 16px; font-size: 14px; }
-      .title { font-size: 18px; }
-    }
-  </style>
-</head>
-<body>
-  <main class="stage">
-    <section class="phone" aria-label="Smart Postcard 预览手机">
-      <div class="notch" aria-hidden="true"></div>
-
-      <!-- 关键容器：背景由 --screen-bg 控制，默认白色 -->
-      <div class="screen" id="screen">
-        <!-- 如果你有“设计截图”，可用下一行做背景图（可选）
-             把 URL 换成你的 assets 路径即可；保留背景色保证无绿底。
-             示例：
-             style="background: var(--screen-bg) url('./assets/your-mobile-mock.png') center/cover no-repeat;"
-        -->
-
-        <div class="hero" role="group" aria-label="Smart Postcard 内容示意">
-          <div></div>
-          <div class="logo" aria-label="Logo">SP</div>
-          <div>
-            <div class="title">Smart Postcard</div>
-            <div class="desc">“带黑边的手机版首页”安全重建版本。内屏背景已固定为白色，你只需覆盖本文件即可上线。</div>
-            <a class="cta" href="#" onclick="return false;">了解更多</a>
-          </div>
-          <div></div>
-        </div>
-
-        <div class="no-js" id="noJs">
-          如果看不到内容，请刷新页面。此页面已简化为<strong>单文件</strong>版本，避免缓存与编码问题。
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    // 最小化脚本：保证 no-js 提示在极端环境下可见
-    (function(){
-      try {
-        var el = document.getElementById('noJs');
-        if (el) el.classList.remove('active');
-      } catch(e) {}
-    })();
-  </script>
-  <noscript>
-    <style>#noJs{display:flex!important}</style>
-  </noscript>
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><title>Smart Postcard – Mobile Home</title><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/><meta http-equiv="Pragma" content="no-cache"/><meta http-equiv="Expires" content="0"/><style>
+:root{--bg:#fff;--txt:#1f2937;--muted:#6b7280;--accent:#FFD700;--press:#FFC107;--actxt:#111827;--chip:#FFF8E1;--ring:#E6C200;--ptr:#22c55e;--card:#fff;--sh:0 10px 30px rgba(0,0,0,.10)}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased}
+.topbar{position:sticky;top:0;z-index:5;height:88px;background:var(--accent);color:var(--actxt);display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:var(--sh)}
+.logo{font-weight:900;font-size:22px}
+.actions{display:flex;gap:10px;align-items:center}
+.badge{background:var(--chip);color:var(--txt);border:1px solid var(--ring);padding:6px 10px;border-radius:999px;font-weight:600}
+.lang{background:#fff;color:#111827;border:1px solid var(--ring);padding:6px 10px;border-radius:999px}
+.themes{display:flex;gap:6px;align-items:center;margin-left:6px}
+.themes label{font-size:12px;opacity:.9;margin-right:2px}
+.sw{width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer}
+.sw.g{background:#FFD700}.sw.b{background:#3b82f6}.sw.p{background:#8b5cf6}.sw.d{background:#245b3c}
+.page{max-width:560px;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:14px}
+.title{text-align:center;font-size:22px;margin:6px 0 0}
+.chip{background:var(--chip);border:1px solid var(--ring);color:var(--txt);padding:12px 14px;border-radius:12px;text-align:center}
+.card{background:var(--card);border-radius:12px;padding:10px;box-shadow:var(--sh);position:relative}
+.poster-wrap{position:relative;width:100%;aspect-ratio:3/2;background:#fff;border-radius:10px;overflow:hidden}
+.poster{width:100%;height:100%;object-fit:contain;display:block}
+.pointer{position:absolute;width:22px;height:22px;background:var(--ptr);border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 3px 8px rgba(0,0,0,.25);transform:translate(-50%,-50%)}
+.pointer:after{content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--ptr)}
+.hot-hint{position:absolute;pointer-events:none;border:2px dashed rgba(255,215,0,0);border-radius:8px;animation:none}
+.hot-hint.show{border-color:rgba(255,215,0,.95);animation:blink 1s infinite}
+@keyframes blink{0%{opacity:1}50%{opacity:.35}100%{opacity:1}}
+.controls{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:10px;margin-top:8px}
+.big{width:44px;height:44px;border-radius:50%;border:0;background:#f1f5f9;color:#0f172a;box-shadow:0 3px 8px rgba(0,0,0,.1)}
+.desc{background:#f8fafc;color:#334155;border:1px dashed #cbd5e1;border-radius:10px;padding:10px;min-height:46px;display:flex;align-items:center;justify-content:center;text-align:center;user-select:none;touch-action:pan-y}
+.bullet{text-align:center;color:var(--muted);font-size:13px}
+.types{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.type{border:1px solid var(--ring);padding:10px 16px;border-radius:999px;font-weight:800;cursor:pointer}
+.type.active{background:var(--accent);color:var(--actxt)}
+.type.muted{background:#e5e7eb;color:#374151}
+.cta{text-align:center;margin:8px 0 22px}
+.start{width:88%;max-width:380px;height:52px;border:none;border-radius:999px;background:var(--accent);color:var(--actxt);font-size:20px;font-weight:900;box-shadow:0 10px 24px rgba(0,0,0,.12)}
+.start:active{background:var(--press)}
+.foot{text-align:center;color:#9aa1aa;font-size:12px}
+.gate{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:10}
+.panel{width:min(92%,420px);background:#fff;border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:center}
+.panel h2{margin:0 0 8px;font-size:20px}
+.panel input{width:100%;box-sizing:border-box;padding:12px;font-size:16px;border:1px solid #d0d7de;border-radius:10px}
+.panel button{margin-top:12px;width:100%;padding:12px;border:none;border-radius:10px;background:var(--accent);color:var(--actxt);font-size:16px;font-weight:800;border:1px solid var(--ring)}
+.msg{margin-top:8px;color:#c62828;font-size:14px;min-height:1.2em}
+.debug{position:fixed;top:0;left:0;right:0;background:#fff3cd;color:#663c00;padding:6px 10px;font-size:12px;display:none;z-index:11}
+</style></head><body>
+<div class="debug" id="dbg">Debug:</div>
+<header class="topbar"><div class="logo">Smart Postcard</div><div class="actions"><div class="badge">🛒 0</div><button class="lang" onclick="(this.textContent=this.textContent==='EN'?'中文':'EN')">EN</button><div class="themes"><label>🎨 主题</label><div class="sw g" title="金色" onclick="st('g')"></div><div class="sw b" title="蓝色" onclick="st('b')"></div><div class="sw p" title="紫色" onclick="st('p')"></div><div class="sw d" title="原深绿" onclick="st('d')"></div></div></div></header>
+<main class="page" id="app" aria-hidden="true">
+  <h1 class="title">Create your unique postcard</h1>
+  <div class="chip">Treasure your own photo to be<br/>stamp &amp; postcard images offered<br/>first in the world &amp; printed only for you</div>
+  <section class="card">
+    <div class="poster-wrap" id="wrap">
+      <img id="img" class="poster" alt="Postcard preview"/>
+      <div id="ptr" class="pointer">•</div>
+      <button class="hot" style="position:absolute;right:6%;top:6%;width:20%;height:22%;background:transparent;border:0" onclick="go('stamp')"></button>
+      <button class="hot" style="position:absolute;left:6%;bottom:8%;width:24%;height:22%;background:transparent;border:0" onclick="go('qr')"></button>
+      <div id="hintS" class="hot-hint" style="right:6%;top:6%;width:20%;height:22%"></div>
+      <div id="hintQ" class="hot-hint" style="left:6%;bottom:8%;width:24%;height:22%"></div>
+    </div>
+    <div class="controls">
+      <button class="big" onclick="pv()">◀</button>
+      <div id="desc" class="desc">【邮票】：可自定义“邮票图案”。</div>
+      <button class="big" onclick="nx()">▶</button>
+    </div>
+  </section>
+  <p class="bullet">Easily make, Physically print · Souvenir, Philately, Worldwide post · Photo print, A5 big size, Value for money</p>
+  <div class="types"><div id="tS" class="type active" onclick="sel('souvenir')">Souvenir Postcard</div><div id="tT" class="type muted" onclick="sel('traditional')">Traditional Postcard</div></div>
+  <div class="cta"><button class="start" onclick="start()">Start</button></div>
+  <div class="foot">© Smart Postcard — mobile preview</div>
+  <p style="text-align:center;color:#aaa;font-size:12px;margin:10px 0 0">Last update: 2025-08-30</p>
+</main>
+<div class="gate" id="gate"><div class="panel"><h2>请输入访问密码</h2><p>（8个“8”）</p><input id="pwd" type="password" inputmode="numeric" placeholder="********"/><button onclick="ok()">进入</button><div class="msg" id="msg"></div></div></div>
+<script>
+(function(){var th=localStorage.getItem('sp_theme')||'g';document.body.classList.add('theme-'+th);})();
+function st(k){['g','b','p','d'].forEach(x=>document.body.classList.remove('theme-'+x));
+  if(k==='b'){document.documentElement.style.setProperty('--bg','#f6faff');document.documentElement.style.setProperty('--txt','#0f172a');document.documentElement.style.setProperty('--muted','#475569');document.documentElement.style.setProperty('--accent','#3b82f6');document.documentElement.style.setProperty('--press','#2563eb');document.documentElement.style.setProperty('--actxt','#fff');document.documentElement.style.setProperty('--chip','#e6efff');document.documentElement.style.setProperty('--ring','#93c5fd')}
+  else if(k==='p'){document.documentElement.style.setProperty('--bg','#fbf7ff');document.documentElement.style.setProperty('--txt','#2e1065');document.documentElement.style.setProperty('--muted','#6d28d9');document.documentElement.style.setProperty('--accent','#8b5cf6');document.documentElement.style.setProperty('--press','#7c3aed');document.documentElement.style.setProperty('--actxt','#fff');document.documentElement.style.setProperty('--chip','#efe7ff');document.documentElement.style.setProperty('--ring','#c4b5fd')}
+  else if(k==='d'){document.documentElement.style.setProperty('--bg','#f4f7f5');document.documentElement.style.setProperty('--txt','#0b2f1f');document.documentElement.style.setProperty('--muted','#355a46');document.documentElement.style.setProperty('--accent','#245b3c');document.documentElement.style.setProperty('--press','#1d4e33');document.documentElement.style.setProperty('--actxt','#fff');document.documentElement.style.setProperty('--chip','#e6efe9');document.documentElement.style.setProperty('--ring','#9ac7b0')}
+  else{document.documentElement.style.setProperty('--bg','#fff');document.documentElement.style.setProperty('--txt','#1f2937');document.documentElement.style.setProperty('--muted','#6b7280');document.documentElement.style.setProperty('--accent','#FFD700');document.documentElement.style.setProperty('--press','#FFC107');document.documentElement.style.setProperty('--actxt','#111827');document.documentElement.style.setProperty('--chip','#FFF8E1');document.documentElement.style.setProperty('--ring','#E6C200')}
+  localStorage.setItem('sp_theme',k);
+}
+function ok(){var v=(document.getElementById('pwd').value||'').trim();if(v==='88888888'){sessionStorage.setItem('sp_ok','1');document.getElementById('gate').style.display='none';document.getElementById('app').setAttribute('aria-hidden','false');init()}else{document.getElementById('msg').textContent='密码错误，请重试'}}
+(function(){if(sessionStorage.getItem('sp_ok')==='1'){document.getElementById('gate').style.display='none';document.getElementById('app').setAttribute('aria-hidden','false');init()}})();
+let type='souvenir';function sel(t){type=t;const a=document.getElementById('tS'),b=document.getElementById('tT');if(t==='souvenir'){a.classList.add('active');a.classList.remove('muted');b.classList.add('muted');b.classList.remove('active')}else{b.classList.add('active');b.classList.remove('muted');a.classList.add('muted');a.classList.remove('active')}}
+const steps=[{k:'stamp',x:88,y:12,d:'down',t:'【邮票】：可自定义“邮票图案”。'},{k:'qr',x:14,y:82,d:'up',t:'【到此一游二维码】：记录经纬度/地图纪念点，可扫码查看。'},{k:'message',x:50,y:14,d:'down',t:'【抒情栏】：写“到此一游”、日期、天气/温度信息。'},{k:'address',x:82,y:86,d:'up',t:'【地址区】：填写收件信息，系统自动排版保证美观。'},{k:'back',x:50,y:50,d:'down',t:'【明信片背面预览】：带邮票大图案，可左右返回各项。'}];
+let i0=0;function ap(s){const w=document.getElementById('wrap'),p=document.getElementById('ptr'),d=document.getElementById('desc');const r=w.getBoundingClientRect(),x=r.width*(s.x/100),y=r.height*(s.y/100);p.style.left=x+'px';p.style.top=y+'px';const R={up:0,right:90,down:180,left:270}[s.d]||0;p.style.transform=`translate(-50%,-50%) rotate(${R}deg)`;d.textContent=s.t;document.getElementById('hintS').classList.toggle('show',s.k==='stamp');document.getElementById('hintQ').classList.toggle('show',s.k==='qr')}
+function pv(){i0=(i0-1+steps.length)%steps.length;ap(steps[i0])}function nx(){i0=(i0+1)%steps.length;ap(steps[i0])}function go(k){const j=steps.findIndex(s=>s.k===k);if(j>=0){i0=j;ap(steps[i0])}}
+(function(){const el=document.getElementById('desc');let sx=0,sy=0,f=false;el.addEventListener('touchstart',e=>{const t=e.changedTouches[0];sx=t.clientX;sy=t.clientY;f=true},{passive:true});el.addEventListener('touchend',e=>{if(!f)return;f=false;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>24){dx<0?nx():pv()}},{passive:true})})();
+function loadImg(){const im=document.getElementById('img'),dbg=document.getElementById('dbg'),th='mobile_homepage_thumb.jpg?v='+Date.now(),fu='mobile_homepage.jpg?v='+Date.now();const a=new Image();a.onload=()=>im.src=th;a.onerror=()=>{const b=new Image();b.onload=()=>im.src=fu;b.onerror=()=>{dbg.style.display='block';dbg.textContent='Debug: 缺少 mobile_homepage_thumb.jpg 与 mobile_homepage.jpg（放根目录，注意大小写）'};b.src=fu};a.src=th}
+function tour(){if(localStorage.getItem('sp_toured')==='1')return;let k=0;const tm=setInterval(()=>{ap(steps[k]);k++;if(k>=steps.length){clearInterval(tm);i0=0;ap(steps[i0]);localStorage.setItem('sp_toured','1')}},1600)}
+function init(){loadImg();const th=localStorage.getItem('sp_theme')||'g';st(th);sel('souvenir');i0=0;ap(steps[i0]);addEventListener('resize',()=>ap(steps[i0]));tour()}
+function start(){location.href='maker.html?stage=selectImages&type='+encodeURIComponent(type)+'&fromStep='+steps[i0].k}
+</script></body></html>
