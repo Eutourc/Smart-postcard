@@ -1,130 +1,77 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Smart Postcard — Mobile Preview</title>
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<style>
-  :root{
-    --brand:#ffd21a; --brand-dark:#d5ae00; --chip:#ffe88a;
-    --text:#222; --muted:#6b7280; --card:#fff;
-    --shadow:0 10px 30px rgba(0,0,0,.12);
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;background:#fafafa;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,"PingFang SC","Microsoft YaHei",sans-serif}
-  .topbar{position:sticky;top:0;z-index:20;background:var(--brand);color:#111;padding:12px 16px;box-shadow:var(--shadow)}
-  .brand{font-weight:800;font-size:22px}
-  .wrap{min-height:100svh;padding:18px 16px 32px;display:flex;flex-direction:column;gap:14px}
-  .title{font-size:26px;font-weight:800;text-align:center;letter-spacing:.3px}
-  .caption{align-self:center;max-width:680px;width:100%;background:var(--chip);border-radius:14px;padding:14px 16px;text-align:center;line-height:1.4;box-shadow:var(--shadow)}
-  .stage{position:relative;align-self:center;width:min(680px,100%);aspect-ratio:16/10;background:var(--card);border-radius:20px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:10px}
-  .postcard{position:relative;height:100%;width:auto;max-width:100%}
-  .postcard img{height:100%;width:auto;display:block;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
-  .nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
-  .nav button{pointer-events:auto;border:0;width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer}
-  .nav svg{width:22px;height:22px;fill:#374151}
-  .info{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#fff9e5;border:2px dashed #f1c21b;color:#111;padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:center}
-  .pin{position:absolute;width:34px;height:34px;border-radius:50%;background:#17c964;box-shadow:0 6px 16px rgba(23,201,100,.35);display:grid;place-items:center;transition:transform .5s ease,left .5s ease,top .5s ease}
-  .pin:after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
-  .subline{color:var(--muted);text-align:center;line-height:1.5;padding:4px 10px}
-  .buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:680px;width:100%;margin:4px auto 0}
-  .btn{border:0;border-radius:999px;padding:14px 18px;font-weight:800;font-size:16px;box-shadow:var(--shadow);cursor:pointer}
-  .btn--solid{background:var(--brand);color:#111}
-  .btn--solid:active{background:var(--brand-dark)}
-  .btn--ghost{background:#e6e7eb;color:#222}
-  .cta{max-width:680px;width:100%;margin:14px auto 0}
-  .cta .btn{width:100%;font-size:20px;padding:16px}
-  footer{color:var(--muted);text-align:center;font-size:12px;padding:18px 8px 26px}
-</style>
-</head>
-<body>
-  <div class="topbar"><div class="brand">Smart Postcard</div></div>
-
-  <main class="wrap">
-    <div class="title">Create your unique postcard</div>
-    <div class="caption" id="hint">Treasure your own photo to be stamp &amp; postcard images offered first in the world &amp; printed only for you</div>
-
-    <!-- 明信片舞台：上方说明框＋左右大箭头＋图片上的小绿点 -->
-    <section class="stage">
-      <div class="postcard">
-        <img id="pc" src="mobile_homepage.png" alt="postcard sample" />
-        <div class="info" id="info">【邮票】：可自定义“邮票图案”。</div>
-        <div class="pin"  id="pin"  style="left:78%; top:18%"></div>
-      </div>
-      <div class="nav">
-        <button id="prev" aria-label="prev">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </button>
-        <button id="next" aria-label="next">
-          <svg viewBox="0 0 24 24"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L12.17 12z"/></svg>
-        </button>
-      </div>
-    </section>
-
-    <div class="subline">
-      Easily make, Physically print · Souvenir, Philately, Worldwide post · Photo print, A5 big size, Value for money
-    </div>
-
-    <div class="buttons">
-      <button class="btn btn--solid">Souvenir Postcard</button>
-      <button class="btn btn--ghost">Traditional Postcard</button>
-    </div>
-
-    <div class="cta">
-      <button class="btn btn--solid" onclick="startFlow()">Start</button>
-    </div>
-
-    <footer>© Smart Postcard — mobile preview · Last update: 2025-08-30</footer>
-  </main>
-
 <script>
-/* —— 严格沿用你的版式：只切换图片/说明/小箭头位置 —— */
-const slides = [
-  { img:"mobile_homepage.png",      info:"【邮票】：可自定义“邮票图案”。",                         pin:{left:"78%", top:"18%"} },
-  { img:"mobile_homepage.png",      info:"【二维码/到此一游】：可添加“到此一游”定位二维码。",         pin:{left:"62%", top:"10%"} },
-  { img:"mobile_homepage.png",      info:"【地址区】：收件人地址与文字说明。",                       pin:{left:"78%", top:"46%"} },
-  { img:"postcard_back_cn.png",     info:"【背面-中文版】：可自定义文字、邮票与地址。",               pin:{left:"50%", top:"50%"} },
-  { img:"postcard_back_en.png",     info:"【背面-英文版】：可自定义文字、邮票与地址。",               pin:{left:"50%", top:"50%"} }
-];
+(function(){
+  // —— 顺时针沿四周的步骤（只保留一个“针”）——
+  // x/y 为百分比坐标；演示完会回到 index 0（邮票）
+  const steps = [
+    {name:'邮票',     x:76, y:18, text:'【邮票】：可自定义“邮票图案”。'},         // 右上
+    {name:'优先/航空', x:62, y:18, text:'【航空/优先】：可选择是否加“优先/航空”。'},   // 上边
+    {name:'邮戳',     x:73, y:27, text:'【邮戳】：选择纪念邮戳或常规邮戳。'},         // 右上偏下
+    {name:'地址',     x:78, y:58, text:'【收件地址】：填写/导入收件人地址。'},        // 右侧中部
+    {name:'城市地标', x:32, y:88, text:'【城市地标】：可更换城市地标图案。'},         // 下边偏左
+    {name:'二维码',   x:16, y:83, text:'【二维码】：嵌入你的音/视频或位置链接。'},     // 左下
+    {name:'说明栏',   x:22, y:18, text:'【说明栏】：可定制顶部标题/天气等信息。'}      // 左上
+  ];
 
-const img  = document.getElementById("pc");
-const info = document.getElementById("info");
-const pin  = document.getElementById("pin");
-const prev = document.getElementById("prev");
-const next = document.getElementById("next");
+  const pin = document.getElementById('pin');        // 唯一的小箭头
+  const info = document.getElementById('infotext');  // 说明文字
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const box  = document.getElementById('infobox');
+  let i = 0;
+  let demoTimer = null;
+  let demoRunning = true; // 首次演示
 
-let idx = 0;
-function render(){
-  const s = slides[idx];
-  if(img.getAttribute("src") !== s.img){
-    img.style.opacity = 0.01;
-    setTimeout(()=>{ img.src = s.img; img.onload = ()=> img.style.opacity = 1; }, 20);
+  function render(){
+    const s = steps[i];
+    // 把唯一的小箭头移动到目标点
+    pin.style.left = s.x + '%';
+    pin.style.top  = s.y + '%';
+    info.textContent = s.text;
   }
-  info.textContent = s.info;
-  pin.style.left = s.pin.left;
-  pin.style.top  = s.pin.top;
-}
-prev.onclick = ()=>{ idx = (idx - 1 + slides.length) % slides.length; render(); };
-next.onclick = ()=>{ idx = (idx + 1) % slides.length; render(); };
+  function go(step){
+    i = (i + step + steps.length) % steps.length;
+    render();
+  }
 
-/* 首次进入：自动演示一圈（用户一目了然） */
-let demo = 0;
-const tour = setInterval(()=>{
-  idx = (idx + 1) % slides.length; render();
-  demo++; if(demo > slides.length) clearInterval(tour);
-}, 1800);
+  // 左右箭头点击
+  prev.addEventListener('click', ()=>{ stopDemo(); go(-1); });
+  next.addEventListener('click', ()=>{ stopDemo(); go(1);  });
 
-/* Start：无论停在哪，都从“背面/邮票图案”开始（示意） */
-function startFlow(){
-  idx = 3; render();
-  // 真实项目可跳转到制作页：location.href='maker.html?stage=selectImages';
-}
+  // 在说明框里左右滑动也可切换
+  let sx=0, dx=0;
+  box.addEventListener('touchstart', e=>{ const t=e.touches[0]; if(!t) return; sx=t.clientX; dx=0; }, {passive:true});
+  box.addEventListener('touchmove',  e=>{ const t=e.touches[0]; if(!t) return; dx=t.clientX - sx; }, {passive:true});
+  box.addEventListener('touchend',   ()=>{
+    if(Math.abs(dx) > 28){ stopDemo(); go(dx<0 ? 1 : -1); }
+    sx=0; dx=0;
+  });
 
-/* 初始渲染 */
-render();
+  // —— 首次自动演示：顺时针绕一圈后回到邮票并停止 ——
+  function startDemo(){
+    let count = 0;
+    demoTimer = setInterval(()=>{
+      go(1);
+      count++;
+      if(count >= steps.length){ // 绕完一圈
+        clearInterval(demoTimer);
+        demoRunning = false;
+        i = 0;       // 回到默认：邮票
+        render();
+      }
+    }, 1100); // 每步 1.1s，节奏轻快
+  }
+  function stopDemo(){
+    if(!demoRunning) return;
+    clearInterval(demoTimer);
+    demoRunning = false;
+  }
+
+  // 初始化：落位到邮票，再启动演示
+  i = 0; render(); startDemo();
+
+  // 更新时间戳（如你页面中存在 #lastUpdate）
+  const d = new Date();
+  const last = document.getElementById('lastUpdate');
+  if(last) last.textContent = 'Last update: ' + d.toISOString().slice(0,10);
+})();
 </script>
-</body>
-</html>
