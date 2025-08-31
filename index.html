@@ -1,146 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Smart Postcard — Mobile Preview</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
-  :root{
-    --brand:#FFC915;        /* 顶部金黄 */
-    --accent:#ffe587;       /* 提示浅黄 */
-    --ink:#1f2937;          /* 文字色 */
-    --muted:#6b7280;
-    --btn:#FFC915;          /* Start/选中按钮 */
-    --btnText:#111827;
-  }
-  html,body{margin:0;padding:0;background:#fff;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
-  .topbar{background:var(--brand);padding:14px 18px;font-weight:800;font-size:24px;letter-spacing:.2px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
-  .wrap{max-width:780px;margin:0 auto;padding:18px}
-  h1{font-size:30px;line-height:1.2;margin:18px 0 14px}
-  .blurb{background:var(--accent);border-radius:14px;padding:14px 16px;margin-bottom:16px}
-  .stage{position:relative;background:#f7f7f9;border-radius:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);min-height:360px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  /* 说明框 + 左右大箭头（在说明框两侧） */
-  .captionRow{position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:stretch;gap:10px;z-index:3}
-  .navBtn{width:42px;height:42px;border-radius:50%;box-shadow:0 4px 14px rgba(0,0,0,.12);background:#fff;border:none;display:grid;place-items:center}
-  .navBtn:active{transform:scale(.98)}
-  .navBtn svg{width:18px;height:18px}
-  .caption{min-width:220px;max-width:72vw;background:#fffbe6;border:2px dashed #eab308;border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.5;color:#1f2937}
-  /* 明信片样图 */
-  .cardBox{position:relative}
-  .card{display:block;max-width:min(88vw,640px);height:auto;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
-  /* 小箭头：默认放在邮票上方（示意） */
-  .pin{position:absolute;right:10%;top:18%;width:42px;height:42px;border-radius:50%;background:#22c55e;display:grid;place-items:center;box-shadow:0 8px 20px rgba(34,197,94,.35)}
-  .pin:after{content:"";width:10px;height:10px;background:#fff;border-radius:50%}
-  /* 说明行、按钮 */
-  .note{margin:16px 8px 8px;color:var(--muted);font-size:15px;text-align:center}
-  .btnRow{display:flex;gap:14px;justify-content:center;margin:12px 0 24px}
-  .pill{padding:14px 18px;border-radius:999px;font-weight:700;border:0}
-  .primary{background:var(--btn);color:var(--btnText)}
-  .ghost{background:#eef1f6;color:#1f2937}
-  .start{display:block;width:100%;max-width:620px;margin:0 auto 18px;padding:18px;border-radius:999px;background:var(--btn);color:var(--btnText);font-size:22px;font-weight:800;border:0}
-  .err{padding:14px 16px;margin:10px 0;background:#fff1f2;color:#b91c1c;border:1px solid #fecaca;border-radius:10px}
+:root{
+  --brand:#f6c21a;           /* 金黄主题色 */
+  --brand-d:#e3af00;         /* 深一点的金黄(按下/边框) */
+  --ink:#1a1a1a;             /* 文字主色 */
+  --ink-2:#555;
+  --paper:#ffffff;           /* 页面背景 */
+  --chip:#ffeaa6;            /* 顶部提示底 */
+  --card-bg:#ffffff;         /* 明信片承载区背景 */
+  --shadow:0 6px 24px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,"Noto Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+
+/* 顶部金色横条 */
+.header{
+  position:sticky;top:0;z-index:50;
+  background:var(--brand);color:#000;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;font-weight:800;font-size:22px;
+  letter-spacing:.2px;box-shadow:var(--shadow);
+}
+.header .spacer{flex:1}
+
+/* 主标题 */
+h1{
+  font-size:28px;margin:18px 18px 10px;
+  line-height:1.2;letter-spacing:.3px;
+}
+
+/* 上方说明黄底条 */
+.top-note{
+  margin:0 18px 16px;background:var(--chip);
+  border-radius:14px;padding:14px 16px;
+  font-size:16px;line-height:1.5;border:1px solid #f2cf65;
+}
+
+/* 明信片区块 */
+.stage{
+  background:var(--card-bg);border-radius:18px;
+  margin:0 18px;padding:16px;box-shadow:var(--shadow);
+}
+
+/* 说明框 + 左右大箭头 */
+.explainer{
+  position:relative;display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:10px;
+}
+.arrow{
+  width:56px;height:56px;border-radius:50%;
+  background:#fff;display:grid;place-items:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.14);border:1px solid #eee;
+  flex:0 0 auto;cursor:pointer;user-select:none;
+}
+.arrow:active{transform:scale(.98)}
+.arrow svg{width:24px;height:24px;fill:#4a5568}
+
+.caption{
+  position:relative;flex:1;min-height:54px;
+  border:2px dashed #f2cf65;background:#fff8cf;
+  border-radius:14px;padding:10px 12px;text-align:center;
+  font-size:16px;line-height:1.5;color:#333;
+}
+
+/* 明信片容器 */
+.postcard-wrap{
+  position:relative;border-radius:14px;overflow:hidden;
+  background:#fff;min-height:280px;display:grid;place-items:center;
+}
+.postcard{
+  width:100%;max-width:460px;aspect-ratio:3/5; /* 近似手机截图比例 */
+  background:#fafafa;display:grid;place-items:center;
+  border:1px solid #eee;border-radius:10px;overflow:hidden;
+}
+.postcard img{
+  width:100%;height:100%;object-fit:contain;background:#fff;
+}
+
+/* 小绿箭头 */
+.pin{
+  position:absolute;z-index:5;width:38px;height:38px;border-radius:50%;
+  background:#15c35f;display:grid;place-items:center;
+  box-shadow:0 6px 20px rgba(21,195,95,.35);transform:translate(-50%,-50%);
+}
+.pin:after{
+  content:"";width:0;height:0;border-left:8px solid #0e8a43;border-top:7px solid transparent;border-bottom:7px solid transparent;
+  transform:translateX(2px);
+}
+
+/* 图片切换小圆点 */
+.dots{display:flex;gap:8px;justify-content:center;padding:10px 0 6px;}
+.dot{
+  width:10px;height:10px;border-radius:50%;background:#d7d7d7;cursor:pointer;
+}
+.dot.active{background:#7a7a7a}
+
+/* slogan 文本 */
+.slogan{
+  color:var(--ink-2);text-align:center;font-size:15px;line-height:1.6;
+  padding:12px 18px 8px;
+}
+
+/* 底部按钮区 */
+.btns{display:flex;gap:14px;padding:10px 18px 18px;}
+.btn{
+  flex:1;border-radius:26px;padding:14px 16px;font-weight:700;font-size:16px;text-align:center;user-select:none;cursor:pointer;
+  border:2px solid transparent;
+}
+.btn.primary{background:var(--brand);border-color:var(--brand-d)}
+.btn.ghost{background:#f1f1f4;color:#333}
+.btn.big{margin:10px 18px 24px;font-size:20px;padding:16px;border-radius:999px}
+
+.footer{
+  text-align:center;color:#888;font-size:13px;padding:10px 0 22px;
+}
+@media (min-width:460px){
+  .postcard{max-width:520px}
+}
 </style>
 </head>
 <body>
-  <div class="topbar">Smart Postcard</div>
-  <div class="wrap">
-    <h1>Create your unique postcard</h1>
-    <div class="blurb">Treasure your own photo to be stamp &amp; postcard images offered first in the world &amp; printed only for you</div>
 
-    <div class="stage" id="stage">
-      <!-- 说明框 + 左右大箭头（固定在说明框两侧） -->
-      <div class="captionRow">
-        <button class="navBtn" aria-label="Prev" id="prev">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="caption" id="cap">【邮票】：可自定义“邮票图案”。</div>
-        <button class="navBtn" aria-label="Next" id="next">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-
-      <!-- 明信片样图 + 小箭头 -->
-      <div class="cardBox">
-        <img id="card" class="card" alt="postcard sample" />
-        <div class="pin" id="pin" title="目标位置（示意）"></div>
-      </div>
-    </div>
-
-    <p class="note">Easily make, Physically print · Souvenir, Philately, Worldwide post · Photo print, A5 big size, Value for money</p>
-    <div class="btnRow">
-      <button class="pill primary">Souvenir Postcard</button>
-      <button class="pill ghost">Traditional Postcard</button>
-    </div>
-    <button class="start">Start</button>
-
-    <p class="note">© Smart Postcard — mobile preview</p>
+  <!-- 顶部横条 -->
+  <div class="header">
+    <div>Smart Postcard</div>
+    <div class="spacer"></div>
   </div>
 
+  <h1>Create your unique postcard</h1>
+  <div class="top-note">
+    Treasure your own photo to be stamp &amp; postcard images offered first in the world &amp; printed only for you
+  </div>
+
+  <div class="stage">
+    <!-- 说明框 + 左右大箭头（和你的版式一致） -->
+    <div class="explainer">
+      <div class="arrow" id="prev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></div>
+      <div class="caption" id="caption">【邮票】可自定义“邮票图案”。</div>
+      <div class="arrow" id="next"><svg viewBox="0 0 24 24"><path d="m8.59 16.59 1.41 1.41L18 12 10 4 8.59 5.41 14.17 12z"/></svg></div>
+    </div>
+
+    <!-- 明信片 + 小绿箭头 -->
+    <div class="postcard-wrap" id="stage">
+      <div class="postcard">
+        <img id="pcImg" src="postcard_cn.png?v=1" alt="Postcard sample">
+      </div>
+      <div class="pin" id="pin" style="left:78%;top:25%"></div>
+    </div>
+
+    <!-- 三张样图选择 -->
+    <div class="dots">
+      <div class="dot active" data-idx="0" title="CN"></div>
+      <div class="dot" data-idx="1" title="EN"></div>
+      <div class="dot" data-idx="2" title="Demo"></div>
+    </div>
+  </div>
+
+  <div class="slogan">
+    Easily make, Physically print · Souvenir, Philately, Worldwide post · Photo print, A5 big size, Value for money
+  </div>
+
+  <div class="btns">
+    <div class="btn primary">Souvenir Postcard</div>
+    <div class="btn ghost">Traditional Postcard</div>
+  </div>
+  <div class="btn primary big">Start</div>
+
+  <div class="footer">© Smart Postcard — mobile preview</div>
+
 <script>
-/* —— 1) 自动寻找样图：支持 png/jpg & 多个常见文件名 —— */
-const candidates = [
-  "mobile_homepage.png","mobile_homepage.jpg",
-  "postcard_en.png","postcard_en.jpg",
-  "postcard_zh.png","postcard_zh.jpg",
-  "mobile-homepage.png","mobile-homepage.jpg"
+/* 三张样图（按你上传的文件名） */
+const posters = [
+  "postcard_cn.png?v=1",
+  "postcard_en.png?v=1",
+  "postcard_demo.png?v=1"
 ];
-const imgEl = document.getElementById('card');
-const stage = document.getElementById('stage');
 
-function tryLoad(list, idx=0){
-  if(idx>=list.length){
-    stage.insertAdjacentHTML('beforeend',
-      '<div class="err">⚠️ 没找到样图文件。请在仓库根目录上传任意一个：<b>'
-      + candidates.join('</b>、<b>') + '</b>。</div>');
-    return;
-  }
-  const src = list[idx] + '?v=' + Date.now(); // 防缓存
-  const test = new Image();
-  test.onload = ()=>{ imgEl.src = src; };
-  test.onerror = ()=> tryLoad(list, idx+1);
-  test.src = src;
-}
-tryLoad(candidates);
-
-/* —— 2) 说明内容 + 小箭头位置（简化示意，可后续精确坐标） —— */
+/* 小箭头所指位置（相对百分比）与对应说明文本 */
 const steps = [
-  {text:'【邮票】：可自定义“邮票图案”。', pin:{right:'10%', top:'18%'}},
-  {text:'【二维码】：可添加“到此一游”二维码。', pin:{left:'10%', bottom:'16%'}},
-  {text:'【背面文字/地址】：可填写文字与地址。', pin:{right:'8%', bottom:'14%'}},
-  {text:'【返回默认】：回到邮票位置。', pin:{right:'10%', top:'18%'}},
+  { x:78, y:25, text:"【邮票】：可自定义“邮票图案”。" },                // 默认：邮票
+  { x:63, y:22, text:"【航空标识】：可选择/隐藏“Prioritaire”。" },       
+  { x:57, y:24, text:"【二维码】：可放定位/链接二维码。" },               
+  { x:31, y:20, text:"【天气条】：可自动生成日期与天气。" },              
+  { x:16, y:56, text:"【正文区】：输入文字内容，支持多语言。" },          
+  { x:21, y:85, text:"【城市章】：可选择目的地地标图章。" },              
+  { x:17, y:86, text:"【音视频码】：支持视频/音频二维码。" },              
+  { x:76, y:56, text:"【收件信息】：姓名、地址、邮编、国家。" }           
 ];
-let i=0;
-const cap = document.getElementById('cap');
-const pin = document.getElementById('pin');
-function applyStep(k){
-  cap.textContent = steps[k].text;
-  // 先清空定位
-  pin.style.left=pin.style.right=pin.style.top=pin.style.bottom='';
-  Object.assign(pin.style, steps[k].pin);
-}
-applyStep(i);
-document.getElementById('prev').onclick = ()=>{ i=(i-1+steps.length)%steps.length; applyStep(i); };
-document.getElementById('next').onclick = ()=>{ i=(i+1)%steps.length; applyStep(i); };
 
-/* —— 3) 首次进入演示：小箭头沿四周走一圈（简化动画） —— */
-(function guide(){
-  const path = [
-    {right:'10%', top:'18%'},
-    {right:'8%',  bottom:'14%'},
-    {left:'10%',  bottom:'16%'},
-    {left:'8%',   top:'20%'},
-    {right:'10%', top:'18%'}
-  ];
-  let p=0;
-  function tick(){
-    Object.assign(pin.style, {left:'',right:'',top:'',bottom:''}, path[p]);
-    p++; if(p<path.length) setTimeout(tick, 650);
+/* 元素 */
+const pcImg = document.getElementById('pcImg');
+const pin = document.getElementById('pin');
+const caption = document.getElementById('caption');
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const dots = [...document.querySelectorAll('.dot')];
+
+let imgIdx = 0;      // 当前样图
+let stepIdx = 0;     // 当前说明步骤
+let demoTimer = null;
+
+/* 切换样图 */
+function setPoster(i){
+  imgIdx = (i+posters.length)%posters.length;
+  pcImg.src = posters[imgIdx];
+  dots.forEach((d,k)=>d.classList.toggle('active', k===imgIdx));
+}
+
+/* 更新小箭头与说明 */
+function setStep(i, animate=true){
+  stepIdx = (i+steps.length)%steps.length;
+  const {x,y,text} = steps[stepIdx];
+  caption.textContent = text;
+  if(animate){
+    pin.style.transition = 'left .38s ease, top .38s ease';
+  }else{
+    pin.style.transition = 'none';
   }
-  setTimeout(tick, 600);
-})();
+  pin.style.left = x + '%';
+  pin.style.top  = y + '%';
+}
+
+/* 左右控制 */
+prev.onclick = ()=> setStep(stepIdx-1);
+next.onclick = ()=> setStep(stepIdx+1);
+
+/* 说明框左右滑动 */
+(function enableSwipe(box){
+  let startX=null;
+  box.addEventListener('touchstart',e=>{startX=e.touches[0].clientX},{passive:true});
+  box.addEventListener('touchend',e=>{
+    if(startX===null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx)>40){ dx<0 ? next.onclick() : prev.onclick(); }
+    startX=null;
+  });
+})(document.querySelector('.caption'));
+
+/* 三个圆点切图 */
+dots.forEach((d,k)=> d.addEventListener('click',()=> setPoster(k)) );
+
+/* 首次进入：小箭头沿四周演示一圈，然后回到默认(0) */
+function playIntro(){
+  let i = 0;
+  setStep(0,false);
+  demoTimer = setInterval(()=>{
+    i++;
+    if(i >= steps.length){
+      clearInterval(demoTimer);
+      setStep(0); // 回到默认：邮票
+      return;
+    }
+    setStep(i);
+  }, 650);
+}
+
+/* 初始化 */
+setPoster(0);
+setStep(0,false);
+playIntro();
 </script>
 </body>
 </html>
