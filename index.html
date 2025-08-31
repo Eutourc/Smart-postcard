@@ -88,4 +88,10 @@ h1{margin: calc(8px * var(--s)) 0 calc(14px * var(--s)); font-size:var(--h1); li
 .pin::after{content:"";display:block;border-left:var(--pin-nose) solid #fff;border-top:var(--pin-tri) solid transparent;border-bottom:var(--pin-tri) solid transparent;
   margin-left:calc(2px * var(--s));transform:translateX(calc(2px * var(--s)))}
 
-.hint{margin: calc(8
+.hint{margin: calc(8px * var(--s)) calc(6px * var(--s)) 0; color:var(--muted);text-align:center;line-height:1.6; font-size:calc(15px * var(--s))}
+
+/* 底部按钮 */
+.actions{display:flex;gap:calc(14px * var(--s));justify-content:space-between;margin: var(--gap-md) 0 calc(10px * var(--s))}
+.btn{flex:1 1 0;border:none;border-radius:999px;font-weight:800;padding: calc(16px * var(--s)) calc(10px * var(--s)); font-size:var(--btn)}
+.btn-prim{background:var(--btn-strong)} .btn-ghost{background:var(--btn-weak);color:#1f2937}
+.start{width:100%;border:none;border-radius:999px;background:var(--brand);padding: calc(18px * var(--s)) calc(10px
