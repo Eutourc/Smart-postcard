@@ -1,68 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Smart Postcard — mobile preview</title>
-<meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+<title>Smart Postcard — DIAG</title>
 <style>
-:root{ --brand:#FFC400; --text:#1f2937; --muted:#6b7280; --panel:#fff3bf;
-       --btn-strong:#ffcc00; --btn-weak:#e9ecef; --arrow:#e5e7eb; --accent:#22c55e;
-       --base:390; --s:1; }
-
-*{box-sizing:border-box}
-html,body{margin:0;background:#fff;color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif}
-
-.bar{position:sticky;top:0;z-index:20;background:var(--brand);color:#111;
-  padding:10px 14px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
-.bar-row{max-width:calc(720px * var(--s));margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:900;font-size:calc(24px * var(--s))}
-.tools{display:flex;align-items:center;gap:calc(10px * var(--s))}
-.pill{position:relative;display:flex;align-items:center;gap:calc(8px * var(--s));
-  background:#fff;border-radius:999px;padding:calc(8px * var(--s)) calc(12px * var(--s));box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.cart-badge{position:absolute;top:calc(-7px * var(--s));left:calc(-7px * var(--s));
-  width:calc(22px * var(--s));height:calc(22px * var(--s));border-radius:999px;background:#fff;border:2px solid #f3f4f6;
-  display:grid;place-items:center;font-weight:800;font-size:calc(12px * var(--s))}
-.lang{background:#fff;border:none;border-radius:999px;padding:calc(8px * var(--s)) calc(12px * var(--s));font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-
-.wrap{max-width:calc(720px * var(--s));margin:0 auto;padding:calc(18px * var(--s)) calc(16px * var(--s)) calc(28px * var(--s))}
-h1{margin:calc(8px * var(--s)) 0 calc(14px * var(--s));font-size:calc(32px * var(--s));line-height:1.15}
-.lead{background:var(--panel);border-radius:calc(16px * var(--s));padding:calc(14px * var(--s)) calc(16px * var(--s));line-height:1.45;font-weight:600;font-size:calc(16px * var(--s))}
-
-.stage{margin-top:calc(14px * var(--s));background:#f8fafc;border-radius:calc(22px * var(--s));padding:calc(14px * var(--s));box-shadow:0 4px 24px rgba(0,0,0,.06)}
-.poster{position:relative;display:flex;align-items:center;gap:calc(12px * var(--s));justify-content:center;padding:calc(10px * var(--s)) calc(10px * var(--s)) calc(18px * var(--s))}
-.info-box{min-width:52%;max-width:52%;background:var(--panel);border:calc(2px * var(--s)) dashed #f0c419;border-radius:calc(14px * var(--s));
-  padding:calc(10px * var(--s)) calc(12px * var(--s));text-align:center;font-weight:700;line-height:1.55;font-size:calc(16px * var(--s))}
-.arrow{flex:0 0 auto;width:calc(54px * var(--s));height:calc(54px * var(--s));border-radius:999px;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.08);
-  display:grid;place-items:center;border:1px solid var(--arrow);cursor:pointer;user-select:none}
-.arrow svg{width:calc(22px * var(--s));height:calc(22px * var(--s));fill:#6b7280}
-
-.canvas{position:relative;margin:calc(14px * var(--s)) auto calc(6px * var(--s));width:100%;max-width:calc(520px * var(--s));
-  aspect-ratio:3/2;background:#fff;border-radius:calc(12px * var(--s));overflow:hidden;display:grid;place-items:center;border:1px solid #e5e7eb}
-.canvas img{width:100%;height:100%;object-fit:contain;background:#fff}
-
-.pin{position:absolute;z-index:3;width:calc(44px * var(--s));height:calc(44px * var(--s));border-radius:999px;background:var(--accent);
-  box-shadow:0 6px 18px rgba(34,197,94,.35);display:grid;place-items:center;transform:translate(-50%,-50%)}
-.pin::after{content:"";display:block;border-left:calc(9px * var(--s)) solid #fff;border-top:calc(6px * var(--s)) solid transparent;border-bottom:calc(6px * var(--s)) solid transparent;margin-left:calc(2px * var(--s))}
-
-.hint{margin:calc(8px * var(--s)) calc(6px * var(--s)) 0;color:var(--muted);text-align:center;line-height:1.6;font-size:calc(15px * var(--s))}
-.actions{display:flex;gap:calc(14px * var(--s));justify-content:space-between;margin:calc(16px * var(--s)) 0 calc(10px * var(--s))}
-.btn{flex:1 1 0;border:none;border-radius:999px;font-weight:800;padding:calc(16px * var(--s)) calc(10px * var(--s));font-size:calc(18px * var(--s))}
-.btn-prim{background:var(--btn-strong)} .btn-ghost{background:var(--btn-weak);color:#1f2937}
-.start{width:100%;border:none;border-radius:999px;background:var(--brand);padding:calc(18px * var(--s)) calc(10px * var(--s));
-  font-weight:900;font-size:calc(22px * var(--s));letter-spacing:.5px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-
-/* 错误条：任何失败都不会空白 */
-.err{display:none;margin:12px 16px;padding:12px;border-radius:10px;background:#fff1f2;color:#b91c1c;border:1px solid #fecaca;font-weight:700}
-.err.show{display:block}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:#fff}
+  .wrap{max-width:720px;margin:0 auto;padding:24px 16px}
+  h1{font-size:28px;margin:12px 0}
+  .ok{padding:12px 14px;border-left:6px solid #16a34a;background:#ecfdf5;margin:12px 0;border-radius:8px}
+  .err{padding:12px 14px;border-left:6px solid #b91c1c;background:#fef2f2;margin:12px 0;border-radius:8px;color:#7f1d1d;white-space:pre-wrap}
+  .card{border:1px dashed #e5e7eb;border-radius:12px;padding:14px;margin:14px 0}
+  .grid{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center}
+  .tag{display:inline-block;background:#f3f4f6;border-radius:999px;padding:6px 10px;margin-right:8px}
 </style>
 </head>
 <body>
-  <div class="bar">
-    <div class="bar-row">
-      <div class="brand">Smart Postcard</div>
-      <div class="tools">
-        <div class="pill" id="cartBtn" role
+<div class="wrap">
+  <h1>PAGE LOADED ✅</h1>
+  <div id="info" class="ok">本页用于排查“空白页”原因：能看到这行，说明 GitHub Pages 与 HTML 正常渲染。</div>
+
+  <div class="card">
+    <div class="grid">
+      <div class="tag">当前时间</div><div id="now"></div>
+      <div class="tag">版本参数</div><div id="ver"></div>
+      <div class="tag">页面状态</div><div id="state">初始化中…</div>
+    </div>
+  </div>
+
+  <h2>图片检测</h2>
+  <div id="imgs" class="card">开始检测 `postcard_en.png` 与 `postcard_cn.png` 是否可加载…</div>
+
+  <h2>错误监控</h2>
+  <div id="errors" class="card">若有 JS/CSS 错误，将显示在这里。</div>
+</div>
+
+<script>
+(function(){
+  // 显示时间与版本
+  document.getElementById('now').textContent = new Date().toLocaleString();
+  document.getElementById('ver').textContent = new URL(location.href).search;
+
+  // 显示错误到页面
+  const errBox = document.getElementById('errors');
+  window.onerror = function(msg, src, line, col, err){
+    const div = document.createElement('div');
+    div.className = 'err';
+    div.textContent = 'JS Error: ' + msg + '\n来源: ' + (src||'-') + '\n行列: ' + line + ':' + col + (err?('\n堆栈:\n'+(err.stack||'')):'');
+    errBox.appendChild(div);
+    document.getElementById('state').textContent = '发生脚本错误（见下方红框）。';
+  };
+
+  // 简单脚本自检
+  document.getElementById('state').textContent = '脚本运行正常 ✅';
+
+  // 图片存在性检测（不会影响页面显示）
+  const list = ['postcard_en.png','postcard_cn.png'];
+  const imgsDiv = document.getElementById('imgs');
+  list.forEach(name=>{
+    const url = name + '?v=' + Date.now();
+    const img = new Image();
+    img.onload = ()=>{
+      const ok = document.createElement('div');
+      ok.className='ok';
+      ok.textContent = '✓ ' + name + ' 加载成功';
+      imgsDiv.appendChild(ok);
+    };
+    img.onerror = ()=>{
+      const er = document.createElement('div');
+      er.className='err';
+      er.textContent = '× ' + name + ' 未找到或无法加载（这不会导致本页空白，但正式首页会显示占位/空白）。';
+      imgsDiv.appendChild(er);
+    };
+    img.src = url;
+  });
+})();
+</script>
+</body>
+</html>
