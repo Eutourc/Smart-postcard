@@ -146,5 +146,92 @@
 
 })();
 </script>
+  <!-- Language dropdown: paste just before </body> -->
+<style>
+  .sp-lang-chip{position:fixed;top:14px;right:72px;z-index:9999;
+    background:#fff; border:1px solid rgba(0,0,0,.1); box-shadow:0 4px 16px rgba(0,0,0,.12);
+    height:36px; padding:0 12px; border-radius:18px; display:flex; align-items:center; gap:8px;
+    font-weight:700; font-size:14px; line-height:1; }
+  .sp-lang-dot{width:8px;height:8px;border-radius:50%;background:#111;}
+  .sp-lang-caret{border:solid #333;border-width:0 2px 2px 0;display:inline-block;padding:3px;
+    transform:rotate(45deg);margin-left:2px;}
+  .sp-lang-menu{position:fixed;top:56px;right:60px;z-index:9999; width:180px;
+    background:#fff;border:1px solid rgba(0,0,0,.1); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.16);
+    overflow:hidden; display:none;}
+  .sp-lang-item{padding:12px 14px; display:flex; align-items:center; gap:10px; font-size:15px;}
+  .sp-lang-item:hover{background:#fff7cc;}
+  .sp-lang-flag{width:18px;height:18px;border-radius:50%; background:#eee; border:1px solid #ddd;}
+  .sp-lang-mask{position:fixed; inset:0; background:transparent; display:none; z-index:9998;}
+  @media (min-width:768px){ .sp-lang-chip{top:18px;right:88px} .sp-lang-menu{top:60px;right:76px} }
+</style>
+
+<div class="sp-lang-chip" id="spLangChip" role="button" aria-haspopup="true" aria-expanded="false">
+  <span class="sp-lang-dot" id="spLangDot"></span>
+  <span id="spLangLabel">EN</span>
+  <i class="sp-lang-caret"></i>
+</div>
+<div class="sp-lang-menu" id="spLangMenu" role="menu"></div>
+<div class="sp-lang-mask" id="spLangMask"></div>
+
+<script>
+(function(){
+  const options = [
+    {code:'en', label:'EN'},
+    {code:'zh', label:'中文'},
+    {code:'ja', label:'日本語'},
+    {code:'fr', label:'FR'}
+  ];
+  const $chip = document.getElementById('spLangChip');
+  const $menu = document.getElementById('spLangMenu');
+  const $mask = document.getElementById('spLangMask');
+  const $label= document.getElementById('spLangLabel');
+  const $dot  = document.getElementById('spLangDot');
+
+  const saved = localStorage.getItem('sp:lang') || (document.documentElement.lang||'en').toLowerCase();
+  setLang(saved, false);
+  renderMenu();
+
+  function renderMenu(){
+    $menu.innerHTML = '';
+    options.forEach(opt=>{
+      const item = document.createElement('div');
+      item.className = 'sp-lang-item';
+      item.setAttribute('role','menuitem');
+      item.innerHTML = `<span class="sp-lang-flag"></span><span>${opt.label}</span>`;
+      item.addEventListener('click', ()=> setLang(opt.code, true));
+      $menu.appendChild(item);
+    });
+  }
+
+  function setLang(code, persist){
+    const opt = options.find(o=>o.code===code) || options[0];
+    document.documentElement.setAttribute('lang', opt.code);
+    $label.textContent = opt.label;
+    $dot.style.background = '#111'; // 可改为不同颜色区分
+    if (persist) localStorage.setItem('sp:lang', opt.code);
+    closeMenu();
+    // 供后续多语言文案使用：
+    window.__SP_LANG__ = opt.code;
+    document.dispatchEvent(new CustomEvent('sp:langchange', {detail: opt.code}));
+  }
+
+  function openMenu(){
+    $menu.style.display='block'; $mask.style.display='block';
+    $chip.setAttribute('aria-expanded','true');
+  }
+  function closeMenu(){
+    $menu.style.display='none'; $mask.style.display='none';
+    $chip.setAttribute('aria-expanded','false');
+  }
+
+  $chip.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    ($menu.style.display==='block') ? closeMenu() : openMenu();
+  });
+  $mask.addEventListener('click', closeMenu);
+  // 键盘无障碍
+  document.addEventListener('keydown', (e)=> { if(e.key==='Escape') closeMenu(); });
+})();
+</script>
 </body>
 </html>
