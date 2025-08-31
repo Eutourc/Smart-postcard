@@ -10,55 +10,46 @@
 <style>
 :root{
   /* 基准：严格按样图 390px 设计稿等比缩放 */
-  --base: 390;        /* 设计宽度 */
-  --s: 1;             /* 实时缩放比例，由 JS 写入 */
+  --base: 390; --s: 1;
 
   /* 主题色 */
   --brand:#FFC400; --text:#1f2937; --muted:#6b7280;
   --panel:#fff3bf; --btn-strong:#ffcc00; --btn-weak:#e9ecef;
   --arrow:#e5e7eb; --accent:#22c55e;
 }
-
-/* 便捷尺寸函数（所有尺寸都走等比缩放） */
+/* 便捷尺寸（全部等比缩放） */
 :root{
-  --gap-xs: calc(6px * var(--s));
   --gap-sm: calc(10px * var(--s));
   --gap-md: calc(14px * var(--s));
   --gap-lg: calc(18px * var(--s));
-
   --radius: calc(16px * var(--s));
   --shadow: 0 calc(4px * var(--s)) calc(24px * var(--s)) rgba(0,0,0,.08);
-
   --bar-font: calc(24px * var(--s));
   --h1:      calc(32px * var(--s));
   --lead:    calc(16px * var(--s));
   --info:    calc(16px * var(--s));
   --btn:     calc(18px * var(--s));
   --btnBig:  calc(22px * var(--s));
-
-  --arrow-d: calc(54px * var(--s));            /* 大箭头直径（严格跟随样图） */
-  --caption-minw: 52%;                          /* 说明框宽度按比例关系，不随分辨率抖动 */
-  --canvas-maxw: calc(520px * var(--s));        /* 明信片承载最大宽 */
-  --pin-d:    calc(44px * var(--s));            /* 小绿箭头直径 */
-  --pin-nose: calc(9px * var(--s));             /* 小箭头白鼻子宽 */
-  --pin-tri:  calc(6px * var(--s));             /* 三角高 */
-
-  --wrap-max: calc(720px * var(--s));           /* 容器最大宽，同步缩放 */
+  --arrow-d: calc(54px * var(--s));          /* 两个大箭头直径 */
+  --caption-minw: 52%;
+  --canvas-maxw: calc(520px * var(--s));
+  --pin-d:    calc(44px * var(--s));
+  --pin-nose: calc(9px * var(--s));
+  --pin-tri:  calc(6px * var(--s));
+  --wrap-max: calc(720px * var(--s));
 }
-
-/* 全局 */
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#fff;color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif}
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
 
-/* 顶部横幅（标题左 / 购物车+语言右） */
+/* 顶部横幅（左标题 / 右购物车+语言） */
 .bar{position:sticky;top:0;z-index:20;background:var(--brand);color:#111;
   padding: calc(10px * var(--s)) calc(14px * var(--s)); box-shadow: 0 1px 0 rgba(0,0,0,.06)}
 .bar-row{max-width:var(--wrap-max);margin:0 auto;display:flex;align-items:center;justify-content:space-between}
 .brand{font-weight:900;font-size:var(--bar-font);letter-spacing:.2px}
-.tools{display:flex;align-items:center;gap:var(--gap-sm)}
-.pill{position:relative;display:flex;align-items:center;gap:calc(8px * var(--s));
-  background:#fff;border-radius:999px;padding: calc(8px * var(--s)) calc(12px * var(--s)); box-shadow: 0 2px 6px rgba(0,0,0,.08)}
+.tools{display:flex;align-items:center;gap:calc(10px * var(--s))}
+.pill{position:relative;display:flex;align-items:center;gap:calc(8px * var(--s));background:#fff;border-radius:999px;
+  padding: calc(8px * var(--s)) calc(12px * var(--s)); box-shadow: 0 2px 6px rgba(0,0,0,.08)}
 .cart-badge{position:absolute;top:calc(-7px * var(--s));left:calc(-7px * var(--s));
   width:calc(22px * var(--s));height:calc(22px * var(--s));border-radius:999px;background:#fff;border:2px solid #f3f4f6;
   display:grid;place-items:center;font-weight:800;font-size:calc(12px * var(--s))}
@@ -97,23 +88,4 @@ h1{margin: calc(8px * var(--s)) 0 calc(14px * var(--s)); font-size:var(--h1); li
 .pin::after{content:"";display:block;border-left:var(--pin-nose) solid #fff;border-top:var(--pin-tri) solid transparent;border-bottom:var(--pin-tri) solid transparent;
   margin-left:calc(2px * var(--s));transform:translateX(calc(2px * var(--s)))}
 
-.hint{margin: calc(8px * var(--s)) calc(6px * var(--s)) 0; color:var(--muted);text-align:center;line-height:1.6; font-size:calc(15px * var(--s))}
-
-/* 底部按钮 */
-.actions{display:flex;gap:calc(14px * var(--s));justify-content:space-between;margin: var(--gap-md) 0 calc(10px * var(--s))}
-.btn{flex:1 1 0;border:none;border-radius:999px;font-weight:800;padding: calc(16px * var(--s)) calc(10px * var(--s)); font-size:var(--btn)}
-.btn-prim{background:var(--btn-strong)} .btn-ghost{background:var(--btn-weak);color:#1f2937}
-.start{width:100%;border:none;border-radius:999px;background:var(--brand);padding: calc(18px * var(--s)) calc(10px * var(--s));
-  font-weight:900;font-size:var(--btnBig);letter-spacing:.5px;box-shadow:0 calc(10px * var(--s)) calc(30px * var(--s)) rgba(0,0,0,.08)}
-</style>
-</head>
-<body>
-  <!-- 顶部横幅 -->
-  <div class="bar">
-    <div class="bar-row">
-      <div class="brand">Smart Postcard</div>
-      <div class="tools">
-        <div class="pill" id="cartBtn" role="button" aria-label="cart">
-          <div class="cart-badge" id="cartNum">0</div>
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#111" d="M7 18c-1.1 0-1.99.
+.hint{margin: calc(8
