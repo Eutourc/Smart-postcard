@@ -2,78 +2,286 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Smart Postcard — DIAG</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Smart Postcard — mobile preview</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <style>
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:#fff}
-  .wrap{max-width:720px;margin:0 auto;padding:24px 16px}
-  h1{font-size:28px;margin:12px 0}
-  .ok{padding:12px 14px;border-left:6px solid #16a34a;background:#ecfdf5;margin:12px 0;border-radius:8px}
-  .err{padding:12px 14px;border-left:6px solid #b91c1c;background:#fef2f2;margin:12px 0;border-radius:8px;color:#7f1d1d;white-space:pre-wrap}
-  .card{border:1px dashed #e5e7eb;border-radius:12px;padding:14px;margin:14px 0}
-  .grid{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center}
-  .tag{display:inline-block;background:#f3f4f6;border-radius:999px;padding:6px 10px;margin-right:8px}
+  :root{
+    --brand:#f6c414;           /* 金黄横幅 */
+    --brand-deep:#f0b800;
+    --ink:#222;
+    --muted:#6b7280;
+    --panel:#fff8d6;           /* 说明框淡黄 */
+    --btn:#f6c414;
+    --btn-txt:#111;
+    --btn-ghost:#eceff3;
+    --shadow:0 8px 24px rgba(0,0,0,.12);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif}
+  .topbar{
+    position:sticky;top:0;z-index:1000;
+    background:var(--brand);color:#111;
+    padding:14px 18px;font-weight:800;font-size:22px;letter-spacing:.3px;
+    box-shadow:0 1px 0 rgba(0,0,0,.06);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .lang{
+    display:inline-flex;gap:8px;align-items:center;
+    background:#fff;border-radius:999px;padding:6px 10px;font-weight:700;
+    box-shadow:var(--shadow);
+  }
+  .lang button{
+    border:0;background:transparent;padding:4px 8px;border-radius:999px;cursor:pointer;
+    font-weight:800;color:#111
+  }
+  .lang button.active{background:var(--brand-deep);color:#000}
+  .wrap{padding:18px 16px 28px;max-width:560px;margin:0 auto}
+  h1{font-size:28px;line-height:1.2;margin:10px 0 16px}
+  .lede{background:var(--panel);border-radius:16px;padding:14px 16px;margin-bottom:16px;border:1px dashed rgba(0,0,0,.1)}
+  /* 主舞台 */
+  .stage{
+    position:relative;background:#fff;border-radius:20px;padding:16px;margin:0 auto 16px;
+    box-shadow:var(--shadow);
+  }
+  .postcard-box{
+    position:relative;background:#fff;border-radius:16px;overflow:hidden;
+    aspect-ratio: 3 / 2; /* 接近明信片比例，适配手机 */
+    border:1px solid #e5e7eb;
+  }
+  .postcard-box img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;
+  }
+
+  /* 说明框 + 左右大箭头（夹在两侧） */
+  .explain-row{
+    position:absolute;left:6%;right:6%;
+    top:8%; /* 在样图里位于明信片上方，这里贴近上边缘 */
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    pointer-events:none; /* 默认不抢手势，按钮单独放开 */
+  }
+  .big-arrow{
+    pointer-events:auto;
+    width:44px;height:44px;border-radius:999px;background:#fff;box-shadow:var(--shadow);
+    display:grid;place-items:center;border:1px solid #e5e7eb;cursor:pointer;
+  }
+  .big-arrow svg{width:18px;height:18px;fill:#374151}
+  .explain{
+    flex:1;min-height:44px;background:var(--panel);border:1px dashed #e9cf7a;
+    border-radius:14px;padding:8px 12px;text-align:center;font-weight:800;
+    line-height:1.35;
+  }
+
+  /* 小绿箭头（沿边逆时针移动） */
+  .guide{
+    --s:48px; width:var(--s);height:var(--s);border-radius:999px;
+    position:absolute;display:grid;place-items:center;
+    background:#12c25d;color:#fff;box-shadow:var(--shadow);
+    transition: transform .45s ease, left .45s ease, top .45s ease;
+    will-change: left, top, transform;
+  }
+  .guide::after{
+    content:"";display:block;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;
+    border-top:10px solid #0aa64c; transform:translateY(2px);
+  }
+
+  .bullets{display:flex;gap:6px;justify-content:center;margin:10px 0}
+  .bullets i{width:6px;height:6px;border-radius:999px;background:#d1d5db}
+  .bullets i.on{background:#374151}
+
+  .copy{color:var(--muted);text-align:center;margin-top:10px;font-size:12px}
+
+  /* 按钮 */
+  .btns{display:flex;gap:12px;justify-content:space-between;margin-top:8px}
+  .btn{flex:1;border:0;border-radius:999px;padding:14px 16px;font-weight:800;cursor:pointer}
+  .btn.primary{background:var(--btn);color:var(--btn-txt)}
+  .btn.ghost{background:var(--btn-ghost);color:#111}
+  .btn.wide{width:100%;margin-top:14px}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>PAGE LOADED ✅</h1>
-  <div id="info" class="ok">本页用于排查“空白页”原因：能看到这行，说明 GitHub Pages 与 HTML 正常渲染。</div>
-
-  <div class="card">
-    <div class="grid">
-      <div class="tag">当前时间</div><div id="now"></div>
-      <div class="tag">版本参数</div><div id="ver"></div>
-      <div class="tag">页面状态</div><div id="state">初始化中…</div>
+  <header class="topbar">
+    <div>Smart Postcard</div>
+    <div class="lang" id="lang">
+      <button data-lang="en" class="active">EN</button>
+      <button data-lang="cn">中文</button>
     </div>
-  </div>
+  </header>
 
-  <h2>图片检测</h2>
-  <div id="imgs" class="card">开始检测 `postcard_en.png` 与 `postcard_cn.png` 是否可加载…</div>
+  <main class="wrap">
+    <h1 id="title">Create your unique postcard</h1>
+    <div class="lede" id="lede">Treasure your own photo to be stamp &amp; postcard images offered first in the world &amp; printed only for you</div>
 
-  <h2>错误监控</h2>
-  <div id="errors" class="card">若有 JS/CSS 错误，将显示在这里。</div>
-</div>
+    <section class="stage">
+      <!-- 明信片区域 -->
+      <div class="postcard-box" id="pcBox">
+        <img id="pcImg" alt="postcard preview" src="postcard_en.png?v=2" />
+        <!-- 上方说明行：左箭头 + 说明框 + 右箭头 -->
+        <div class="explain-row">
+          <button class="big-arrow" id="prev" aria-label="previous">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="explain" id="explain">[Stamp] Design your own stamp image.</div>
+          <button class="big-arrow" id="next" aria-label="next">
+            <svg viewBox="0 0 24 24"><path d="m8.59 16.59 1.41 1.41 6-6-6-6-1.41 1.41L12.17 12z"/></svg>
+          </button>
+        </div>
+        <!-- 小绿箭头 -->
+        <div class="guide" id="guide"></div>
+      </div>
+
+      <div class="bullets"><i class="on"></i><i></i></div>
+
+      <p class="copy" id="tag">Easily make, Physically print · Souvenir, Philately, Worldwide post · Photo print, A5 big size, Value for money</p>
+
+      <div class="btns">
+        <button class="btn primary" id="btnSouvenir">Souvenir Postcard</button>
+        <button class="btn ghost" id="btnTrad">Traditional Postcard</button>
+      </div>
+      <button class="btn primary wide" id="btnStart">Start</button>
+
+      <p class="copy">© Smart Postcard — mobile preview<br><span id="ts"></span></p>
+    </section>
+  </main>
 
 <script>
 (function(){
-  // 显示时间与版本
-  document.getElementById('now').textContent = new Date().toLocaleString();
-  document.getElementById('ver').textContent = new URL(location.href).search;
+  const qs = s=>document.querySelector(s);
+  const pcBox = qs('#pcBox');
+  const pcImg = qs('#pcImg');
+  const guide = qs('#guide');
+  const explain = qs('#explain');
+  const prev = qs('#prev'), next = qs('#next');
+  const langWrap = qs('#lang');
+  const title = qs('#title'), lede = qs('#lede'), tag = qs('#tag');
 
-  // 显示错误到页面
-  const errBox = document.getElementById('errors');
-  window.onerror = function(msg, src, line, col, err){
-    const div = document.createElement('div');
-    div.className = 'err';
-    div.textContent = 'JS Error: ' + msg + '\n来源: ' + (src||'-') + '\n行列: ' + line + ':' + col + (err?('\n堆栈:\n'+(err.stack||'')):'');
-    errBox.appendChild(div);
-    document.getElementById('state').textContent = '发生脚本错误（见下方红框）。';
+  // 文案（与你样图一致的制作顺序，逆时针）
+  const texts = {
+    en: [
+      "[Stamp]: Design your own stamp.",
+      "[QR]: Link to 'My Location' or audio/video.",
+      "[Address]: Recipient name & address.",
+      "[Front Image]: Choose postcard front."
+    ],
+    cn: [
+      "【邮票】：自定义“邮票图案”。",
+      "【二维码】：链接“我的位置/音视频”。",
+      "【收件信息】：姓名与地址。",
+      "【正面图片】：选择明信片正面。"
+    ]
   };
 
-  // 简单脚本自检
-  document.getElementById('state').textContent = '脚本运行正常 ✅';
-
-  // 图片存在性检测（不会影响页面显示）
-  const list = ['postcard_en.png','postcard_cn.png'];
-  const imgsDiv = document.getElementById('imgs');
-  list.forEach(name=>{
-    const url = name + '?v=' + Date.now();
-    const img = new Image();
-    img.onload = ()=>{
-      const ok = document.createElement('div');
-      ok.className='ok';
-      ok.textContent = '✓ ' + name + ' 加载成功';
-      imgsDiv.appendChild(ok);
-    };
-    img.onerror = ()=>{
-      const er = document.createElement('div');
-      er.className='err';
-      er.textContent = '× ' + name + ' 未找到或无法加载（这不会导致本页空白，但正式首页会显示占位/空白）。';
-      imgsDiv.appendChild(er);
-    };
-    img.src = url;
+  // 语言状态
+  let lang = 'en';
+  function applyLang(){
+    for(const b of langWrap.querySelectorAll('button')) b.classList.toggle('active', b.dataset.lang===lang);
+    if(lang==='en'){
+      title.textContent = "Create your unique postcard";
+      lede.textContent = "Treasure your own photo to be stamp & postcard images offered first in the world & printed only for you";
+      tag.textContent  = "Easily make, Physically print · Souvenir, Philately, Worldwide post · Photo print, A5 big size, Value for money";
+      pcImg.src = "postcard_en.png?v=2";
+    }else{
+      title.textContent = "创建你的专属明信片";
+      lede.textContent = "把你的照片做成邮票与明信片图案，世界首创，仅为你打印";
+      tag.textContent  = "轻松制作、实体打印 · 纪念与集邮 · 全球寄送 · A5 大尺寸，物超所值";
+      pcImg.src = "postcard_cn.png?v=2";
+    }
+    explain.textContent = texts[lang][step];
+  }
+  langWrap.addEventListener('click', e=>{
+    if(e.target.tagName!=='BUTTON') return;
+    lang = e.target.dataset.lang; applyLang();
   });
+
+  // 小箭头沿边逆时针轨迹（上→左→下→右）
+  let step = 0;
+  const total = 4; // 四个关键点：邮票→二维码→地址→正面
+  function placeGuide(){
+    const box = pcBox.getBoundingClientRect();
+    const pad = 14; // 离边距离
+    const s = parseFloat(getComputedStyle(guide).getPropertyValue('--s')) || 48;
+
+    // 计算四个位置（逆时针）
+    const pos = [
+      {left: box.width - s/2 - pad, top: box.height*0.18 - s/2}, // 右上（邮票）
+      {left: box.width*0.02,        top: box.height*0.18 - s/2}, // 左上（二维码/横幅）
+      {left: box.width*0.02,        top: box.height*0.75 - s/2}, // 左下（落款/城市章）
+      {left: box.width - s/2 - pad, top: box.height*0.60 - s/2}, // 右中下（收件信息）
+    ];
+    const p = pos[step % pos.length];
+    guide.style.left = (p.left) + "px";
+    guide.style.top  = (p.top)  + "px";
+    // 轻微缩放动画
+    guide.style.transform = "scale(1.0)";
+    setTimeout(()=>guide.style.transform="scale(1.06)", 60);
+  }
+
+  function updateExplain(){
+    explain.textContent = texts[lang][step % total];
+  }
+
+  function go(delta){
+    // 逆时针：右上→左上→左下→右下
+    step = (step + delta + total) % total;
+    updateExplain();
+    placeGuide();
+  }
+
+  prev.addEventListener('click', ()=>go(+1));  // 逆时针：左键向后等于 +1
+  next.addEventListener('click', ()=>go(-1));  // 右键向前等于 -1
+
+  // 初次载入：小箭头自动绕一圈演示一遍（逆时针）
+  function demoCycle(){
+    let n = 0;
+    const t = setInterval(()=>{
+      go(+1); n++;
+      if(n>=total){ clearInterval(t); /* 停在默认邮票位置（右上） */ step=0; updateExplain(); placeGuide(); }
+    }, 650);
+  }
+
+  // Souvenir / Traditional 亮度对比（默认高亮 Souvenir）
+  const btnSouvenir = document.getElementById('btnSouvenir');
+  const btnTrad = document.getElementById('btnTrad');
+  function highlight(which){
+    if(which==='sou'){
+      btnSouvenir.classList.add('primary'); btnSouvenir.classList.remove('ghost');
+      btnTrad.classList.add('ghost'); btnTrad.classList.remove('primary');
+    }else{
+      btnTrad.classList.add('primary'); btnTrad.classList.remove('ghost');
+      btnSouvenir.classList.add('ghost'); btnSouvenir.classList.remove('primary');
+    }
+  }
+  btnSouvenir.addEventListener('click', ()=>highlight('sou'));
+  btnTrad.addEventListener('click',     ()=>highlight('trad'));
+
+  // Start：无论箭头停在哪，都从“选择背面/邮票图案”开始（占位）
+  document.getElementById('btnStart').addEventListener('click', ()=>{
+    alert(lang==='en' ? "Start: choose back design & stamp first." : "开始：先选择背面与邮票图案。");
+  });
+
+  // 加时间戳
+  (function(){
+    const d = new Date();
+    const pad = n=>String(n).padStart(2,'0');
+    document.getElementById('ts').textContent = `Last update: ${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  })();
+
+  // 图片加载兜底（防止缓存带来“空白”）
+  pcImg.addEventListener('error', ()=>{
+    const fallback = 'postcard_en.png';
+    if(pcImg.src.indexOf(fallback)===-1) pcImg.src = fallback + '?v=' + Date.now();
+  });
+
+  // 初始渲染
+  applyLang();           // 设文案与图片
+  placeGuide();          // 放置箭头
+  setTimeout(demoCycle, 400); // 演示一圈
+
+  // 视口变化时重算位置
+  addEventListener('resize', ()=>placeGuide());
 })();
 </script>
 </body>
