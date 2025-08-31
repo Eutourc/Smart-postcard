@@ -4,6 +4,10 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <title>Smart Postcard — mobile preview</title>
+<!-- 强制无缓存 -->
+<meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <style>
   :root{--brand:#F6C415;--ink:#1F2937;--muted:#6B7280;--btn:#F4B400;--ghost:#E5E7EB;}
   html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;overflow:hidden;}
@@ -12,9 +16,10 @@
 
   /* 顶栏 */
   .bar{position:relative;background:var(--brand);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-weight:800;font-size:20px;box-shadow:0 2px 0 rgba(0,0,0,.06);border-radius:0 0 10px 10px;}
-  .bar-right{display:flex;align-items:center;gap:12px;}
-  .icon-btn{background:#fff;border-radius:999px;padding:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.1)}
+  .bar-right{display:flex;align-items:center;gap:10px;}
+  .icon-btn{position:relative;background:#fff;border-radius:999px;padding:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.1)}
   .icon-btn svg{width:18px;height:18px;fill:#000;}
+  .badge{position:absolute;top:2px;right:2px;background:red;color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:0 4px;min-width:14px;line-height:14px;text-align:center}
   .lang{display:flex;gap:6px}
   .pill{background:#fff;padding:5px 9px;border-radius:999px;font-weight:700;cursor:pointer;font-size:12px}
   .pill.active{background:#000;color:#FFD94A}
@@ -50,20 +55,21 @@
           0 00-.86-1.48H5.21l-.94-2H1v2h2l3.6 
           7.59-1.35 2.44C4.52 15.37 5.48 
           17 7 17h12v-2H7.42c-.14 0-.25-.11-.26-.24z"/></svg>
+          <span class="badge" id="cart-count">0</span>
         </div>
         <!-- 语言 -->
         <div class="lang">
           <span class="pill" data-lang="en">EN</span>
           <span class="pill active" data-lang="cn">中文</span>
         </div>
-        <!-- 三条横线菜单 -->
+        <!-- 菜单 -->
         <div class="icon-btn" id="menu">
           <svg viewBox="0 0 24 24"><path d="M3 12h18v2H3v-2zm0-5h18v2H3V7zm0 10h18v2H3v-2z"/></svg>
         </div>
       </div>
     </div>
 
-    <!-- 主体区域 (保留你原先的卡片 + 箭头功能，这里省略 JS 与 bubble 部分保持一致) -->
+    <!-- 主体 -->
     <div class="wrap">
       <h1 id="title">创建你的专属明信片</h1>
       <div class="tip" id="lead">把你的照片做成邮票与明信片图案，世界首创，仅为你打印</div>
@@ -73,7 +79,6 @@
         <button class="arrow" id="prev"><svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
         <button class="arrow" id="next"><svg viewBox="0 0 24 24"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg></button>
       </div>
-
       <div class="actions">
         <div class="btn" id="souvenir">Souvenir Postcard</div>
         <div class="btn ghost" id="traditional">Traditional Postcard</div>
@@ -81,14 +86,65 @@
       <div class="actions" style="margin-top:4px">
         <div class="btn" id="start">Start</div>
       </div>
-
-      <div class="foot">© Smart Postcard — mobile preview<br><span id="stamp">Last update: 2025-08-31</span></div>
+      <div class="foot">
+        © Smart Postcard — mobile preview<br>
+        <span id="build">Build v20001 • 2025-08-31</span>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-// 这里保留你现有的 JS 脚本逻辑，不变，只是加了图标
+(()=>{
+
+  const imgs={cn:'postcard_cn.png',en:'postcard_en.png'};
+  const texts={
+    cn:['【邮票】：自定义“邮票图案”。','【到此一游】：生成“坐标二维码”。','【视频/音频】：添加“影音二维码”。','【落款城市】：自动“城市图章”。'],
+    en:['[Stamp]: Customize your stamp image.','[My Location]: Generate a geo QR.','[Video/Audio]: Attach a media QR.','[City Seal]: Auto-apply destination mark.']
+  };
+
+  const title=document.getElementById('title');
+  const lead=document.getElementById('lead');
+  const card=document.getElementById('card');
+  const bubble=document.getElementById('bubble');
+  const prev=document.getElementById('prev');
+  const next=document.getElementById('next');
+  const stage=document.getElementById('stage');
+  const langBtns=document.querySelectorAll('.pill');
+
+  const path=[{x:86,y:20},{x:14,y:20},{x:14,y:86},{x:86,y:86}];
+  const state={lang:'cn',step:0};
+
+  function setLang(lang){
+    state.lang=lang;
+    langBtns.forEach(p=>p.classList.toggle('active',p.dataset.lang===lang));
+    card.style.backgroundImage=`url('${imgs[lang]}?v=20001')`;
+    if(lang==='cn'){
+      title.textContent='创建你的专属明信片';
+      lead.textContent='把你的照片做成邮票与明信片图案，世界首创，仅为你打印';
+    }else{
+      title.textContent='Create your unique postcard';
+      lead.textContent='Treasure your own photo to be stamp & postcard images offered first in the world & printed only for you';
+    }
+    state.step=0; placeBubble(); renderText();
+  }
+  function placeBubble(){
+    const p=path[state.step%path.length];
+    bubble.style.left=p.x+'%'; bubble.style.top=p.y+'%';
+    const rect=stage.getBoundingClientRect(); const bw=150;
+    const cx=p.x/100*rect.width; const cy=p.y/100*rect.height; const gap=12;
+    prev.style.left=((cx-bw/2-gap)/rect.width*100)+'%'; next.style.left=((cx+bw/2+gap)/rect.width*100)+'%';
+    prev.style.top=next.style.top=p.y+'%';
+  }
+  function renderText(){bubble.textContent=texts[state.lang][state.step%texts[state.lang].length];}
+  function step(d){state.step=(state.step+d+path.length)%path.length;placeBubble();renderText();}
+  next.addEventListener('click',()=>step(1)); prev.addEventListener('click',()=>step(-1));
+  stage.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;tracking=true;},{passive:true});
+  stage.addEventListener('touchend',e=>{if(!tracking)return;tracking=false;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>24)(dx<0)?step(1):step(-1);},{passive:true});
+  langBtns.forEach(p=>p.addEventListener('click',()=>setLang(p.dataset.lang)));
+  setLang('cn'); window.addEventListener('resize',placeBubble);
+
+})();
 </script>
 </body>
 </html>
