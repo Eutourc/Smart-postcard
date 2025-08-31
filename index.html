@@ -5,81 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Postcard</title>
   <style>
-    body { margin:0; font-family:sans-serif; background:#fff; text-align:center; }
-    header { background:#ffcc00; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; }
-    header img { height:28px; margin-right:6px; vertical-align:middle; }
-    header .title { font-weight:bold; font-size:18px; display:flex; align-items:center; }
-    header .icons { display:flex; align-items:center; gap:12px; }
-
-    h1 { font-size:20px; margin:12px 0 6px; }
-    .desc { font-size:14px; margin:8px; color:#444; }
-
-    .carousel { position:relative; display:inline-block; margin:12px auto; }
-    .carousel img { width:300px; max-width:85vw; border:1px solid #ccc; border-radius:6px; }
-    .arrow { 
-      position:absolute; top:45%; font-size:36px; font-weight:bold; 
-      background:none; border:none; cursor:pointer; color:#333;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      text-align: center;
     }
-    .arrow.left { left:-40px; }
-    .arrow.right { right:-40px; }
-    .caption { margin-top:8px; font-size:14px; font-weight:bold; color:#222; }
-
-    .pointer { position:absolute; top:18%; right:22%; width:20px; height:20px; background:green; border-radius:50%; }
-
-    .features { margin:16px auto; max-width:90%; font-size:13px; line-height:1.6; color:#333; text-align:left; }
-    .btns { margin:16px; }
-    .btn { padding:10px 18px; border-radius:6px; border:none; font-weight:bold; margin:4px; cursor:pointer; }
-    .btn.main { background:#ffcc00; }
-    .btn.alt { background:#ddd; }
-    .btn.start { display:block; width:80%; margin:12px auto; background:#ffcc00; font-size:16px; }
-
-    footer { font-size:11px; color:#666; margin:16px 0; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffcc00;
+      padding: 8px 12px;
+    }
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    header img.logo {
+      height: 28px;
+    }
+    header .right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 16px 0 8px;
+    }
+    .postcard-container {
+      position: relative;
+      width: 90%;
+      margin: 0 auto;
+      max-width: 380px;
+    }
+    .postcard-container img {
+      width: 100%;
+      display: block;
+    }
+    .arrow {
+      position: absolute;
+      top: 15%;
+      transform: translateY(-50%);
+      font-size: 36px;
+      font-weight: bold;
+      color: #333;
+      background: none;
+      border: none;
+    }
+    .arrow.left {
+      left: -30px;
+    }
+    .arrow.right {
+      right: -30px;
+    }
+    .arrow-text {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      font-weight: bold;
+      background: rgba(255,255,200,0.9);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .small-arrow {
+      position: absolute;
+      top: 32%;
+      right: 20%;
+      font-size: 24px;
+      color: green;
+    }
+    .features {
+      font-size: 13px;
+      color: #444;
+      margin: 10px auto;
+      max-width: 380px;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 18px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn.primary { background: #ffcc00; }
+    .btn.secondary { background: #ddd; }
+    .start-btn {
+      display: block;
+      margin: 0 auto 18px;
+      padding: 12px 26px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 24px;
+      border: none;
+      background: #ffcc00;
+      cursor: pointer;
+    }
+    footer {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <div class="left">
+      <img src="logo.png" alt="Logo" class="logo">
+      <span><b>Smart Postcard</b></span>
+    </div>
+    <div class="right">
+      🛒 <button>中文</button> ☰
+    </div>
+  </header>
 
-<header>
-  <div class="title"><img src="logo.jpg" alt="Logo">Smart Postcard</div>
-  <div class="icons">
-    <span>🛒</span>
-    <button>EN</button>
-    <button>中文</button>
-    <span>☰</span>
+  <h1>创建您举世无双的纪念明信片</h1>
+
+  <div class="postcard-container">
+    <button class="arrow left">‹</button>
+    <div class="arrow-text">【明信片背面】: 选择中/英文版式。</div>
+    <button class="arrow right">›</button>
+    <img src="postcard_cn.png" alt="Postcard sample">
+    <div class="small-arrow">▼</div>
   </div>
-</header>
 
-<h1>创建您举世无双的纪念明信片</h1>
-<p class="desc">把你的照片做成邮票与明信片图案，世界首创，仅为你打印</p>
+  <div class="features">
+    Easily make · Physically print · Souvenir · Philately · Worldwide post · A5 size · Value for money
+  </div>
 
-<div class="carousel">
-  <button class="arrow left">❮</button>
-  <img src="postcard_cn.png" alt="Postcard">
-  <button class="arrow right">❯</button>
-  <div class="pointer"></div>
-  <div class="caption">【明信片背面】: 选择中/英文版式。</div>
-</div>
+  <div class="btn-group">
+    <button class="btn primary">纪念明信片</button>
+    <button class="btn secondary">传统明信片</button>
+  </div>
 
-<div class="features">
-  <b>明信片特色集锦：</b><br>
-  1. 个人照片即成邮票及明信片图画，世界首发，独一无二<br>
-  2. 到此一游纪念：扫码定位加图或分享<br>
-  3. 记录亲笔文字、地点、日期、天气与温度<br>
-  4. 分享视频或音频<br>
-  5. 加入地方纪念印章见证<br>
-  6. 点击按钮可享AI讲解<br>
-  7. 邮戳上的日期即邮寄日<br>
-  8. 海外寄送，享全球邮政<br>
-  9. 盖销音像二维码<br>
-  10. 精美大尺寸A5收藏
-</div>
+  <button class="start-btn">开始</button>
 
-<div class="btns">
-  <button class="btn main">纪念明信片</button>
-  <button class="btn alt">传统明信片</button>
-</div>
-<button class="btn start">开始</button>
-
-<footer>© Smart Postcard — mobile preview<br>Build v20007 • 2025-08-31</footer>
-
+  <footer>
+    © Smart Postcard — mobile preview<br>
+    Build v20007 · 2025-08-31
+  </footer>
 </body>
 </html>
