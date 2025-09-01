@@ -2,321 +2,83 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
-  <title>Smart Postcard — 明信片首页开发 2</title>
-  <meta name="description" content="Unique Souvenir Postcard — 明信片首页" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Postcard — 首页</title>
   <style>
-    :root{
-      --bg: #f7fafc;
-      --ink: #0f172a;
-      --muted:#475569;
-      --brand:#3b82f6;        /* 顶部横幅主色（浅蓝） */
-      --brand-ink:#ffffff;
-      --btn:#0ea5e9;
-      --btn-ink:#ffffff;
-      --card:#ffffff;
-      --shadow: 0 10px 20px rgba(2,8,23,.08);
-      --radius:18px;
-    }
+    :root{--brand:#3b82f6;--ink:#0f172a;--muted:#475569;--card:#fff;--bg:#f6f7fb;
+    --shadow:0 6px 16px rgba(15,23,42,.08);--radius:16px;}
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"PingFang SC","Noto Sans SC","Microsoft Yahei",sans-serif}
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
-
-    /* 顶部横幅（Hero） */
-    .hero{
-      position:relative;
-      background: var(--brand);
-      color: var(--brand-ink);
-      padding: clamp(20px, 5vw, 36px);
-      padding-bottom: 72px; /* 给小箭头留空间 */
-      border-bottom-left-radius: 28px;
-      border-bottom-right-radius: 28px;
-      overflow:hidden;
-    }
-    .hero-inner{
-      max-width: 1080px;
-      margin: 0 auto;
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items:center;
-    }
-
-    /* 左侧 logo（确保可见） */
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .logo svg{display:block;width:28px;height:28px}
-    .brand-name{font-weight:700;letter-spacing:.3px}
-
-    /* 语言切换（仅中/英） */
-    .lang-toggle{
-      display:flex; gap:8px; align-items:center;
-      background: rgba(255,255,255,.15); padding:6px 10px; border-radius:999px;
-      backdrop-filter: blur(6px);
-    }
-    .lang-toggle button{
-      border:0; background:transparent; color:#fff; opacity:.8; padding:6px 10px; border-radius:999px
-    }
-    .lang-toggle button.active{
-      background:#fff; color:#0b1a33; opacity:1; font-weight:600;
-    }
-
-    /* 标题与说明文字 */
-    .hero-copy{
-      grid-column: 1 / -1;
-      margin-top: 10px;
-    }
-    .title{
-      font-size: clamp(22px, 6vw, 40px);
-      line-height:1.12;
-      margin: 8px 0 10px;
-      font-weight: 800;
-      letter-spacing:.2px;
-    }
-    .subtitle{
-      font-size: clamp(14px, 3.5vw, 18px);
-      line-height:1.6;
-      opacity:.95;
-      max-width: 62ch;
-    }
-
-    /* 主行动区：开始按钮 + 大箭头（无外圈） */
-    .cta{
-      display:flex; align-items:center; gap:12px; margin-top:16px;
-    }
-    .btn-start{
-      border:0; background: var(--btn); color: var(--btn-ink);
-      padding: 12px 18px; border-radius: 14px; font-weight: 700;
-      box-shadow: var(--shadow);
-    }
-    .big-arrow{
-      /* 放大箭头主体，去掉外围圆圈 */
-      width: 34px; height: 34px; display:inline-flex; align-items:center; justify-content:center;
-      transform: translateY(1px);
-    }
-    .big-arrow svg{width:100%; height:100%; display:block}
-
-    /* 小箭头（位于横幅底部正中，点击滚动到特色集锦） */
-    .scroll-cue{
-      position:absolute; left:50%; bottom:16px; transform:translateX(-50%);
-      width: 28px; height: 28px;
-      cursor:pointer; opacity:.9;
-      transition: transform .2s ease, opacity .2s ease;
-    }
-    .scroll-cue:active{transform: translateX(-50%) translateY(1px)}
-    .scroll-cue:hover{opacity:1}
-    .scroll-cue svg{width:100%; height:100%; display:block}
-
-    /* 主要内容容器 */
-    .container{max-width:1080px; margin: 18px auto; padding: 0 16px}
-
-    /* 明信片特色集锦 */
-    .section-title{
-      font-size: clamp(18px, 5vw, 26px);
-      font-weight: 800; margin: 8px 0 14px;
-    }
-    .features{
-      display:grid; gap:12px;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-    }
-    @media (min-width: 720px){
-      .features{grid-template-columns: repeat(3, minmax(0,1fr))}
-    }
-    .card{
-      background: var(--card); border-radius: var(--radius);
-      box-shadow: var(--shadow); padding: 14px;
-    }
-    .card h3{margin: 0 0 6px; font-size: 15px}
-    .card p{margin:0; font-size: 13px; color: var(--muted); line-height:1.55}
-
-    /* 占位图片（若你替换为真实图片，删除本规则） */
-    .ph{width:100%; height:110px; border-radius:14px; background:linear-gradient(180deg, rgba(59,130,246,.18), rgba(14,165,233,.18)); margin-bottom:10px}
-
-    /* 页脚 */
-    footer{
-      text-align:center; color: var(--muted); font-size: 12px;
-      padding: 32px 12px 48px;
-    }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"PingFang SC","Microsoft Yahei",sans-serif;}
+    .hero{position:relative;background:var(--brand);color:#fff;padding:14px 16px 80px;
+      border-bottom-left-radius:24px;border-bottom-right-radius:24px;overflow:hidden;}
+    .hero .toprow{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.2px;}
+    .icon-mail{width:20px;height:20px;flex:0 0 20px}
+    .title{margin:14px 2px 6px;font-size:24px;line-height:1.18;font-weight:800;}
+    .subtitle{margin:0 2px;font-size:13px;line-height:1.6;opacity:.95;}
+    .cta{display:flex;align-items:center;gap:10px;margin:12px 2px 0;}
+    .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:700;color:#fff;
+      background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.25),var(--shadow);backdrop-filter:blur(2px);}
+    .big-arrow{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;}
+    .big-arrow svg{width:100%;height:100%}
+    .scroll-cue{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+      width:26px;height:26px;border:0;background:rgba(255,255,255,.4);border-radius:6px;
+      display:flex;align-items:center;justify-content:center;cursor:pointer;}
+    .scroll-cue svg{width:18px;height:18px;stroke:#fff}
+    .container{max-width:980px;margin:14px auto;padding:0 14px}
+    .section-title{margin:8px 2px 12px;font-size:18px;font-weight:800;}
+    .grid{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));}
+    .card{background:var(--card);border-radius:18px;padding:12px;box-shadow:var(--shadow);}
+    .ph{height:100px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(0,0,0,.06));margin-bottom:10px}
+    .card h3{margin:0 0 6px;font-size:14px}
+    .card p{margin:0;font-size:12px;color:var(--muted);line-height:1.55}
+    footer{padding:28px 10px 38px;text-align:center;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
-  <!-- 顶部横幅（Hero） -->
-  <header class="hero" id="top">
-    <div class="hero-inner">
-
-      <!-- 1) 左侧 LOGO：确保显示 -->
-      <div class="logo" aria-label="Smart Postcard">
-        <!-- 简洁可见的 inline SVG 标志；如需替换为你的图，请把 <svg> 换成 <img src="assets/logo.svg" alt="logo"> -->
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <rect x="2" y="5" width="20" height="14" rx="3" fill="white" opacity=".85"/>
-          <path d="M4 7l7 6 7-6" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="brand-name">Smart Postcard</span>
-      </div>
-
-      <!-- 语言切换（仅中/英；满足你“不要中英文对照，选择哪语就显示哪语”） -->
-      <div class="lang-toggle" role="group" aria-label="language toggle">
-        <button type="button" data-lang="zh" class="active">中</button>
-        <button type="button" data-lang="en">EN</button>
-      </div>
-
-      <!-- 标题与说明文字 -->
-      <div class="hero-copy">
-        <h1 class="title" data-i18n="title">天下无二的纪念明信片</h1>
-        <!-- 2) “说明文字没放进去”——已加入；英文按你的最新改法 -->
-        <p class="subtitle" data-i18n="subtitle">
-          用二维码和定位坐标，标记你的到访足迹。
-        </p>
-
-        <!-- 主行动区：开始按钮 + 大箭头（去外圈，放大主体） -->
-        <div class="cta">
-          <button class="btn-start" id="btnStart" data-i18n="start">开始</button>
-          <span class="big-arrow" aria-hidden="true">
-            <!-- 大箭头（无外圈） -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h12"></path>
-              <path d="M13 6l6 6-6 6"></path>
-            </svg>
-          </span>
-        </div>
-
-        <!-- 3) 彻底移除“开始”下方提示（此前占位过大）——本页不再渲染该元素 -->
-      </div>
-
-      <!-- 4) 小箭头放在横幅底部正中；点击滚动到特色集锦 -->
-      <button class="scroll-cue" id="scrollCue" aria-label="滚动到特色集锦">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 9l6 6 6-6"></path>
-        </svg>
-      </button>
-
-      <!-- 5) “横幅下面那行字要删除”——此处不再输出任何次要说明行 -->
+  <header class="hero">
+    <div class="toprow">
+      <svg class="icon-mail" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="3" stroke="#fff" stroke-width="1.6"/>
+        <path d="M4.2 7.5l7.8 6.3 7.8-6.3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>Smart Postcard</div>
     </div>
+    <h1 class="title">天下无二的纪念明信片</h1>
+    <p class="subtitle">用二维码和定位坐标，标记你的到访足迹。</p>
+    <div class="cta">
+      <button id="btnStart" class="btn">开始</button>
+      <span class="big-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h12"></path>
+          <path d="M13 6l6 6-6 6"></path>
+        </svg>
+      </span>
+    </div>
+    <button id="scrollCue" class="scroll-cue" aria-label="滚动">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9l6 6 6-6" stroke="currentColor"></path>
+      </svg>
+    </button>
   </header>
-
   <main class="container">
-    <!-- 6) 明信片特色集锦：恢复可见，占据主视口下方 -->
-    <section id="features">
-      <h2 class="section-title" data-i18n="featuresTitle">明信片特色集锦</h2>
-      <div class="features">
-
-        <article class="card">
-          <div class="ph" aria-hidden="true"></div>
-          <h3 data-i18n="f1h">个人照片做“邮票”</h3>
-          <p data-i18n="f1p">将你的照片嵌入邮票框，配合纪念邮戳，打造独一无二的到访凭证。</p>
-        </article>
-
-        <article class="card">
-          <div class="ph" aria-hidden="true"></div>
-          <h3 data-i18n="f2h">二维码绑定旅途记忆</h3>
-          <p data-i18n="f2p">视频、音频、图文日记一键关联，好友扫码即可身临其境。</p>
-        </article>
-
-        <article class="card">
-          <div class="ph" aria-hidden="true"></div>
-          <h3 data-i18n="f3h">坐标与时间双标注</h3>
-          <p data-i18n="f3p">自动记录经纬度与到访时间，让纪念更有“坐标感”。</p>
-        </article>
-
-        <article class="card">
-          <div class="ph" aria-hidden="true"></div>
-          <h3 data-i18n="f4h">本地纪念章加持</h3>
-          <p data-i18n="f4p">结合城市地标纪念章（如市政厅剪影），形成地理文化识别。</p>
-        </article>
-
-        <article class="card">
-          <div class="ph" aria-hidden="true"></div>
-          <h3 data-i18n="f5h">离线也能写</h3>
-          <p data-i18n="f5p">旅途中即写即存，联网后自动同步生成二维码。</p>
-        </article>
-
-        <article class="card">
-          <div class="ph" aria-hidden="true"></div>
-          <h3 data-i18n="f6h">寄往全球</h3>
-          <p data-i18n="f6p">与本地邮政合作，实体明信片与数字记忆“双轨并行”。</p>
-        </article>
-
-      </div>
-    </section>
+    <h2 class="section-title">明信片特色集锦</h2>
+    <div class="grid">
+      <article class="card"><div class="ph"></div><h3>个人照片做“邮票”</h3><p>将你的照片嵌入邮票框，配合纪念邮戳，打造独一无二的到访凭证。</p></article>
+      <article class="card"><div class="ph"></div><h3>二维码绑定旅途记忆</h3><p>视频、音频、图文日记一键关联，好友扫码即可身临其境。</p></article>
+      <article class="card"><div class="ph"></div><h3>坐标与时间双标注</h3><p>自动记录经纬度与到访时间，让纪念更有“坐标感”。</p></article>
+      <article class="card"><div class="ph"></div><h3>本地纪念章加持</h3><p>结合城市地标纪念章（如市政厅剪影），形成地理文化识别。</p></article>
+      <article class="card"><div class="ph"></div><h3>离线也能写</h3><p>旅途中即写即存，联网后自动同步生成二维码。</p></article>
+      <article class="card"><div class="ph"></div><h3>寄往全球</h3><p>与本地邮政合作，实体明信片与数字记忆“双轨并行”。</p></article>
+    </div>
   </main>
-
-  <footer>
-    <small>© <span id="y"></span> Smart Postcard • Nordic Tour United AB</small>
-  </footer>
-
+  <footer><small>© <span id="y"></span> Smart Postcard • Nordic Tour United AB</small></footer>
   <script>
-    // 年份
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // 小箭头点击 -> 平滑滚动到 “特色集锦”
-    const cue = document.getElementById('scrollCue');
-    cue.addEventListener('click', () => {
-      document.getElementById('features')?.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-
-    // “开始”按钮的最小可用行为：滚到特色区（后续可挂接真正的创建流程）
-    document.getElementById('btnStart').addEventListener('click', () => {
-      document.getElementById('features')?.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-
-    // 简易 i18n（仅中/英，记忆选择；满足“不要中英文对照”的专业做法）
-    const dict = {
-      zh: {
-        title: "天下无二的纪念明信片",
-        subtitle: "用二维码和定位坐标，标记你的到访足迹。",
-        start: "开始",
-        featuresTitle: "明信片特色集锦",
-        f1h:"个人照片做“邮票”", f1p:"将你的照片嵌入邮票框，配合纪念邮戳，打造独一无二的到访凭证。",
-        f2h:"二维码绑定旅途记忆", f2p:"视频、音频、图文日记一键关联，好友扫码即可身临其境。",
-        f3h:"坐标与时间双标注", f3p:"自动记录经纬度与到访时间，让纪念更有“坐标感”。",
-        f4h:"本地纪念章加持",   f4p:"结合城市地标纪念章（如市政厅剪影），形成地理文化识别。",
-        f5h:"离线也能写",       f5p:"旅途中即写即存，联网后自动同步生成二维码。",
-        f6h:"寄往全球",         f6p:"与本地邮政合作，实体明信片与数字记忆“双轨并行”。",
-      },
-      en: {
-        title: "Unique Souvenir Postcard",
-        // 你最新的英文措辞要求
-        subtitle: "Mark your visit with a QR code & location coordinates",
-        start: "Start",
-        featuresTitle: "Highlights",
-        f1h:"Your photo as a ‘stamp’", f1p:"Embed your own photo in a stamp frame with commemorative postmarks—truly one of a kind.",
-        f2h:"QR ties to trip memories", f2p:"Link video, audio, and journals; friends scan to relive your journey.",
-        f3h:"Coords + time together",   f3p:"Auto-capture latitude/longitude and visit time for precise memory anchors.",
-        f4h:"Local commemorative seals", f4p:"Blend iconic city seals (e.g., City Hall silhouette) for cultural identity.",
-        f5h:"Write offline",            f5p:"Draft on the go; sync to generate the QR when back online.",
-        f6h:"Mail worldwide",           f6p:"With local postal partners: physical cards + digital memories in parallel.",
-      }
-    };
-
-    const $ = (sel) => Array.from(document.querySelectorAll(sel));
-    const applyLang = (lng) => {
-      const d = dict[lng] || dict.zh;
-      $('[data-i18n]').forEach(el=>{
-        const key = el.getAttribute('data-i18n');
-        if (d[key] !== undefined) el.textContent = d[key];
-      });
-      // 按钮高亮
-      $('.lang-toggle button').forEach(b=>{
-        b.classList.toggle('active', b.dataset.lang === lng);
-      });
-      localStorage.setItem('sp_lang', lng);
-      document.documentElement.lang = (lng==='en'?'en':'zh-CN');
-    };
-
-    // 绑定切换
-    $('.lang-toggle button').forEach(b=>{
-      b.addEventListener('click', ()=> applyLang(b.dataset.lang));
-    });
-
-    // 初始化：读取本地记忆，默认中文
-    applyLang(localStorage.getItem('sp_lang') || 'zh');
+    function goFeatures(){document.querySelector('main')?.scrollIntoView({behavior:'smooth', block:'start'});}
+    document.getElementById('scrollCue').addEventListener('click', goFeatures);
+    document.getElementById('btnStart').addEventListener('click', goFeatures);
   </script>
 </body>
 </html>
