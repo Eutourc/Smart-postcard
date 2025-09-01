@@ -24,9 +24,10 @@
     .scroll-cue{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
       width:24px;height:24px;border:0;background:transparent;padding:0;cursor:pointer;}
     .scroll-cue svg{width:100%;height:100%;stroke:#fff;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15));}
+    /* 说明框（自动缩小字体直至装下） */
     .info-box{margin-left:6px; padding:10px 12px; border-radius:12px;
       background:rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
-      max-width:min(520px, 92vw);}
+      max-width:min(520px, 92vw); max-height:88px; overflow:hidden;}
     .info-text{margin:0; line-height:1.6; word-break:break-word; font-size:16px;}
     .container{max-width:980px;margin:14px auto;padding:0 14px}
     .section-title{margin:8px 2px 12px;font-size:18px;font-weight:800;text-align:left;}
@@ -55,7 +56,7 @@
         </svg>
       </span>
       <div class="info-box">
-        <p id="infoText" class="info-text">中文版大箭头说明框内的文字（从右到左） 明信片背面的图案，可用您的自拍照 这等于您洗里了一张A5大尺码的照片 珍惜！邮票及明信片画面可使用 您的照片，世界首例，独特唯一 到此一游留念！ 扫定位码即可回味或分享 记录感言或所在地名、 日期、天气与温度作为纪念 分享一段录像或录音 扫码即可回放 加盖国家或地方纪念戳 是您到此一游的见证 点击纪念戳，享受Ai解说 留念日期即邮戳日期 盖戳日与留念日同步 明信内容 明信片邮寄地址</p>
+        <p id="infoText" class="info-text">请记住以下说明框中的中英文文字及从右到左的排列顺序，并把它们放入到中英文的说明框内：</p>
       </div>
     </div>
     <button id="scrollCue" class="scroll-cue" aria-label="滚动">
@@ -68,7 +69,7 @@
   <main class="container">
     <h2 class="section-title">明信片特色集锦</h2>
     <section class="features-text" id="features">
-      <p>操作简单 实体印刷 全球邮寄</p><p>旅游纪念 集邮佳品 珍贵收藏</p><p>照片打印 A5 大尺码 物超所值</p><p>英文版大箭头说明框内的文字（从右到左）</p><p>The postcard backside ·  on which the pattern can be replaced by your own photo. It is a large A5 size!</p><p>Treasure your own photo as images of stamp & postcard ·  world’s first release ·  each one unique</p><p>Mark your visit at a map memorial point by a QR code & location coordinates</p><p>Record your words / city · </p><p>date ·  weather & temperature</p>
+      <p>中文版大箭头说明框内的文字（从右到左）</p><p>明信片背面的图案 · 可用您的自拍照</p><p>这等于您洗里了一张A5大尺码的照片</p><p>珍惜！邮票及明信片画面可使用</p><p>您的照片 · 世界首例 · 独特唯一</p><p>到此一游留念！</p><p>扫定位码即可回味或分享</p><p>记录感言或所在地名、</p><p>日期、天气与温度作为纪念</p>
     </section>
   </main>
 
@@ -80,18 +81,13 @@
     document.getElementById('scrollCue').addEventListener('click', goFeatures);
     document.getElementById('btnStart').addEventListener('click', goFeatures);
 
-    // 说明框自适应缩放（直到完全装入 info-box 或达到 10px 最小字号）
-    (function autoFitInfoFont() {
-      const el = document.getElementById('infoText');
-      if (!el) return;
-      let size = parseFloat(window.getComputedStyle(el).fontSize) || 16;
-      const min = 10;
-      const parent = el.parentElement;
-      parent.style.maxHeight = '88px';
-      let guard = 40;
-      while (guard-- > 0 && size > min && (el.scrollHeight > parent.clientHeight || el.scrollWidth > parent.clientWidth)) {
-        size -= 1;
-        el.style.fontSize = size + 'px';
+    // 自动缩小说明框字体以适配容器
+    (function autoFit() {
+      const el = document.getElementById('infoText'); if (!el) return;
+      const box = el.parentElement;
+      let size = parseFloat(getComputedStyle(el).fontSize) || 16;
+      while ((el.scrollHeight > box.clientHeight || el.scrollWidth > box.clientWidth) && size > 10) {
+        size -= 1; el.style.fontSize = size + 'px';
       }
     })();
   </script>
