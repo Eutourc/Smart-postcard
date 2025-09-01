@@ -24,7 +24,6 @@
     .scroll-cue{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
       width:24px;height:24px;border:0;background:transparent;padding:0;cursor:pointer;}
     .scroll-cue svg{width:100%;height:100%;stroke:#fff;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15));}
-    /* 说明框（自动缩小字体直至装下） */
     .info-box{margin-left:6px; padding:10px 12px; border-radius:12px;
       background:rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
       max-width:min(520px, 92vw); max-height:88px; overflow:hidden;}
@@ -56,7 +55,7 @@
         </svg>
       </span>
       <div class="info-box">
-        <p id="infoText" class="info-text">请记住以下说明框中的中英文文字及从右到左的排列顺序，并把它们放入到中英文的说明框内：</p>
+        <p id="infoText" class="info-text">请记住以下说明框中的中英文文字及从右到左的排列顺序，并把它们放入到中英文的说明框内： 中文版大箭头说明框内的文字（从右到左） 明信片背面的图案，可用您的自拍照</p>
       </div>
     </div>
     <button id="scrollCue" class="scroll-cue" aria-label="滚动">
@@ -81,7 +80,7 @@
     document.getElementById('scrollCue').addEventListener('click', goFeatures);
     document.getElementById('btnStart').addEventListener('click', goFeatures);
 
-    // 自动缩小说明框字体以适配容器
+    // 说明框自动缩放字体
     (function autoFit() {
       const el = document.getElementById('infoText'); if (!el) return;
       const box = el.parentElement;
