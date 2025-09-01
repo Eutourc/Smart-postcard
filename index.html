@@ -1,150 +1,164 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Smart Postcard — mobile preview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Postcard — Mobile Preview</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <style>
   :root{
-    --brand:#f2b705;         /* 顶栏黄 */
-    --ink:#1f2d3a;
-    --muted:#6b7280;
-    --panel:#ffffff;
-    --soft:#f7f7f9;
-    --accent:#2ecc71;        /* 绿色下箭头 */
-    --shadow:0 10px 30px rgba(0,0,0,.12);
-    --radius:20px;
+    --brand:#F5B800;
+    --brand-dk:#e0a700;
+    --ink:#222;
+    --muted:#666;
+    --panel:#fff8d9;
+    --accent:#16a34a;
+    --card:#ffffff;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+    --radius:18px;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:#fafafa;color:var(--ink);
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "PingFang SC","Microsoft Yahei",sans-serif;}
-  /* 顶栏 */
-  .topbar{
-    position:sticky; top:0; z-index:20;
-    background:var(--brand); color:#111;
-    padding:10px 14px;
-    display:flex; align-items:center; gap:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.06);
-  }
-  .logo{display:flex; align-items:center; gap:10px; font-weight:900; font-size:24px; line-height:1}
-  .logo img{width:28px; height:28px; object-fit:cover; border-radius:4px; background:#fff}
-  .topbar-spacer{flex:1}
-  .iconbtn{width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center;
-        border-radius:50%; background:#fff; color:#222; box-shadow:0 1px 0 rgba(0,0,0,.08)}
-  .lang{background:#000; color:#fff; border-radius:999px; padding:7px 12px; font-weight:800}
-  /* 容器 */
-  .container{max-width:960px; margin:0 auto; padding:14px}
-  h1.title{font-size:28px; margin:16px 0 0; padding:0 6px}
-  /* 预览卡片 */
-  .card{
-    background:#fff; border-radius:18px; padding:16px; box-shadow:var(--shadow);
-    margin-top:12px;
-  }
-  .row{display:grid; grid-template-columns:60px 1fr 60px; gap:10px; align-items:center;}
-  .arrow{
-    width:60px; height:60px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;
-    border:2px solid #c6cbd2; color:#444
-  }
-  .arrow svg{width:28px; height:28px}
-  .bubble{
-    border-radius:14px; background:#fff; border:2px dashed #e2b400;
-    padding:12px 14px; color:#111; line-height:1.65; text-align:center; font-weight:700;
-  }
-  .pc-wrap{
-    background:#f1f4f8; border-radius:12px; padding:10px; margin-top:12px; position:relative;
-    border:1px solid #e5e9ef;
-  }
-  .pc{height:210px; border-radius:8px; background:#ecf1f6; border:1px solid #d8e0e8;
-      display:flex; align-items:center; justify-content:center; color:#9aa8b3; font-weight:700}
-  .down{position:absolute; right:12px; bottom:18px; width:48px; height:48px; border-radius:50%;
-        background:var(--accent); display:flex; align-items:center; justify-content:center;
-        color:#fff; box-shadow:0 6px 12px rgba(46,204,113,.35)}
-  .down svg{width:28px; height:28px}
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  img{max-width:100%;display:block}
+  .top{position:sticky;top:0;z-index:50;background:var(--brand);color:#000;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+  .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;max-width:960px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;line-height:1}
+  .brand img{width:28px;height:28px}
+  .actions{display:flex;align-items:center;gap:10px}
+  .pill{background:#000;color:#fff;border-radius:999px;padding:8px 12px;font-weight:700;font-size:14px;min-width:44px;text-align:center;}
+  .cart{position:relative;background:#fff;border-radius:999px;padding:8px;width:40px;height:40px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
+  .badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;font-size:11px;font-weight:800;border-radius:10px;line-height:1;padding:3px 6px;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .menu{width:40px;height:40px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);font-weight:800;}
+  .wrap{max-width:960px;margin:0 auto;padding:18px 16px 28px}
+  h1{font-size:26px;line-height:1.2;margin:10px 0 14px;text-align:center;}
+  .lead{background:var(--panel);padding:14px;border-radius:14px;color:#3b3b3b;text-align:center}
+  .stage{margin-top:14px;background:var(--card);border-radius:20px;padding:14px;box-shadow:var(--shadow);}
+  .hint-row{display:grid;grid-template-columns:64px 1fr 64px;gap:10px;align-items:center;margin-bottom:10px;}
+  .big-arrow{width:64px;height:64px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.12);border:1px solid rgba(0,0,0,.06);font-size:28px;font-weight:800;color:#555;user-select:none;}
+  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:12px 14px;text-align:center;font-size:16px;font-weight:700;}
+  .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06);}
+  .cardbox .postcard{width:100%;display:block}
+  .marker{position:absolute;right:12%;top:18%;transform:translate(50%,-50%);width:44px;height:44px;border-radius:999px;background:var(--accent);display:grid;place-items:center;color:#fff;font-size:20px;box-shadow:0 8px 18px rgba(22,163,74,.35)}
   /* 六个圆角标签 */
-  .chips{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:16px 0 8px}
-  .chip{background:#f0f2f4; padding:10px 14px; border-radius:999px; font-weight:800}
-  /* 灰/黄两个选项按钮 */
-  .seg{display:flex; gap:16px; justify-content:center; margin:8px 0 14px; flex-wrap:wrap}
-  .seg .btn{border:0; border-radius:999px; padding:16px 24px; font-size:18px; font-weight:900; min-width:240px}
-  .seg .btn.primary{background:var(--brand); color:#000}
-  .seg .btn.ghost{background:#eef1f4; color:#222}
-  /* Start 按钮 */
-  .start-wrap{display:flex; justify-content:center; margin:6px 0 8px}
-  .start{border:0; background:var(--brand); color:#000; padding:18px 30px; border-radius:16px; font-weight:900; font-size:22px; width:min(680px, 92vw)}
-  /* 页脚版本 */
-  footer{padding:18px 10px 26px; text-align:center; color:#6b7280; font-size:12px}
-  .version{margin-top:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0 2px}
+  .chip{background:#eef0f3;color:#222;border-radius:999px;padding:10px 14px;font-weight:800}
+  /* 两个选择按钮 + 大 Start */
+  .btns{display:flex;gap:14px;margin-top:14px}
+  .btn{flex:1;border:none;border-radius:999px;padding:16px 18px;font-weight:800;font-size:17px}
+  .btn.primary{background:var(--brand);box-shadow:0 8px 18px rgba(245,184,0,.35)}
+  .btn.primary:active{background:var(--brand-dk)}
+  .btn.ghost{background:#eef0f3;color:#222}
+  .start{display:block;width:100%;border:none;border-radius:14px;padding:18px 20px;margin-top:12px;background:var(--brand);font-weight:900;font-size:22px}
+  /* 页脚 */
+  .foot{color:#777;text-align:center;margin:16px 0 4px}
+  .ver{color:#999;text-align:center;margin:0}
 </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="logo">
-      <img alt="" src="" />
-      <div><div>Smart</div><div>Postcard</div></div>
+<header class="top">
+  <div class="bar">
+    <div class="brand">
+      <img src="smart_logo.webp" alt="Smart Postcard">
+      <span>Smart Postcard</span>
     </div>
-    <div class="topbar-spacer"></div>
-    <div class="iconbtn" aria-label="cart">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-        <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-      </svg>
+    <div class="actions">
+      <div class="cart"><span class="badge" id="cart-badge">0</span>🛒</div>
+      <div class="pill" id="lang-pill">中文</div>
+      <div class="menu">≡</div>
     </div>
-    <div class="lang">中文</div>
-    <div class="iconbtn" aria-label="menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 6h18M3 12h18M3 18h18"/>
-      </svg>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1 id="hero-title">创建您举世无双的纪念明信片</h1>
+  <div class="lead" id="lead">把你的照片做成邮票与明信片图案，世界首创，仅为你打印</div>
+
+  <section class="stage">
+    <div class="hint-row">
+      <button class="big-arrow" id="prev">◀</button>
+      <div class="info" id="hint">【明信片背面】：选择中/英文版式。</div>
+      <button class="big-arrow" id="next">▶</button>
     </div>
-  </header>
+    <div class="cardbox">
+      <img class="postcard" id="pc-img" src="postcard_cn.png?v=20007" alt="postcard sample">
+      <div class="marker">▾</div>
+    </div>
 
-  <main class="container">
-    <h1 class="title">创建您举世无双的纪念明信片</h1>
+    <!-- 六个圆角标签 -->
+    <div class="chips" id="chips">
+      <div class="chip">轻松制作</div>
+      <div class="chip">实体打印</div>
+      <div class="chip">纪念与集邮</div>
+      <div class="chip">全球寄送</div>
+      <div class="chip">A5 大尺寸</div>
+      <div class="chip">物超所值</div>
+    </div>
 
-    <section class="card">
-      <div class="row">
-        <div class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
-        </div>
+    <div class="btns">
+      <button class="btn primary" id="souvenir">纪念明信片</button>
+      <button class="btn ghost" id="traditional">传统明信片</button>
+    </div>
+    <button class="start">开始</button>
+  </section>
 
-        <div class="bubble">【地标章】：可自选或上传地标印章。</div>
+  <p class="foot">© Smart Postcard — mobile preview</p>
+  <p class="ver">Build v20007 • 2025-08-31</p>
+</main>
 
-        <div class="arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-      </div>
+<script>
+(function(){
+  const zh = {
+    title:'创建您举世无双的纪念明信片',
+    lead:'把你的照片做成邮票与明信片图案，世界首创，仅为你打印',
+    hints:[
+      '【明信片背面】：选择中/英文版式。',
+      '【邮票】：可自定义“邮票图案”。',
+      '【地标章】：可自选或上传地标印章。',
+      '【二维码】：扫码可听语音/看视频。'
+    ],
+    img:'postcard_cn.png?v=20007',
+    langPill:'中文',
+    chips:['轻松制作','实体打印','纪念与集邮','全球寄送','A5 大尺寸','物超所值']
+  };
+  const en = {
+    title:'Create your one-of-a-kind souvenir postcard',
+    lead:'Treasure your own photo to be stamp & postcard images offered first in the world & printed only for you',
+    hints:[
+      '[Backside]: choose Chinese/English layout.',
+      '[Stamp]: customize your stamp image.',
+      '[Monument seal]: select or upload.',
+      '[QR code]: scan to play audio/video.'
+    ],
+    img:'postcard_en.png?v=20007',
+    langPill:'EN',
+    chips:['Easily make','Physically print','Souvenir & Philately','Worldwide post','A5 big size','Value for money']
+  };
 
-      <div class="pc-wrap">
-        <div class="pc">（明信片预览占位图）</div>
-        <div class="down" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </div>
-      </div>
+  let lang='zh';
+  let idx=0;
+  const $=s=>document.querySelector(s);
+  const hero=$('#hero-title'),lead=$('#lead'),hint=$('#hint'),img=$('#pc-img'),langPill=$('#lang-pill'),chips=$('#chips');
 
-      <div class="chips">
-        <div class="chip">轻松制作</div>
-        <div class="chip">实体打印</div>
-        <div class="chip">纪念与集邮</div>
-        <div class="chip">全球寄送</div>
-        <div class="chip">A5 大尺寸</div>
-        <div class="chip">物超所值</div>
-      </div>
+  function renderChips(arr){
+    chips.innerHTML = arr.map(t=>`<div class="chip">${t}</div>`).join('');
+  }
+  function applyTexts(){
+    const d=lang==='zh'?zh:en;
+    hero.textContent=d.title;
+    lead.textContent=d.lead;
+    hint.textContent=d.hints[idx];
+    img.src=d.img;
+    langPill.textContent=d.langPill;
+    renderChips(d.chips);
+  }
+  applyTexts();
 
-      <div class="seg">
-        <button class="btn primary">纪念明信片</button>
-        <button class="btn ghost">传统明信片</button>
-      </div>
-
-      <div class="start-wrap">
-        <button class="start">开始</button>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div>© Smart Postcard — mobile preview</div>
-    <div class="version">Build v20007 · 2025-08-31</div>
-  </footer>
+  $('#prev').onclick=()=>{idx=(idx-1+4)%4;hint.textContent=(lang==='zh'?zh:en).hints[idx];};
+  $('#next').onclick=()=>{idx=(idx+1)%4;hint.textContent=(lang==='zh'?zh:en).hints[idx];};
+  langPill.onclick=()=>{lang=(lang==='zh'?'en':'zh');idx=0;applyTexts();};
+})();
+</script>
 </body>
 </html>
