@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — Mobile Preview</title>
+<title>Smart Postcard — 首页</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -14,59 +14,66 @@
   .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}
-  .brand svg{width:28px;height:28px}
-  .actions{display:flex;align-items:center;gap:10px}
+  .brand img{width:28px;height:28px;object-fit:contain;display:block}
+  .actions{display:flex;align-items:center;gap:10px;position:relative}
   .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .cart{position:relative}.badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;border-radius:10px;padding:2px 6px;font-size:11px;font-weight:800}
-  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);cursor:pointer}
   .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
   .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
+  .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
+  .dropdown.open{display:block}
+  .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
+  .dd-item.current{background:#f5f7fa}
+  .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
   .wrap{max-width:960px;margin:0 auto;padding:18px 16px 28px}
   h1{font-size:26px;line-height:1.2;margin:10px 0 6px;text-align:center}
   .stage{background:var(--card);border-radius:20px;padding:14px;box-shadow:var(--shadow)}
   .hint-row{display:grid;grid-template-columns:1fr minmax(0,1fr) 1fr;gap:10px;align-items:center;margin-bottom:10px}
-  .big-arrow{justify-self:end;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer}
-  .big-arrow.right{justify-self:start}
-  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:10px 12px;text-align:center;font-size:16px;font-weight:700}
+  .big-arrow{width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;cursor:pointer;background:#fff;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,.15)}
+  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:10px 12px;text-align:center;font-size:15px;font-weight:700}
   .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
   .cardbox img{width:100%;display:block}
   .marker{position:absolute;left:18%;top:6%;transform:translate(-50%,-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
-  .features{margin:14px 0 6px;text-align:center}
-  .features p{margin:6px 0;font-weight:700}
-  .btns{display:flex;gap:14px;margin-top:8px}
-  .btn{flex:1;border:none;border-radius:999px;padding:14px 16px;font-weight:800;font-size:17px}
-  .btn.primary{background:#F5B800;box-shadow:0 8px 18px rgba(245,184,0,.35)}
-  .start{display:block;width:100%;border:none;border-radius:14px;padding:16px 18px;margin-top:12px;background:#F5B800;font-weight:900;font-size:22px}
-  .foot{color:#777;text-align:center;margin:16px 0 4px}.ver{color:#999;text-align:center;margin:0}
+  .features{margin:12px 0 6px;text-align:center;font-size:14px}
+  .features p{margin:4px 0;font-weight:700}
+  .btns{display:flex;gap:10px;margin-top:8px}
+  .btn{flex:1;border:none;border-radius:12px;padding:10px 12px;font-weight:800;font-size:15px}
+  .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
+  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#F5B800;font-weight:900;font-size:18px}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
     <div class="brand">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="3" fill="#fff"/><path d="M6 10h8M6 14h12" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+      <img src="Logo.png" alt="Smart Postcard logo">
       <span>Smart Postcard</span>
     </div>
     <div class="actions">
       <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
-      <div class="langpill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
+      <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
+      <div class="dropdown" id="lang-dd">
+        <div class="dd-item current" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
+        <div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
+      </div>
       <div class="iconbtn" aria-label="menu"><span style="font-weight:900">≡</span></div>
     </div>
   </div>
 </header>
 
 <main class="wrap">
-  <h1>珍藏您举世无双的纪念明信片</h1>
+  <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
     <div class="hint-row">
       <div class="big-arrow" id="prev">◀</div>
       <div class="info" id="hint">选择中文/英文版式</div>
-      <div class="big-arrow right" id="next">▶</div>
+      <div class="big-arrow" id="next">▶</div>
     </div>
 
     <div class="cardbox">
-      <img id="pc-img" src="postcard_cn.png?v=20014" alt="postcard">
+      <img id="pc-img" src="postcard_cn.png?v=20016" alt="postcard">
       <div class="marker" id="marker"></div>
     </div>
 
@@ -74,6 +81,12 @@
       <p>操作简单 · 实体印刷 · 全球邮寄</p>
       <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
       <p>照片打印 · A5 大尺码 · 物超所值</p>
+      <p>高保真色彩 · 真实纸感 · 久藏如新</p>
+      <p>二维码绑定 · 旅途记忆 · 图文声像</p>
+      <p>坐标与时间 · 到访标注 · 一键生成</p>
+      <p>地标纪念章 · 城市剪影 · 文化识别</p>
+      <p>离线撰写 · 联网同步 · 云端安全</p>
+      <p>寄往全球 · 双轨并行 · 实体与数字</p>
     </section>
 
     <div class="btns">
@@ -82,9 +95,6 @@
     </div>
     <button class="start" id="start-btn">开始制作</button>
   </section>
-
-  <p class="foot">© Smart Postcard — mobile preview</p>
-  <p class="ver">Build v20014 • 2025-09-03</p>
 </main>
 
 <script>
@@ -94,16 +104,24 @@
   let idx=0;
   const hint=document.getElementById('hint');
   const marker=document.getElementById('marker');
-  function apply(){ hint.textContent=hints[idx]; marker.style.left=(positions[idx]||positions[0])+'%'; }
-  function slide(to){ const n=hints.length; idx=(to+n)%n; apply(); }
+  function apply(){hint.textContent=hints[idx];marker.style.left=(positions[idx]||positions[0])+'%';}
+  function slide(to){const n=hints.length;idx=(to+n)%n;apply();}
   document.getElementById('prev').onclick=()=>slide(idx-1);
   document.getElementById('next').onclick=()=>slide(idx+1);
-  // swipe on hint
   (function(){const box=hint;let sx=0,ex=0,sy=0,ey=0;
     box.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
     box.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
     box.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy)){slide(idx+(dx<0?1:-1));}});
   })();
+  const pill=document.getElementById('lang-pill'),dd=document.getElementById('lang-dd');
+  pill.addEventListener('click',()=>dd.classList.toggle('open'));
+  dd.querySelectorAll('.dd-item').forEach(it=>{
+    it.addEventListener('click',()=>{
+      dd.querySelectorAll('.dd-item').forEach(n=>n.classList.remove('current'));
+      it.classList.add('current');
+      dd.classList.remove('open');
+    });
+  });
   apply();
 })();
 </script>
