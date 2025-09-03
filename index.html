@@ -5,11 +5,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Smart Postcard — Mobile Preview</title>
 <style>
-  body{margin:0;font-family:system-ui}
+  body{margin:0;font-family:system-ui;background:#fff;color:#222;}
+  header{background:#F5B800;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;}
+  .brand img{height:28px;}
+  .actions{display:flex;align-items:center;gap:12px;}
+  .cart{position:relative;width:32px;height:32px;display:grid;place-items:center;background:#fff;border-radius:50%;}
+  .badge{position:absolute;top:-4px;right:-4px;background:red;color:#fff;font-size:11px;border-radius:10px;padding:2px 4px;}
+  .lang{display:flex;align-items:center;gap:4px;background:#fff;padding:4px 8px;border-radius:20px;cursor:pointer;}
+  .menu{width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:800;}
+  main{padding:16px;text-align:center;}
+  h1{font-size:24px;margin:16px 0;}
+  .lead{margin:8px 0 20px;font-size:16px;color:#444;}
+  .stage{background:#fff;border:1px solid #eee;border-radius:16px;padding:12px;margin:0 auto;max-width:400px;}
+  .hint-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .big-arrow{font-size:28px;background:#fff;border:none;cursor:pointer;}
+  .info{flex:1;margin:0 8px;padding:8px;background:#fff8d9;border:2px dashed #e4c23a;border-radius:8px;font-size:15px;}
+  .cardbox img{width:100%;border-radius:12px;}
+  .marker{margin-top:4px;font-size:20px;color:green;}
+  .features{margin:16px 0;font-size:15px;line-height:1.6;}
+  .features span{margin:0 4px;}
+  .btns{display:flex;gap:10px;justify-content:center;margin-top:10px;}
+  .btn{flex:1;padding:12px;border:none;border-radius:20px;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn.primary{background:#F5B800;}
+  footer{margin-top:20px;font-size:12px;color:#555;}
 </style>
 </head>
 <body>
-  <h1>Smart Postcard v20011</h1>
+<header>
+  <div class="brand"><img src="smart_logo.webp" alt="logo"><span>Smart Postcard</span></div>
+  <div class="actions">
+    <div class="cart">🛒<span class="badge">0</span></div>
+    <div class="lang"><img src="flag_cn.png" alt="CN" style="height:14px;">中文 ▼</div>
+    <div class="menu">≡</div>
+  </div>
+</header>
+<main>
+  <h1>珍藏您举世无双的纪念明信片</h1>
+  <div class="lead">把你的照片做成邮票与明信片图案，世界首创，仅为你打印</div>
+  <section class="stage">
+    <div class="hint-row">
+      <button class="big-arrow">◀</button>
+      <div class="info">选择中文/英文版式</div>
+      <button class="big-arrow">▶</button>
+    </div>
+    <div class="cardbox">
+      <img src="postcard_cn.png" alt="postcard">
+    </div>
+    <div class="marker">▲</div>
+  </section>
+  <div class="features">
+    操作简单<span>·</span>实体印刷<span>·</span>全球邮寄<br>
+    旅游纪念<span>·</span>集邮佳品<span>·</span>珍贵收藏<br>
+    照片打印<span>·</span>A5大尺寸<span>·</span>物超所值<br>
+    高保真色彩<span>·</span>真实纸感<span>·</span>久藏如新<br>
+    二维码绑定<span>·</span>旅途记忆<span>·</span>图文声像<br>
+    坐标与时间<span>·</span>到访标注<span>·</span>一键生成<br>
+    地标纪念章<span>·</span>城市剪影<span>·</span>文化识别<br>
+    离线撰写<span>·</span>联网同步<span>·</span>云端安全<br>
+    寄往全球<span>·</span>双轨并行<span>·</span>实体与数字
+  </div>
+  <div class="btns">
+    <button class="btn primary">纪念明信片</button>
+    <button class="btn">传统明信片</button>
+  </div>
+  <button class="btn primary" style="margin-top:10px">开始制作</button>
+</main>
+<footer>
+  <p>© Smart Postcard — mobile preview</p>
   <p>Build v20011 • 2025-09-03</p>
+</footer>
 </body>
 </html>
