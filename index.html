@@ -17,41 +17,47 @@
     --accent:#16a34a;
     --card:#ffffff;
     --shadow:0 10px 30px rgba(0,0,0,.08);
-    --radius:18px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
   img{max-width:100%;display:block}
   .top{position:sticky;top:0;z-index:50;background:var(--brand);color:#000;box-shadow:0 2px 12px rgba(0,0,0,.08);}
-  .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;max-width:960px;margin:0 auto;}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;line-height:1}
-  .brand img{width:28px;height:28px}
-  .actions{display:flex;align-items:center;gap:10px}
-  .pill{background:#000;color:#fff;border-radius:999px;padding:8px 12px;font-weight:700;font-size:14px;min-width:44px;text-align:center;}
-  .cart{position:relative;background:#fff;border-radius:999px;padding:8px;width:40px;height:40px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
-  .badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;font-size:11px;font-weight:800;border-radius:10px;line-height:1;padding:3px 6px;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-  .menu{width:40px;height:40px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);font-weight:800;}
+  .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;max-width:1000px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:22px;line-height:1}
+  .brand img{width:30px;height:30px;border-radius:4px;background:#fff}
+  .actions{display:flex;align-items:center;gap:10px;position:relative}
+  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
+  .iconbtn svg{width:22px;height:22px}
+  .cart svg{stroke:#16a34a}
+  .menu svg{stroke:#2563eb}
+  .langpill{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#000;color:#fff;font-weight:800;cursor:pointer;user-select:none}
+  .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+  .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #fff}
+  .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.06); box-shadow:0 12px 28px rgba(0,0,0,.16); overflow:hidden; display:none; min-width:160px}
+  .dropdown.open{display:block}
+  .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
+  .dd-item:hover{background:#f5f7fa}
+  .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
   .wrap{max-width:960px;margin:0 auto;padding:18px 16px 28px}
-  h1{font-size:26px;line-height:1.2;margin:10px 0 14px;text-align:center;}
-  .lead{background:var(--panel);padding:14px;border-radius:14px;color:#3b3b3b;text-align:center}
+  h1#hero-title{font-size:26px;line-height:1.2;margin:10px 0 14px;text-align:center;}
   .stage{margin-top:14px;background:var(--card);border-radius:20px;padding:14px;box-shadow:var(--shadow);}
-  .hint-row{display:grid;grid-template-columns:64px 1fr 64px;gap:10px;align-items:center;margin-bottom:10px;}
-  .big-arrow{width:64px;height:64px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.12);border:1px solid rgba(0,0,0,.06);font-size:28px;font-weight:800;color:#555;user-select:none;}
-  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:12px 14px;text-align:center;font-size:16px;font-weight:700;}
+  .hint-row{display:grid; grid-template-columns:1fr minmax(0,1fr) 1fr; gap:10px; align-items:center; margin-bottom:10px;}
+  .big-arrow{justify-self:end; width:44px;height:44px; display:flex;align-items:center;justify-content:center; color:#555; font-weight:800; user-select:none; cursor:pointer}
+  .big-arrow.right{justify-self:start}
+  .big-arrow svg{width:36px;height:36px}
+  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:12px 14px;text-align:center;font-size:16px;font-weight:700; overflow:hidden; position:relative}
+  .info-inner{transition: transform .35s ease, opacity .35s ease; white-space:pre-line; word-break:break-word}
   .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06);}
   .cardbox .postcard{width:100%;display:block}
-  .marker{position:absolute;right:12%;top:18%;transform:translate(50%,-50%);width:44px;height:44px;border-radius:999px;background:var(--accent);display:grid;place-items:center;color:#fff;font-size:20px;box-shadow:0 8px 18px rgba(22,163,74,.35)}
-  /* 六个圆角标签 */
-  .chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0 2px}
-  .chip{background:#eef0f3;color:#222;border-radius:999px;padding:10px 14px;font-weight:800}
-  /* 两个选择按钮 + 大 Start */
+  .marker{position:absolute; left:12%; top:6%; transform:translate(-50%,-50%); width:0;height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:16px solid var(--accent); filter:drop-shadow(0 4px 6px rgba(22,163,74,.35)); transition:left .35s ease}
   .btns{display:flex;gap:14px;margin-top:14px}
   .btn{flex:1;border:none;border-radius:999px;padding:16px 18px;font-weight:800;font-size:17px}
   .btn.primary{background:var(--brand);box-shadow:0 8px 18px rgba(245,184,0,.35)}
   .btn.primary:active{background:var(--brand-dk)}
   .btn.ghost{background:#eef0f3;color:#222}
   .start{display:block;width:100%;border:none;border-radius:14px;padding:18px 20px;margin-top:12px;background:var(--brand);font-weight:900;font-size:22px}
-  /* 页脚 */
+  .features{margin:16px 0 4px; text-align:center; color:#222}
+  .features p{margin:6px 0; font-weight:700}
   .foot{color:#777;text-align:center;margin:16px 0 4px}
   .ver{color:#999;text-align:center;margin:0}
 </style>
@@ -64,100 +70,185 @@
       <span>Smart Postcard</span>
     </div>
     <div class="actions">
-      <div class="cart"><span class="badge" id="cart-badge">0</span>🛒</div>
-      <div class="pill" id="lang-pill">中文</div>
-      <div class="menu">≡</div>
+      <div class="iconbtn cart" aria-label="cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 12.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+      </div>
+      <div class="langpill" id="lang-pill">
+        <span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span>
+        <span id="lang-text">中文</span>
+        <span class="caret"></span>
+      </div>
+      <div class="dropdown" id="lang-dd">
+        <div class="dd-item" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
+        <div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
+      </div>
+      <div class="iconbtn menu" aria-label="menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="wrap">
-  <h1 id="hero-title">创建您举世无双的纪念明信片</h1>
-  <div class="lead" id="lead">把你的照片做成邮票与明信片图案，世界首创，仅为你打印</div>
+  <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
     <div class="hint-row">
-      <button class="big-arrow" id="prev">◀</button>
-      <div class="info" id="hint">【明信片背面】：选择中/英文版式。</div>
-      <button class="big-arrow" id="next">▶</button>
-    </div>
-    <div class="cardbox">
-      <img class="postcard" id="pc-img" src="postcard_cn.png?v=20007" alt="postcard sample">
-      <div class="marker">▾</div>
+      <div class="big-arrow" id="prev" aria-label="prev">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+      </div>
+
+      <div class="info">
+        <div class="info-inner" id="hint">选择中文版/英文版式
+自定义邮票图案
+自选或上传地标印章
+扫码可看图文声像</div>
+      </div>
+
+      <div class="big-arrow right" id="next" aria-label="next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      </div>
     </div>
 
-    <!-- 六个圆角标签 -->
-    <div class="chips" id="chips">
-      <div class="chip">轻松制作</div>
-      <div class="chip">实体打印</div>
-      <div class="chip">纪念与集邮</div>
-      <div class="chip">全球寄送</div>
-      <div class="chip">A5 大尺寸</div>
-      <div class="chip">物超所值</div>
+    <div class="cardbox">
+      <img class="postcard" id="pc-img" src="postcard_cn.png?v20010" alt="postcard sample">
+      <div class="marker" id="marker"></div>
     </div>
 
     <div class="btns">
       <button class="btn primary" id="souvenir">纪念明信片</button>
       <button class="btn ghost" id="traditional">传统明信片</button>
     </div>
-    <button class="start">开始</button>
+    <button class="start" id="start-btn">开始制作</button>
+  </section>
+
+  <section class="features" id="features">
+    <p>操作简单 · 实体印刷 · 全球邮寄</p>
+    <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
+    <p>照片打印 · A5 大尺码 · 物超所值</p>
+    <p>高保真色彩 · 真实纸感 · 久藏如新</p>
+    <p>二维码绑定 · 旅途记忆 · 图文声像</p>
+    <p>坐标与时间 · 到访标注 · 一键生成</p>
+    <p>地标纪念章 · 城市剪影 · 文化识别</p>
+    <p>离线撰写 · 联网同步 · 云端安全</p>
+    <p>寄往全球 · 双轨并行 · 实体与数字</p>
   </section>
 
   <p class="foot">© Smart Postcard — mobile preview</p>
-  <p class="ver">Build v20007 • 2025-08-31</p>
+  <p class="ver">Build v20010 • 2025-09-03</p>
 </main>
 
 <script>
 (function(){
-  const zh = {
-    title:'创建您举世无双的纪念明信片',
-    lead:'把你的照片做成邮票与明信片图案，世界首创，仅为你打印',
-    hints:[
-      '【明信片背面】：选择中/英文版式。',
-      '【邮票】：可自定义“邮票图案”。',
-      '【地标章】：可自选或上传地标印章。',
-      '【二维码】：扫码可听语音/看视频。'
-    ],
-    img:'postcard_cn.png?v=20007',
-    langPill:'中文',
-    chips:['轻松制作','实体打印','纪念与集邮','全球寄送','A5 大尺寸','物超所值']
-  };
-  const en = {
-    title:'Create your one-of-a-kind souvenir postcard',
-    lead:'Treasure your own photo to be stamp & postcard images offered first in the world & printed only for you',
-    hints:[
-      '[Backside]: choose Chinese/English layout.',
-      '[Stamp]: customize your stamp image.',
-      '[Monument seal]: select or upload.',
-      '[QR code]: scan to play audio/video.'
-    ],
-    img:'postcard_en.png?v=20007',
-    langPill:'EN',
-    chips:['Easily make','Physically print','Souvenir & Philately','Worldwide post','A5 big size','Value for money']
+  const data = {
+    zh: {
+      title: "珍藏您举世无双的纪念明信片",
+      hints: ["选择中文版/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"],
+      feats: ["操作简单 · 实体印刷 · 全球邮寄","旅游纪念 · 集邮佳品 · 珍贵收藏","照片打印 · A5 大尺码 · 物超所值","高保真色彩 · 真实纸感 · 久藏如新","二维码绑定 · 旅途记忆 · 图文声像","坐标与时间 · 到访标注 · 一键生成","地标纪念章 · 城市剪影 · 文化识别","离线撰写 · 联网同步 · 云端安全","寄往全球 · 双轨并行 · 实体与数字"],
+      img: "postcard_cn.png?v20010",
+      start: "开始制作",
+      langText: "中文",
+      flagCSS: "linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%)"
+    },
+    en: {
+      title: "Treasure your one-of-a-kind souvenir postcard",
+      hints: ["Choose Chinese/English layout","Customize stamp image","Select or upload monument seal","Scan to view media"],
+      feats: ["Easy to make · Physically printed · Worldwide post","Souvenir · Philately · Precious collection","Photo print · A5 big size · Value for money","True-to-color · Real paper feel · Long-lasting","QR bound · Trip memories · Media ready","Coordinates & time · Visit tagged · One-tap","Monument seal · City silhouette · Cultural ID","Offline writing · Sync on connect · Cloud safe","Ship worldwide · Dual-track · Physical & digital"],
+      img: "postcard_en.png?v20010",
+      start: "Get Started",
+      langText: "English",
+      flagCSS: "linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%)"
+    }
   };
 
-  let lang='zh';
-  let idx=0;
-  const $=s=>document.querySelector(s);
-  const hero=$('#hero-title'),lead=$('#lead'),hint=$('#hint'),img=$('#pc-img'),langPill=$('#lang-pill'),chips=$('#chips');
+  const positions = [12,32,56,80];
 
-  function renderChips(arr){
-    chips.innerHTML = arr.map(t=>`<div class="chip">${t}</div>`).join('');
+  let lang = 'zh';
+  let idx = 0;
+  const $ = s => document.querySelector(s);
+  const hero = $('#hero-title'), hint = $('#hint'), img = $('#pc-img');
+  const features = $('#features'), marker = $('#marker');
+  const startBtn = $('#start-btn');
+  const pill = $('#lang-pill'), dd = $('#lang-dd'), langText = $('#lang-text'), flag = $('#flag');
+
+  function renderFeatures(lines){
+    features.innerHTML = lines.map(t => `<p>${t}</p>`).join('');
   }
+
   function applyTexts(){
-    const d=lang==='zh'?zh:en;
-    hero.textContent=d.title;
-    lead.textContent=d.lead;
-    hint.textContent=d.hints[idx];
-    img.src=d.img;
-    langPill.textContent=d.langPill;
-    renderChips(d.chips);
+    const d = data[lang];
+    hero.textContent = d.title;
+    hint.textContent = d.hints[idx];
+    img.src = d.img;
+    startBtn.textContent = d.start;
+    langText.textContent = d.langText;
+    flag.style.background = d.flagCSS;
+    renderFeatures(d.feats);
+    marker.style.left = (positions[idx]||positions[0]) + '%';
   }
-  applyTexts();
 
-  $('#prev').onclick=()=>{idx=(idx-1+4)%4;hint.textContent=(lang==='zh'?zh:en).hints[idx];};
-  $('#next').onclick=()=>{idx=(idx+1)%4;hint.textContent=(lang==='zh'?zh:en).hints[idx];};
-  langPill.onclick=()=>{lang=(lang==='zh'?'en':'zh');idx=0;applyTexts();};
+  function slide(nextIdx, dir){
+    const inner = hint;
+    inner.style.transition = 'transform .35s ease, opacity .35s ease';
+    inner.style.transform = `translateX(${dir>0? -20: 20}px)`;
+    inner.style.opacity = 0.1;
+    setTimeout(()=>{
+      idx = nextIdx;
+      const d = data[lang];
+      inner.textContent = d.hints[idx];
+      marker.style.left = (positions[idx]||positions[0]) + '%';
+      inner.style.transform = `translateX(${dir>0? 20: -20}px)`;
+      setTimeout(()=>{
+        inner.style.transform = 'translateX(0)';
+        inner.style.opacity = 1;
+      }, 20);
+    }, 180);
+  }
+
+  $('#prev').onclick = () => {
+    const d = data[lang]; const n = d.hints.length;
+    slide((idx-1+n)%n, -1);
+  };
+  $('#next').onclick = () => {
+    const d = data[lang]; const n = d.hints.length;
+    slide((idx+1)%n, 1);
+  };
+
+  (function(){
+    const box = document.querySelector('.info');
+    let sx=0, sy=0, ex=0, ey=0;
+    box.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
+    box.addEventListener('touchmove', e=>{ ex=e.touches[0].clientX; ey=e.touches[0].clientY; }, {passive:true});
+    box.addEventListener('touchend', ()=>{
+      const dx = ex - sx, dy = ey - sy;
+      if (Math.abs(dx)>30 && Math.abs(dx)>Math.abs(dy)){
+        const d = data[lang]; const n = d.hints.length;
+        if (dx < 0) slide((idx+1)%n, 1); else slide((idx-1+n)%n, -1);
+      }
+    });
+  })();
+
+  const langPill = document.getElementById('lang-pill');
+  const dd = document.getElementById('lang-dd');
+  langPill.addEventListener('click', ()=> dd.classList.toggle('open'));
+  dd.querySelectorAll('.dd-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      lang = item.getAttribute('data-lang');
+      dd.classList.remove('open');
+      idx = 0;
+      applyTexts();
+    });
+  });
+  document.addEventListener('click', (e)=>{
+    if (!dd.contains(e.target) && !langPill.contains(e.target)) dd.classList.remove('open');
+  });
+
+  applyTexts();
 })();
 </script>
 </body>
