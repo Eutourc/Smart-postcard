@@ -8,59 +8,78 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
-  :root{--brand:#F5B800;--brand-dk:#e0a700;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--accent:#16a34a}
+  :root{
+    --brand:#F5B800;
+    --brand-dk:#e0a700;
+    --ink:#222;
+    --muted:#666;
+    --panel:#fff8d9;
+    --accent:#16a34a;
+    --card:#ffffff;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+    --radius:18px;
+  }
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  body{min-height:100svh;display:flex;flex-direction:column}
   img{max-width:100%;display:block}
-  .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
-  .bar{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}
+  .top{position:sticky;top:0;z-index:50;background:var(--brand);color:#000;box-shadow:0 2px 12px rgba(0,0,0,.08);}
+  .top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;max-width:980px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:22px;}
   .brand img{width:64px;height:64px;object-fit:contain}
-  .actions{display:flex;align-items:center;gap:8px;position:relative}
-  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .cart{position:relative}.badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;border-radius:10px;padding:2px 6px;font-size:11px;font-weight:800}
+  .actions{display:flex;align-items:center;gap:10px}
+  .pill{background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;font-size:14px;min-width:44px;text-align:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);display:flex;align-items:center;gap:8px}
+  .cart{position:relative;background:#fff;border-radius:999px;padding:8px;width:40px;height:40px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
+  .badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;font-size:11px;font-weight:800;border-radius:10px;line-height:1;padding:3px 6px;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .menu{width:40px;height:40px;border-radius:999px;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);font-weight:800;}
+
+  .wrap{max-width:980px;margin:0 auto;padding:18px 16px 28px;flex:1}
+  h1{font-size:26px;line-height:1.2;margin:12px 0 16px;text-align:center;}
+
+  .stage{margin-top:6px;background:var(--card);border-radius:20px;padding:16px;box-shadow:var(--shadow);position:relative}
+  .hint-row{display:grid;grid-template-columns:56px 1fr 56px;gap:8px;align-items:center;margin-bottom:10px;position:relative}
+  .big-arrow{width:56px;height:56px;border-radius:14px;background:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.12);border:1px solid rgba(0,0,0,.06);font-size:26px;font-weight:800;color:#555;user-select:none;cursor:pointer}
+  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:12px 14px;text-align:center;font-size:16px;font-weight:800;min-height:48px}
+  .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06);margin-top:6px}
+  .cardbox .postcard{width:100%;display:block}
+  /* small moving marker */
+  .marker{position:absolute;top:6%;width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);filter:drop-shadow(0 6px 12px rgba(22,163,74,.35));transform:translateX(-50%);}
+
+  .features{margin:14px 0 8px;text-align:center;font-size:14px}
+  .features p{margin:6px 0 0;font-weight:800}
+  .btns{display:flex;gap:14px;margin-top:10px}
+  .btn{flex:1;border:none;border-radius:999px;padding:16px 18px;font-weight:800;font-size:17px}
+  .btn.primary{background:var(--brand);box-shadow:0 8px 18px rgba(245,184,0,.35)}
+  .btn.primary:active{background:var(--brand-dk)}
+  .btn.ghost{background:#eef0f3;color:#222}
+  .start{display:block;width:100%;border:none;border-radius:999px;padding:16px 18px;margin-top:12px;background:var(--brand);font-weight:900;font-size:18px;box-shadow:0 8px 18px rgba(245,184,0,.35)}
+
+  /* language dropdown */
   .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);cursor:pointer}
   .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
   .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
-
-  main.wrap{max-width:960px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:14px 16px 12px}
-  h1{font-size:24px;line-height:1.18;margin:8px 0 8px;text-align:center}
-  .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow);margin-top:8px}
-
-  .hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:12px 16px;text-align:center;
-        font-size:15px;font-weight:800;line-height:1.4;max-width:92%;width:min(760px,92%);margin:0 auto}
-
-  .viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
-  .cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
-  .cardbox img{width:100%;height:100%;object-fit:contain}
-  .marker{position:absolute;top:-8px;left:78%;transform:translate(-50%,-100%);width:0;height:0;
-          border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
-          filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
-  .nav{position:absolute;top:-34px;left:0;right:0;display:flex;justify-content:space-between;padding:0 8px;pointer-events:none;z-index:20}
-  .nav button{pointer-events:auto;background:transparent;border:none;font-size:32px;line-height:1;font-weight:900;color:#222;cursor:pointer}
-
-  .features{margin:10px 0 6px;text-align:center;font-size:13px;line-height:1.28}
-  .features p{margin:3px 0;font-weight:800}
-
-  .btns{display:flex;gap:10px;margin-top:6px}
-  .btn{flex:1;border:none;border-radius:12px;padding:10px 12px;font-weight:800;font-size:15px}
-  .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
-  .btn.primary:active{background:var(--brand-dk)}
-  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
-    font-weight:900;font-size:18px;box-shadow:0 4px 8px rgba(245,184,0,.35)}
+  .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
+  .dropdown.open{display:block}
+  .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
+  .dd-item.current{background:#f5f7fa}
+  .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
     <div class="brand">
-      <img src="Logo.png?v=20028" alt="Smart Postcard logo">
-      <span>Smart Postcard</span>
+      <img src="Logo.png" alt="Smart Postcard">
+      <span>Smart&nbsp;Postcard</span>
     </div>
     <div class="actions">
-      <div class="iconbtn cart" aria-label="cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
+      <div class="cart"><span class="badge" id="cart-badge">0</span>🛒</div>
       <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
-      <div class="iconbtn" aria-label="menu"><span style="font-weight:900">≡</span></div>
+      <div class="dropdown" id="lang-dd">
+        <div class="dd-item current" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
+        <div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
+      </div>
+      <div class="menu" aria-label="menu">≡</div>
     </div>
   </div>
 </header>
@@ -69,14 +88,15 @@
   <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
-    <div class="hint" id="hint">选择中文/英文版式</div>
+    <div class="hint-row">
+      <div class="big-arrow" id="prev">◀</div>
+      <div class="info" id="hint">选择中文/英文版式</div>
+      <div class="big-arrow" id="next">▶</div>
+    </div>
 
-    <div class="viewer">
-      <div class="cardbox">
-        <img id="pc-img" src="postcard_cn.png?v=20028" alt="postcard">
-        <div class="marker" id="marker"></div>
-        <div class="nav"><button id="prev">◀</button><button id="next">▶</button></div>
-      </div>
+    <div class="cardbox">
+      <img class="postcard" id="pc-img" src="postcard_cn.png?v=20030" alt="postcard sample">
+      <div class="marker" id="marker" style="left:18%"></div>
     </div>
 
     <section class="features" id="features">
@@ -87,7 +107,7 @@
 
     <div class="btns">
       <button class="btn primary">纪念明信片</button>
-      <button class="btn">传统明信片</button>
+      <button class="btn ghost">传统明信片</button>
     </div>
     <button class="start" id="start-btn">开始制作</button>
   </section>
@@ -95,25 +115,73 @@
 
 <script>
 (function(){
-  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[78,66,42,18]; // 从右到左
-  let i=0;
-  const hintEl=document.getElementById('hint');
-  const marker=document.getElementById('marker');
-  function apply(){ hintEl.textContent=hints[i]; marker.style.left=positions[i]+'%'; }
-  function step(d){ i=(i+d+hints.length)%hints.length; apply(); }
-  document.getElementById('prev').onclick=()=>step(-1);
-  document.getElementById('next').onclick=()=>step(+1);
+  // data
+  const hintsZH = ["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
+  const hintsEN = ["Choose Chinese/English layout","Customize stamp image","Select or upload monument seal","Scan to view media"];
+  const positions = [18, 42, 66, 84]; // marker left% positions across postcard top
 
-  // 说明框左右滑动也能切换
-  let sx=0,sy=0;
-  hintEl.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-  hintEl.addEventListener('touchend',e=>{
-    const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
-    if(Math.abs(dx)>30 && Math.abs(dx)>Math.abs(dy)) step(dx<0?1:-1);
-  },{passive:true});
+  let lang='zh';
+  let idx=0;
+  const $ = s => document.querySelector(s);
+  const hero = $('#hero-title');
+  const hint = $('#hint');
+  const img = $('#pc-img');
+  const marker = $('#marker');
+  const langPill = $('#lang-pill');
+  const dd = $('#lang-dd');
 
-  apply();
+  function applyTexts(){
+    if(lang==='zh'){
+      hero.textContent = '珍藏您举世无双的纪念明信片';
+      hint.textContent = hintsZH[idx];
+      img.src = 'postcard_cn.png?v=20030';
+      $('#flag').style.background = 'linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%)';
+    }else{
+      hero.textContent = 'Create your one‑of‑a‑kind souvenir postcard';
+      hint.textContent = hintsEN[idx];
+      img.src = 'postcard_en.png?v=20030';
+      $('#flag').style.background = 'linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%)';
+    }
+    marker.style.left = (positions[idx] || positions[0]) + '%';
+  }
+  function slide(to){
+    const n = positions.length;
+    idx = (to + n) % n;
+    applyTexts();
+  }
+
+  // click arrows
+  $('#prev').addEventListener('click', ()=> slide(idx-1));
+  $('#next').addEventListener('click', ()=> slide(idx+1));
+
+  // swipe on hint bar
+  (function(){
+    const box = hint;
+    let sx=0, sy=0, ex=0, ey=0;
+    box.addEventListener('touchstart', e=>{sx=e.touches[0].clientX; sy=e.touches[0].clientY;},{passive:true});
+    box.addEventListener('touchmove', e=>{ex=e.touches[0].clientX; ey=e.touches[0].clientY;},{passive:true});
+    box.addEventListener('touchend', ()=>{
+      const dx = ex - sx, dy = ey - sy;
+      if(Math.abs(dx)>30 && Math.abs(dx)>Math.abs(dy)){
+        slide(idx + (dx<0?1:-1));
+      }
+    });
+  })();
+
+  // language dropdown
+  langPill.addEventListener('click', ()=> dd.classList.toggle('open'));
+  dd.querySelectorAll('.dd-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      dd.querySelectorAll('.dd-item').forEach(n=>n.classList.remove('current'));
+      item.classList.add('current');
+      lang = item.dataset.lang;
+      dd.classList.remove('open');
+      applyTexts();
+    });
+  });
+
+  // init
+  applyTexts();
 })();
 </script>
 </body>
