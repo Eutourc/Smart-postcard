@@ -41,6 +41,9 @@
   .btn{flex:1;border:none;border-radius:12px;padding:10px 12px;font-weight:800;font-size:15px}
   .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#F5B800;font-weight:900;font-size:18px}
+/* 统一隐藏所有左右箭头，并把说明行改为单列 */
+.hint-row .big-arrow, .arrow-large{display:none !important;}
+.hint-row{grid-template-columns:1fr !important; margin-bottom:8px !important;}
 </style>
 </head>
 <body>
