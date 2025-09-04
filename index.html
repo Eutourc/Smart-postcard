@@ -82,6 +82,27 @@
   .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
     font-weight:900;font-size:18px}
+/* 横幅“Smart / Postcard”做成艺术字（首字母大写） */
+.brandword .l1,
+.brandword .l2{
+  font-weight: 900;
+  font-size: 19px;              /* 如偏大/小，可在 18–20 之间微调 */
+  letter-spacing: .6px;
+  text-transform: capitalize;   /* 首字母大写 */
+  background: linear-gradient(180deg,#41d1ff 0%, #2aa7ff 55%, #0a67ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 3px 10px rgba(0,0,0,.18);
+}
+
+/* 右侧“三”图标放大并视觉居中 */
+.iconbtn[aria-label="menu"]{ width:44px; height:44px; }  /* 原40×40可留用也行 */
+.iconbtn[aria-label="menu"] span{
+  font-size:24px;
+  line-height:1;
+  transform: translateY(-1px);
+}
 </style>
 </head>
 <body>
