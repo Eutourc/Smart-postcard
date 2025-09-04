@@ -97,6 +97,32 @@
 
 /* 大标题稍微下移，提升版心平衡 */
 h1{ margin-top:14px; }
+/* 顶部品牌词：更像艺术字 */
+.brandword .l1,
+.brandword .l2{
+  font-family: "DIN Alternate","Avenir Next Condensed","SF Pro Display",
+               "PingFang SC","HarmonyOS Sans SC","MiSans",system-ui,sans-serif;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg,#22c55e,#0ea5e9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;                    /* 渐变填充 */
+  -webkit-text-stroke: .6px rgba(0,0,0,.10); /* 细描边，层次更好 */
+  text-shadow: 0 1px 0 rgba(255,255,255,.45),
+               0 2px 6px rgba(0,0,0,.18);    /* 轻浮雕 */
+  line-height: 1.02;
+}
+.brandword .l1{ font-size: 20px; }
+.brandword .l2{ font-size: 20px; margin-top: 2px; }
+/* 圆形按钮略大，≡ 图标更醒目 */
+.iconbtn{ width: 44px; height: 44px; } /* 原来是 40×40 */
+.iconbtn[aria-label="menu"] span{
+  font-size: 24px;      /* 放大三道杠 */
+  line-height: 1;
+  transform: translateY(-1px); /* 轻微上调，视觉居中 */
+}
 </style>
 </head>
 <body>
