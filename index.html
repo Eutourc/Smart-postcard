@@ -11,6 +11,8 @@
   :root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--accent:#16a34a}
   *{box-sizing:border-box}
   html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+
+  /* 顶部 */
   .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}
@@ -26,24 +28,44 @@
   .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
   .dd-item.current{background:#f5f7fa}
   .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-  .wrap{max-width:960px;margin:0 auto;padding:18px 16px 28px}
-  h1{font-size:22px;line-height:1.3;margin:10px 0 6px;text-align:center}
-  .stage{background:var(--card);border-radius:20px;padding:14px;box-shadow:var(--shadow)}
-  .hint-row{display:grid;grid-template-columns:1fr minmax(0,1fr) 1fr;gap:10px;align-items:center;margin-bottom:10px}
-  .big-arrow{width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;cursor:pointer;background:#fff;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,.15)}
-  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:10px 12px;text-align:center;font-size:15px;font-weight:700}
-  .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
-  .cardbox img{width:100%;display:block}
-  .marker{position:absolute;left:18%;top:6%;transform:translate(-50%,-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
-  .features{margin:12px 0 6px;text-align:center;font-size:12px；line-height: 1.3}
-  .features p{margin:2px 0;font-weight:700}
+
+  /* 主体 */
+  .wrap{max-width:960px;margin:0 auto;padding:14px 16px 24px}
+  h1{font-size:22px;line-height:1.25;margin:8px 0 12px;text-align:center}
+
+  .stage{background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
+  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:8px 10px;text-align:center;font-size:13px;font-weight:700;max-width:92%;margin:0 auto 10px}
+
+  /* 明信片 + 外侧大箭头 */
+  .viewer{position:relative;max-width:680px;margin:0 auto}
+  .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06);width:88%;margin:0 auto}
+  .cardbox img{width:100%;display:block;border-radius:12px}
+  /* 小箭头（绿三角） */
+  .marker{position:absolute;left:18%;top:5%;transform:translate(-50%,-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
+  /* 外侧大箭头按钮 */
+  .arrow-large{position:absolute;top:50%;transform:translateY(-50%);width:60px;height:60px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;border:1px solid rgba(0,0,0,.06)}
+  .arrow-large.left{left:calc(6% - 70px)}
+  .arrow-large.right{right:calc(6% - 70px)}
+
+  /* 特色九段（保持紧凑） */
+  .features{margin:12px 0 6px;text-align:center;font-size:14px;line-height:1.35;letter-spacing:.01em}
+  .features p{margin:4px 0;font-weight:700}
+
   .btns{display:flex;gap:10px;margin-top:8px}
   .btn{flex:1;border:none;border-radius:12px;padding:10px 12px;font-weight:800;font-size:15px}
   .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#F5B800;font-weight:900;font-size:18px}
-/* 统一隐藏所有左右箭头，并把说明行改为单列 */
-.hint-row .big-arrow, .arrow-large{display:none !important;}
-.hint-row{grid-template-columns:1fr !important; margin-bottom:8px !important;}
+
+  /* 隐藏旧位置的小箭头（如果遗留） */
+  .hint-row .big-arrow{display:none !important;}
+
+  @media (max-width:380px){
+    .brand img{width:44px;height:44px}
+    .arrow-large{width:52px;height:52px;font-size:22px}
+    .arrow-large.left{left:calc(6% - 60px)}
+    .arrow-large.right{right:calc(6% - 60px)}
+    .info{font-size:12px}
+  }
 </style>
 </head>
 <body>
@@ -68,50 +90,76 @@
 <main class="wrap">
   <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
-  <section class="stage">
-    <div class="hint-row">
+  <!-- 只保留说明框（不再放旧箭头） -->
   <div class="info" id="hint">选择中文/英文版式</div>
-</div>
-    <div class="viewer">
-  <div class="cardbox">
-    <img id="pc-img" src="postcard_cn.png?v=20016" alt="postcard">
-    <div class="marker" id="marker"></div>
-  </div>
-  <!-- 外侧大箭头（新增这两行） -->
-  <button class="arrow-large left" id="prev">◀</button>
-  <button class="arrow-large right" id="next">▶</button>
-</div>
 
-    <section class="features" id="features">
-      <p>操作简单 · 实体印刷 · 全球邮寄</p>
-      <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
-      <p>照片打印 · A5 大尺码 · 物超所值</p>
-    </section>
-
-    <div class="btns">
-      <button class="btn primary">纪念明信片</button>
-      <button class="btn">传统明信片</button>
+  <!-- 明信片 + 外侧大箭头 -->
+  <div class="viewer">
+    <div class="cardbox">
+      <img id="pc-img" src="postcard_cn.png?v=20022" alt="postcard">
+      <div class="marker" id="marker"></div>
     </div>
-    <button class="start" id="start-btn">开始制作</button>
+    <button class="arrow-large left" id="prev">◀</button>
+    <button class="arrow-large right" id="next">▶</button>
+  </div>
+
+  <!-- 特色九段（保持三行塔式，每行三段，共九段） -->
+  <section class="features" id="features">
+    <p>操作简单 · 实体印刷 · 全球邮寄</p>
+    <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
+    <p>照片打印 · A5 大尺码 · 物超所值</p>
   </section>
+
+  <div class="btns">
+    <button class="btn primary">纪念明信片</button>
+    <button class="btn">传统明信片</button>
+  </div>
+  <button class="start" id="start-btn">开始制作</button>
 </main>
 
 <script>
 (function(){
-  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,42,66,84];
-  let idx=0;
-  const hint=document.getElementById('hint');
-  const marker=document.getElementById('marker');
-  function apply(){hint.textContent=hints[idx];marker.style.left=(positions[idx]||positions[0])+'%';}
-  function slide(to){const n=hints.length;idx=(to+n)%n;apply();}
-  document.getElementById('prev').onclick=()=>slide(idx-1);
-  document.getElementById('next').onclick=()=>slide(idx+1);
-  (function(){const box=hint;let sx=0,ex=0,sy=0,ey=0;
-    box.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-    box.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
-    box.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy)){slide(idx+(dx<0?1:-1));}});
+  // 说明文案（按你给的顺序）
+  const hints = [
+    "选择中文/英文版式",
+    "自定义邮票图案",
+    "自选或上传地标印章",
+    "扫码可看图文声像"
+  ];
+  // 小箭头在明信片上方的落点（百分比，和你的文件一致：从右到左依次移动）
+  const positions = [84, 66, 42, 18]; // 默认邮票处为最右侧 → 其后向左移动
+
+  let idx = 0;
+  const hintEl   = document.getElementById("hint");
+  const markerEl = document.getElementById("marker");
+  const imgEl    = document.getElementById("pc-img");
+
+  function apply(){
+    hintEl.textContent = hints[idx];
+    markerEl.style.left = (positions[idx] || positions[0]) + "%";
+  }
+  function slide(next){
+    const n = hints.length;
+    idx = (next + n) % n;
+    apply();
+  }
+
+  // 外侧大箭头
+  document.getElementById("prev").addEventListener("click", ()=>slide(idx-1));
+  document.getElementById("next").addEventListener("click", ()=>slide(idx+1));
+
+  // 说明框左右滑动也可切换
+  (function(){
+    let sx=0, ex=0, sy=0, ey=0;
+    hintEl.addEventListener("touchstart", e=>{sx=e.touches[0].clientX; sy=e.touches[0].clientY;},{passive:true});
+    hintEl.addEventListener("touchmove",  e=>{ex=e.touches[0].clientX; ey=e.touches[0].clientY;},{passive:true});
+    hintEl.addEventListener("touchend",   ()=>{
+      const dx=ex-sx, dy=ey-sy;
+      if(Math.abs(dx)>30 && Math.abs(dx)>Math.abs(dy)){ slide(idx + (dx<0?1:-1)); }
+    });
   })();
+
+  // 语言下拉（外观保留，不改文案）
   const pill=document.getElementById('lang-pill'),dd=document.getElementById('lang-dd');
   pill.addEventListener('click',()=>dd.classList.toggle('open'));
   dd.querySelectorAll('.dd-item').forEach(it=>{
@@ -119,8 +167,10 @@
       dd.querySelectorAll('.dd-item').forEach(n=>n.classList.remove('current'));
       it.classList.add('current');
       dd.classList.remove('open');
+      // 这里只切换UI，不切换图片/文案，如需切换可在此扩展
     });
   });
+
   apply();
 })();
 </script>
