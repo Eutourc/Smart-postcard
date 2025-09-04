@@ -60,3 +60,34 @@
   /* 纯 CSS 三角箭头（无可见框，保持原样） */
   .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
   .big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
+  .big-arrow.left::before{
+    content:"";display:block;width:0;height:0;
+    border-top:18px solid transparent;border-bottom:18px solid transparent;border-right:28px solid #222;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+  }
+  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
+  .big-arrow.right::before{
+    content:"";display:block;width:0;height:0;
+    border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:28px solid #222;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+  }
+
+  /* 特点集锦（保持原样） */
+  .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
+  .features p{margin:2px 0;font-weight:800}
+
+  /* 两个小按钮 + 开始（保持原样） */
+  .btns{display:flex;gap:10px;margin-top:6px}
+  .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
+  .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
+  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
+    font-weight:900;font-size:18px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <div class="brand">
+      <!-- Logo 双保险：先尝试加载图片，失败时自动换 SVG -->
+      <img id="sp-logo" src="Logo.png" alt="Smart Postcard">
+      <div
