@@ -8,14 +8,16 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
-  :root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--accent:#16a34a}
+  :root{--brand:#F5B800;--brand-dk:#e0a700;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--accent:#16a34a}
   *{box-sizing:border-box}
-  html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  html,body{margin:0;height:100%;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  img{max-width:100%;display:block}
+  /* 顶部条 */
   .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}
-  .brand img{width:64px;height:64px;object-fit:contain;display:block}
-  .actions{display:flex;align-items:center;gap:10px;position:relative}
+  .brand img{width:48px;height:48px;object-fit:contain}
+  .actions{display:flex;align-items:center;gap:8px;position:relative}
   .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .cart{position:relative}.badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;border-radius:10px;padding:2px 6px;font-size:11px;font-weight:800}
   .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);cursor:pointer}
@@ -26,37 +28,57 @@
   .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
   .dd-item.current{background:#f5f7fa}
   .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-  .wrap{max-width:960px;margin:0 auto;padding:18px 16px 28px}
-  h1{font-size:26px;line-height:1.2;margin:10px 0 6px;text-align:center}
-  .stage{background:var(--card);border-radius:20px;padding:14px;box-shadow:var(--shadow);position:relative}
-  .hint-row{display:flex;align-items:center;justify-content:center;margin-bottom:10px;gap:8px}
-  .big-arrow{width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;cursor:pointer;color:#222;background:none;border:none}
-  .info{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:6px 12px;text-align:center;font-size:14px;font-weight:700;min-width:180px}
-  .cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06);margin-top:8px}
-  .cardbox img{width:100%;display:block}
-  .marker{position:absolute;left:18%;top:6%;transform:translate(-50%,-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
-  .features{margin:10px 0 6px;text-align:center;font-size:12px;line-height:1.3}
-  .features p{margin:2px 0;font-weight:700}
+
+  /* 主体充满全屏并自适应 */
+  main.wrap{max-width:960px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:14px 16px 12px}
+  h1{font-size:24px;line-height:1.18;margin:8px 0 8px;text-align:center}
+
+  .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow);margin-top:8px}
+
+  /* 说明框（加宽加长） + 箭头（放在明信片边缘的上方外侧） */
+  .hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:12px 16px;text-align:center;
+        font-size:15px;font-weight:800;line-height:1.4;max-width:92%;width:min(760px,92%);margin:0 auto}
+  .viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
+  .cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
+  .cardbox img{width:100%;height:100%;object-fit:contain}
+  /* 小箭头：出现在明信片上边缘外侧 */
+  .marker{position:absolute;top:-8px;left:78%;transform:translate(-50%,-100%);width:0;height:0;
+          border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
+          filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
+  .big-arrow{position:absolute;top:-34px;background:transparent;border:none;box-shadow:none;width:auto;height:auto;
+             font-size:32px;line-height:1;font-weight:900;color:#222;cursor:pointer;user-select:none;z-index:20}
+  .big-arrow.left{left:0}
+  .big-arrow.right{right:0}
+
+  /* 特点九段（保留三行） */
+  .features{margin:10px 0 6px;text-align:center;font-size:13px;line-height:1.28}
+  .features p{margin:3px 0;font-weight:800}
+
+  /* 按钮区 */
   .btns{display:flex;gap:10px;margin-top:6px}
-  .btn{flex:1;border:none;border-radius:12px;padding:8px 10px;font-weight:800;font-size:14px}
-  .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
-  .start{display:block;width:100%;border:none;border-radius:12px;padding:10px 12px;margin-top:8px;background:#F5B800;font-weight:900;font-size:16px}
+  .btn{flex:1;border:none;border-radius:12px;padding:10px 12px;font-weight:800;font-size:15px}
+  .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
+  .btn.primary:active{background:var(--brand-dk)}
+  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
+    font-weight:900;font-size:18px;box-shadow:0 4px 8px rgba(245,184,0,.35)}
+
+  @media (max-width:380px){
+    h1{font-size:22px}
+    .hint{font-size:14px}
+    .big-arrow{font-size:28px;top:-30px}
+  }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
     <div class="brand">
-      <img src="Logo.png" alt="Smart Postcard logo">
+      <img src="Logo.png?v=20026" alt="Smart Postcard logo">
       <span>Smart Postcard</span>
     </div>
     <div class="actions">
-      <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
+      <div class="iconbtn cart" aria-label="cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
       <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
-      <div class="dropdown" id="lang-dd">
-        <div class="dd-item current" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
-        <div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
-      </div>
       <div class="iconbtn" aria-label="menu"><span style="font-weight:900">≡</span></div>
     </div>
   </div>
@@ -66,15 +88,15 @@
   <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
-    <div class="hint-row">
-      <button class="big-arrow" id="prev">◀</button>
-      <div class="info" id="hint">选择中文/英文版式</div>
-      <button class="big-arrow" id="next">▶</button>
-    </div>
+    <div class="hint" id="hint">选择中文/英文版式</div>
 
-    <div class="cardbox">
-      <img id="pc-img" src="postcard_cn.png?v=20020" alt="postcard">
-      <div class="marker" id="marker"></div>
+    <div class="viewer">
+      <div class="cardbox">
+        <img id="pc-img" src="postcard_cn.png?v=20026" alt="postcard">
+        <div class="marker" id="marker"></div>
+        <button class="big-arrow left" id="prev">◀</button>
+        <button class="big-arrow right" id="next">▶</button>
+      </div>
     </div>
 
     <section class="features" id="features">
@@ -94,28 +116,23 @@
 <script>
 (function(){
   const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,42,66,84];
-  let idx=0;
-  const hint=document.getElementById('hint');
+  const positions=[78,66,42,18]; // 从右到左
+  let i=0;
+  const hintEl=document.getElementById('hint');
   const marker=document.getElementById('marker');
-  function apply(){hint.textContent=hints[idx];marker.style.left=(positions[idx]||positions[0])+'%';}
-  function slide(to){const n=hints.length;idx=(to+n)%n;apply();}
-  document.getElementById('prev').onclick=()=>slide(idx-1);
-  document.getElementById('next').onclick=()=>slide(idx+1);
-  (function(){const box=hint;let sx=0,ex=0,sy=0,ey=0;
-    box.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-    box.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
-    box.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy)){slide(idx+(dx<0?1:-1));}});
-  })();
-  const pill=document.getElementById('lang-pill'),dd=document.getElementById('lang-dd');
-  pill.addEventListener('click',()=>dd.classList.toggle('open'));
-  dd.querySelectorAll('.dd-item').forEach(it=>{
-    it.addEventListener('click',()=>{
-      dd.querySelectorAll('.dd-item').forEach(n=>n.classList.remove('current'));
-      it.classList.add('current');
-      dd.classList.remove('open');
-    });
-  });
+  function apply(){ hintEl.textContent=hints[i]; marker.style.left=positions[i]+'%'; }
+  function step(d){ i=(i+d+hints.length)%hints.length; apply(); }
+  document.getElementById('prev').onclick=()=>step(-1);
+  document.getElementById('next').onclick=()=>step(+1);
+
+  // 说明框左右滑动也能切换
+  let sx=0,sy=0;
+  hintEl.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  hintEl.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>30 && Math.abs(dx)>Math.abs(dy)) step(dx<0?1:-1);
+  },{passive:true});
+
   apply();
 })();
 </script>
