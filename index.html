@@ -1,1 +1,106 @@
-<!doctype html><html><body><p>index v20038 placeholder</p></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Postcard 文件下载中心</title>
+  <meta name="description" content="专用下载平台（与对话平台分离）" />
+  <link rel="icon" href="assets/logo.svg">
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #1e90ff;
+      --ring: rgba(30,144,255,0.25);
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Helvetica, Arial;
+    }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { width: 36px; height: 36px; }
+    .brand h1 { font-size: 20px; margin: 0; }
+    .tagline { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .toolbar { margin-top: 16px; margin-bottom: 8px; }
+    .search {
+      display: flex; gap: 8px; align-items: center;
+      background: var(--card); padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: var(--shadow);
+    }
+    .search input {
+      width: 100%; border: none; outline: none; background: transparent; font-size: 15px;
+    }
+    main { padding: 24px 0; }
+    .grid {
+      display: grid; grid-template-columns: repeat(1, minmax(0,1fr)); gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (min-width: 980px) {
+      .grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px; box-shadow: var(--shadow);
+    }
+    .file-title { font-weight: 600; }
+    .meta { color: var(--muted); font-size: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { background: rgba(100,116,139,0.12); color: #334155; font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+    .btn {
+      border: 1px solid var(--border); background: #fff; padding: 8px 12px;
+      border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px;
+    }
+    .btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+    footer { padding: 24px 0; color: var(--muted); font-size: 13px; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="logo">
+        <div>
+          <h1>Smart Postcard 文件下载中心</h1>
+          <div class="tagline">专用下载平台（与对话平台分离）</div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="search">
+          <input id="searchInput" type="search" placeholder="搜索文件名、描述或标签…">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="fileCount" class="tagline"></div>
+      <div id="fileGrid" class="grid"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      版权 © <span id="year"></span> Nordic Tour United AB · Smart Postcard
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
