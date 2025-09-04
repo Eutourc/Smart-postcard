@@ -66,6 +66,37 @@
     .arrow-large.right{right:calc(6% - 60px)}
     .info{font-size:12px}
   }
+/* 缩小说明框 */
+.info{
+  max-width:70%;
+  padding:6px 10px;
+  font-size:12px;
+  border-radius:10px;
+  margin-bottom:6px;
+}
+
+/* 让大箭头贴着说明框两侧，并去掉外框样式 */
+.arrow-large{
+  width:44px;height:44px;
+  background:transparent;    /* 去背景 */
+  border:none;               /* 去边框 */
+  box-shadow:none;           /* 去阴影 */
+  font-size:28px;            /* 纯字符箭头 */
+  color:#222;
+}
+
+/* 把大箭头从明信片两侧“提”到说明框两侧 */
+.viewer{ margin-top:8px; }   /* 明信片与说明框间距稍缩小 */
+.arrow-large.left{
+  left:6%;
+  top:-32px;                 /* 向上移动到说明框行 */
+  transform:none;
+}
+.arrow-large.right{
+  right:6%;
+  top:-32px;
+  transform:none;
+}
 </style>
 </head>
 <body>
