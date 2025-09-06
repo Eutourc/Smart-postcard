@@ -150,6 +150,21 @@
   /* 轻微立体感 */
   text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
+/* 统一顶部控件颜色（国际常用蓝） */
+:root { --ui-blue: #2D6CDF; }
+
+.hamburger span{ background: var(--ui-blue) !important; }
+
+/* 如果购物车是 SVG： */
+.cart-icon svg path{
+  fill: var(--ui-blue) !important;
+  stroke: var(--ui-blue) !important;
+}
+
+/* 如果购物车是字体图标（任选其一，保留有效的那条即可）： */
+.cart-icon, .cart-icon i, .cart-icon .icon{
+  color: var(--ui-blue) !important;
+}
 </style>
 </head>
 <body>
