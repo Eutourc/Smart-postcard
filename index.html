@@ -165,6 +165,32 @@
 .cart-icon, .cart-icon i, .cart-icon .icon{
   color: var(--ui-blue) !important;
 }
+/* 统一顶部控件颜色（国际蓝） */
+:root{ --ui-blue:#2D6CDF; }
+
+/* 1) 购物车：若是 SVG */
+.cart-icon svg *, .header-cart svg *{ 
+  fill: var(--ui-blue) !important;
+  stroke: var(--ui-blue) !important;
+}
+
+/* 2) 购物车：若是 <img> 图片（用滤镜“染色”成蓝） */
+.cart-icon img, .header-cart img{
+  filter: brightness(0) saturate(100%) invert(36%) sepia(61%) saturate(1315%)
+          hue-rotate(199deg) brightness(93%) contrast(96%) !important;
+}
+
+/* 3) 购物车：若是字体图标 */
+.cart-icon, .cart-icon i, .header-cart i{ 
+  color: var(--ui-blue) !important;
+}
+
+/* 4) 三杠（尽量全覆盖常见类名） */
+.hamburger span, .hamburger .bar,
+.menu-toggle span, .menu-btn span,
+.menu-button span{
+  background: var(--ui-blue) !important;
+}
 </style>
 </head>
 <body>
