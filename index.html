@@ -266,5 +266,31 @@
   apply();
 })();
 </script>
+<script>
+(function () {
+  const BLUE = '#2D6CDF'; // 国际蓝
+
+  // 购物车：IMG -> 用滤镜着色；SVG -> 直接改 fill/stroke
+  const cartImg = document.querySelector(
+    'header img[alt*="购"], header img[alt*="车"], header img[src*="cart"], [class*="cart"] img, [id*="cart"] img'
+  );
+  if (cartImg) {
+    cartImg.style.filter =
+      'brightness(0) saturate(100%) invert(36%) sepia(61%) saturate(1315%) hue-rotate(199deg) brightness(93%) contrast(96%)';
+  }
+  const cartSvg = document.querySelector('header .cart-icon svg, header svg[class*="cart"], header [class*="cart"] svg');
+  if (cartSvg) {
+    cartSvg.querySelectorAll('*').forEach(n => {
+      n.setAttribute('fill', BLUE);
+      n.setAttribute('stroke', BLUE);
+    });
+  }
+
+  // 三杠：尽量覆盖常见类名
+  document.querySelectorAll(
+    'header .hamburger span, header .menu-toggle span, header .menu-btn span, header button[class*="menu"] span'
+  ).forEach(bar => (bar.style.background = BLUE));
+})();
+</script>
 </body>
 </html>
