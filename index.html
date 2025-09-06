@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — 首页（v2·渐变回滚v1 + 菜单22px）</title>
+<title>Smart Postcard — 首页（v1 渐变 + 三杠20px）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -17,17 +17,14 @@
   .brand{display:flex;align-items:center;gap:10px}
   .brand img{width:64px;height:64px;object-fit:contain}
   .brandword{display:flex;flex-direction:column;line-height:1}
-  /* 使用 v1 的渐变样式（作用到 l1/l2） */
   .brandword .l1,.brandword .l2{
-    font-family:"Playfair Display",serif;
     font-weight:900;
-    letter-spacing:.5px;
-    background:linear-gradient(90deg,#f59e0b,#10b981,#3b82f6,#8b5cf6);
+    font-size:20px;
+    background:linear-gradient(90deg,#007cf0 0%,#00dfd8 28%,#ff0080 63%,#7928ca 100%);
     -webkit-background-clip:text;
     background-clip:text;
-    color:transparent;
     -webkit-text-fill-color:transparent;
-    text-shadow:0 1px 0 rgba(0,0,0,.06);
+    color:transparent;
   }
   .actions{display:flex;align-items:center;gap:10px}
   .iconbtn{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;
@@ -49,8 +46,8 @@
   .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:700;cursor:pointer}
   .dd-item:hover{background:#f5f7fa}
   .dd-flag{width:auto;min-width:1.5em;text-align:center;font-weight:900}
-  /* 菜单三杠缩小为 22px */
-  .iconbtn.menu .lines{width:22px;height:14px;position:relative}
+  /* 三杠尺寸改为 20px */
+  .iconbtn.menu .lines{width:20px;height:14px;position:relative}
   .iconbtn.menu .lines::before,.iconbtn.menu .lines::after,.iconbtn.menu .lines span{
     content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--ui-blue)
   }
