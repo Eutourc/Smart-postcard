@@ -3,60 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — 首页</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<title>Smart Postcard — 首页（修正）</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --brand:#F5B800;
-  --ink:#222;
-  --muted:#666;
-  --panel:#fff8d9;
-  --card:#fff;
-  --cart:#ff7a00;
-  --badge:#ff2b6a;
-}
+:root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--blue:#2563eb}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 img{max-width:100%;display:block}
 
-/* 顶部 */
+/* 顶部条 */
 .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
+.bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
 .brand{display:flex;align-items:center;gap:10px}
 .brand img{width:64px;height:64px;object-fit:contain}
 .brandword{display:flex;flex-direction:column;line-height:1}
-.brandword .l1,.brandword .l2{font-family:"Playfair Display",serif;font-weight:900;letter-spacing:.5px}
-.brandword .l1{font-size:24px}
-.brandword .l2{font-size:22px}
+.brandword span{
+  font-family:"Playfair Display",serif;font-weight:800;letter-spacing:.3px;font-size:22px;
+  background:linear-gradient(90deg,#0ea5e9,#22c55e 60%,#f59e0b);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;text-shadow:0 1px 0 rgba(255,255,255,.25)
+}
 
 /* 动作区 */
 .actions{display:flex;align-items:center;gap:10px}
-.pill{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.flag{width:22px;height:14px;border-radius:2px;background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-.caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
-/* 购物车 */
-.cart{position:relative;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.cart svg{width:24px;height:24px;fill:var(--cart)}
-.badge{position:absolute;right:-2px;top:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:var(--badge);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800;line-height:1}
-/* 汉堡 */
-.hamb{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.hamb span{display:block;width:18px;height:2.5px;background:#777;border-radius:2px;box-shadow:0 6px 0 #777,0 -6px 0 #777}
 
-/* 主体 */
+/* 购物车：金属银灰长车，徽标不遮挡 */
+.cart{position:relative;width:48px;height:48px;border-radius:50%;background:#fff;display:grid;place-items:center;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.cart svg{width:28px;height:28px;display:block}
+.cart .badge{position:absolute;right:-2px;top:-3px;background:#ff4d8f;color:#fff;border-radius:10px;min-width:18px;height:18px;
+             display:grid;place-items:center;font-size:11px;font-weight:900;padding:0 5px;line-height:1;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+
+/* 语言（中文特殊处理） */
+.lang{position:relative}
+.pill{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#fff;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);font-weight:800;cursor:pointer}
+.zh-badge{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;
+          font-size:12px;font-weight:900;color:#fff;background:#0ea5e9}
+.arrow{font-size:12px;color:#444}
+.flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.dropdown{position:absolute;right:0;top:52px;background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.08);
+          box-shadow:0 12px 28px rgba(0,0,0,.18);overflow:hidden;display:none;min-width:200px}
+.dropdown.open{display:block}
+.dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:700;cursor:pointer}
+.dd-item:hover{background:#f5f7fa}
+.dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.flag-uk{background:linear-gradient(90deg,#012169 0 33%,#fff 33 66%,#C8102E 66 100%)}
+.flag-de{background:linear-gradient(180deg,#000 0 33%,#DD0000 33 66%,#FFCE00 66 100%)}
+
+/* 三杠菜单：蓝色 */
+.hamb{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.hamb .bars{width:20px;height:14px;position:relative}
+.hamb .bars::before,.hamb .bars::after,.hamb .bars span{content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--blue)}
+.hamb .bars::before{top:0}.hamb .bars span{top:5.5px}.hamb .bars::after{bottom:0}
+
+/* 主体（保持基线） */
 main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
-h1{font-size:24px;line-height:1.15;margin:8px 0 10px;text-align:center}
-.stage{flex:1;display:flex;flex-direction:column;gap:10px;background:var(--card);border-radius:20px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:8px 12px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;max-width:min(820px,94%);margin:0 auto}
-.viewer{position:relative;flex:1;display:flex;align-items:stretch}
-.cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
-.cardbox img{width:100%;height:auto;display:block}
+h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
+.stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
+.hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:8px 12px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;max-width:min(820px,94%);margin:0 auto 10px}
+.viewer{position:relative}
+.cardbox{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
+.cardbox img{width:100%;height:auto}
 .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
 .features p{margin:2px 0;font-weight:800}
 .btns{display:flex;gap:10px;margin-top:6px}
 .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
-.btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
-.start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);font-weight:900;font-size:18px}
+.btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
+.start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
 </style>
 </head>
 <body>
@@ -64,23 +80,34 @@ h1{font-size:24px;line-height:1.15;margin:8px 0 10px;text-align:center}
   <div class="bar">
     <div class="brand">
       <img src="Logo.png" alt="Smart Postcard">
-      <div class="brandword">
-        <span class="l1">Smart</span>
-        <span class="l2">Postcard</span>
-      </div>
+      <div class="brandword"><span>Smart</span><span>Postcard</span></div>
     </div>
     <div class="actions">
+      <!-- 银灰长购物车，徽标外置 -->
       <div class="cart" aria-label="购物车">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 14h9.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.09 5H6.21L5.27 3H2v2h2l3.6 7.59L6.25 17c-.09.17-.15.36-.15.57 0 .66.54 1.2 1.2 1.2h12v-2H7.42l.74-1.37z"/>
+          <defs>
+            <linearGradient id="steel" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#e5e7eb"/><stop offset="50%" stop-color="#9aa3ad"/><stop offset="100%" stop-color="#cbd5e1"/>
+            </linearGradient>
+          </defs>
+          <path d="M3 4h2l2 10h11a2 2 0 0 0 1.94-1.47L21 6H6" fill="none" stroke="url(#steel)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="10" cy="19" r="2" fill="url(#steel)"/><circle cx="18" cy="19" r="2" fill="url(#steel)"/>
         </svg>
-        <div class="badge">0</div>
+        <span class="badge">0</span>
       </div>
-      <div class="pill" aria-label="语言">
-        <span class="flag" title="中文"></span>
-        <span class="caret" aria-hidden="true"></span>
+      <!-- 中文特殊处理语言胶囊 -->
+      <div class="lang" id="lang">
+        <div class="pill" id="lang-pill"><span class="zh-badge" id="zh-badge">简</span><span class="arrow">▼</span></div>
+        <div class="dropdown" id="lang-dd">
+          <div class="dd-item" data-lang="zh-CN"><span class="zh-badge">简</span><span>中文简体</span></div>
+          <div class="dd-item" data-lang="zh-TW"><span class="zh-badge">繁</span><span>中文繁体</span></div>
+          <div class="dd-item" data-lang="en"><span class="dd-flag flag-uk"></span><span>English</span></div>
+          <div class="dd-item" data-lang="de"><span class="dd-flag flag-de"></span><span>Deutsch</span></div>
+        </div>
       </div>
-      <div class="hamb" aria-label="菜单"><span></span></div>
+      <!-- 蓝色三杠 -->
+      <div class="hamb" aria-label="menu"><div class="bars"><span></span></div></div>
     </div>
   </div>
 </header>
@@ -90,9 +117,7 @@ h1{font-size:24px;line-height:1.15;margin:8px 0 10px;text-align:center}
   <section class="stage">
     <div class="hint">选择中文/英文版式</div>
     <div class="viewer">
-      <div class="cardbox">
-        <img src="postcard_cn.png" alt="postcard sample">
-      </div>
+      <div class="cardbox"><img src="postcard_cn.png" alt="postcard"></div>
     </div>
     <section class="features">
       <p>操作简单 · 实体印刷 · 全球邮寄</p>
@@ -106,5 +131,26 @@ h1{font-size:24px;line-height:1.15;margin:8px 0 10px;text-align:center}
     <button class="start">开始制作</button>
   </section>
 </main>
+
+<script>
+(function(){
+  // 语言开关与选择（仅控制顶部显示徽标文字；页面文案的切换留作后续）
+  const pill=document.getElementById('lang-pill');
+  const dd=document.getElementById('lang-dd');
+  const badge=document.getElementById('zh-badge');
+  pill.addEventListener('click',()=>dd.classList.toggle('open'));
+  dd.querySelectorAll('.dd-item').forEach(it=>{
+    it.addEventListener('click',()=>{
+      const lang=it.getAttribute('data-lang');
+      dd.classList.remove('open');
+      if(lang==='zh-CN'){ badge.textContent='简'; localStorage.setItem('lang','zh-CN'); }
+      else if(lang==='zh-TW'){ badge.textContent='繁'; localStorage.setItem('lang','zh-TW'); }
+      else { badge.textContent='EN'; localStorage.setItem('lang',lang); }
+    });
+  });
+  const saved=localStorage.getItem('lang');
+  if(saved==='zh-TW') badge.textContent='繁'; else if(saved && saved!=='zh-CN') badge.textContent='EN';
+})();
+</script>
 </body>
 </html>
