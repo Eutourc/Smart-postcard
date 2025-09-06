@@ -3,47 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — 首页（融合版 v2）</title>
+<title>Smart Postcard — 首页（确认基线·蓝色购物车 v3）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);
-  --menu-blue:#2563EB;--cart-purple:#7C3AED;--cart-stroke:#6D28D9
-}
+:root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--ui-blue:#2563eb}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 img{max-width:100%;display:block}
-
-/* 顶部条（保持既有布局与尺寸） */
 .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
 .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
 .brand{display:flex;align-items:center;gap:10px}
 .brand img{width:64px;height:64px;object-fit:contain}
 .brandword{display:flex;flex-direction:column;line-height:1}
-/* 渐变艺术字（与确认版一致） */
 .brandword span{
-  font-family:"Playfair Display",serif;font-weight:800;letter-spacing:.3px;font-size:22px;
-  background:linear-gradient(90deg,#0ea5e9,#22c55e 60%,#f59e0b);
+  font-family:"Playfair Display",serif;font-weight:800;letter-spacing:.4px;font-size:22px;
+  background:linear-gradient(180deg,#25c9ff 0%,#8ee8ff 38%,#ffe69b 66%,#f5b800 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  text-shadow:0 1px 0 rgba(255,255,255,.25)
+  text-shadow:0 1px 0 rgba(255,255,255,.28);
 }
-
-/* 右侧动作区 */
 .actions{display:flex;align-items:center;gap:10px}
 .iconbtn{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;
          box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-
-/* 购物车：仅着色为紫色，徽标不遮挡，其余保持原尺寸 */
-.iconbtn.cart{position:relative;filter:drop-shadow(0 2px 4px rgba(124,58,237,.18))}
+.iconbtn.cart{position:relative;filter:drop-shadow(0 2px 4px rgba(37,99,235,.18))}
 .iconbtn.cart svg{width:22px;height:22px;display:block}
-.iconbtn.cart svg *{fill:var(--cart-purple);stroke:var(--cart-stroke)}
+.iconbtn.cart svg *{fill:var(--ui-blue);stroke:var(--ui-blue)}
 .badge{position:absolute;right:-2px;top:-2px;background:#ff4d4f;color:#fff;border-radius:10px;
        min-width:18px;height:18px;padding:0 5px;font-size:11px;font-weight:900;display:grid;place-items:center;line-height:1}
-
-/* 语言：中文特殊处理（简/繁 ▼） */
 .lang{position:relative}
 .langpill{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#fff;
           box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);cursor:pointer}
@@ -56,15 +44,11 @@ img{max-width:100%;display:block}
 .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:700;cursor:pointer}
 .dd-item:hover{background:#f5f7fa}
 .dd-flag{width:auto;min-width:1.5em;text-align:center;font-weight:900}
-
-/* 三杠菜单：蓝色 */
 .iconbtn.menu .lines{width:20px;height:14px;position:relative}
 .iconbtn.menu .lines::before,.iconbtn.menu .lines::after,.iconbtn.menu .lines span{
-  content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--menu-blue)
+  content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--ui-blue)
 }
 .iconbtn.menu .lines::before{top:0}.iconbtn.menu .lines span{top:5.5px}.iconbtn.menu .lines::after{bottom:0}
-
-/* 主体（不改动） */
 main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
 h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
 .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
@@ -88,7 +72,6 @@ h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
       <div class="brandword"><span>Smart</span><span>Postcard</span></div>
     </div>
     <div class="actions">
-      <!-- 购物车（紫色，原尺寸） -->
       <div class="iconbtn cart" aria-label="购物车">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M7 4h-2a1 1 0 0 0 0 2h1.3l2.4 9.6A2 2 0 0 0 10.6 17h6.8a2 2 0 0 0 1.9-1.5l1.5-6a1 1 0 0 0-1-1.3H8.2l-.5-2H7z"/>
@@ -96,8 +79,6 @@ h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
         </svg>
         <span class="badge" id="cart-badge">0</span>
       </div>
-
-      <!-- 语言（中文特殊处理：简/繁 ▼） -->
       <div class="lang" id="lang">
         <div class="langpill" id="lang-pill"><span class="lang-tag" id="lang-tag">简</span><span class="caret">▼</span></div>
         <div class="dropdown" id="lang-dd">
@@ -107,8 +88,6 @@ h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
           <div class="dd-item" data-lang="de"><span class="dd-flag">DE</span><span>Deutsch</span></div>
         </div>
       </div>
-
-      <!-- 三杠（蓝色） -->
       <div class="iconbtn menu" aria-label="menu"><div class="lines"><span></span></div></div>
     </div>
   </div>
@@ -135,7 +114,6 @@ h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
 </main>
 
 <script>
-// 语言下拉（仅控制顶部显示：简/繁/EN/DE）
 (function(){
   const pill=document.getElementById('lang-pill');
   const dd=document.getElementById('lang-dd');
