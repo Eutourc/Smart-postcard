@@ -3,63 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — 首页（修正）</title>
+<title>Smart Postcard — 首页（融合版 v2）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
 <style>
-:root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--blue:#2563eb}
+:root{
+  --brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);
+  --menu-blue:#2563EB;--cart-purple:#7C3AED;--cart-stroke:#6D28D9
+}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 img{max-width:100%;display:block}
 
-/* 顶部条 */
+/* 顶部条（保持既有布局与尺寸） */
 .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
 .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
 .brand{display:flex;align-items:center;gap:10px}
 .brand img{width:64px;height:64px;object-fit:contain}
 .brandword{display:flex;flex-direction:column;line-height:1}
+/* 渐变艺术字（与确认版一致） */
 .brandword span{
   font-family:"Playfair Display",serif;font-weight:800;letter-spacing:.3px;font-size:22px;
-  background:linear-gradient(90deg,#0ea5e9,#22c55e 60%,#f59e0b);-webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;text-shadow:0 1px 0 rgba(255,255,255,.25)
+  background:linear-gradient(90deg,#0ea5e9,#22c55e 60%,#f59e0b);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:0 1px 0 rgba(255,255,255,.25)
 }
 
-/* 动作区 */
+/* 右侧动作区 */
 .actions{display:flex;align-items:center;gap:10px}
+.iconbtn{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;
+         box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 
-/* 购物车：金属银灰长车，徽标不遮挡 */
-.cart{position:relative;width:48px;height:48px;border-radius:50%;background:#fff;display:grid;place-items:center;
-      box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.cart svg{width:28px;height:28px;display:block}
-.cart .badge{position:absolute;right:-2px;top:-3px;background:#ff4d8f;color:#fff;border-radius:10px;min-width:18px;height:18px;
-             display:grid;place-items:center;font-size:11px;font-weight:900;padding:0 5px;line-height:1;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+/* 购物车：仅着色为紫色，徽标不遮挡，其余保持原尺寸 */
+.iconbtn.cart{position:relative;filter:drop-shadow(0 2px 4px rgba(124,58,237,.18))}
+.iconbtn.cart svg{width:22px;height:22px;display:block}
+.iconbtn.cart svg *{fill:var(--cart-purple);stroke:var(--cart-stroke)}
+.badge{position:absolute;right:-2px;top:-2px;background:#ff4d4f;color:#fff;border-radius:10px;
+       min-width:18px;height:18px;padding:0 5px;font-size:11px;font-weight:900;display:grid;place-items:center;line-height:1}
 
-/* 语言（中文特殊处理） */
+/* 语言：中文特殊处理（简/繁 ▼） */
 .lang{position:relative}
-.pill{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#fff;
-      box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);font-weight:800;cursor:pointer}
-.zh-badge{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;
+.langpill{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#fff;
+          box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);cursor:pointer}
+.lang-tag{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;
           font-size:12px;font-weight:900;color:#fff;background:#0ea5e9}
-.arrow{font-size:12px;color:#444}
-.flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-.dropdown{position:absolute;right:0;top:52px;background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.08);
-          box-shadow:0 12px 28px rgba(0,0,0,.18);overflow:hidden;display:none;min-width:200px}
+.caret{font-size:12px;color:#444}
+.dropdown{position:absolute;right:0;top:52px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;
+          box-shadow:0 12px 28px rgba(0,0,0,.18);min-width:200px;overflow:hidden;display:none}
 .dropdown.open{display:block}
 .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:700;cursor:pointer}
 .dd-item:hover{background:#f5f7fa}
-.dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-.flag-uk{background:linear-gradient(90deg,#012169 0 33%,#fff 33 66%,#C8102E 66 100%)}
-.flag-de{background:linear-gradient(180deg,#000 0 33%,#DD0000 33 66%,#FFCE00 66 100%)}
+.dd-flag{width:auto;min-width:1.5em;text-align:center;font-weight:900}
 
 /* 三杠菜单：蓝色 */
-.hamb{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.hamb .bars{width:20px;height:14px;position:relative}
-.hamb .bars::before,.hamb .bars::after,.hamb .bars span{content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--blue)}
-.hamb .bars::before{top:0}.hamb .bars span{top:5.5px}.hamb .bars::after{bottom:0}
+.iconbtn.menu .lines{width:20px;height:14px;position:relative}
+.iconbtn.menu .lines::before,.iconbtn.menu .lines::after,.iconbtn.menu .lines span{
+  content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--menu-blue)
+}
+.iconbtn.menu .lines::before{top:0}.iconbtn.menu .lines span{top:5.5px}.iconbtn.menu .lines::after{bottom:0}
 
-/* 主体（保持基线） */
+/* 主体（不改动） */
 main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
 h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
 .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
@@ -83,31 +88,28 @@ h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
       <div class="brandword"><span>Smart</span><span>Postcard</span></div>
     </div>
     <div class="actions">
-      <!-- 银灰长购物车，徽标外置 -->
-      <div class="cart" aria-label="购物车">
+      <!-- 购物车（紫色，原尺寸） -->
+      <div class="iconbtn cart" aria-label="购物车">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <defs>
-            <linearGradient id="steel" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#e5e7eb"/><stop offset="50%" stop-color="#9aa3ad"/><stop offset="100%" stop-color="#cbd5e1"/>
-            </linearGradient>
-          </defs>
-          <path d="M3 4h2l2 10h11a2 2 0 0 0 1.94-1.47L21 6H6" fill="none" stroke="url(#steel)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="10" cy="19" r="2" fill="url(#steel)"/><circle cx="18" cy="19" r="2" fill="url(#steel)"/>
+          <path d="M7 4h-2a1 1 0 0 0 0 2h1.3l2.4 9.6A2 2 0 0 0 10.6 17h6.8a2 2 0 0 0 1.9-1.5l1.5-6a1 1 0 0 0-1-1.3H8.2l-.5-2H7z"/>
+          <circle cx="10" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/>
         </svg>
-        <span class="badge">0</span>
+        <span class="badge" id="cart-badge">0</span>
       </div>
-      <!-- 中文特殊处理语言胶囊 -->
+
+      <!-- 语言（中文特殊处理：简/繁 ▼） -->
       <div class="lang" id="lang">
-        <div class="pill" id="lang-pill"><span class="zh-badge" id="zh-badge">简</span><span class="arrow">▼</span></div>
+        <div class="langpill" id="lang-pill"><span class="lang-tag" id="lang-tag">简</span><span class="caret">▼</span></div>
         <div class="dropdown" id="lang-dd">
-          <div class="dd-item" data-lang="zh-CN"><span class="zh-badge">简</span><span>中文简体</span></div>
-          <div class="dd-item" data-lang="zh-TW"><span class="zh-badge">繁</span><span>中文繁体</span></div>
-          <div class="dd-item" data-lang="en"><span class="dd-flag flag-uk"></span><span>English</span></div>
-          <div class="dd-item" data-lang="de"><span class="dd-flag flag-de"></span><span>Deutsch</span></div>
+          <div class="dd-item" data-lang="zh-CN"><span class="dd-flag">简</span><span>中文简体</span></div>
+          <div class="dd-item" data-lang="zh-TW"><span class="dd-flag">繁</span><span>中文繁体</span></div>
+          <div class="dd-item" data-lang="en"><span class="dd-flag">EN</span><span>English</span></div>
+          <div class="dd-item" data-lang="de"><span class="dd-flag">DE</span><span>Deutsch</span></div>
         </div>
       </div>
-      <!-- 蓝色三杠 -->
-      <div class="hamb" aria-label="menu"><div class="bars"><span></span></div></div>
+
+      <!-- 三杠（蓝色） -->
+      <div class="iconbtn menu" aria-label="menu"><div class="lines"><span></span></div></div>
     </div>
   </div>
 </header>
@@ -133,23 +135,16 @@ h1{font-size:24px;line-height:1.15;margin:6px 0 6px;text-align:center}
 </main>
 
 <script>
+// 语言下拉（仅控制顶部显示：简/繁/EN/DE）
 (function(){
-  // 语言开关与选择（仅控制顶部显示徽标文字；页面文案的切换留作后续）
   const pill=document.getElementById('lang-pill');
   const dd=document.getElementById('lang-dd');
-  const badge=document.getElementById('zh-badge');
-  pill.addEventListener('click',()=>dd.classList.toggle('open'));
+  const tag=document.getElementById('lang-tag');
+  if(!pill||!dd||!tag) return;
+  pill.onclick=()=>dd.classList.toggle('open');
   dd.querySelectorAll('.dd-item').forEach(it=>{
-    it.addEventListener('click',()=>{
-      const lang=it.getAttribute('data-lang');
-      dd.classList.remove('open');
-      if(lang==='zh-CN'){ badge.textContent='简'; localStorage.setItem('lang','zh-CN'); }
-      else if(lang==='zh-TW'){ badge.textContent='繁'; localStorage.setItem('lang','zh-TW'); }
-      else { badge.textContent='EN'; localStorage.setItem('lang',lang); }
-    });
+    it.onclick=()=>{ tag.textContent=it.firstElementChild.textContent.trim(); dd.classList.remove('open'); };
   });
-  const saved=localStorage.getItem('lang');
-  if(saved==='zh-TW') badge.textContent='繁'; else if(saved && saved!=='zh-CN') badge.textContent='EN';
 })();
 </script>
 </body>
