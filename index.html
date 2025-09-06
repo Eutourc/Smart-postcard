@@ -150,47 +150,6 @@
   /* 轻微立体感 */
   text-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
-/* 统一顶部控件颜色（国际常用蓝） */
-:root { --ui-blue: #2D6CDF; }
-
-.hamburger span{ background: var(--ui-blue) !important; }
-
-/* 如果购物车是 SVG： */
-.cart-icon svg path{
-  fill: var(--ui-blue) !important;
-  stroke: var(--ui-blue) !important;
-}
-
-/* 如果购物车是字体图标（任选其一，保留有效的那条即可）： */
-.cart-icon, .cart-icon i, .cart-icon .icon{
-  color: var(--ui-blue) !important;
-}
-/* 统一顶部控件颜色（国际蓝） */
-:root{ --ui-blue:#2D6CDF; }
-
-/* 1) 购物车：若是 SVG */
-.cart-icon svg *, .header-cart svg *{ 
-  fill: var(--ui-blue) !important;
-  stroke: var(--ui-blue) !important;
-}
-
-/* 2) 购物车：若是 <img> 图片（用滤镜“染色”成蓝） */
-.cart-icon img, .header-cart img{
-  filter: brightness(0) saturate(100%) invert(36%) sepia(61%) saturate(1315%)
-          hue-rotate(199deg) brightness(93%) contrast(96%) !important;
-}
-
-/* 3) 购物车：若是字体图标 */
-.cart-icon, .cart-icon i, .header-cart i{ 
-  color: var(--ui-blue) !important;
-}
-
-/* 4) 三杠（尽量全覆盖常见类名） */
-.hamburger span, .hamburger .bar,
-.menu-toggle span, .menu-btn span,
-.menu-button span{
-  background: var(--ui-blue) !important;
-}
 </style>
 </head>
 <body>
@@ -264,32 +223,6 @@
     area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
   })();
   apply();
-})();
-</script>
-<script>
-(function () {
-  const BLUE = '#2D6CDF'; // 国际蓝
-
-  // 购物车：IMG -> 用滤镜着色；SVG -> 直接改 fill/stroke
-  const cartImg = document.querySelector(
-    'header img[alt*="购"], header img[alt*="车"], header img[src*="cart"], [class*="cart"] img, [id*="cart"] img'
-  );
-  if (cartImg) {
-    cartImg.style.filter =
-      'brightness(0) saturate(100%) invert(36%) sepia(61%) saturate(1315%) hue-rotate(199deg) brightness(93%) contrast(96%)';
-  }
-  const cartSvg = document.querySelector('header .cart-icon svg, header svg[class*="cart"], header [class*="cart"] svg');
-  if (cartSvg) {
-    cartSvg.querySelectorAll('*').forEach(n => {
-      n.setAttribute('fill', BLUE);
-      n.setAttribute('stroke', BLUE);
-    });
-  }
-
-  // 三杠：尽量覆盖常见类名
-  document.querySelectorAll(
-    'header .hamburger span, header .menu-toggle span, header .menu-btn span, header button[class*="menu"] span'
-  ).forEach(bar => (bar.style.background = BLUE));
 })();
 </script>
 </body>
