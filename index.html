@@ -82,6 +82,74 @@
   .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
     font-weight:900;font-size:18px}
+/* 横幅“Smart / Postcard”做成艺术字（首字母大写） */
+.brandword .l1,
+.brandword .l2{
+  font-weight: 900;
+  font-size: 19px;              /* 如偏大/小，可在 18–20 之间微调 */
+  letter-spacing: .6px;
+  text-transform: capitalize;   /* 首字母大写 */
+  background: linear-gradient(180deg,#41d1ff 0%, #2aa7ff 55%, #0a67ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 3px 10px rgba(0,0,0,.18);
+}
+
+/* 右侧“三”图标放大并视觉居中 */
+.iconbtn[aria-label="menu"]{ width:44px; height:44px; }  /* 原40×40可留用也行 */
+.iconbtn[aria-label="menu"] span{
+  font-size:24px;
+  line-height:1;
+  transform: translateY(-1px);
+}
+.iconbtn span { font-size: 18px; }
+/* 缩小购物车角标“0” */
+.cart .badge{
+  font-size:10px;        /* 数字更小 */
+  padding:0 5px;         /* 内边距更窄 */
+  min-width:16px;        /* 胶囊更小 */
+  height:16px;
+  line-height:16px;
+  border-radius:8px;
+  top:-6px;              /* 位置微调 */
+  right:-6px;
+}
+/* 花样字效果 */
+.brandword span {
+  font-family: "Trebuchet MS", "Comic Sans MS", cursive, sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  background: linear-gradient(90deg, #007cf0, #00dfd8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+}
+
+/* 三杠颜色变浅 */
+.iconbtn span {
+  color: #666;  /* 灰色，避免太黑 */
+  font-size: 22px;
+}
+/* 顶部品牌文字：渐变+轻浮雕 */
+.brandword,                 /* 整体一个元素时 */
+.brandword *,               /* 里面是 span 时 */
+.brand .brandword span {    /* 老写法的兜底 */
+  display: inline-block;
+  font-weight: 900;
+  letter-spacing: .5px;
+  /* 你可以微调大小（22~26） */
+  font-size: 24px;
+
+  /* 渐变文字核心 */
+  background: linear-gradient(90deg,#0ea5e9,#22d3ee 55%,#34d399);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 轻微立体感 */
+  text-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
 </style>
 </head>
 <body>
