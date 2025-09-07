@@ -3,77 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — 首页</title>
+<title>Smart Postcard — 首页（v1锁定）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
-  :root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--accent:#16a34a}
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-  img{max-width:100%;display:block}
+:root{--brand:#F5B800;--ink:#222;--panel:#fff8d9;--card:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);--accent:#16a34a}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+img{max-width:100%;display:block}
 
-  /* 顶部：Logo + 双行渐变字（锁定 v1 渐变） */
-  .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
-  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand img{width:64px;height:64px;object-fit:contain}
-  .brandword{display:flex;flex-direction:column;line-height:1}
-  .brandword .l1,.brandword .l2{font-weight:900;letter-spacing:.5px;font-size:22px}
-  /* 仅此处锁定 v1 渐变，不再改变 */
-  .brandword span{
-    background: linear-gradient(90deg,#007cf0,#00dfd8,#ff0080,#7928ca);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 1px 2px rgba(0,0,0,.15);
-  }
+/* 顶部（v1尺寸，不更改） */
+.top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:64px;height:64px;object-fit:contain}
 
-  .actions{display:flex;align-items:center;gap:8px}
-  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .cart{position:relative}.badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;border-radius:10px;padding:2px 6px;font-size:11px;font-weight:800}
-  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-  .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
+/* v1 渐变字：锁定配色 #007cf0 → #00dfd8 → #ff0080 → #7928ca */
+.brandword{display:flex;flex-direction:column;line-height:1}
+.brandword .l1,.brandword .l2{
+  font-weight:900;
+  font-size:22px;          /* v1 风格 */
+  letter-spacing:.5px;
+  background:linear-gradient(90deg,#007cf0 0%, #00dfd8 33%, #ff0080 66%, #7928ca 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 1px 2px rgba(0,0,0,.12);
+}
 
-  .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
-  .dropdown.open{display:block}
-  .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
-  .dd-item.current{background:#f5f7fa}
-  .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+/* 右侧操作区（保持 v1） */
+.actions{display:flex;align-items:center;gap:8px}
+.iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.iconbtn span{font-size:22px;line-height:1;color:#555}
+.cart{position:relative}
+.badge{position:absolute;right:-4px;top:-4px;background:#ff4d4f;color:#fff;border-radius:10px;padding:0 6px;font-size:11px;font-weight:800;line-height:16px;min-width:16px;height:16px;text-align:center}
+.langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
+.dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
+.dropdown.open{display:block}
+.dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
+.dd-item.current{background:#f5f7fa}
+.dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
 
-  main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
-  h1{font-size:24px;line-height:1.15;margin:4px 0 6px;text-align:center}
-  .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
+/* 主舞台 */
+main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
+h1{font-size:24px;line-height:1.15;margin:8px 0 8px;text-align:center}
+.stage{flex:1;display:flex;flex-direction:column;gap:10px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
 
-  .hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;
-        padding:8px 12px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;
-        max-width:min(820px,94%);margin:0 auto}
+/* 说明框（v1提示） */
+.hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;padding:8px 12px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;max-width:min(820px,94%);margin:0 auto}
 
-  .viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
-  .cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
-  .cardbox img{width:100%;height:auto;display:block}
+/* 明信片与箭头（保持） */
+.viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
+.cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
+.cardbox img{width:100%;height:auto;display:block}
+.marker{position:absolute;top:-8px;left:18%;transform:translate(-50%,-100%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
+.big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
+.big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
+.big-arrow.left::before{content:"";display:block;width:0;height:0;border-top:18px solid transparent;border-bottom:18px solid transparent;border-right:28px solid #222;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
+.big-arrow.right::before{content:"";display:block;width:0;height:0;border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:28px solid #222;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
 
-  .marker{position:absolute;top:-8px;left:18%;transform:translate(-50%,-100%);width:0;height:0;
-          border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
-          filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
-
-  .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
-  .big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
-  .big-arrow.left::before{content:"";display:block;width:0;height:0;border-top:18px solid transparent;border-bottom:18px solid transparent;border-right:28px solid #222;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
-  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
-  .big-arrow.right::before{content:"";display:block;width:0;height:0;border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:28px solid #222;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
-
-  .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
-  .features p{margin:2px 0;font-weight:800}
-
-  .btns{display:flex;gap:10px;margin-top:6px}
-  .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
-  .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
-  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
-    font-weight:900;font-size:18px}
-
-  .iconbtn span{font-size:20px;line-height:1}
+/* 特点/按钮 */
+.features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
+.features p{margin:2px 0;font-weight:800}
+.btns{display:flex;gap:10px;margin-top:6px}
+.btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
+.btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
+.start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);font-weight:900;font-size:18px}
 </style>
 </head>
 <body>
@@ -87,14 +86,8 @@
       </div>
     </div>
     <div class="actions">
-      <div class="iconbtn cart" aria-label="购物车">
-        <span>🛒</span>
-        <span class="badge" id="cart-badge">0</span>
-      </div>
-      <div class="langpill" id="lang-pill">
-        <span class="flag" id="flag" title="中文" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span>
-        <span class="caret"></span>
-      </div>
+      <div class="iconbtn cart" aria-label="cart"><span>🛒</span><span class="badge" id="cart-badge">0</span></div>
+      <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
       <div class="dropdown" id="lang-dd">
         <div class="dd-item current" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
         <div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
@@ -136,12 +129,12 @@
 
 <script>
 (function(){
-  // 语言下拉（点击胶囊开关）
+  // 语言下拉
   const pill=document.getElementById('lang-pill');
   const dd=document.getElementById('lang-dd');
   pill.addEventListener('click',()=>dd.classList.toggle('open'));
 
-  // 说明与小箭头联动
+  // 说明与小箭头联动（与先前一致）
   const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
   const positions=[18,44,68,86];
   let i=0;
@@ -151,7 +144,7 @@
   function step(d){i=(i+d+hints.length)%hints.length;apply();}
   document.getElementById('prev').onclick=()=>step(-1);
   document.getElementById('next').onclick=()=>step(+1);
-  // 支持在卡片区域左右滑动
+  // 卡片区域左右滑动
   (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
     area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
     area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
