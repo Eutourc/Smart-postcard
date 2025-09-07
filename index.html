@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v1基线·版式校正 r1</title>
+<title>Smart Postcard — v1基线·三点布局修正 r2</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -12,71 +12,68 @@
   *{box-sizing:border-box}
   html,body{margin:0;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
   img{max-width:100%;display:block}
-  /* —— 顶部（保持v1结构，不做视觉变更） —— */
+  /* 顶部：保持 v1（不改） */
   .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
   .brand{display:flex;align-items:center;gap:10px}
   .brand img{width:64px;height:64px;object-fit:contain}
-  .brandword{display:flex;flex-direction:column;line-height:1}
+  .brandword{display:flex;flex-direction:row;line-height:1}
   .brandword .l1,.brandword .l2{
     font-weight:900;font-size:20px;
     background:linear-gradient(90deg,#007cf0 0%,#00dfd8 28%,#ff0080 63%,#7928ca 100%);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+    letter-spacing:.3px
   }
+  .brandword .l2{margin-left:.35ch}
   .actions{display:flex;align-items:center;gap:10px}
-  .iconbtn{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .iconbtn{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;
+           box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .iconbtn.cart{position:relative}
+  .badge{position:absolute;right:-2px;top:-6px;background:#ff4d4f;color:#fff;border-radius:10px;min-width:18px;height:18px;padding:0 5px;font-size:11px;font-weight:900;display:grid;place-items:center;line-height:1}
   .iconbtn.menu .lines{width:20px;height:14px;position:relative}
   .iconbtn.menu .lines::before,.iconbtn.menu .lines::after,.iconbtn.menu .lines span{content:"";position:absolute;left:0;right:0;height:3px;border-radius:2px;background:var(--ui-blue)}
   .iconbtn.menu .lines::before{top:0}.iconbtn.menu .lines span{top:5.5px}.iconbtn.menu .lines::after{bottom:0}
-  .badge{position:absolute;right:-2px;top:-6px;background:#ff4d4f;color:#fff;border-radius:10px;min-width:18px;height:18px;padding:0 5px;font-size:11px;font-weight:900;display:grid;place-items:center;line-height:1}
 
-  /* —— 主体比例校正（仅按你的三点更改） —— */
+  /* 主体：仅三点修正 */
   main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
-  /* ① 大标题下移一些，避免贴顶；整体比例适配手机 */
-  h1{font-size:24px;line-height:1.2;margin:14px 0 10px;text-align:center}
+  h1{font-size:24px;line-height:1.25;margin:12px 0 12px;text-align:center} /* ① 标题下移 */
   .stage{flex:1;display:flex;flex-direction:column;gap:10px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
 
-  /* 说明框：加宽、三行小字、能装下文案 */
-  .hint{
-    background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;
-    padding:10px 12px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;
-    max-width:96%;min-height:3.2em;margin:0 auto;display:flex;align-items:center;justify-content:center;
-    word-break:break-word;
-  }
+  /* 说明框加宽增高，容纳三行文字 */
+  .hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;
+        padding:12px 14px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;
+        max-width:96%;min-height:3.2em;margin:0 auto;display:flex;align-items:center;justify-content:center;word-break:break-word}
 
-  /* ② 卡片与大箭头：让箭头“突出”在卡片左右外侧，底边对齐卡片边线 */
+  /* 明信片与箭头区域 */
   .viewer{position:relative;overflow:visible;margin-top:6px}
   .cardbox{
     position:relative;margin:0 auto;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06);
-    width:min(90%, 620px); /* 适度缩小给两侧箭头让位 */
+    width:min(90%, 620px);
   }
   .cardbox img{width:100%;height:auto}
 
-  /* 小箭头（默认位置先给到右侧上方，③后续可调表） */
+  /* ③ 小箭头默认对齐（位于卡片上缘、说明框下方） */
   .marker{
-    position:absolute;top:-10px;left:86%;
-    transform:translate(-50%,-100%);width:0;height:0;
-    border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
+    position:absolute;top:-10px;left:86%;transform:translate(-50%,-100%);
+    width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
     filter:drop-shadow(0 4px 6px rgba(22,163,74,.35));
   }
 
-  /* 大箭头（纯三角） */
+  /* ② 大箭头突出两侧，底边对齐卡片边线 */
   .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border:0;background:transparent;padding:0}
-  .big-arrow.left{left:0;transform:translate(calc(-100% + 2px), -50%);} /* 底边与卡片左边线对齐 */
+  .big-arrow.left{left:-18px}
   .big-arrow.left::before{
     content:"";display:block;width:0;height:0;
-    border-top:22px solid transparent;border-bottom:22px solid transparent;border-right:34px solid #222;
+    border-top:22px solid transparent;border-bottom:22px solid transparent;border-right:36px solid #222;
     filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
   }
-  .big-arrow.right{right:0;transform:translate(calc(100% - 2px), -50%);} /* 底边与卡片右边线对齐 */
+  .big-arrow.right{right:-18px}
   .big-arrow.right::before{
     content:"";display:block;width:0;height:0;
-    border-top:22px solid transparent;border-bottom:22px solid transparent;border-left:34px solid #222;
+    border-top:22px solid transparent;border-bottom:22px solid transparent;border-left:36px solid #222;
     filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
   }
 
-  /* 其余保持 */
   .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
   .features p{margin:2px 0;font-weight:800}
   .btns{display:flex;gap:10px;margin-top:6px}
@@ -107,13 +104,13 @@
 
     <div class="viewer">
       <div class="cardbox" id="cardbox">
-        <!-- 大箭头突出在卡片外侧 -->
+        <!-- 大箭头（两侧外突） -->
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
 
         <!-- 明信片图 -->
-        <img id="pc-img" src="postcard_cn.png?v=layoutR1" alt="postcard">
-        <!-- 小箭头（默认位置先放右上，后续按表格调位置） -->
+        <img id="pc-img" src="postcard_cn.png?v=r2" alt="postcard">
+        <!-- 小箭头（默认位置） -->
         <div class="marker" id="marker"></div>
       </div>
     </div>
@@ -134,7 +131,7 @@
 
 <script>
 (function(){
-  // 文案与小箭头默认位置 —— 先按你给的顺序右→左循环
+  // 文案与小箭头位置（右→左）
   const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
   const positions=[86,68,44,18];
   let i=0;
@@ -144,7 +141,7 @@
   function step(d){ i=(i+d+hints.length)%hints.length; apply(); }
   document.getElementById('prev').onclick=()=>step(-1);
   document.getElementById('next').onclick=()=>step(+1);
-  // 卡片区域左右滑动也可切换
+  // 滑动切换
   (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
     area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
     area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
