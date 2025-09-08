@@ -12,7 +12,7 @@
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:#fff;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
   img{max-width:100%;display:block}
-  /* 顶部：Logo 64 + 双行标题 */
+
   .top{position:sticky;top:0;z-index:50;background:var(--brand);box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
   .brand{display:flex;align-items:center;gap:10px}
@@ -36,177 +36,27 @@
   h1{font-size:24px;line-height:1.15;margin:4px 0 6px;text-align:center}
   .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:var(--card);border-radius:20px;padding:12px;box-shadow:var(--shadow)}
 
-  /* 说明框：更宽更矮，三行小字 */
   .hint{background:var(--panel);border:2px dashed #e4c23a;border-radius:12px;
         padding:8px 12px;text-align:center;font-size:14px;font-weight:800;line-height:1.35;
         max-width:min(820px,94%);margin:0 auto}
 
-  /* 明信片 + 纯三角大箭头（无边框），且“底边”与明信片左右边线对齐 */
   .viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
   .cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
   .cardbox img{width:100%;height:auto;display:block}
-  /* 小箭头在上缘外侧，确保可见 */
-  .marker{position:absolute;top:-8px;left:18%;transform:translate(-50%,-100%);width:0;height:0;
-          border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
+
+  /* 小箭头，默认在邮票上方中间 */
+  .marker{position:absolute;top:8%;left:82%;transform:translate(-50%,-100%);
+          width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;
+          border-bottom:16px solid var(--accent);
           filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
 
-  /* 纯 CSS 三角箭头（无可见框） */
-  .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
-  /* 左箭头：底边（垂直）与卡片左边线对齐（left:0 + translateX(-2px)微调）*/
-  .big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
-  .big-arrow.left::before{
-    content:"";display:block;
-    width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-right:28px solid #222; /* 颜色可调 */
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  }
-  /* 右箭头：底边与卡片右边线对齐（right:0 + translateX(100% - 2px)）*/
-  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
-  .big-arrow.right::before{
-    content:"";display:block;
-    width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-left:28px solid #222;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  }
-
-  /* 特点集锦更小更紧凑 */
   .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
   .features p{margin:2px 0;font-weight:800}
-  /* 三个按钮变扁变窄 */
   .btns{display:flex;gap:10px;margin-top:6px}
   .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
   .btn.primary{background:var(--brand);box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:var(--brand);
     font-weight:900;font-size:18px}
-/* 横幅“Smart / Postcard”做成艺术字（首字母大写） */
-.brandword .l1,
-.brandword .l2{
-  font-weight: 900;
-  font-size: 19px;              /* 如偏大/小，可在 18–20 之间微调 */
-  letter-spacing: .6px;
-  text-transform: capitalize;   /* 首字母大写 */
-  background: linear-gradient(180deg,#41d1ff 0%, #2aa7ff 55%, #0a67ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 3px 10px rgba(0,0,0,.18);
-}
-
-/* 右侧“三”图标放大并视觉居中 */
-.iconbtn[aria-label="menu"]{ width:44px; height:44px; }  /* 原40×40可留用也行 */
-.iconbtn[aria-label="menu"] span{
-  font-size:24px;
-  line-height:1;
-  transform: translateY(-1px);
-}
-.iconbtn span { font-size: 18px; }
-/* 缩小购物车角标“0” */
-.cart .badge{
-  font-size:10px;        /* 数字更小 */
-  padding:0 5px;         /* 内边距更窄 */
-  min-width:16px;        /* 胶囊更小 */
-  height:16px;
-  line-height:16px;
-  border-radius:8px;
-  top:-6px;              /* 位置微调 */
-  right:-6px;
-}
-/* 花样字效果 */
-.brandword span {
-  font-family: "Trebuchet MS", "Comic Sans MS", cursive, sans-serif;
-  font-weight: 900;
-  font-size: 22px;
-  background: linear-gradient(90deg, #007cf0, #00dfd8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
-}
-
-/* 三杠颜色变浅 */
-.iconbtn span {
-  color: #666;  /* 灰色，避免太黑 */
-  font-size: 22px;
-}
-/* 顶部品牌文字：渐变+轻浮雕 */
-.brandword,                 /* 整体一个元素时 */
-.brandword *,               /* 里面是 span 时 */
-.brand .brandword span {    /* 老写法的兜底 */
-  display: inline-block;
-  font-weight: 900;
-  letter-spacing: .5px;
-  /* 你可以微调大小（22~26） */
-  font-size: 24px;
-
-  /* 渐变文字核心 */
-  background: linear-gradient(90deg,#0ea5e9,#22d3ee 55%,#34d399);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  /* 轻微立体感 */
-  text-shadow: 0 1px 2px rgba(0,0,0,.15);
-}
-/* —— 仅版心微调：不触碰 .brandword 渐变 —— */
-
-/* ① 标题轻下移、留出顶部呼吸 */
-h1{margin:16px 0 10px}
-
-/* ② 说明框：更宽更矮，三行小字更易容纳 */
-.hint{max-width:94%;font-size:13.5px;line-height:1.35;padding:8px 10px}
-
-/* ③ 卡片与大箭头：箭头突出在外，底边与卡片左右边线对齐 */
-.viewer{align-items:center}
-.cardbox{flex:0 1 92%;margin:0 auto;position:relative}
-.big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border:0;background:transparent}
-.big-arrow.left{left:-30px}
-.big-arrow.left::before{content:"";border-top:18px solid transparent;border-bottom:18px solid transparent;border-right:28px solid #222}
-.big-arrow.right{right:-30px}
-.big-arrow.right::before{content:"";border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:28px solid #222}
-
-/* ④ 小箭头总在卡片上缘外侧可见 */
-.marker{top:-8px}
-/* --- 小箭头（仅定位，不改其它样式） --- */
-#pc-marker{
-  position:absolute; z-index:2;
-  /* 放在邮票正上方：top 约 -10px，居中对齐 */
-  top:-10px; left:78%; transform:translate(-50%,-100%);
-  /* 向下的三角形 */
-  width:0; height:0;
-  border-left:12px solid transparent;
-  border-right:12px solid transparent;
-  border-bottom:16px solid #16a34a; /* 箭头颜色 */
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-}
-/* 小箭头：放在卡片内部，指向邮票，上缘留一点点距离 */
-.cardbox::after{
-  content:"";
-  position:absolute;
-  z-index:3;
-  pointer-events:none;
-
-  /* 位置：紧贴上缘、居于邮票上方正中 */
-  top:8px;                 /* 内部，不会被 overflow 隐藏 */
-  left:79%;                /* 78~80% 之间微调即可对准邮票中心 */
-  transform:translateX(-50%);
-
-  /* 纯CSS三角形（向下） */
-  width:0; height:0;
-  border-left:12px solid transparent;
-  border-right:12px solid transparent;
-  border-top:0;
-  border-bottom:16px solid #16a34a;
-
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-}
-
-/* 小屏轻微修正（如觉得偏一点，可以保持或删除） */
-@media (max-width:390px){
-  .cardbox::after{ left:78.5%; }
-}
 </style>
 </head>
 <body>
@@ -239,9 +89,6 @@ h1{margin:16px 0 10px}
 
     <div class="viewer">
       <div class="cardbox" id="cardbox">
-        <button class="big-arrow left" id="prev" aria-label="上一项"></button>
-        <button class="big-arrow right" id="next" aria-label="下一项"></button>
-
         <img id="pc-img" src="postcard_cn.png?v=20031" alt="postcard sample">
         <div class="marker" id="marker"></div>
       </div>
@@ -260,27 +107,5 @@ h1{margin:16px 0 10px}
     <button class="start" id="start-btn">开始制作</button>
   </section>
 </main>
-
-<script>
-(function(){
-  // 说明与小箭头联动
-  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,44,68,86];
-  let i=0;
-  const hint=document.getElementById('hint');
-  const marker=document.getElementById('marker');
-  function apply(){hint.textContent=hints[i];marker.style.left=positions[i]+'%';}
-  function step(d){i=(i+d+hints.length)%hints.length;apply();}
-  document.getElementById('prev').onclick=()=>step(-1);
-  document.getElementById('next').onclick=()=>step(+1);
-  // 支持在卡片区域左右滑动
-  (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
-    area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-    area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
-    area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
-  })();
-  apply();
-})();
-</script>
 </body>
 </html>
