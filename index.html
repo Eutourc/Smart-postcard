@@ -181,6 +181,32 @@ h1{margin:16px 0 10px}
   border-bottom:16px solid #16a34a; /* 箭头颜色 */
   filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
 }
+/* 小箭头：放在卡片内部，指向邮票，上缘留一点点距离 */
+.cardbox::after{
+  content:"";
+  position:absolute;
+  z-index:3;
+  pointer-events:none;
+
+  /* 位置：紧贴上缘、居于邮票上方正中 */
+  top:8px;                 /* 内部，不会被 overflow 隐藏 */
+  left:79%;                /* 78~80% 之间微调即可对准邮票中心 */
+  transform:translateX(-50%);
+
+  /* 纯CSS三角形（向下） */
+  width:0; height:0;
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-top:0;
+  border-bottom:16px solid #16a34a;
+
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+}
+
+/* 小屏轻微修正（如觉得偏一点，可以保持或删除） */
+@media (max-width:390px){
+  .cardbox::after{ left:78.5%; }
+}
 </style>
 </head>
 <body>
