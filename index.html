@@ -46,9 +46,18 @@
   .cardbox{position:relative;flex:1;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.06)}
   .cardbox img{width:100%;height:auto;display:block}
   /* 小箭头在上缘外侧，确保可见 */
-  .marker{position:absolute;top:-8px;left:18%;transform:translate(-50%,-100%);width:0;height:0;
-          border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--accent);
-          filter:drop-shadow(0 4px 6px rgba(22,163,74,.35))}
+  .marker {
+  position: absolute;
+  top: -18px;              /* 箭头在卡片外上方 */
+  left: 85%;               /* 大约对准邮票正中（可微调） */
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid #16a34a;  /* 绿色箭头，朝下 */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+}
 
   /* 纯 CSS 三角箭头（无可见框） */
   .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
