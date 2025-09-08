@@ -169,6 +169,19 @@ h1{margin:16px 0 10px}
 
 /* ④ 小箭头总在卡片上缘外侧可见 */
 .marker{top:-8px}
+/* 首页继续版V1：邮票正上方的向下小箭头 */
+.cardbox .marker{
+  position:absolute;
+  top:-10px;
+  left:78.5%;              /* 继续版V1上对准邮票中心的经验值 */
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-top:16px solid #16a34a;   /* 向下三角 */
+  z-index:3;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.25));
+}
 </style>
 </head>
 <body>
