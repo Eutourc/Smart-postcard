@@ -169,6 +169,18 @@ h1{margin:16px 0 10px}
 
 /* ④ 小箭头总在卡片上缘外侧可见 */
 .marker{top:-8px}
+/* --- 小箭头（仅定位，不改其它样式） --- */
+#pc-marker{
+  position:absolute; z-index:2;
+  /* 放在邮票正上方：top 约 -10px，居中对齐 */
+  top:-10px; left:78%; transform:translate(-50%,-100%);
+  /* 向下的三角形 */
+  width:0; height:0;
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-bottom:16px solid #16a34a; /* 箭头颜色 */
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+}
 </style>
 </head>
 <body>
