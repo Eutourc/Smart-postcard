@@ -169,6 +169,18 @@ h1{margin:16px 0 10px}
 
 /* ④ 小箭头总在卡片上缘外侧可见 */
 .marker{top:-8px}
+/* 小箭头样式 */
+.marker {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 30px solid green;
+}
 </style>
 </head>
 <body>
