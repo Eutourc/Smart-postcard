@@ -169,25 +169,28 @@ h1{margin:16px 0 10px}
 /* ③ 卡片与大箭头：箭头突出在外，底边与卡片左右边线对齐 */
 .viewer{align-items:center}
 .cardbox{flex:0 1 92%;margin:0 auto;position:relative}
-.big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border:0;background:transparent}
-.big-arrow.left{left:-30px}
-.big-arrow.left::before{content:"";border-top:18px solid transparent;border-bottom:18px solid transparent;border-right:28px solid #222}
-.big-arrow.right{right:-30px}
-.big-arrow.right::before{content:"";border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:28px solid #222}
-
-/* ④ 小箭头总在卡片上缘外侧可见 */
-.marker{top:-8px}
-/* 小箭头样式 */
-.marker {
-  position: absolute;
-  top: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 30px solid green;
+  /* ……你的样式若干…… */
+.cardbox{
+  position:relative;
+  flex:1;
+  border-radius:16px;
+  overflow:visible;                   /* 让箭头能出现在卡片外 */
+  background:#fff;
+  border:1px solid rgba(0,0,0,.06);
+}
+/* --- 覆盖 .marker 强制到“邮票上方 + 在卡片外” --- */
+.viewer .cardbox > .marker{
+  position:absolute;
+  top:-18px !important;               /* 在上边缘外 */
+  left:82% !important;                /* 默认邮票上方；80–84% 可微调 */
+  transform:none !important;
+  width:0;height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:12px solid #16a34a;      /* 小巧下箭头 */
+  filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
+  pointer-events:none;
+  z-index:3;
 }
 </style>
 </head>
