@@ -58,28 +58,49 @@
   pointer-events:none;
   z-index:3;
 }
-  /* 纯 CSS 三角箭头（无可见框） */
-  .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
-  /* 左箭头：底边（垂直）与卡片左边线对齐（left:0 + translateX(-2px)微调）*/
-  .big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
-  .big-arrow.left::before{
-    content:"";display:block;
-    width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-right:28px solid #222; /* 颜色可调 */
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  }
-  /* 右箭头：底边与卡片右边线对齐（right:0 + translateX(100% - 2px)）*/
-  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
-  .big-arrow.right::before{
-    content:"";display:block;
-    width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-left:28px solid #222;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  }
+/* 纯 CSS 三角箭头（无可见框） */
+.big-arrow {
+  position: absolute;
+  top: -88%;        /* 上移，避免出现方块 */
+  width: 0;
+  height: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* 左箭头 */
+.big-arrow.left {
+  left: 0;
+  transform: translate(calc(-100% + 2px), 0);
+}
+.big-arrow.left::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 32px solid transparent;
+  border-bottom: 32px solid transparent;
+  border-right: 28px solid #0b3a77;  /* 深蓝色箭头 */
+}
+
+/* 右箭头 */
+.big-arrow.right {
+  right: 0;
+  transform: translate(calc(100% - 2px), 0);
+}
+.big-arrow.right::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 32px solid transparent;
+  border-bottom: 32px solid transparent;
+  border-left: 28px solid #0b3a77;   /* 深蓝色箭头 */
+}
 
   /* 特点集锦更小更紧凑 */
   .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
