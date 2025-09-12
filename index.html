@@ -60,27 +60,30 @@
   z-index:9;
 }
   /* 纯 CSS 三角箭头（无可见框） */
-  .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
-  /* 左箭头：底边（垂直）与卡片左边线对齐（left:0 + translateX(-2px)微调）*/
-  .big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
-  .big-arrow.left::before{
-    content:"";display:block;
-    width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-right:28px solid #222; /* 颜色可调 */
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  }
-  /* 右箭头：底边与卡片右边线对齐（right:0 + translateX(100% - 2px)）*/
-  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
-  .big-arrow.right::before{
-    content:"";display:block;
-    width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-left:28px solid #222;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-  }
+/* 颜色建议：深蓝更专业、沉稳；如需“暗黑”，把 --arrow 改成 #1f2937 */
+:root{ --arrow:#0b3a77; }  /* 深海军蓝（建议） */
+
+/* 大箭头：瘪状不等边三角，置于说明框两侧且在卡片外 */
+.big-arrow{
+  position:absolute;
+  top:-74px;                 /* 与说明框同一行；感觉偏差可微调 */
+  width:46px; height:34px;   /* 扁平比例，瘪状 */
+  background:var(--arrow);
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.25));
+  border:0; padding:0;
+}
+
+/* 左侧：尖头朝右，底边与卡片左边线对齐（突出在外） */
+.big-arrow.left{
+  left:0; transform:translate(calc(-100% + 2px),0);
+  clip-path:polygon(0% 50%, 100% 0%, 100% 100%);  /* 不等边瘪三角 */
+}
+
+/* 右侧：镜像，尖头朝左，底边与卡片右边线对齐（突出在外） */
+.big-arrow.right{
+  right:0; transform:translate(calc(100% - 2px),0) scaleX(-1);
+  clip-path:polygon(0% 50%, 100% 0%, 100% 100%);
+}
 
   /* 特点集锦更小更紧凑 */
   .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
