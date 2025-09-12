@@ -61,7 +61,7 @@
 /* 纯 CSS 三角箭头（无可见框） */
 .big-arrow {
   position: absolute;
-  top: -50%;        /* 上移，避免出现方块 */
+  top: -42%;        /* 上移，避免出现方块 */
   width: 0;
   height: 0;
   border: 0;
@@ -74,7 +74,7 @@
 
 /* 左箭头 */
 .big-arrow.left {
-  left: 0;
+  left: -24;
   transform: translate(calc(-100% + 2px), 0);
 }
 .big-arrow.left::before {
@@ -82,9 +82,9 @@
   display: block;
   width: 0;
   height: 0;
-  border-top: 32px solid transparent;
-  border-bottom: 32px solid transparent;
-  border-right: 28px solid #0b3a77;  /* 深蓝色箭头 */
+  border-top: 24px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-right: 18px solid #0b3a77;  /* 深蓝色箭头 */
 }
 
 /* 右箭头 */
