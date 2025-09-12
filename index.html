@@ -45,56 +45,41 @@
   .viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
   .cardbox{position:relative;flex:1;border-radius:16px;overflow:visible;background:#fff;border:1px solid rgba(0,0,0,.06)}
   .cardbox img{width:100%;height:auto;display:block}
-  /* 小箭头：更接近样图——略大、卡片外、对准邮票正中 */
-/* 小箭头：略大、居邮票上方且在卡片外 */
-.marker{
+  /* 小箭头在上缘外侧，确保可见 */
+  .marker{
   position:absolute;
-  top:-2px;              /* 再抬高，确保在卡片外沿之上 */
-  left:94%;               /* 往右微调，靠近邮票正中 */
+  top:-18px;
+  left:82%;
   width:0;height:0;
-  border-left:13px solid transparent;
-  border-right:13px solid transparent;
-  border-top:24px solid #22c55e;  /* 绿色尖头，可再改色 */
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.25));
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:12px solid #16a34a;
+  filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
   pointer-events:none;
-  z-index:9;
+  z-index:3;
 }
   /* 纯 CSS 三角箭头（无可见框） */
-/* 颜色建议：深蓝更专业、沉稳；如需“暗黑”，把 --arrow 改成 #1f2937 */
-:root{ --arrow:#0b3a77; }  /* 深海军蓝（建议） */
-
-/* 大箭头：瘪状不等边三角，置于说明框两侧且在卡片外 */
-/* 大箭头：横向“瘪”的不等边三角，颜色偏深，且在提示框下层 */
-.big-arrow{
-  position:absolute;
-  top:-88px;           /* 与提示框对齐，可按需微调 */
-  width:0;height:0;
-  z-index:2;           /* 让提示框 .hint 盖在它之上 */
-  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
-}
-.big-arrow.left{ left:-28px;  transform:translateX(0); }
-.big-arrow.right{ right:-6px; transform:translateX(0); }
-
-/* 采用“横向瘪”比例：底边不大、竖高更明显（看起来左右被压扁）。
-   左侧箭头：向右指（用 border-right 形成三角）
-   右侧箭头：向左指（用 border-left 形成三角） */
-.big-arrow.left::before,
-.big-arrow.right::before{
-  content:none! important;
-  display:block;
-  width:0;height:0;
-}
-/* 颜色建议：深蓝灰（稳重，跟页面协调）。需要更蓝：把 #1f2a44 改浅一点即可。 */
-.big-arrow.left::before{
-  border-top:20px solid transparent;   /* 高度更大 */
-  border-bottom:20px solid transparent;
-  border-right:22px solid #1f2a44;     /* 瘪：底边较窄、看起来被横向压扁 */
-}
-.big-arrow.right::before{
-  border-top:20px solid transparent;
-  border-bottom:20px solid transparent;
-  border-left:22px solid #1f2a44;
-}
+  .big-arrow{position:absolute;top:-40px;width:0;height:0;border:0;background:transparent;padding:0}
+  /* 左箭头：底边（垂直）与卡片左边线对齐（left:0 + translateX(-2px)微调）*/
+  .big-arrow.left{left:0;transform:translate(calc(-100% + 2px),0)}
+  .big-arrow.left::before{
+    content:"";display:block;
+    width:0;height:0;
+    border-top:18px solid transparent;
+    border-bottom:18px solid transparent;
+    border-right:28px solid #222; /* 颜色可调 */
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+  }
+  /* 右箭头：底边与卡片右边线对齐（right:0 + translateX(100% - 2px)）*/
+  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
+  .big-arrow.right::before{
+    content:"";display:block;
+    width:0;height:0;
+    border-top:18px solid transparent;
+    border-bottom:18px solid transparent;
+    border-left:28px solid #222;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+  }
 
   /* 特点集锦更小更紧凑 */
   .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
