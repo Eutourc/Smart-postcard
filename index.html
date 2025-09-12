@@ -46,16 +46,16 @@
   .cardbox{position:relative;flex:1;border-radius:16px;overflow:visible;background:#fff;border:1px solid rgba(0,0,0,.06)}
   .cardbox img{width:100%;height:auto;display:block}
   /* 小箭头：更接近样图——略大、卡片外、对准邮票正中 */
+/* 小箭头：略大、居邮票上方且在卡片外 */
 .marker{
   position:absolute;
-  top:-32px;                 /* 稍再上移，尖儿明确在卡片外 */
-  left:50%;                  /* 先以卡片正中为基准 */
-  transform:translateX(-50%);/* 居中偏移，方便后续微调 */
+  top:-28px;              /* 再抬高，确保在卡片外沿之上 */
+  left:84%;               /* 往右微调，靠近邮票正中 */
   width:0;height:0;
-  border-left:12px solid transparent;
-  border-right:12px solid transparent;
-  border-top:16px solid #22c55e;  /* 绿色，之后可改色 */
-  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:14px solid #22c55e;  /* 绿色尖头，可再改色 */
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.25));
   pointer-events:none;
   z-index:9;
 }
@@ -64,25 +64,38 @@
 :root{ --arrow:#0b3a77; }  /* 深海军蓝（建议） */
 
 /* 大箭头：瘪状不等边三角，置于说明框两侧且在卡片外 */
+/* 大箭头：横向“瘪”的不等边三角，颜色偏深，且在提示框下层 */
 .big-arrow{
   position:absolute;
-  top:-74px;                 /* 与说明框同一行；感觉偏差可微调 */
-  width:46px; height:34px;   /* 扁平比例，瘪状 */
-  background:var(--arrow);
-  filter:drop-shadow(0 3px 6px rgba(0,0,0,.25));
-  border:0; padding:0;
+  top:-38px;           /* 与提示框对齐，可按需微调 */
+  width:0;height:0;
+  z-index:2;           /* 让提示框 .hint 盖在它之上 */
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+}
+.big-arrow.left{ left:-6px;  transform:translateX(0); }
+.big-arrow.right{ right:-6px; transform:translateX(0); }
+
+/* 采用“横向瘪”比例：底边不大、竖高更明显（看起来左右被压扁）。
+   左侧箭头：向右指（用 border-right 形成三角）
+   右侧箭头：向左指（用 border-left 形成三角） */
+.big-arrow.left::before,
+.big-arrow.right::before{
+  content:"";
+  display:block;
+  width:0;height:0;
 }
 
-/* 左侧：尖头朝右，底边与卡片左边线对齐（突出在外） */
-.big-arrow.left{
-  left:0; transform:translate(calc(-100% + 2px),0);
-  clip-path:polygon(0% 50%, 100% 0%, 100% 100%);  /* 不等边瘪三角 */
+/* 颜色建议：深蓝灰（稳重，跟页面协调）。需要更蓝：把 #1f2a44 改浅一点即可。 */
+.big-arrow.left::before{
+  border-top:22px solid transparent;   /* 高度更大 */
+  border-bottom:22px solid transparent;
+  border-right:14px solid #1f2a44;     /* 瘪：底边较窄、看起来被横向压扁 */
 }
 
-/* 右侧：镜像，尖头朝左，底边与卡片右边线对齐（突出在外） */
-.big-arrow.right{
-  right:0; transform:translate(calc(100% - 2px),0) scaleX(-1);
-  clip-path:polygon(0% 50%, 100% 0%, 100% 100%);
+.big-arrow.right::before{
+  border-top:22px solid transparent;
+  border-bottom:22px solid transparent;
+  border-left:14px solid #1f2a44;
 }
 
   /* 特点集锦更小更紧凑 */
