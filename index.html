@@ -43,7 +43,7 @@
 
   /* 明信片 + 纯三角大箭头（无边框），且“底边”与明信片左右边线对齐 */
   .viewer{position:relative;flex:1;display:flex;align-items:stretch;margin-top:6px}
-  .cardbox{position:relative;flex:1;border-radius:16px;overflow:visible;background:#fff;border:1px solid rgba(0,0,0,.10);box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.06)}
+  .cardbox{position:relative;flex:1;border-radius:16px;overflow:visible;background:#fff;border:1px solid rgba(0,0,0,.12)}
   .cardbox img{width:100%;height:auto;display:block}
   /* 小箭头在上缘外侧，确保可见 */
   .marker{
@@ -59,25 +59,25 @@
   z-index:3;
 }
   /* 纯 CSS 三角箭头（无可见框） */
-  .big-arrow{position:absolute;top:-52px;width:0;height:0;border:0;background:transparent;padding:0}
+  .big-arrow{position:absolute;top:-48px;width:0;height:0;border:0;background:transparent;padding:0}
   /* 左箭头：底边（垂直）与卡片左边线对齐（left:0 + translateX(-2px)微调）*/
-  .big-arrow.left{left:0;transform:translateX(0)}
+  .big-arrow.left{left:0;transform:translate(calc(-100% + 1px),0)}
   .big-arrow.left::before{
     content:"";display:block;
     width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-right:28px solid #222; /* 颜色可调 */
+    border-top:22px solid transparent;
+    border-bottom:22px solid transparent;
+    border-right:34px solid #222; /* 颜色可调 */
     filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
   }
   /* 右箭头：底边与卡片右边线对齐（right:0 + translateX(100% - 2px)）*/
-  .big-arrow.right{right:0;transform:translateX(0)}
+  .big-arrow.right{right:0;transform:translate(calc(100% - 2px),0)}
   .big-arrow.right::before{
     content:"";display:block;
     width:0;height:0;
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-left:28px solid #222;
+    border-top:22px solid transparent;
+    border-bottom:22px solid transparent;
+    border-left:34px solid #222;
     filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
   }
 
@@ -176,7 +176,7 @@ h1{margin:16px 0 10px}
   border-radius:16px;
   overflow:visible;                   /* 让箭头能出现在卡片外 */
   background:#fff;
-  border:1px solid rgba(0,0,0,.06);
+  border:1px solid rgba(0,0,0,.12);
 }
 /* --- 覆盖 .marker 强制到“邮票上方 + 在卡片外” --- */
 .viewer .cardbox > .marker{
