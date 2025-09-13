@@ -234,45 +234,46 @@ h1{margin:16px 0 10px}
 /* ==== PATCH END ==== */
 
 
-/* ===== v2.2b arrow refinements (position & thickness only) ===== */
-:root { --arrow:#0b3a77; } /* 深海军蓝 */
+/* ===== v2.2b 箭头优化（在 v2.2 基础上，仅微调，不改其它） ===== */
+/* 大箭头：整体上移，左箭头贴齐左边线，略微瘦化（更精致） */
+:root{ --arrow:#0b3a77; } /* 深海军蓝，沿用 */
 
 .big-arrow{
-  position:absolute; top:-55px;
+  position:absolute; top:-60px;
   width:0; height:0; border:0; background:transparent; padding:0;
   pointer-events:none; z-index:2;
 }
-.big-arrow.left{ left:0; transform:translate(calc(-100% + 2px),0); }
+.big-arrow.left{ left:0; transform:translate(calc(-100% + 0px),0); }
 .big-arrow.left::before{
   content:""; display:block; width:0; height:0;
-  border-top:30px solid transparent;
-  border-bottom:30px solid transparent;
-  border-right:40px solid var(--arrow);
+  border-top:28px solid transparent;
+  border-bottom:28px solid transparent;
+  border-right:34px solid var(--arrow);
   filter:drop-shadow(-1px 2px 4px rgba(0,0,0,.25));
 }
-.big-arrow.right{ right:0; transform:translate(calc(100% - 2px),0); }
+.big-arrow.right{ right:0; transform:translate(calc(100% - 0px),0); }
 .big-arrow.right::before{
   content:""; display:block; width:0; height:0;
-  border-top:30px solid transparent;
-  border-bottom:30px solid transparent;
-  border-left:40px solid var(--arrow);
+  border-top:28px solid transparent;
+  border-bottom:28px solid transparent;
+  border-left:34px solid var(--arrow);
   filter:drop-shadow(1px 2px 4px rgba(0,0,0,.25));
 }
 
-/* 小箭头：离上边缘 12px，略靠右；如需微调只改 top/left */
+/* 小箭头：竖向更细长，离上边缘留空（不再贴顶），仍在邮票上方 */
 .viewer .cardbox > .marker{
   position:absolute;
-  top:-12px;
-  left:84%;
+  top:-10px;            /* 离卡片边缘留 10px 空隙 */
+  left:84%;             /* 若需更居中/靠右，可微调 83%~86% */
   width:0; height:0;
-  border-left:14px solid transparent;
-  border-right:14px solid transparent;
-  border-top:12px solid #22c55e;
+  border-left:6px solid transparent;    /* 细：6px */
+  border-right:6px solid transparent;   /* 细：6px */
+  border-top:20px solid #22c55e;        /* 长：20px */
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.25));
   pointer-events:none;
   z-index:9;
 }
-/* ===== end arrow refinements ===== */
+/* ===== 仅此覆盖，不改其它 ===== */
 
 </style>
 </head>
