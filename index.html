@@ -2,136 +2,111 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Smart Postcard – v2.2d</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Smart Postcard</title>
 <style>
   :root{
-    --brand:#f0b400;
-    --panel:#ffffff;
-    --text:#222;
-    --accent:#0b3a77;       /* 深海军蓝：箭头颜色（专业、稳重） */
-    --arrow: var(--accent);
-    --shadow: rgba(0,0,0,.08);
+    --brand:#f2b705;           /* 顶部黄 */
+    --ink:#1f2937;             /* 文字 */
+    --muted:#6b7280;           /* 次要文字 */
+    --panel:#ffffff;           /* 卡片底 */
+    --shadow:0 6px 20px rgba(0,0,0,.08);
+    --arrow:#0b3a77;           /* 大箭头深蓝 */
+    --marker:#22c55e;          /* 小箭头绿色 */
   }
 
-  html,body{margin:0;padding:0;background:#fff;color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
+  img{max-width:100%;display:block}
 
-  /* 顶部横幅（简化） */
-  header.top{background:#f2b90b;padding:14px 16px;display:flex;align-items:center;gap:12px}
-  header.top .brand{font-weight:800;letter-spacing:.5px;color:#143151;font-size:22px}
+  /* 顶部 */
+  .top{background:var(--brand);padding:14px 18px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand img{width:40px;height:40px}
+  .brand b{font-size:26px;letter-spacing:.3px}
 
-  main.wrap{max-width:980px;margin:22px auto;padding:0 12px}
+  /* 布局 */
+  .wrap{max-width:980px;margin:0 auto;padding:18px 14px 60px}
+  h1{font-size:26px;margin:0 0 16px}
 
-  h1{font-size:26px;margin:10px 0 18px}
+  /* 提示按钮（中间虚线框） */
+  .hint{display:inline-block;margin:8px 0 14px;padding:10px 16px;border-radius:12px;border:2px dashed #e6c34e;background:#fff6d8;color:#6a5300}
 
-  /* 说明框 */
-  .hint{
-    display:inline-block;
-    background:var(--panel);
-    border:2px dashed #e3c455;
-    border-radius:14px;
-    padding:10px 18px;
-    font-weight:600;
-    color:#333;
+  /* 预览容器 */
+  .viewer{position:relative;margin-top:4px;background:var(--panel);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+  .cardbox{position:relative}
+  .cardbox img{
+    width:100%;height:auto;border-radius:10px;
+    border:1px solid rgba(0,0,0,.18);       /* 暗色勾边（很淡） */
+    background:#fff
   }
 
-  /* 舞台 */
-  .stage{display:flex;flex-direction:column;gap:16px;}
-
-  /* 明信片容器 + 箭头 */
-  .viewer{position:relative;flex:1;display:flex;justify-content:center}
-  .cardbox{
-    position:relative;
-    flex:0 1 760px;
-    border-radius:16px;
-    overflow:visible; /* 让小箭头可外溢 */
-    background:#fff;
-    /* 细暗边框，增强轮廓 */
-    border:1px solid rgba(0,0,0,.10);
-    box-shadow:0 2px 10px rgba(0,0,0,.06);
-    padding:0; margin:0 auto;
-  }
-  .cardbox img{display:block;width:100%;height:auto;border-radius:12px;}
-
-  /* —— 小箭头：更靠近邮票上方，离边缘有缝 —— */
+  /* 小箭头（邮票上方，微离边） */
   .marker{
-    position:absolute;
-    top:-16px;                /* 离卡片上边缘有 16px 的缝隙（更舒适） */
-    left:75.2%;               /* 略偏右，靠近邮票正中 */
-    width:0;height:0;
+    position:absolute;top:-6px;left:83.8%;   /* 离上边缘一点点，整体更居中 */
+    width:0;height:0;z-index:9;pointer-events:none;
     border-left:10px solid transparent;
     border-right:10px solid transparent;
-    border-top:12px solid #22c55e; /* 绿色小尖头 */
+    border-top:9px solid var(--marker);
     filter:drop-shadow(0 1px 2px rgba(0,0,0,.25));
-    pointer-events:none;
-    z-index:3;
   }
 
-  /* —— 大箭头（左右各一） ——
-     目标：略“瘦化”的扁三角，位于标题与卡片之间的中间高度；
-           左箭头与卡片左边线严格对齐；右箭头对称。
-  */
-  .big-arrow{position:absolute;top:-84px;width:0;height:0;border:0;background:transparent;padding:0;pointer-events:none;z-index:2}
-  /* 控制胖瘦（水平宽度）与厚度 */
-  :root{
-    --fat: 32px;   /* 水平半宽：越大越“胖” */
-    --thick: 24px; /* 垂直厚度：越大越“厚” */
+  /* 大箭头：横向“瘪”三角，位于卡片外且与卡片左右边对齐 */
+  .big-arrow{position:absolute;top:-56px;width:0;height:0;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));z-index:3}
+  .big-arrow::before{
+    content:"";display:block;width:0;height:0;
+    border-left:18px solid transparent;
+    border-right:18px solid transparent;
+    border-top:26px solid var(--arrow);     /* 厚度：略瘦，比前一版更精致 */
   }
-  .big-arrow.left{left:0;transform:translateX(-2px);}   /* 与卡片左边线对齐（-2px 微调抵消圆角） */
-  .big-arrow.right{right:0;transform:translateX(2px)}
+  /* 与卡片左边线对齐（tip 正好贴边，整块在卡片外） */
+  .big-arrow.left{left:0;transform:translateX(calc(-100% + 2px))}
+  .big-arrow.right{right:0;transform:translateX(calc(100% - 2px))}
 
-  .big-arrow.left::before,
-  .big-arrow.right::before{
-    content:"";
-    display:block;
-    width:0;height:0;
-    border-left:var(--fat) solid transparent;
-    border-right:var(--fat) solid transparent;
-    border-top:var(--thick) solid var(--arrow);
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.18));
+  /* 底部两颗按钮 */
+  .btns{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px}
+  .btn{flex:1 1 240px;border:none;border-radius:14px;padding:14px 18px;font-size:18px}
+  .btn.primary{background:#eab308;color:#111}
+  .btn.ghost{background:#eee}
+
+  /* 适配窄屏：让箭头跟随整体缩放稍微上抬 */
+  @media (max-width:480px){
+    .big-arrow{top:-52px}
+    .big-arrow::before{border-left:16px solid transparent;border-right:16px solid transparent;border-top:24px solid var(--arrow)}
+    .marker{top:-5px}
   }
-
-  /* 右箭头朝向内侧 */
-  .big-arrow.right::before{
-    transform:scaleX(-1);
-  }
-
-  /* —— 布局示意（按钮等） —— */
-  .btns{display:flex;gap:18px;justify-content:center;margin:22px 0 40px}
-  .btn{min-width:180px;border-radius:12px;padding:14px 18px;border:0;background:#f0b400;color:#1a1a1a;font-weight:700}
-  .btn.secondary{background:#eee}
 </style>
 </head>
 <body>
   <header class="top">
-    <div class="brand">Smart Postcard</div>
+    <div class="brand">
+      <img src="Logo.png" alt="Logo">
+      <b>Smart Postcard</b>
+    </div>
   </header>
 
   <main class="wrap">
     <h1>珍藏您举世无双的纪念明信片</h1>
 
-    <div class="stage">
-      <div style="text-align:center"><span class="hint">自定义邮票图案</span></div>
+    <div class="hint">自定义邮票图案</div>
 
-      <div class="viewer">
-        <div class="cardbox" id="cardbox">
-          <!-- 大箭头（左右） -->
-          <div class="big-arrow left" aria-hidden="true"></div>
-          <div class="big-arrow right" aria-hidden="true"></div>
+    <section class="viewer">
+      <div class="cardbox">
+        <!-- 大箭头（左右） -->
+        <i class="big-arrow left"></i>
+        <i class="big-arrow right"></i>
 
-          <!-- 明信片样图 -->
-          <img id="pc-img" alt="明信片样图"
-               src="https://raw.githubusercontent.com/Eutourc/Smart-postcard/main/postcard_demo.png">
+        <!-- 小箭头（邮票上方，微离边） -->
+        <i class="marker"></i>
 
-          <!-- 小箭头 -->
-          <div class="marker" aria-hidden="true"></div>
-        </div>
+        <!-- 明信片样图：使用仓库已存在文件名 -->
+        <img id="pc-img" src="postcard_cn.png" alt="明信片样图" />
       </div>
+    </section>
 
-      <div class="btns">
-        <button class="btn">纪念明信片</button>
-        <button class="btn secondary">传统明信片</button>
-      </div>
+    <div class="btns">
+      <button class="btn primary">纪念明信片</button>
+      <button class="btn ghost">传统明信片</button>
     </div>
   </main>
 </body>
