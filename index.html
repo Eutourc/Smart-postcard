@@ -1,139 +1,136 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Smart Postcard — 首页</title>
-<style>
-  :root{
-    /* 可微调参数（数值越小改动越轻） */
-    --arrow-fatness: 1.08;        /* 大箭头胖瘦系数（1.00=和v2.2c相同，>1略胖）*/
-    --arrow-left-w: 64px;          /* 左大箭头宽度 */
-    --arrow-right-w: 64px;         /* 右大箭头宽度 */
-    --arrow-h: 76px;               /* 大箭头高度（标题与样图间的高度）*/
-    --small-arrow-top-gap: 12px;   /* 小箭头离样图上边的间距，保持v2.2c不变 */
-    --small-arrow-w: 22px;         /* 小箭头宽 */
-    --small-arrow-h: 12px;         /* 小箭头高（竖向更瘦）*/
-    --border-color: rgba(0,0,0,.10);  /* 样图描线颜色（很淡） */
-    --border-radius: 0px;          /* 直角边 */
-    --badge-bg: #222;              /* 右上角版本标识 */
-    --badge-fg: #fff;
-  }
-
-  html,body{margin:0;padding:0;background:#fff;color:#222;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
-  .container{max-width:720px;margin:0 auto; padding-bottom:40px;}
-
-  /* 顶部横幅（保持 v2.2c 已确认外观） */
-  .hero{background:#f0b408; /* 保持黄金色 */ }
-  .hero .wrap{display:flex; align-items:center; gap:12px; padding:14px 16px;}
-  .logo{width:64px;height:64px; object-fit:contain}
-  .brand-block{display:flex; flex-direction:column;}
-  .brand-line1{font-size:28px; font-weight:700; letter-spacing:.5px; color:#132c5a;}
-  .brand-line2{font-size:28px; font-weight:700; letter-spacing:.5px; color:#132c5a; margin-top:2px;}
-  .hero-actions{margin-left:auto; display:flex; gap:10px;}
-  .btn-ghost{background:#fff; color:#333; border-radius:18px; padding:6px 10px; font-size:14px; border:none}
-
-  /* 版本标识 */
-  .badge{position:fixed; right:12px; top:12px; background:var(--badge-bg); color:var(--badge-fg);
-         font-size:12px; padding:4px 8px; border-radius:12px; z-index:20}
-  
-  /* 页面大标题 */
-  h1{font-size:28px; font-weight:800; margin:20px 16px 10px}
-
-  /* 卡片与箭头区域 */
-  .stage{position:relative; margin:0 16px 0; background:#fff; border-radius:16px;
-         box-shadow:0 6px 18px rgba(0,0,0,.06); padding:18px 14px 22px}
-  
-  /* 样图区 */
-  .postcard-wrap{position:relative; margin-top:12px;}
-  .postcard{display:block; width:100%; border:1px solid var(--border-color); border-radius:var(--border-radius);}
-  
-  /* 大箭头（左右各一个，位置固定在标题与样图之间） */
-  .big-arrows{position:absolute; left:0; right:0; top:-6px; height:var(--arrow-h); pointer-events:none}
-  /* 左箭头：让右边线与样图左边线对齐 —— 把箭头容器放进 stage，再用与 postcard-wrap 左边一致的对齐方式 */
-  .arrow-left{position:absolute; left:14px; /* 与stage内边距一致，保证与样图左边线同基线 */
-              width:calc(var(--arrow-left-w) * var(--arrow-fatness)); height:var(--arrow-h);}
-  .arrow-right{position:absolute; right:14px; width:calc(var(--arrow-right-w) * var(--arrow-fatness)); height:var(--arrow-h);}
-  .tri{width:0; height:0; border-top: calc(var(--arrow-h)/2) solid transparent;
-       border-bottom: calc(var(--arrow-h)/2) solid transparent;}
-  .tri-left{border-right: calc(var(--arrow-left-w) * var(--arrow-fatness)) solid #164c82;}
-  .tri-right{border-left:  calc(var(--arrow-right-w) * var(--arrow-fatness)) solid #164c82;}
-  
-  /* 小箭头：保持原位置，只竖向更瘦（不横向加宽） */
-  .small-arrow{position:absolute; left:50%; transform:translateX(-50%); 
-               top: calc(12px + var(--small-arrow-top-gap)); /* 与v2.2c的视觉间距一致 */
-               width:0; height:0; 
-               border-left: calc(var(--small-arrow-w)/2) solid transparent;
-               border-right: calc(var(--small-arrow-w)/2) solid transparent;
-               border-top: var(--small-arrow-h) solid #2aa64a; /* 竖向变瘦，用较小的高值 */
-               pointer-events:none}
-
-  /* “自定义邮票图案”虚线按钮（保留既有样式） */
-  .stamp-btn{display:inline-block; margin:12px auto 0; padding:12px 18px; 
-             border:2px dashed #e7c44a; border-radius:14px; font-weight:700; background:#fff}
-  
-  /* 底部按钮组（保留 v2.2c 外观） */
-  .cta{display:flex; gap:14px; margin:16px}
-  .cta .btn{flex:1; border:none; border-radius:18px; padding:16px; font-size:18px; font-weight:800}
-  .btn-primary{background:#eabb0b; color:#222}
-  .btn-ghost-2{background:#eaeef4; color:#222}
-
-  /* 说明文案（保持 v2.2c 内容与排版） */
-  .desc{padding:8px 16px 0; color:#333; line-height:1.8}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Smart Postcard — 首页 v2.4-fixed</title>
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    :root{
+      --brand:#F5B800; /* 金黄横幅 */
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --bg:#ffffff;
+      --panel:#fff8d9;
+      --card:#ffffff;
+      --accent:#0ea5e9;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    img,svg{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:980px;margin:0 auto;padding:16px}
+    /* 顶部横幅 */
+    .hero{background:var(--brand);padding:18px 16px 22px}
+    .hero .row{display:flex;align-items:center;gap:16px}
+    .logo{width:64px;height:64px;flex:0 0 64px}
+    .hero-title{line-height:1.05;font-weight:800;color:#0b253f}
+    .hero-title span{display:block;font-size:40px}
+    .badge{margin-left:auto;background:#111827;color:#fff;padding:6px 10px;border-radius:999px;font-size:14px;font-weight:700}
+    /* 主标题 */
+    .h1{font-size:28px;font-weight:900;margin:18px 0 8px;padding:0 8px}
+    /* 明信片展示区 */
+    .stage{background:#fff;box-shadow:var(--shadow);border-radius:18px;padding:20px;margin:10px 8px 14px;position:relative}
+    .stage-inner{display:grid;grid-template-columns:80px 1fr 80px;align-items:center;gap:8px}
+    .arrow{display:grid;place-items:center}
+    .arrow button{
+      width:68px;height:68px;border-radius:50%;border:0;background:#0b253f;color:#fff;
+      font-size:28px;line-height:1;box-shadow:0 8px 18px rgba(0,0,0,.15)
+    }
+    .arrow button:active{transform:scale(.98)}
+    .preview{padding:0 8px}
+    .preview-card{border:2px solid #e5e7eb;border-radius:16px;overflow:hidden;background:#fff}
+    .preview-card .toolbar{display:flex;justify-content:center}
+    .cta-chip{
+      display:inline-block;padding:12px 18px;border:2px dashed #d4af37;border-radius:16px;
+      background:#fffceb;font-weight:800;margin:14px auto;color:#0b253f
+    }
+    /* 描述与CTA */
+    .desc{color:var(--muted);font-size:16px;line-height:1.6;padding:2px 10px}
+    .cta-row{display:flex;gap:16px;flex-wrap:wrap;padding:8px 10px 18px}
+    .btn{flex:1 1 220px;display:flex;align-items:center;justify-content:center;
+      padding:18px;border-radius:16px;font-weight:800;border:0;cursor:pointer}
+    .btn-primary{background:#0b253f;color:#fff}
+    .btn-secondary{background:#e5e7eb}
+    footer{height:16px}
+    @media (max-width:420px){
+      .hero-title span{font-size:32px}
+      .arrow button{width:60px;height:60px}
+    }
+  </style>
 </head>
 <body>
-  <div class="badge">v2.3-arrowsF</div>
-
-  <!-- 顶部横幅（保持 v2.2c 样式/资源） -->
   <header class="hero">
-    <div class="wrap">
-      <img class="logo" src="Logo.png" alt="Logo" />
-      <div class="brand-block">
-        <div class="brand-line1">Smart Postcard</div>
-        <div class="brand-line2">Smart Postcard</div>
-      </div>
-      <div class="hero-actions">
-        <button class="btn-ghost">购物车</button>
-        <button class="btn-ghost">中文</button>
-        <button class="btn-ghost">菜单</button>
+    <div class="container">
+      <div class="row">
+        <!-- 内嵌 Logo (SVG) -->
+        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#2dd4bf"/>
+              <stop offset="1" stop-color="#22c55e"/>
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="90" fill="url(#g)"/>
+          <path d="M60 120c20-50 60-60 100-60-40 30-40 60-20 90-40-20-70-10-80-30z" fill="#f5b800" opacity="0.9"/>
+        </svg>
+        <h1 class="hero-title">
+          <span>Smart</span>
+          <span>Postcard</span>
+          <span>Smart</span>
+          <span>Postcard</span>
+        </h1>
+        <div class="badge" id="ver">v2.4-fixed</div>
       </div>
     </div>
   </header>
 
-  <div class="container">
-    <h1>珍藏您举世无双的纪念明信片</h1>
+  <main class="container">
+    <h2 class="h1">珍藏您举世无双的纪念明信片</h2>
 
-    <div class="stage">
-      <!-- 大箭头层（与样图同容器，确保左箭头右边线贴住样图左边线） -->
-      <div class="big-arrows" aria-hidden="true">
-        <div class="arrow-left"><div class="tri tri-left"></div></div>
-        <div class="arrow-right"><div class="tri tri-right"></div></div>
+    <section class="stage">
+      <div class="stage-inner">
+        <div class="arrow">
+          <button aria-label="上一张" id="prev">&#9664;</button>
+        </div>
+        <div class="preview">
+          <div class="toolbar">
+            <div class="cta-chip">自定义邮票图案</div>
+          </div>
+          <div class="preview-card">
+            <!-- 内嵌 Postcard SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+              <rect x="10" y="10" width="780" height="500" rx="16" ry="16" fill="#fff" stroke="#d1d5db" stroke-width="3"/>
+              <rect x="40" y="60" width="320" height="380" fill="#f1f5f9" stroke="#94a3b8"/>
+              <rect x="420" y="60" width="340" height="380" fill="#ffffff" stroke="#cbd5e1"/>
+              <rect x="620" y="80" width="120" height="90" fill="#e2e8f0" stroke="#94a3b8"/>
+              <circle cx="680" cy="220" r="42" fill="none" stroke="#475569" stroke-width="3"/>
+              <rect x="60" y="440" width="180" height="40" fill="#0ea5e9"/>
+              <text x="68" y="467" font-size="22" fill="#fff">Stockholm</text>
+              <rect x="50" y="25" width="220" height="26" fill="#eab308"/>
+              <text x="58" y="44" font-size="18" fill="#111827">到瑞典·一游纪念</text>
+            </svg>
+          </div>
+        </div>
+        <div class="arrow">
+          <button aria-label="下一张" id="next">&#9654;</button>
+        </div>
       </div>
+    </section>
 
-      <!-- “自定义邮票图案”按钮（原位） -->
-      <div style="text-align:center;">
-        <span class="stamp-btn">自定义邮票图案</span>
-      </div>
+    <p class="desc">操作简单 · 实体印刷 · 全球邮寄 · 旅游纪念 · 集邮佳品 · 珍贵收藏</p>
+    <p class="desc">照片打印 · A5 大尺寸 · 物超所值</p>
 
-      <!-- 小箭头（维持v2.2c垂直距离，只竖向更瘦） -->
-      <div class="small-arrow" aria-hidden="true"></div>
-
-      <!-- 明信片样图（四边极淡描线、直角） -->
-      <div class="postcard-wrap">
-        <img class="postcard" src="postcard_cn.png" alt="明信片样图" />
-      </div>
-    </div>
-
-    <div class="desc">
-      操作简单 · 实体印刷 · 全球邮寄 · 旅游纪念 · 集邮佳品 · 珍贵收藏<br/>
-      照片打印 · A5 大尺寸 · 物超所值
-    </div>
-
-    <div class="cta">
+    <div class="cta-row">
       <button class="btn btn-primary">纪念明信片</button>
-      <button class="btn btn-ghost-2">传统明信片</button>
+      <button class="btn btn-secondary">传统明信片</button>
     </div>
-  </div>
-</body>
-</html>
+  </main>
+
+  <footer></footer>
+
+  <script>
+    // v2.4-fixed — 左右箭头点击时闪
