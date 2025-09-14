@@ -1,183 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smart Postcard — v2.2d-final</title>
-  <style>
-    :root{
-      --brand:#efb400;
-      --ink:#0c3c68;
-      --muted:#f6f6f6;
-      --pc-border: rgba(0,0,0,.10); /* 边框微弱描线 */
-      --arrow-blue:#1b4b7a;
-      --arrow-green:#2aa44f;
-      --page-max: 720px;
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
-      color:#222;
-      background:#fff;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Postcard — 首页</title>
+<style>
+  :root{
+    /* 可微调参数（数值越小改动越轻） */
+    --arrow-fatness: 1.08;        /* 大箭头胖瘦系数（1.00=和v2.2c相同，>1略胖）*/
+    --arrow-left-w: 64px;          /* 左大箭头宽度 */
+    --arrow-right-w: 64px;         /* 右大箭头宽度 */
+    --arrow-h: 76px;               /* 大箭头高度（标题与样图间的高度）*/
+    --small-arrow-top-gap: 12px;   /* 小箭头离样图上边的间距，保持v2.2c不变 */
+    --small-arrow-w: 22px;         /* 小箭头宽 */
+    --small-arrow-h: 12px;         /* 小箭头高（竖向更瘦）*/
+    --border-color: rgba(0,0,0,.10);  /* 样图描线颜色（很淡） */
+    --border-radius: 0px;          /* 直角边 */
+    --badge-bg: #222;              /* 右上角版本标识 */
+    --badge-fg: #fff;
+  }
 
-    /* 顶部横幅（保持你仓库的配色） */
-    .header{
-      background:var(--brand);
-      color:#0b2a4a;
-      padding:14px 16px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      max-width:var(--page-max); margin:0 auto;
-    }
-    .brand img{ width:56px; height:56px; object-fit:contain; }
-    .brand h1{
-      font-size:28px; line-height:1.1; margin:0;
-      font-weight:800;
-    }
+  html,body{margin:0;padding:0;background:#fff;color:#222;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+  .container{max-width:720px;margin:0 auto; padding-bottom:40px;}
 
-    /* 页面主体 */
-    .main{
-      max-width:var(--page-max);
-      margin:20px auto 40px;
-      padding:0 16px;
-    }
-    .title{
-      font-size:28px; font-weight:800; line-height:1.35;
-      margin:8px 0 18px;
-      color:#1b2a44;
-      text-align:left;
-    }
+  /* 顶部横幅（保持 v2.2c 已确认外观） */
+  .hero{background:#f0b408; /* 保持黄金色 */ }
+  .hero .wrap{display:flex; align-items:center; gap:12px; padding:14px 16px;}
+  .logo{width:64px;height:64px; object-fit:contain}
+  .brand-block{display:flex; flex-direction:column;}
+  .brand-line1{font-size:28px; font-weight:700; letter-spacing:.5px; color:#132c5a;}
+  .brand-line2{font-size:28px; font-weight:700; letter-spacing:.5px; color:#132c5a; margin-top:2px;}
+  .hero-actions{margin-left:auto; display:flex; gap:10px;}
+  .btn-ghost{background:#fff; color:#333; border-radius:18px; padding:6px 10px; font-size:14px; border:none}
 
-    /* --- 大箭头（左右） ---
-       本版在 v2.2c 基础上“稍微加胖”，并确保左大箭头右侧与明信片左侧对齐 */
-    .stage{
-      position:relative;
-      background:#fff;
-      border-radius:16px;
-      box-shadow:0 3px 10px rgba(0,0,0,.06);
-      padding:20px 16px 18px;
-    }
+  /* 版本标识 */
+  .badge{position:fixed; right:12px; top:12px; background:var(--badge-bg); color:var(--badge-fg);
+         font-size:12px; padding:4px 8px; border-radius:12px; z-index:20}
+  
+  /* 页面大标题 */
+  h1{font-size:28px; font-weight:800; margin:20px 16px 10px}
 
-    /* 明信片外框，为了方便对齐，单独包一层 */
-    .pc-wrap{ position:relative; }
+  /* 卡片与箭头区域 */
+  .stage{position:relative; margin:0 16px 0; background:#fff; border-radius:16px;
+         box-shadow:0 6px 18px rgba(0,0,0,.06); padding:18px 14px 22px}
+  
+  /* 样图区 */
+  .postcard-wrap{position:relative; margin-top:12px;}
+  .postcard{display:block; width:100%; border:1px solid var(--border-color); border-radius:var(--border-radius);}
+  
+  /* 大箭头（左右各一个，位置固定在标题与样图之间） */
+  .big-arrows{position:absolute; left:0; right:0; top:-6px; height:var(--arrow-h); pointer-events:none}
+  /* 左箭头：让右边线与样图左边线对齐 —— 把箭头容器放进 stage，再用与 postcard-wrap 左边一致的对齐方式 */
+  .arrow-left{position:absolute; left:14px; /* 与stage内边距一致，保证与样图左边线同基线 */
+              width:calc(var(--arrow-left-w) * var(--arrow-fatness)); height:var(--arrow-h);}
+  .arrow-right{position:absolute; right:14px; width:calc(var(--arrow-right-w) * var(--arrow-fatness)); height:var(--arrow-h);}
+  .tri{width:0; height:0; border-top: calc(var(--arrow-h)/2) solid transparent;
+       border-bottom: calc(var(--arrow-h)/2) solid transparent;}
+  .tri-left{border-right: calc(var(--arrow-left-w) * var(--arrow-fatness)) solid #164c82;}
+  .tri-right{border-left:  calc(var(--arrow-right-w) * var(--arrow-fatness)) solid #164c82;}
+  
+  /* 小箭头：保持原位置，只竖向更瘦（不横向加宽） */
+  .small-arrow{position:absolute; left:50%; transform:translateX(-50%); 
+               top: calc(12px + var(--small-arrow-top-gap)); /* 与v2.2c的视觉间距一致 */
+               width:0; height:0; 
+               border-left: calc(var(--small-arrow-w)/2) solid transparent;
+               border-right: calc(var(--small-arrow-w)/2) solid transparent;
+               border-top: var(--small-arrow-h) solid #2aa64a; /* 竖向变瘦，用较小的高值 */
+               pointer-events:none}
 
-    /* 左右大箭头（SVG），高度 64，略加胖；移动端更自然 */
-    .big-arrow{
-      position:absolute; top:96px; width:88px; height:64px;
-      display:block;
-      filter: drop-shadow(0 1px 0 rgba(0,0,0,.05));
-    }
-    .big-arrow svg{ width:100%; height:100%; display:block; }
-    .big-arrow.left{ left:0; }
-    .big-arrow.right{ right:0; transform:scaleX(-1); }
+  /* “自定义邮票图案”虚线按钮（保留既有样式） */
+  .stamp-btn{display:inline-block; margin:12px auto 0; padding:12px 18px; 
+             border:2px dashed #e7c44a; border-radius:14px; font-weight:700; background:#fff}
+  
+  /* 底部按钮组（保留 v2.2c 外观） */
+  .cta{display:flex; gap:14px; margin:16px}
+  .cta .btn{flex:1; border:none; border-radius:18px; padding:16px; font-size:18px; font-weight:800}
+  .btn-primary{background:#eabb0b; color:#222}
+  .btn-ghost-2{background:#eaeef4; color:#222}
 
-    /* 小箭头：保持 v2.2c 垂直位置，仅“纵向瘦一点” */
-    .small-arrow{
-      position:absolute;
-      left:50%; transform:translateX(-50%);
-      /* 距离明信片上边缘约 14px（与 v2.2c 观感一致，不顶边） */
-      top: -18px;
-      width:26px; height:15px;  /* 比 v2.2c 略瘦（高度小） */
-      display:block;
-    }
-    .small-arrow svg{ width:100%; height:100%; display:block; }
-
-    /* 明信片示意图 */
-    .postcard{
-      width:100%;
-      background:#fff;
-      border:1px solid var(--pc-border);     /* 四边细描线（直角） */
-      border-radius:0;                        /* 明信片直角 */
-      padding:0;
-    }
-    .postcard img{
-      width:100%; height:auto; display:block;
-      border-radius:0;
-    }
-
-    .hint{
-      font-size:14px; color:#546; margin-top:14px;
-      text-align:center;
-    }
-
-    /* 底部按钮保持原风格占位（不改文案） */
-    .actions{ margin-top:18px; display:grid; gap:12px; }
-    .btn{
-      width:100%; padding:14px 16px; border:none; border-radius:12px;
-      font-size:18px; font-weight:800;
-    }
-    .btn.primary{ background:var(--brand); color:#1a1400; }
-    .btn.ghost{ background:#eceff3; color:#223; }
-
-    /* 版本水印 */
-    .badge{
-      position:fixed; right:12px; top:12px;
-      background:#1f2937; color:#fff; padding:6px 10px;
-      font-size:12px; border-radius:999px; opacity:.9; z-index:10;
-    }
-
-    /* 响应式微调 */
-    @media (min-width:520px){
-      .title{ font-size:30px; }
-      .big-arrow{ top:110px; width:92px; height:68px; }
-    }
-  </style>
+  /* 说明文案（保持 v2.2c 内容与排版） */
+  .desc{padding:8px 16px 0; color:#333; line-height:1.8}
+</style>
 </head>
 <body>
-  <div class="badge">v2.2d-final</div>
+  <div class="badge">v2.3-arrowsF</div>
 
-  <header class="header" role="banner">
-    <div class="brand">
-      <img src="Logo.png" alt="Logo" />
-      <h1>Smart Postcard</h1>
+  <!-- 顶部横幅（保持 v2.2c 样式/资源） -->
+  <header class="hero">
+    <div class="wrap">
+      <img class="logo" src="Logo.png" alt="Logo" />
+      <div class="brand-block">
+        <div class="brand-line1">Smart Postcard</div>
+        <div class="brand-line2">Smart Postcard</div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-ghost">购物车</button>
+        <button class="btn-ghost">中文</button>
+        <button class="btn-ghost">菜单</button>
+      </div>
     </div>
   </header>
 
-  <main class="main">
-    <h2 class="title">珍藏您举世无双的纪念明信片</h2>
+  <div class="container">
+    <h1>珍藏您举世无双的纪念明信片</h1>
 
-    <section class="stage">
-      <!-- 左右大箭头：颜色与形态与 v2.2c 一致，仅加胖；
-           左箭头“右边缘”与明信片左边缘对齐（见下方定位说明） -->
-      <span class="big-arrow left" aria-hidden="true">
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg">
-          <!-- 胖化后的箭头：一个矩形 + 等腰三角形 -->
-          <path d="M0,8 H70 V0 L100,36 L70,72 V64 H0 Z" fill="var(--arrow-blue)"></path>
-        </svg>
-      </span>
-
-      <span class="big-arrow right" aria-hidden="true">
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,8 H70 V0 L100,36 L70,72 V64 H0 Z" fill="var(--arrow-blue)"></path>
-        </svg>
-      </span>
-
-      <div class="pc-wrap">
-        <!-- 小箭头（向下），保持既有高度位置，仅纵向瘦一点 -->
-        <span class="small-arrow" aria-hidden="true">
-          <svg viewBox="0 0 30 18" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="15,18 0,0 30,0" fill="var(--arrow-green)" />
-          </svg>
-        </span>
-
-        <!-- 明信片：为了让“左大箭头右边缘与明信片左边缘重合”
-             我们让 .pc-wrap 有内边距 = 左大箭头宽度；这样对齐自然成立。
-             （v2.2c 的视觉里，大箭头就是贴着明信片左缘的） -->
-        <div class="postcard" style="margin-left:92px; margin-right:92px;">
-          <img src="postcard_cn.png" alt="明信片样图" />
-        </div>
+    <div class="stage">
+      <!-- 大箭头层（与样图同容器，确保左箭头右边线贴住样图左边线） -->
+      <div class="big-arrows" aria-hidden="true">
+        <div class="arrow-left"><div class="tri tri-left"></div></div>
+        <div class="arrow-right"><div class="tri tri-right"></div></div>
       </div>
 
-      <p class="hint">本版在 v2.2c 基础上的微调：① 大箭头略胖化并与左侧对齐 ② 小箭头纵向瘦一点且保持与上边缘的间距 ③ 明信片四边细描线（直角）。</p>
-    </section>
+      <!-- “自定义邮票图案”按钮（原位） -->
+      <div style="text-align:center;">
+        <span class="stamp-btn">自定义邮票图案</span>
+      </div>
 
-    <div class="actions">
-      <button class="btn primary">纪念明信片</button>
-      <button class="btn ghost">传统明信片</button>
+      <!-- 小箭头（维持v2.2c垂直距离，只竖向更瘦） -->
+      <div class="small-arrow" aria-hidden="true"></div>
+
+      <!-- 明信片样图（四边极淡描线、直角） -->
+      <div class="postcard-wrap">
+        <img class="postcard" src="postcard_cn.png" alt="明信片样图" />
+      </div>
     </div>
-  </main>
+
+    <div class="desc">
+      操作简单 · 实体印刷 · 全球邮寄 · 旅游纪念 · 集邮佳品 · 珍贵收藏<br/>
+      照片打印 · A5 大尺寸 · 物超所值
+    </div>
+
+    <div class="cta">
+      <button class="btn btn-primary">纪念明信片</button>
+      <button class="btn btn-ghost-2">传统明信片</button>
+    </div>
+  </div>
 </body>
 </html>
