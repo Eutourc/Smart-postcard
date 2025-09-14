@@ -1,112 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Smart Postcard — v2.3-arrowsD</title>
+<title>Smart Postcard — 首页</title>
 <style>
   :root{
-    --brand:#f2b705;
-    --ink:#0f172a;
-    --muted:#6b7280;
-    --arrow:#153b6a;         /* 深蓝大箭头色 */
-    --small:#2aa34a;         /* 小箭头绿 */
+    --brand:#f1b500;
+    --ink:#193a73;
+    --dark:#0e2b4f;
+    --muted:#d9e6ff;
+    --card-edge:#e6e6e6;        /* 轻微描边 */
+    --card-shadow:0 6px 22px rgba(0,0,0,.08);
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif;color:var(--ink);background:#fff}
-  header{background:#f2b705; padding:14px 16px; display:flex; align-items:center; gap:12px}
-  header img.logo{width:44px; height:44px; object-fit:contain}
-  header h1{font-size:28px; margin:0; font-weight:800; letter-spacing:.5px}
-  .badge{margin-left:auto; background:#00000014; color:#2b2b2b; padding:6px 10px; border-radius:14px; font-size:12px}
-
-  .page{max-width:720px; margin:18px auto; padding:0 14px}
-  h2{font-size:26px; line-height:1.25; margin:8px 0 14px 0; font-weight:900}
-
-  .cta{display:inline-block; border:2px dashed #e7c23a; border-radius:14px; padding:10px 18px; font-weight:700; background:#fff; position:relative}
-  .cta::after{content:""; position:absolute; left:12px; top:-18px; border:10px solid transparent; border-top-color:var(--arrow); filter:drop-shadow(0 0 0 rgba(0,0,0,.0));}
-
-  /* 卡片区域 */
-  .canvas{position:relative; background:#f8fafc; border-radius:18px; padding:12px; box-shadow:0 10px 24px rgba(2,8,23,.08)}
-  .postcard-wrap{position:relative; background:#fff; border:1px solid rgba(0,0,0,.15); /* 暗色勾线 */ border-radius:0; }
-  .postcard-wrap img{display:block; width:100%; height:auto; border-radius:0}
-
-  /* —— 大三角箭头（左右） —— */
-  .big-arrow{position:absolute; width:0; height:0; border:0; background:transparent; z-index:2; pointer-events:none}
-  /* 厚度 & 尺寸控制：边宽 = 厚度；底边 = 长度 */
-  .big-arrow.left{
-    /* 对齐明信片左边缘（靠 card 容器边缘贴齐） */
-    left:-28px;                           /* 使箭头根部与卡片边线对齐 */
-    top:36px;                             /* 处于标题与样图之间的空隙 */
-    border-top:22px solid transparent;    /* 厚度 22 → 比 C 版略瘦 */
-    border-bottom:22px solid transparent;
-    border-right:36px solid var(--arrow); /* 长度 */
-  }
-  .big-arrow.right{
-    right:-28px;
-    top:36px;
-    border-top:22px solid transparent;
-    border-bottom:22px solid transparent;
-    border-left:36px solid var(--arrow);
-  }
-
-  /* —— 小下箭头 —— */
-  .small-arrow{
-    position:absolute; width:0;height:0; border:0; background:transparent; z-index:3; pointer-events:none;
-    left:50%; transform:translateX(-50%);
-    /* 让它保持离开图片上边缘一点点（保持 v2.2c 的感觉） */
-    top:-14px; 
-    /* 竖向更“厚”一点，而不是横向加宽：通过上下边宽略调高实现 */
-    border-left:12px solid transparent;
-    border-right:12px solid transparent;
-    border-top:16px solid var(--small);    /* 比 v2.3C 稍厚一点 */
-  }
-
-  .btns{display:flex; gap:18px; margin:16px 0 6px}
-  .btn{flex:1; background:var(--brand); color:#1c1917; padding:16px 18px; font-weight:800; text-align:center; border-radius:18px}
-  .btn.secondary{background:#e5e7eb; color:#111827}
-
-  /* 辅助：在角落标注版本 */
-  .ver{position:fixed; right:12px; top:12px; background:#2b2b2b; color:#fff; border-radius:14px; padding:6px 10px; font-size:12px; opacity:.85}
-  
-  /* 响应式微调 */
-  @media (max-width:480px){
-    .big-arrow.left{left:-22px; border-top-width:20px; border-bottom-width:20px; border-right-width:32px}
-    .big-arrow.right{right:-22px; border-top-width:20px; border-bottom-width:20px; border-left-width:32px}
-    .small-arrow{top:-12px; border-left-width:11px; border-right-width:11px; border-top-width:15px}
+  body{margin:0;background:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"PingFang SC","Noto Sans SC","Microsoft Yahei","Hiragino Sans GB",sans-serif;color:#222;}
+  header{background:var(--brand);padding:14px 18px;display:flex;align-items:center;gap:12px}
+  header img.logo{width:56px;height:56px;object-fit:contain}
+  header h1{margin:0;font-weight:800;color:#0b3970;letter-spacing:.5px}
+  header h1 span{display:block;font-size:26px;line-height:1}
+  header .tag{margin-left:auto;background:#2e6cff;color:#fff;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;opacity:.85}
+  main{padding:22px 14px 32px}
+  h2{font-size:28px;line-height:1.25;margin:0 0 18px 0;color:#0b3970;font-weight:800;text-align:center}
+  /* Canvas */
+  .hero{position:relative;max-width:720px;margin:0 auto;background:#fafafa;border-radius:16px;padding:26px 20px 24px 20px;box-shadow:0 6px 26px rgba(0,0,0,.06)}
+  /* postcard frame */
+  .postcard-wrap{position:relative;background:#fff;border:1px solid var(--card-edge);border-radius:0; /* 直角 */ 
+    box-shadow:var(--card-shadow);padding:14px}
+  .postcard{width:100%;display:block;border-radius:0}
+  /* tiny caption */
+  .tips{margin:16px auto 0;max-width:720px;color:#404040;text-align:center;line-height:1.9}
+  .cta-row{display:flex;gap:14px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  .btn{flex:1 1 260px;border:none;border-radius:18px;padding:16px 18px;font-size:22px;font-weight:800}
+  .primary{background:var(--brand);color:#142d4e}
+  .ghost{background:#eef2f7;color:#142d4e}
+  /* ======== Arrows ======== */
+  .big-arrow{position:absolute;top:-54px;width:0;height:0;border-top:26px solid transparent;border-bottom:26px solid transparent;z-index:2;filter:drop-shadow(0 2px 0 rgba(0,0,0,.08))}
+  .big-left{left:0;transform:translateX(calc(-100% + 2px));border-right:48px solid var(--ink);} /* 与卡左边线对齐 */
+  .big-right{right:0;transform:translateX(calc(100% - 2px));border-left:48px solid var(--ink);}
+  /* small arrow: 竖向略厚，远离上边缘  */
+  .small-arrow{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:0;height:0;
+    border-left:12px solid transparent;border-right:12px solid transparent;border-top:18px solid #2aa84a; /* 竖向更厚 */
+    pointer-events:none;z-index:3}
+  /* dashed label */
+  .label{position:absolute;left:50%;transform:translate(-50%,-50%);top:-18px;
+    padding:8px 14px;border:3px dashed #e8c95b;border-radius:14px;background:#fff;font-weight:800;color:#2c3f68;white-space:nowrap}
+  @media (min-width:680px){
+    .big-arrow{top:-60px}
   }
 </style>
 </head>
 <body>
-  <div class="ver">v2.3-arrowsD</div>
   <header>
-    <img class="logo" src="Logo.png" alt="Logo" />
-    <h1>Smart Postcard</h1>
-    <div class="badge">v2.3-arrowsD</div>
+    <img class="logo" src="Logo.png" alt="Logo">
+    <h1><span>Smart Postcard</span></h1>
+    <div class="tag">v2.3‑arrowsE</div>
   </header>
 
-  <main class="page">
+  <main>
     <h2>珍藏您举世无双的纪念明信片</h2>
 
-    <div class="canvas">
-      <span class="big-arrow left" aria-hidden="true"></span>
-      <span class="big-arrow right" aria-hidden="true"></span>
+    <section class="hero">
+      <!-- big arrows -->
+      <i class="big-arrow big-left" aria-hidden="true"></i>
+      <i class="big-arrow big-right" aria-hidden="true"></i>
 
       <div class="postcard-wrap">
-        <img src="postcard_cn.png" alt="明信片样图" />
-        <span class="small-arrow" aria-hidden="true"></span>
+        <!-- label & small arrow -->
+        <div class="label">自定义邮票图案</div>
+        <i class="small-arrow" aria-hidden="true"></i>
+
+        <img src="postcard_cn.png" alt="明信片样图" class="postcard">
       </div>
+    </section>
+
+    <div class="tips">操作简单 · 实体印刷 · 全球邮寄 · 旅游纪念 · 集邮佳品 · 珍贵收藏<br>照片打印 · A5 大尺寸 · 物超所值</div>
+
+    <div class="cta-row">
+      <button class="btn primary">纪念明信片</button>
+      <button class="btn ghost">传统明信片</button>
     </div>
-
-    <div style="height:10px"></div>
-
-    <div class="btns">
-      <div class="btn">纪念明信片</div>
-      <div class="btn secondary">传统明信片</div>
-    </div>
-
-    <p style="color:var(--muted); line-height:1.8; margin-top:6px;">
-      操作简单 · 实体印刷 · 全球邮寄 · 旅游纪念 · 集邮佳品 · 珍贵收藏 · 照片打印 · A5 大尺寸 · 物超所值
-    </p>
   </main>
 </body>
 </html>
