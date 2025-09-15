@@ -3,112 +3,100 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — 首页 v2.3-arrowsG2</title>
+<title>Smart Postcard — 首页</title>
 <style>
-:root {
-  --brand: #F5B800;
-  --ink: #222;
-  --panel: #fff;
-  --card: #fff;
-  --shadow: 0 10px 30px rgba(0,0,0,.08);
-  --accent: #16a34a;
-
-  /* 可微调变量 */
-  --big-arrow-w: 38px;
-  --big-arrow-h: 42px;
-  --big-arrow-fat: 1.10;     /* 大箭头胖瘦控制 */
-  --small-arrow-w: 18px;
-  --small-arrow-h: 9px;      /* 小箭头竖向高度 */
-  --small-arrow-gap: 12px;   /* 小箭头距上边缘 */
-}
-
-/* 全局 */
-*{box-sizing:border-box;margin:0;padding:0}
-body{font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#fff;color:var(--ink)}
-
-/* 顶部横幅 */
-header{background:var(--brand);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-header img{height:40px}
-header h1{font-size:20px;font-weight:600;color:#003366;margin-left:8px}
-
-/* 容器 */
-main{padding:16px;text-align:center}
-h2{font-size:22px;margin:16px 0}
-
-/* 箭头样式 */
-.arrow{
-  width:0;height:0;
-  position:absolute;
-}
-.big-left{
-  border-top:calc(var(--big-arrow-h)/2) solid transparent;
-  border-bottom:calc(var(--big-arrow-h)/2) solid transparent;
-  border-right:calc(var(--big-arrow-w)*var(--big-arrow-fat)) solid #1E3A8A;
-  left:calc(50% - 190px - var(--big-arrow-w));
-  top:50%;transform:translateY(-50%);
-}
-.big-right{
-  border-top:calc(var(--big-arrow-h)/2) solid transparent;
-  border-bottom:calc(var(--big-arrow-h)/2) solid transparent;
-  border-left:calc(var(--big-arrow-w)*var(--big-arrow-fat)) solid #1E3A8A;
-  right:calc(50% - 190px - var(--big-arrow-w));
-  top:50%;transform:translateY(-50%);
-}
-.small-down{
-  border-left:calc(var(--small-arrow-w)/2) solid transparent;
-  border-right:calc(var(--small-arrow-w)/2) solid transparent;
-  border-top:var(--small-arrow-h) solid #16a34a;
-  top:var(--small-arrow-gap);left:50%;transform:translateX(-50%);
-}
-
-/* 明信片样图 */
-.postcard{
-  width:380px;margin:40px auto;padding:12px;background:var(--card);
-  border:1px solid rgba(0,0,0,.1); /* 四周描线 */
-  box-shadow:var(--shadow);border-radius:0
-}
-.postcard img{width:100%;display:block}
-
-/* 按钮 */
-.buttons{margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-button{
-  flex:1;min-width:120px;padding:12px 18px;font-size:16px;border:none;border-radius:8px;cursor:pointer
-}
-.btn-primary{background:var(--brand);color:#000;font-weight:600}
-.btn-secondary{background:#eee;color:#333}
-.btn-accent{background:var(--brand);color:#000;font-weight:600;width:100%}
+  :root {
+    --brand: #f5b800;
+    --ink: #222;
+    --card-border: #ccc;
+    --shadow: 0 4px 12px rgba(0,0,0,.08);
+  }
+  body {
+    margin:0;
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    color:var(--ink);
+    background:#fff;
+    text-align:center;
+  }
+  header {
+    background:var(--brand);
+    color:#004080;
+    font-weight:bold;
+    padding:12px;
+    font-size:22px;
+  }
+  h1{margin:16px 0;font-size:20px}
+  .postcard-wrapper {
+    position:relative;
+    display:inline-block;
+    margin:16px auto;
+    box-shadow:var(--shadow);
+    border:1px solid var(--card-border); /* 四边直角描线 */
+  }
+  .postcard-wrapper img {
+    display:block;
+    width:90vw;
+    max-width:480px;
+    height:auto;
+  }
+  /* 大箭头：胖一点，左右对齐边缘 */
+  .arrow {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:0;
+    height:0;
+    border-top:35px solid transparent;
+    border-bottom:35px solid transparent;
+  }
+  .arrow.left {
+    left:-35px;
+    border-right:40px solid #164194; /* 蓝色胖箭头 */
+  }
+  .arrow.right {
+    right:-35px;
+    border-left:40px solid #164194;
+  }
+  /* 小箭头：竖向偏瘦，保持高度 */
+  .small-arrow {
+    position:absolute;
+    top:-20px; /* 离上边缘一点点 */
+    left:50%;
+    transform:translateX(-50%);
+    width:0;
+    height:0;
+    border-left:12px solid transparent;
+    border-right:12px solid transparent;
+    border-bottom:18px solid #16a34a; /* 绿色小箭头 */
+  }
+  .buttons {
+    margin:24px 0;
+  }
+  .buttons button {
+    background:var(--brand);
+    border:none;
+    border-radius:8px;
+    padding:12px 20px;
+    margin:8px;
+    font-size:16px;
+  }
 </style>
 </head>
 <body>
-<header>
-  <div style="display:flex;align-items:center">
-    <img src="Logo.png" alt="Logo">
-    <h1>Smart Postcard</h1>
-  </div>
-</header>
+  <header>Smart Postcard</header>
+  <h1>珍藏您举世无双的纪念明信片</h1>
 
-<main>
-  <h2>珍藏您举世无双的纪念明信片</h2>
-
-  <!-- 箭头们 -->
-  <div class="arrow big-left"></div>
-  <div class="arrow big-right"></div>
-  <div class="arrow small-down"></div>
-
-  <div class="postcard">
-    <img src="postcard_cn.png" alt="明信片样图">
+  <div class="postcard-wrapper">
+    <div class="arrow left"></div>
+    <div class="arrow right"></div>
+    <div class="small-arrow"></div>
+    <img src="postcard_cn.png" alt="postcard sample">
   </div>
 
   <div class="buttons">
-    <button class="btn-primary">纪念明信片</button>
-    <button class="btn-secondary">传统明信片</button>
-    <button class="btn-accent">开始制作</button>
+    <button>纪念明信片</button>
+    <button>传统明信片</button>
+    <button>开始制作</button>
   </div>
-
-  <p style="margin-top:20px;font-size:14px;line-height:1.6">
-    操作简单 · 实体印刷 · 全球邮寄 · 旅游纪念 · 集邮佳品 · 珍贵收藏<br>
-    照片打印 · A5 大尺寸 · 物超所值
-  </p>
-</main>
 </body>
 </html>
