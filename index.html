@@ -5,80 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Smart Postcard — 首页</title>
 <style>
-  :root {
-    --brand: #f5b800;
-    --ink: #222;
-    --card-border: #ccc;
-    --shadow: 0 4px 12px rgba(0,0,0,.08);
+  :root{
+    /* 可调参数（需要更瘦/更胖只改这里数字） */
+    --big-arrow-thick: 38px;   /* 大箭头胖度（越大越胖） */
+    --big-arrow-height: 30px;  /* 大箭头半高 */
+    --small-arrow-halfw: 10px; /* 小箭头半宽（越小越瘦） */
+    --small-arrow-h: 18px;     /* 小箭头高度 */
+    --small-arrow-gap: 14px;   /* 小箭头离上边缘的距离 */
+    --brand:#f5b800;
+    --ink:#13223a;
+    --blue:#164194;
+    --green:#1faa61;
+    --card-stroke: rgba(0,0,0,.14); /* 明信片极浅描边 */
   }
-  body {
-    margin:0;
-    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-    color:var(--ink);
-    background:#fff;
-    text-align:center;
-  }
-  header {
-    background:var(--brand);
-    color:#004080;
-    font-weight:bold;
-    padding:12px;
-    font-size:22px;
-  }
-  h1{margin:16px 0;font-size:20px}
-  .postcard-wrapper {
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink);background:#fff}
+  header{background:var(--brand);padding:14px 18px;font-weight:800;font-size:28px;color:#14395b;letter-spacing:.5px}
+  h1{margin:18px 16px 8px;font-size:22px}
+
+  .stage{display:flex;justify-content:center}
+  .card{
     position:relative;
-    display:inline-block;
-    margin:16px auto;
-    box-shadow:var(--shadow);
-    border:1px solid var(--card-border); /* 四边直角描线 */
+    width:min(92vw, 560px);
+    margin:14px auto 10px;
+    outline:1px solid var(--card-stroke);      /* 直角细描线 */
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+    background:#fff;
   }
-  .postcard-wrapper img {
-    display:block;
-    width:90vw;
-    max-width:480px;
-    height:auto;
+  .card img{display:block;width:100%;height:auto}
+
+  /* ——大箭头（右边对称）——
+     关键点：左箭头的右侧与 .card 的左边线重合 */
+  .arrow{
+    position:absolute;top:50%;
+    width:0;height:0;transform:translateY(-50%);
   }
-  /* 大箭头：胖一点，左右对齐边缘 */
-  .arrow {
+  .arrow.left{
+    left:0; transform:translate(-100%,-50%);             /* 让三角“贴”在左边线外 */
+    border-top: var(--big-arrow-height) solid transparent;
+    border-bottom: var(--big-arrow-height) solid transparent;
+    border-right: var(--big-arrow-thick) solid var(--blue);
+  }
+  .arrow.right{
+    right:0; transform:translate(100%,-50%);              /* 让三角“贴”在右边线外 */
+    border-top: var(--big-arrow-height) solid transparent;
+    border-bottom: var(--big-arrow-height) solid transparent;
+    border-left: var(--big-arrow-thick) solid var(--blue);
+  }
+
+  /* ——小箭头：保持与上边的间距，仅纵向变瘦—— */
+  .s-arrow{
     position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    width:0;
-    height:0;
-    border-top:35px solid transparent;
-    border-bottom:35px solid transparent;
+    top: calc(0px - var(--small-arrow-gap));
+    left:50%; transform:translateX(-50%);
+    width:0;height:0;
+    border-left: var(--small-arrow-halfw) solid transparent;
+    border-right: var(--small-arrow-halfw) solid transparent;
+    border-bottom: var(--small-arrow-h) solid var(--green);
   }
-  .arrow.left {
-    left:-35px;
-    border-right:40px solid #164194; /* 蓝色胖箭头 */
-  }
-  .arrow.right {
-    right:-35px;
-    border-left:40px solid #164194;
-  }
-  /* 小箭头：竖向偏瘦，保持高度 */
-  .small-arrow {
-    position:absolute;
-    top:-20px; /* 离上边缘一点点 */
-    left:50%;
-    transform:translateX(-50%);
-    width:0;
-    height:0;
-    border-left:12px solid transparent;
-    border-right:12px solid transparent;
-    border-bottom:18px solid #16a34a; /* 绿色小箭头 */
-  }
-  .buttons {
-    margin:24px 0;
-  }
-  .buttons button {
-    background:var(--brand);
-    border:none;
-    border-radius:8px;
-    padding:12px 20px;
-    margin:8px;
-    font-size:16px;
+
+  .cta{display:flex;gap:16px;justify-content:center;margin:18px 0 28px}
+  .cta button{
+    background:var(--brand);border:0;border-radius:12px;
+    padding:12px 22px;font-size:16px;font-weight:700;color:#102133
   }
 </style>
 </head>
@@ -86,14 +75,21 @@
   <header>Smart Postcard</header>
   <h1>珍藏您举世无双的纪念明信片</h1>
 
-  <div class="postcard-wrapper">
-    <div class="arrow left"></div>
-    <div class="arrow right"></div>
-    <div class="small-arrow"></div>
-    <img src="postcard_cn.png" alt="postcard sample">
+  <div class="stage">
+    <div class="card">
+      <!-- 大箭头（胖一点；左箭头右边缘与卡片左边线重合） -->
+      <div class="arrow left"></div>
+      <div class="arrow right"></div>
+
+      <!-- 小箭头（维持高度，仅纵向变瘦） -->
+      <div class="s-arrow"></div>
+
+      <!-- 明信片样图（仓库已有文件名） -->
+      <img src="postcard_cn.png" alt="postcard sample">
+    </div>
   </div>
 
-  <div class="buttons">
+  <div class="cta">
     <button>纪念明信片</button>
     <button>传统明信片</button>
     <button>开始制作</button>
