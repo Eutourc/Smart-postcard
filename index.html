@@ -234,25 +234,31 @@ h1{margin:16px 0 10px}
 /* ==== PATCH END ==== */
 
 
-/* === step2: widen big arrows on v2.2c === */
+/* === step3: fatter arrows and align left arrow with postcard === */
+.stage-inner{
+  display:grid;
+  grid-template-columns:100px 1fr 100px; /* widen arrow columns */
+  align-items:center;
+  gap:0;
+}
 .stage .arrow button,
-.arrow button,
-button[data-role="arrow"],
-button[aria-label*="上"], button[aria-label*="下"],
-button[aria-label*="prev"], button[aria-label*="next"]{
-  width: 92px !important;
-  height: 92px !important;
-  border-radius: 28px !important;
+.arrow button {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 30px !important;
   background:#0b253f !important;
   color:#fff !important;
-  border:0 !important;
-  box-shadow:0 12px 24px rgba(0,0,0,.16) !important;
-  font-size:32px !important;
+  font-size:34px !important;
   line-height:1 !important;
+  border:0 !important;
+  box-shadow:0 12px 24px rgba(0,0,0,.18) !important;
 }
-.stage .arrow svg, .arrow svg{ transform: scale(1.25); transform-origin:50% 50%; }
+.preview-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+}
 
-/* version badge (kept for verification) */
 .badge-ver{
   margin-left:auto;background:#111827;color:#fff;
   padding:6px 10px;border-radius:999px;font-size:14px;font-weight:700;
