@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v2.2c（大箭头加宽版·最终起点）</title>
+<title>Smart Postcard — v2.2c（按样图微调：字号/箭头/直角边）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
   :root{
-    /* 大箭头（保持高度，加宽底边） */
+    /* 大箭头（整体缩小；左箭头对齐卡片左边线） */
     --big-arrow-color:#0b3a77;
-    --big-arrow-top:-92px;
-    --big-arrow-left-offset:0px;
-    --big-arrow-right-offset:3px;
-    --big-arrow-fat:28px;        /* 保持高度不变 */
-    --big-arrow-width:34px;      /* 加宽底边，现有基础上更稳重 */
+    --big-arrow-top:-88px;          /* 略回收 */
+    --big-arrow-left-offset:-2px;   /* 视觉得与2px卡片边对齐 */
+    --big-arrow-right-offset:0px;   /* 右侧不外探 */
+    --big-arrow-fat:22px;           /* 高度减小 */
+    --big-arrow-width:20px;         /* 底边减小 */
 
-    /* 小箭头（保持改进位置） */
-    --marker-top:-22px;
-    --marker-left:84%;
+    /* 小箭头（略向右，略靠近上缘） */
+    --marker-top:-20px;             /* 从 -22px 回调一点 */
+    --marker-left:85%;              /* 从 84% → 85% 更居中照片 */
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
@@ -36,8 +36,9 @@
   .brand{display:flex;align-items:center;gap:10px}
   .brand img{width:64px;height:64px;object-fit:contain}
   .brandword{display:flex;flex-direction:column;line-height:1}
+  /* 1) 增大到 24px，贴近日常样图视觉 */
   .brandword .l1,.brandword .l2{
-    font-weight:900;font-size:22px;letter-spacing:.5px;
+    font-weight:900;font-size:24px;letter-spacing:.5px;
     background:linear-gradient(90deg,#0ea5e9,#22d3ee 55%,#34d399);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     text-shadow:0 1px 2px rgba(0,0,0,.15);
@@ -69,9 +70,11 @@
         max-width:94%;margin:0 auto}
 
   .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:6px}
-  .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:16px;overflow:visible;background:#fff;
-           border:2px solid #d1d5db;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-  .cardbox img{width:100%;height:auto;display:block;border-radius:14px}
+  /* 4) 直角边（无圆角）+ 清晰勾边 */
+  .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
+           border:2px solid #cbd5e1; /* 稍深一点以便手机上清晰 */
+           box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .cardbox img{width:100%;height:auto;display:block;border-radius:0}
 
   .marker{
     position:absolute;
@@ -168,8 +171,9 @@
 
 <script>
 (function(){
+  // 四步说明 + 小箭头联动；第二步位置从 82% -> 85%
   const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,82,68,86];
+  const positions=[18,85,68,86];
   let i=1;
   const hint=document.getElementById('hint');
   const marker=document.getElementById('marker');
