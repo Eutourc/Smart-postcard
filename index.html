@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v2.2c（进化版·精微调③）</title>
+<title>Smart Postcard — v2.2c（进化版·精微调④：左箭对齐修正）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -14,15 +14,17 @@
     --bw-c3:#34d399;
     --brandword-size:26px;
 
+    --card-border:1px;            /* 卡片勾边粗细，供对齐计算 */
+
     --big-arrow-color:#0b3a77;
-    --big-arrow-top:-94px;         /* 下调一点点 */
-    --big-arrow-left-offset:-4px;  /* 更贴边 */
+    --big-arrow-top:-92px;        /* 纵向再下调一点点 */
+    --big-arrow-left-offset:0px;  /* 由结构来对齐，不再用整体负偏移 */
     --big-arrow-right-offset:0px;
     --big-arrow-fat:22px;
     --big-arrow-width:26px;
 
     --marker-top:-20px;
-    --marker-left:84%;             /* 小箭头更居中 */
+    --marker-left:84.3%;          /* 小箭头再往右一丁点 */
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
@@ -94,12 +96,13 @@
   }
 
   .big-arrow{position:absolute;top:var(--big-arrow-top);width:0;height:0;border:0;background:transparent;padding:0;pointer-events:none;z-index:2}
-  .big-arrow.left{left:0;transform:translateX(var(--big-arrow-left-offset))}
+  .big-arrow.left{left:0;transform:translateX(0)} /* 基于三角自身宽度对齐 */
   .big-arrow.left::before{
     content:"";display:block;width:0;height:0;
     border-top:var(--big-arrow-fat) solid transparent;
     border-bottom:var(--big-arrow-fat) solid transparent;
     border-right:var(--big-arrow-width) solid var(--big-arrow-color);
+    margin-left:calc(-1 * var(--big-arrow-width) - var(--card-border)); /* 关键：使三角右边缘与卡片左边线精准重合 */
     filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
   }
   .big-arrow.right{right:0;transform:translateX(var(--big-arrow-right-offset))}
@@ -176,7 +179,7 @@
 <script>
 (function(){
   const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,84,68,86]; // 小箭头位置调整
+  const positions=[18,84.3,68,86];
   let i=1;
   const hint=document.getElementById('hint');
   const marker=document.getElementById('marker');
