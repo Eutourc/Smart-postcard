@@ -3,82 +3,209 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard v2.2c stable</title>
+<title>Smart Postcard — v2.2c（进化版·精微调⑥ 修复版）</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <style>
   :root{
-    --brand:#F5B800;
-    --ink:#222;
-    --card-border:1px;
-    --big-arrow-width:32px;
-    --big-arrow-height:64px;
-    --big-arrow-color:#1d4ed8;
-    --small-arrow-size:18px;
-    --small-arrow-color:#15803d;
-    --left-fine:1px; /* 回调1px，避免越线 */
+    /* Logo右侧文字渐变与尺寸（已达标版） */
+    --bw-c1:#10b981;
+    --bw-c2:#22d3ee;
+    --bw-c3:#34d399;
+    --brandword-size:26px;
+
+    /* 明信片勾边与尺寸 */
+    --card-border:1px; /* 供左箭贴边计算 */
+    --card-border-color:#d1d5db;
+
+    /* 大箭头参数（已达标，仅修正左箭补偿） */
+    --big-arrow-color:#0b3a77;
+    --big-arrow-top:-92px;        /* 标题与样图之间纵向居中 */
+    --big-arrow-left-offset:0px;  /* 不再用整体负偏移 */
+    --big-arrow-right-offset:0px;
+    --big-arrow-fat:22px;         /* 高度 */
+    --big-arrow-width:26px;       /* 底边宽度（厚度） */
+    --left-fine:1px;              /* 新：左箭仅回调 1px，避免越线 */
+
+    /* 小箭头（已达标） */
+    --marker-top:-20px;
+    --marker-left:84.3%;
+    --marker-fat:16px;
+    --marker-base:13px;
+    --marker-color:#16a34a;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#fff;color:var(--ink);}
-  header{background:var(--brand);padding:.5rem 1rem;display:flex;align-items:center;justify-content:space-between;position:relative}
-  header img{height:40px}
-  header .title{font-size:1.25rem;font-weight:600;background:linear-gradient(90deg,#16a34a,#0284c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-left:.5rem}
-  header .version{position:absolute;left:110px;top:10px;background:#fff;color:#0284c7;font-weight:bold;padding:2px 8px;border-radius:999px;font-size:.8rem}
-  main{padding:1rem;text-align:center}
-  h1{font-size:1.1rem;margin-bottom:1rem}
-  .postcard-wrapper{position:relative;display:inline-block}
-  .postcard{border:var(--card-border) solid #555;border-radius:0;box-shadow:0 2px 6px rgba(0,0,0,.1);}
-  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:var(--big-arrow-height) solid transparent;border-bottom:var(--big-arrow-height) solid transparent}
-  .big-arrow.left{left:0}
-  .big-arrow.left::before{content:"";position:absolute;top:50%;transform:translateY(-50%);
-    border-top:var(--big-arrow-height) solid transparent;
-    border-bottom:var(--big-arrow-height) solid transparent;
+
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#fff;color:#222;
+    font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  img{max-width:100%;display:block}
+
+  /* 顶部横幅 */
+  .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand img{width:64px;height:64px;object-fit:contain}
+  .brandword{display:flex;flex-direction:column;line-height:1}
+  .brandword .l1,.brandword .l2{
+    font-weight:900;
+    font-size:var(--brandword-size);
+    letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 1px 1px rgba(0,0,0,.06);
+  }
+
+  .actions{display:flex;align-items:center;gap:8px}
+  .ver{padding:6px 10px;border-radius:999px;background:#fff;
+    font-weight:900;font-size:12px;letter-spacing:.3px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .cart{position:relative}
+  .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
+  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+  .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
+  .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
+  .dropdown.open{display:block}
+  .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
+  .dd-item.current{background:#f5f7fa}
+  .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+  .menu{font-size:22px;font-weight:900}
+
+  main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
+  h1{font-size:24px;line-height:1.15;margin:16px 0 10px;text-align:center}
+  .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:#fff;border-radius:20px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+
+  .hint{background:#fff8d9;border:2px dashed #e4c23a;border-radius:12px;
+        padding:8px 12px;text-align:center;font-size:13.5px;font-weight:800;line-height:1.35;
+        max-width:94%;margin:0 auto}
+
+  .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:6px}
+  .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
+           border:var(--card-border) solid var(--card-border-color);
+           box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .cardbox img{width:100%;height:auto;display:block;border-radius:0}
+
+  .marker{
+    position:absolute;
+    top:var(--marker-top);
+    left:var(--marker-left);
+    width:0;height:0;
+    border-left:var(--marker-base) solid transparent;
+    border-right:var(--marker-base) solid transparent;
+    border-top:var(--marker-fat) solid var(--marker-color);
+    filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
+    pointer-events:none;
+    z-index:9;
+  }
+
+  .big-arrow{position:absolute;top:var(--big-arrow-top);width:0;height:0;border:0;background:transparent;padding:0;pointer-events:none;z-index:2}
+  .big-arrow.left{left:0;transform:translateX(0)}
+  .big-arrow.left::before{
+    content:"";display:block;width:0;height:0;
+    border-top:var(--big-arrow-fat) solid transparent;
+    border-bottom:var(--big-arrow-fat) solid transparent;
     border-right:var(--big-arrow-width) solid var(--big-arrow-color);
+    /* 关键：右边缘与卡片左边线重合，并回调 1px 防止越线 */
     margin-left:calc(-1 * var(--big-arrow-width) - var(--card-border) - var(--left-fine));
+    filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
   }
-  .big-arrow.right{right:0}
-  .big-arrow.right::before{content:"";position:absolute;top:50%;transform:translateY(-50%);
-    border-top:var(--big-arrow-height) solid transparent;
-    border-bottom:var(--big-arrow-height) solid transparent;
+  .big-arrow.right{right:0;transform:translateX(var(--big-arrow-right-offset))}
+  .big-arrow.right::before{
+    content:"";display:block;width:0;height:0;
+    border-top:var(--big-arrow-fat) solid transparent;
+    border-bottom:var(--big-arrow-fat) solid transparent;
     border-left:var(--big-arrow-width) solid var(--big-arrow-color);
+    filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
   }
-  .small-arrow{position:absolute;bottom:8px;right:84.3%;width:0;height:0;
-    border-left:var(--small-arrow-size) solid transparent;
-    border-right:var(--small-arrow-size) solid transparent;
-    border-top:var(--small-arrow-size) solid var(--small-arrow-color);
-  }
-  footer{text-align:center;padding:1rem;font-size:.9rem;color:#333}
-  .buttons{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
-  .buttons button{flex:1;padding:.75rem;border-radius:.5rem;border:none;font-size:1rem;font-weight:600}
-  .buttons button:first-child{background:#facc15}
-  .buttons button:nth-child(2){background:#e5e5e5}
-  .buttons button:last-child{background:#f59e0b;color:#fff}
+
+  .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
+  .features p{margin:2px 0;font-weight:800}
+
+  .btns{display:flex;gap:10px;margin-top:6px}
+  .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
+  .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
+  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
 </style>
 </head>
 <body>
-  <header>
-    <div style="display:flex;align-items:center;">
-      <img src="https://raw.githubusercontent.com/Eutourc/Smart-postcard/main/logo.png" alt="logo">
-      <span class="title">Smart Postcard</span>
+<header class="top">
+  <div class="bar">
+    <div class="brand">
+      <img src="Logo.png" alt="Smart Postcard">
+      <div class="brandword">
+        <span class="l1">Smart</span>
+        <span class="l2">Postcard</span>
+      </div>
     </div>
-    <span class="version">v2.2c</span>
-  </header>
-  <main>
-    <h1>珍藏您举世无双的纪念明信片</h1>
-    <div class="postcard-wrapper">
-      <img src="https://raw.githubusercontent.com/Eutourc/Smart-postcard/main/sample-postcard.jpg" class="postcard" alt="postcard sample" width="320">
-      <div class="big-arrow left"></div>
-      <div class="big-arrow right"></div>
-      <div class="small-arrow"></div>
+    <div class="actions">
+      <div class="ver">v2.2c</div>
+      <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
+      <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
+      <div class="dropdown" id="lang-dd">
+        <div class="dd-item current" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
+        <div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
+      </div>
+      <div class="iconbtn" aria-label="menu"><span class="menu">≡</span></div>
     </div>
-    <div class="buttons">
-      <button>纪念明信片</button>
-      <button>传统明信片</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
+
+  <section class="stage">
+    <div class="hint" id="hint">选择中文/英文版式</div>
+
+    <div class="viewer">
+      <div class="cardbox" id="cardbox">
+        <button class="big-arrow left" id="prev" aria-label="上一项"></button>
+        <button class="big-arrow right" id="next" aria-label="下一项"></button>
+
+        <img id="pc-img" src="postcard_cn.png?v=22031" alt="postcard sample">
+        <div class="marker" id="marker"></div>
+      </div>
     </div>
-    <div class="buttons">
-      <button style="flex:1;background:#f59e0b;color:#fff">开始制作</button>
+
+    <section class="features" id="features">
+      <p>操作简单 · 实体印刷 · 全球邮寄</p>
+      <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
+      <p>照片打印 · A5 大尺码 · 物超所值</p>
+    </section>
+
+    <div class="btns">
+      <button class="btn primary">纪念明信片</button>
+      <button class="btn">传统明信片</button>
     </div>
-    <p style="margin-top:1rem;">操作简单 · 实体印刷 · 全球邮寄<br>旅游纪念 · 集邮佳品 · 珍贵收藏<br>照片打印 · A5大尺码 · 物超所值</p>
-  </main>
-  <footer>
-  </footer>
+    <button class="start" id="start-btn">开始制作</button>
+  </section>
+</main>
+
+<script>
+(function(){
+  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
+  const positions=[18,84.3,68,86];
+  let i=1;
+  const hint=document.getElementById('hint');
+  const marker=document.getElementById('marker');
+  function apply(){hint.textContent=hints[i];marker.style.left=positions[i]+'%';}
+  function step(d){i=(i+d+hints.length)%hints.length;apply();}
+  document.getElementById('prev').onclick=()=>step(-1);
+  document.getElementById('next').onclick=()=>step(+1);
+  (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
+    area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+    area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
+    area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
+  })();
+  apply();
+
+  document.getElementById('start-btn').addEventListener('click',()=>{
+    location.href='#start';
+  });
+})();
+</script>
 </body>
 </html>
