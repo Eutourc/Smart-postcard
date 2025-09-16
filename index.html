@@ -3,32 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v2.2c（进化版·精微调⑥ 修复版）</title>
+<title>Smart Postcard — v2.2c（进化版·精微调⑦：左箭回调0.5px）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
   :root{
-    /* Logo右侧文字渐变与尺寸（已达标版） */
     --bw-c1:#10b981;
     --bw-c2:#22d3ee;
     --bw-c3:#34d399;
     --brandword-size:26px;
 
-    /* 明信片勾边与尺寸 */
-    --card-border:1px; /* 供左箭贴边计算 */
+    --card-border:1px;
     --card-border-color:#d1d5db;
 
-    /* 大箭头参数（已达标，仅修正左箭补偿） */
     --big-arrow-color:#0b3a77;
-    --big-arrow-top:-92px;        /* 标题与样图之间纵向居中 */
-    --big-arrow-left-offset:0px;  /* 不再用整体负偏移 */
+    --big-arrow-top:-92px;
+    --big-arrow-left-offset:0px;
     --big-arrow-right-offset:0px;
-    --big-arrow-fat:22px;         /* 高度 */
-    --big-arrow-width:26px;       /* 底边宽度（厚度） */
-    --left-fine:1px;              /* 新：左箭仅回调 1px，避免越线 */
+    --big-arrow-fat:22px;
+    --big-arrow-width:26px;
+    --left-fine:0.5px;
 
-    /* 小箭头（已达标） */
     --marker-top:-20px;
     --marker-left:84.3%;
     --marker-fat:16px;
@@ -41,7 +37,6 @@
     font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
   img{max-width:100%;display:block}
 
-  /* 顶部横幅 */
   .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
   .brand{display:flex;align-items:center;gap:10px}
@@ -109,7 +104,6 @@
     border-top:var(--big-arrow-fat) solid transparent;
     border-bottom:var(--big-arrow-fat) solid transparent;
     border-right:var(--big-arrow-width) solid var(--big-arrow-color);
-    /* 关键：右边缘与卡片左边线重合，并回调 1px 防止越线 */
     margin-left:calc(-1 * var(--big-arrow-width) - var(--card-border) - var(--left-fine));
     filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
   }
