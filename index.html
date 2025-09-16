@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v2.2c（进化版·精微调②）</title>
+<title>Smart Postcard — v2.2c（进化版·精微调③）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -12,17 +12,17 @@
     --bw-c1:#10b981;
     --bw-c2:#22d3ee;
     --bw-c3:#34d399;
-    --brandword-size:26px; /* Logo右侧字稍小 */
+    --brandword-size:26px;
 
     --big-arrow-color:#0b3a77;
-    --big-arrow-top:-96px;         /* 上移使居中 */
-    --big-arrow-left-offset:-3px;  /* 左箭头贴边 */
+    --big-arrow-top:-94px;         /* 下调一点点 */
+    --big-arrow-left-offset:-4px;  /* 更贴边 */
     --big-arrow-right-offset:0px;
     --big-arrow-fat:22px;
-    --big-arrow-width:26px;        /* 加厚 */
+    --big-arrow-width:26px;
 
     --marker-top:-20px;
-    --marker-left:83.5%;           /* 小箭头更居中 */
+    --marker-left:84%;             /* 小箭头更居中 */
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
@@ -76,7 +76,7 @@
 
   .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:6px}
   .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
-           border:1px solid #d1d5db; /* 边框线稍深，与地址栏一致 */
+           border:1px solid #d1d5db;
            box-shadow:0 1px 2px rgba(0,0,0,.03)}
   .cardbox img{width:100%;height:auto;display:block;border-radius:0}
 
@@ -176,7 +176,7 @@
 <script>
 (function(){
   const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,83.5,68,86];
+  const positions=[18,84,68,86]; // 小箭头位置调整
   let i=1;
   const hint=document.getElementById('hint');
   const marker=document.getElementById('marker');
