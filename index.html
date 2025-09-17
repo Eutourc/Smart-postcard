@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v3.1d（说明框定位预设）</title>
+<title>Smart Postcard — （进化版·精微调⑩）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -143,57 +143,51 @@
 
 
 <style>
-/* ==== Smart Postcard: info box preset (v3.1d) ==== */
-.card { position: relative; } /* ensure absolute children position against postcard card */
-.info-box {
-  position: absolute;
+/* ==== Smart Postcard: info box autoplace v3.1f ==== */
+.info-box{
+  position: fixed;           /* autoplace across the page */
   left: 50%;
   transform: translateX(-50%);
-  top: -3%;                 /* between the two big arrows */
-  width: 62%;                /* fixed width to fit three centered lines nicely */
-  max-width: 420px;          /* cap on wide screens */
-  min-height: 64px;          /* room for ~3 lines with padding */
+  top: 8%;                   /* will be overridden by JS */
+  width: 66%;
+  max-width: 420px;
+  min-height: 56px;
   padding: 10px 14px;
   border-radius: 12px;
-  background: #ffe4a3;       /* deeper pale yellow for readability */
+  background: #ffe1a8;       /* slightly deeper than之前 */
   color: #111;
   font-weight: 700;
   text-align: center;
   line-height: 1.35;
-  white-space: normal;       /* allow normal wrapping */
-  word-break: break-word;    /* break long words if needed */
+  white-space: normal;
+  word-break: break-word;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  z-index: 40;
-  pointer-events: none;      /* decorative: no blocking taps */
+  z-index: 4000;             /* above arrows */
+  pointer-events: none;
   font-size: 14px;
 }
-/* arrows above postcard */
-.big-arrow { z-index: 45; }
-
-/* version badge in bottom blank area */
+@media (max-width:420px){
+  .info-box{ width: 72%; font-size: 13px; }
+}
+/* Version badge in safe blank area (above the big CTA) */
 .sp-ver {
   position: fixed;
   right: 14px;
-  bottom: 112px;             /* keep above bottom CTA button */
-  background: rgba(0,0,0,0.06);
+  bottom: 112px;
+  background: rgba(0,0,0,.06);
   color: #444;
   padding: 6px 8px;
   font-size: 12px;
   border-radius: 10px;
   pointer-events: none;
-  z-index: 50;
-  opacity: .95;
-}
-
-/* small screens */
-@media (max-width: 420px){
-  .info-box { width: 72%; min-height: 60px; font-size: 13px; top: 7%; }
-  .sp-ver { bottom: 108px; font-size: 11px; right: 12px; }
+  z-index: 4000;
 }
 </style>
 
 </head>
 <body>
+<div class="info-box" id="sp-info">示例说明占位</div>
+>
 <header class="top">
   <div class="bar">
     <div class="brand">
@@ -224,8 +218,6 @@
 
     <div class="viewer">
       <div class="cardbox" id="cardbox">
-  <div class="info-box" id="sp-info">示例说明占位</div>
-
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
 
@@ -343,6 +335,61 @@
 </script>
 
 
-<div class="sp-ver">v3.1d · base v3.0</div>
+<div class="sp-ver">v3.1f · base v3.0</div>
+
+<script>
+(function(){
+  function qs(sel){ return document.querySelector(sel); }
+  function qsa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function centerY(rect){ return rect.top + rect.height/2; }
+
+  function place(){
+    var box = qs('.info-box');
+    if(!box) return;
+    var topPx = null;
+
+    // 1) Try to use the two big arrows (a lot of possible class names)
+    var left = qs('.big-arrow.left, .big-arrow-left, .arrow-left, .left-arrow, [data-arrow="left"], [aria-label*=\"上\" i], [aria-label*=\"prev\" i], [aria-label*=\"previous\" i]');
+    var right= qs('.big-arrow.right, .big-arrow-right, .arrow-right, .right-arrow, [data-arrow=\"right\"], [aria-label*=\"下\" i], [aria-label*=\"next\" i]');
+
+    if(left && right){
+      var r1 = left.getBoundingClientRect();
+      var r2 = right.getBoundingClientRect();
+      topPx = (centerY(r1) + centerY(r2)) / 2;
+    }
+
+    // 2) Fallback: align relative to postcard sample (img) or its container
+    if(topPx === null){
+      var img = qs('img[alt*=\"postcard\" i], img[alt*=\"明信片\"], .postcard img, .card img');
+      if(img){
+        var ir = img.getBoundingClientRect();
+        topPx = ir.top + ir.height * 0.10; // 10% from top of the postcard
+      }
+    }
+
+    // 3) Last resort: rough position below the page title
+    if(topPx === null){
+      var h = qs('h1, h2');
+      if(h){
+        var hr = h.getBoundingClientRect();
+        topPx = hr.bottom + 12;
+      } else {
+        topPx = window.innerHeight * 0.18;
+      }
+    }
+
+    // Optional micro adjustment (feel free to tweak +- px globally)
+    var micro = -6; // lift a bit
+    box.style.top = (topPx + micro) + 'px';
+  }
+
+  window.addEventListener('load', place);
+  window.addEventListener('resize', place);
+  window.addEventListener('orientationchange', place);
+  // tiny delay in case fonts/layout shift
+  setTimeout(place, 120);
+})();
+</script>
+
 </body>
 </html>
