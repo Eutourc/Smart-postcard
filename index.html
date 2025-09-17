@@ -1,81 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Smart Postcard · v3.1s base v3.0</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Postcard v3.1t · base v3.0</title>
 <style>
-:root{
-  --brand:#f1b400;
-  --hint-bg:#FFE1C2; /* 稍深的浅黄 */
-  --hint-txt:#111;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;background:#fafafa;color:#222}
-.header{background:var(--brand);padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:5}
-.logo{width:40px;height:40px;border-radius:20px;background:#43c59e;box-shadow:inset 0 0 0 8px #9be1c7}
-.brand{font-size:26px;font-weight:800;color:#11aaa9;letter-spacing:.5px}
-.wrap{padding:18px}
-.h1{font-size:26px;font-weight:800;margin:10px 0 16px}
-.stage{position:relative;background:#fff;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:40px 16px;min-height:260px}
-/* 两侧大箭头 */
-.arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-style:solid;opacity:.95}
-.arrow.left{left:-4px;border-width:22px 26px 22px 0;border-color:transparent #2148a6 transparent transparent}
-.arrow.right{right:-4px;border-width:22px 0 22px 26px;border-color:transparent transparent transparent #2148a6}
-/* 小箭头 */
-.small{position:absolute;right:20px;top:58%;transform:translateY(-50%) rotate(0deg);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:18px solid #26a269;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15))}
-/* 单一说明框 */
-.hint{
-  position:absolute;left:50%;top:42%;
-  transform:translate(-50%,-50%);
-  background:var(--hint-bg);
-  color:var(--hint-txt);
-  border-radius:14px;
-  padding:14px 18px;
-  width:min(600px, 72vw);
-  min-height:86px; /* 预留三行 */
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;line-height:1.45;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
-}
-.hint b{font-weight:900}
-/* 明信片占位图，仅作位置参考 */
-.card{
-  margin-top:110px;
-  height:210px;border-radius:10px;border:1px solid #e6e6e6;background:#fff url('') center/cover no-repeat;
-}
-.badge{position:fixed;right:14px;bottom:14px;background:rgba(0,0,0,.06);backdrop-filter:blur(4px);padding:6px 10px;border-radius:12px;font-weight:600;color:#333}
+  :root{
+    --brand:#f0b90b;
+    --teal:#18b0a6;
+    --title:#222;
+    --hint-bg:#FFE1C2; /* slightly deeper than before */
+    --hint-fg:#1a1a1a;
+    --stage-w: 92vw;
+    --stage-h: 62vh;
+    --arrow-w: 42px;
+    --arrow-h: 120px;
+    --stage-pad: 18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, "Noto Sans CJK SC", sans-serif;background:#fff;color:#333}
+  .bar{background:var(--brand);color:#008b8b;padding:14px 16px;font-weight:700;font-size:28px;display:flex;align-items:center;gap:12px}
+  .logo{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #34d399, #16a34a);display:inline-block}
+  h1{font-size:28px;font-weight:900;color:var(--title);margin:20px 16px}
+  .stage{
+    position:relative;margin:0 auto;border-radius:18px;background:#fafafa;
+    width:var(--stage-w);height:var(--stage-h);
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+    overflow:visible;
+  }
+  /* postcard frame placeholder */
+  .postcard{
+    position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
+    width:calc(100% - 2*var(--stage-pad));height:calc(100% - 2*var(--stage-pad));
+    border-radius:12px;border:2px solid #e8e8e8;background:#fff;
+  }
+  /* big arrows outside edges */
+  .arrow {
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:0;height:0;border-top:var(--arrow-h) solid transparent;border-bottom:var(--arrow-h) solid transparent;
+    cursor:pointer;filter:drop-shadow(0 2px 2px rgba(0,0,0,.15));
+  }
+  .arrow.left{left:-10px;border-right:var(--arrow-w) solid #1e3a8a;}
+  .arrow.right{right:-10px;border-left:var(--arrow-w) solid #1e3a8a;}
+  /* single hint box (locked) */
+  #hint{
+    position:absolute;z-index:2;
+    /* Lock inside arrows: center horizontally, slightly above middle */
+    left:50%;top:42%;transform:translate(-50%,-50%);
+    max-width:calc(100% - 140px); /* leave breathing space to arrows */
+    width:calc(100% - 180px);
+    background:var(--hint-bg);color:var(--hint-fg);
+    border-radius:18px;padding:14px 18px;
+    box-shadow:0 6px 18px rgba(0,0,0,.10);
+    line-height:1.6;font-weight:800;font-size:20px;
+    text-align:center;
+    min-height:86px;display:flex;align-items:center;justify-content:center;
+  }
+  /* green pointer */
+  .mini {
+    position:absolute;z-index:2; width:0;height:0;
+    border-left:14px solid transparent;border-right:14px solid transparent;
+    border-top:20px solid #16a34a;
+    bottom:-8px;right:22px;
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.1));
+  }
+  /* version badge */
+  .ver{
+    position:fixed;right:16px;bottom:18px;background:rgba(0,0,0,.06);
+    color:#111;padding:8px 12px;border-radius:16px;font-weight:700;
+  }
+  @media (max-width:400px){
+    #hint{font-size:18px;min-height:80px}
+    .arrow.left{left:-8px}.arrow.right{right:-8px}
+  }
 </style>
 </head>
 <body>
-  <header class="header">
-    <div class="logo" aria-hidden="true"></div>
-    <div class="brand">Smart Postcard</div>
-  </header>
+  <div class="bar"><span class="logo"></span><span>Smart Postcard</span></div>
+  <h1>珍藏您举世无双的纪念明信片</h1>
+  <div class="stage">
+    <div class="arrow left" aria-label="上一条"></div>
+    <div class="arrow right" aria-label="下一条"></div>
 
-  <main class="wrap">
-    <div class="h1">珍藏您举世无双的纪念明信片</div>
+    <div id="hint">
+      <div>明信片背面图案！可成为邮票图案！<br/>您可以任选五张！可用您的自拍照！<br/>这等于洗了一张 <b>A5</b> 大尺寸的照片！</div>
+      <div class="mini"></div>
+    </div>
 
-    <section class="stage" aria-label="预览区域">
-      <div class="arrow left" aria-hidden="true"></div>
-      <div class="arrow right" aria-hidden="true"></div>
+    <div class="postcard" aria-label="postcard placeholder"></div>
+  </div>
 
-      <!-- 单个说明框：确保只有这一处 -->
-      <div id="hint" class="hint" role="note" aria-live="polite">
-        <div>
-          明信片背面图案！可成为邮票图案！<br>
-          您可以任选照片！可用您的自拍照！<br>
-          这等于洗了一张 <b>A5</b> 大尺寸的照片！
-        </div>
-      </div>
-
-      <div class="small" aria-hidden="true"></div>
-
-      <!-- 明信片图仅为占位；在集成时替换为真实样图即可 -->
-      <div class="card" aria-hidden="true"></div>
-    </section>
-  </main>
-
-  <div class="badge">v3.1s · base v3.0</div>
+  <div class="ver">v3.1t · base v3.0</div>
 </body>
 </html>
