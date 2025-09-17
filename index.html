@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — （进化版·精微调⑩）</title>
+<title>Smart Postcard — v2.2c（进化版·精微调⑩）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -142,52 +142,44 @@
 </style>
 
 
-<style>
-/* ==== Smart Postcard: info box autoplace v3.1f ==== */
-.info-box{
-  position: fixed;           /* autoplace across the page */
+<style id="sp-locked-3line-style">
+.sp-locked-box {
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 8%;                   /* will be overridden by JS */
-  width: 66%;
-  max-width: 420px;
-  min-height: 56px;
-  padding: 10px 14px;
+  max-width: 520px;
+  min-width: 260px;
+  background: #ffdca8;
   border-radius: 12px;
-  background: #ffe1a8;       /* slightly deeper than之前 */
+  padding: 10px 14px;
   color: #111;
-  font-weight: 700;
   text-align: center;
-  line-height: 1.35;
-  white-space: normal;
-  word-break: break-word;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  z-index: 4000;             /* above arrows */
+  font-weight: 800;
+  line-height: 1.22;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  z-index: 9999;
   pointer-events: none;
-  font-size: 14px;
+  overflow: hidden;
+  display: none;
 }
-@media (max-width:420px){
-  .info-box{ width: 72%; font-size: 13px; }
-}
-/* Version badge in safe blank area (above the big CTA) */
+.sp-locked-box .inner { display:block; width:100%; word-break:break-word; white-space:normal; }
 .sp-ver {
   position: fixed;
-  right: 14px;
-  bottom: 112px;
-  background: rgba(0,0,0,.06);
-  color: #444;
-  padding: 6px 8px;
-  font-size: 12px;
-  border-radius: 10px;
-  pointer-events: none;
-  z-index: 4000;
+  right:12px;
+  bottom:112px;
+  font-size:12px;
+  color:#444;
+  background:rgba(255,255,255,0.9);
+  padding:6px 8px;
+  border-radius:10px;
+  pointer-events:none;
+  z-index:10000;
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
 }
 </style>
 
 </head>
 <body>
-<div class="info-box" id="sp-info">示例说明占位</div>
->
 <header class="top">
   <div class="bar">
     <div class="brand">
@@ -198,7 +190,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ver"></div>
+      <div class="ver">v2.2c</div>
       <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
       <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
       <div class="dropdown" id="lang-dd">
@@ -290,7 +282,7 @@
   }
 
   ready(function(){
-    // 1) 去掉横幅  小徽标（若存在）
+    // 1) 去掉横幅 v2.2c 小徽标（若存在）
     Array.from(document.querySelectorAll('*')).some(function(el){
       var t=(el.textContent||'').trim();
       if(/^v\s*2\.2c$/i.test(t)){
@@ -335,59 +327,55 @@
 </script>
 
 
-<div class="sp-ver">v3.1f · base v3.0</div>
-
-<script>
+<script id="sp-locked-3line-init">
 (function(){
-  function qs(sel){ return document.querySelector(sel); }
-  function qsa(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
-  function centerY(rect){ return rect.top + rect.height/2; }
-
-  function place(){
-    var box = qs('.info-box');
-    if(!box) return;
-    var topPx = null;
-
-    // 1) Try to use the two big arrows (a lot of possible class names)
-    var left = qs('.big-arrow.left, .big-arrow-left, .arrow-left, .left-arrow, [data-arrow="left"], [aria-label*=\"上\" i], [aria-label*=\"prev\" i], [aria-label*=\"previous\" i]');
-    var right= qs('.big-arrow.right, .big-arrow-right, .arrow-right, .right-arrow, [data-arrow=\"right\"], [aria-label*=\"下\" i], [aria-label*=\"next\" i]');
-
-    if(left && right){
-      var r1 = left.getBoundingClientRect();
-      var r2 = right.getBoundingClientRect();
-      topPx = (centerY(r1) + centerY(r2)) / 2;
+  function qs(s){ return document.querySelector(s); }
+  function ensure(){
+    if(qs('.sp-locked-box')) return;
+    var b=document.createElement('div');
+    b.className='sp-locked-box';
+    b.innerHTML='<div class="inner"></div>';
+    document.body.appendChild(b);
+    if(!qs('.sp-ver')){
+      var v=document.createElement('div');
+      v.className='sp-ver';
+      v.textContent='v3.1i · base v3.0';
+      document.body.appendChild(v);
     }
-
-    // 2) Fallback: align relative to postcard sample (img) or its container
-    if(topPx === null){
-      var img = qs('img[alt*=\"postcard\" i], img[alt*=\"明信片\"], .postcard img, .card img');
-      if(img){
-        var ir = img.getBoundingClientRect();
-        topPx = ir.top + ir.height * 0.10; // 10% from top of the postcard
-      }
-    }
-
-    // 3) Last resort: rough position below the page title
-    if(topPx === null){
-      var h = qs('h1, h2');
-      if(h){
-        var hr = h.getBoundingClientRect();
-        topPx = hr.bottom + 12;
-      } else {
-        topPx = window.innerHeight * 0.18;
-      }
-    }
-
-    // Optional micro adjustment (feel free to tweak +- px globally)
-    var micro = -6; // lift a bit
-    box.style.top = (topPx + micro) + 'px';
   }
-
-  window.addEventListener('load', place);
-  window.addEventListener('resize', place);
-  window.addEventListener('orientationchange', place);
-  // tiny delay in case fonts/layout shift
-  setTimeout(place, 120);
+  function place(){
+    ensure();
+    var box=qs('.sp-locked-box'); var inner=box.querySelector('.inner');
+    var wrap=qs('.viewer')||qs('.stage')||document.body;
+    var hostRect=wrap.getBoundingClientRect();
+    var leftEdge=hostRect.left+24, rightEdge=hostRect.right-24;
+    var avail=Math.max(200, rightEdge-leftEdge);
+    var chosenWidth=Math.min(520, Math.max(260, Math.round(avail)));
+    box.style.width=chosenWidth+'px';
+    var lines=[
+      "明信片背面图案！可成为邮票图案！",
+      "您可以任选照片！可用您的自拍照！",
+      "这等于洗了一张 A5 大尺寸的照片！"
+    ];
+    inner.innerHTML=lines.join('<br>');
+    var lo=12,hi=22,best=15;
+    while(lo<=hi){
+      var mid=Math.floor((lo+hi)/2);
+      inner.style.fontSize=mid+'px'; inner.style.lineHeight=1.22;
+      var h=inner.getBoundingClientRect().height;
+      if(h <= Math.round(mid*1.22*3+2)){ best=mid; lo=mid+1; } else { hi=mid-1; }
+    }
+    inner.style.fontSize=best+'px';
+    inner.style.lineHeight=1.22;
+    var padTop=parseFloat(getComputedStyle(box).paddingTop||10),
+        padBottom=parseFloat(getComputedStyle(box).paddingBottom||10);
+    var finalH=Math.round(best*1.22*3+padTop+padBottom);
+    box.style.height=finalH+'px';
+    box.style.top=(hostRect.top+hostRect.height*0.12)+'px';
+    box.style.display='block';
+  }
+  window.addEventListener('load',function(){setTimeout(place,160);});
+  window.addEventListener('resize',function(){setTimeout(place,120);});
 })();
 </script>
 
