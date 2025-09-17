@@ -3,95 +3,33 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Smart Postcard — v3.1h（仅新增说明框 · base v3.0）</title>
+<title>Smart Postcard — v3.1i（纯注入 · base v3.0）</title>
 <style>
-  /* ===== 仅保留必要的基础；不重置全局，不覆盖 v3.0 样式 ===== */
-  .sp-hint, .sp-marker, .sp-ver { all: unset; } /* 先清空 UA 默认，避免继承 */
-  .sp-hint, .sp-marker, .sp-ver { position: absolute; }
-
-  /* 说明框（细长固定，最多三行；独立前缀 sp-，不污染外部） */
-  .sp-hint{
-    left:50%; top:8px; transform:translateX(-50%);
-    width:58%; min-height:72px; max-height:84px;
-    padding:6px 10px; background:#fffef6;
-    border-radius:12px; border:2px dashed #e7cf72;
-    box-shadow:0 1px 6px rgba(231,207,114,.12);
-    font-weight:900; text-align:center; line-height:1.26;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-    color:#222; z-index:60; overflow:hidden; font-size:14px;
-  }
-  .sp-hint .sp-line{ display:block; margin:2px 0; white-space:nowrap; }
-
-  /* 小箭头（仅自身样式） */
-  .sp-marker{
-    width:0; height:0; z-index:70; pointer-events:none;
-    border-left:13px solid transparent; border-right:13px solid transparent;
-    border-top:16px solid #16a34a;
-    filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
-  }
-
-  /* 版本标识（舞台右上角，避免任何按钮冲突） */
-  .sp-ver{ right:10px; top:10px; z-index:80;
-    font: 600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-    color:#9e9e9e; pointer-events:none; }
+  /* 仅新增 sp-*；不定义或覆盖任何非 sp- 的样式 */
+  .sp-hint{position:absolute;left:50%;top:8px;transform:translateX(-50%);
+    width:58%;min-height:72px;max-height:84px;padding:6px 10px;background:#fffef6;
+    border:2px dashed #e7cf72;border-radius:12px;box-shadow:0 1px 6px rgba(231,207,114,.12);
+    font:900 14px/1.26 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:#222;
+    text-align:center;overflow:hidden;z-index:9}
+  .sp-hint .sp-line{display:block;margin:2px 0;white-space:nowrap}
+  .sp-marker{position:absolute;width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:16px solid #16a34a;filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));z-index:10;pointer-events:none}
+  .sp-ver{position:fixed;right:12px;bottom:96px;font:600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:#9e9e9e;pointer-events:none}
+  @media (max-width:420px){ .sp-ver{ bottom:110px; } }
 </style>
 </head>
 <body>
-  <!-- 顶部横幅（不含任何版本徽标；此处仅示意，无旧版 v2.2c） -->
-  <div style="background:#F5B800;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:0;z-index:40">
-    <div style="max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px">
-      <img src="Logo.png" alt="logo" style="width:64px;height:64px">
-      <div style="display:flex;flex-direction:column;font-weight:900;font-size:26px;
-                  background:linear-gradient(90deg,#10b981,#22d3ee 55%,#34d399);
-                  -webkit-background-clip:text;-webkit-text-fill-color:transparent">
-        <span>Smart</span><span>Postcard</span>
-      </div>
-    </div>
-  </div>
 
-  <main style="max-width:980px;margin:0 auto;padding:10px 14px 40px">
-    <h1 style="text-align:center;font-size:24px;margin:18px 0 12px;color:#222">珍藏您举世无双的纪念明信片</h1>
-
-    <!-- 舞台容器：保持 v3.0 结构，仅相对定位以承载 sp-* 绝对元素 -->
-    <section class="stage" style="background:#fff;border-radius:18px;padding:12px;box-shadow:0 10px 26px rgba(0,0,0,.08);position:relative">
-      <!-- 新：右上角版本号 -->
-      <div class="sp-ver">v3.1h · base v3.0</div>
-
-      <div class="viewer" style="display:flex;align-items:center;justify-content:center;padding:6px 0;position:relative">
-        <div class="cardbox" id="cardbox" style="width:92%;max-width:560px;margin:0 auto;border:1px solid #d1d5db;background:#fff;position:relative">
-          <!-- 保留 v3.0 的内容（此处用两张图占位；不改大箭头样式/位置） -->
-          <div class="big-arrow big-left" id="big-left" aria-hidden="true"></div>
-          <div class="big-arrow big-right" id="big-right" aria-hidden="true"></div>
-
-          <img id="img-front" src="postcard_cn.png" alt="postcard sample" style="width:100%;display:block;height:auto;border-radius:0">
-          <img id="img-back"  src="postcard_back.png" alt="postcard back" style="display:none;width:100%;height:auto;border-radius:0">
-
-          <!-- 仅新增：说明框 & 小箭头（sp- 前缀，互不干扰） -->
-          <div id="sp-hint" class="sp-hint"></div>
-          <div id="sp-marker" class="sp-marker"></div>
-        </div>
-      </div>
-
-      <!-- 保留 v3.0 的底部文案与按钮（不改样式，仅示意） -->
-      <div class="features" style="text-align:center;margin:12px 0 8px;font-weight:800;color:#222">
-        <p>操作简单 · 实体印刷 · 全球邮寄</p>
-        <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
-        <p>照片打印 · A5 大尺码 · 物超所值</p>
-      </div>
-      <div class="btns" style="display:flex;gap:10px;margin-top:6px">
-        <button class="btn primary" style="flex:1;padding:10px;border-radius:12px;border:none;font-weight:800;background:#F5B800">纪念明信片</button>
-        <button class="btn" style="flex:1;padding:10px;border-radius:12px;border:none;font-weight:800;background:#eee">传统明信片</button>
-      </div>
-      <button class="start" style="display:block;width:100%;margin-top:8px;padding:12px;border-radius:12px;background:#F5B800;font-weight:900;border:none">开始制作</button>
-    </section>
-  </main>
+<!-- 保持页面其它结构由 v3.0 决定；此文件不写横幅/舞台样式 -->
 
 <script>
 (function(){
-  // —— 仅作用于 sp-* 元素，避免污染全局 ——
-  const hint = document.getElementById('sp-hint');
-  const marker = document.getElementById('sp-marker');
+  // 找到 v3.0 的明信片容器（类名 .cardbox）
+  const card = document.querySelector('.cardbox');
+  if(!card) return;
 
+  // 说明框
+  const hint = document.createElement('div');
+  hint.className = 'sp-hint';
   const lines = [
     "明信片背面图案！可成为邮票图案！",
     "您可以任选照片！可用您的自拍照！",
@@ -99,7 +37,7 @@
   ];
   hint.innerHTML = lines.map(t=>`<span class="sp-line">${t}</span>`).join("");
 
-  // 自适应字号（12–16px）: 仅影响 sp-hint
+  // 自适应字号（12–16px）仅作用于 sp-hint
   const ctx = document.createElement('canvas').getContext('2d');
   const ff  = getComputedStyle(hint).fontFamily || 'system-ui';
   function fits(px){
@@ -111,13 +49,23 @@
     return lh * lines.length <= maxH;
   }
   let lo=12, hi=16, best=14;
+  document.body.appendChild(hint); // 暂挂到 DOM 以获得尺寸
   while(lo<=hi){ const mid=(lo+hi>>1); if(fits(mid)){ best=mid; lo=mid+1; } else { hi=mid-1; } }
-  hint.style.fontSize = best + 'px';
-  hint.style.lineHeight = (best>=15?1.26:1.24);
+  hint.style.fontSize = best+'px'; hint.style.lineHeight = (best>=15?1.26:1.24);
+  card.appendChild(hint);
 
-  // 小箭头默认指向邮票区域中心（相对 card 盒子百分比）
+  // 小箭头（默认指向邮票区域中心）
+  const marker = document.createElement('div');
+  marker.className = 'sp-marker';
   marker.style.left = '84%';
   marker.style.top  = 'calc(14% - 18px)';
+  card.appendChild(marker);
+
+  // 版本号（不参与布局；悬浮在视口右下角留白）
+  const ver = document.createElement('div');
+  ver.className = 'sp-ver';
+  ver.textContent = 'v3.1i · base v3.0';
+  document.body.appendChild(ver);
 })();
 </script>
 </body>
