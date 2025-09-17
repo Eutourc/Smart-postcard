@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v3.1b（微调）</title>
+<title>Smart Postcard — v3.1c（说明框定位预设）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -143,30 +143,38 @@
 
 
 <style>
-/* Explanation/info box placed between big arrows, responsive */
+/* ==== Smart Postcard: info box preset (v3.1c) ==== */
+.card { position: relative; } /* ensure absolute children position against postcard card */
 .info-box {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 8%;
-  max-width: 62%;
-  background: #fff4c9; /* slightly deeper pale yellow */
+  top: 7.5%;                 /* between the two big arrows */
+  width: 66%;                /* fixed width to fit three centered lines nicely */
+  max-width: 420px;          /* cap on wide screens */
+  min-height: 64px;          /* room for ~3 lines with padding */
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #ffe4a3;       /* deeper pale yellow for readability */
   color: #111;
-  padding: 12px 16px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   font-weight: 700;
   text-align: center;
-  line-height: 1.25;
+  line-height: 1.35;
+  white-space: normal;       /* allow normal wrapping */
+  word-break: break-word;    /* break long words if needed */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   z-index: 40;
-  pointer-events: none; /* decorative */
+  pointer-events: none;      /* decorative: no blocking taps */
   font-size: 14px;
 }
+/* arrows above postcard */
 .big-arrow { z-index: 45; }
+
+/* version badge in bottom blank area */
 .sp-ver {
   position: fixed;
-  right: 16px;
-  bottom: 120px;
+  right: 14px;
+  bottom: 112px;             /* keep above bottom CTA button */
   background: rgba(0,0,0,0.06);
   color: #444;
   padding: 6px 8px;
@@ -174,11 +182,13 @@
   border-radius: 10px;
   pointer-events: none;
   z-index: 50;
-  opacity: 0.95;
+  opacity: .95;
 }
-@media (max-width:420px){
-  .info-box { max-width:75%; font-size:13px; top:7%; }
-  .sp-ver { bottom: 110px; right: 14px; font-size:11px; }
+
+/* small screens */
+@media (max-width: 420px){
+  .info-box { width: 72%; min-height: 60px; font-size: 13px; top: 7%; }
+  .sp-ver { bottom: 108px; font-size: 11px; right: 12px; }
 }
 </style>
 
@@ -214,7 +224,7 @@
 
     <div class="viewer">
       <div class="cardbox" id="cardbox">
-  <div class="info-box" id="sp-info">明信片背面图案！ 可成为邮票图案！\n您可以任选五张！可用您的自拍照！\n这等于洗了一张 A5 大尺码的照片！</div>
+  <div class="info-box" id="sp-info">示例说明占位</div>
 
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
@@ -333,6 +343,6 @@
 </script>
 
 
-<div class="sp-ver">v3.1b · base v3.0</div>
+<div class="sp-ver">v3.1c · base v3.0</div>
 </body>
 </html>
