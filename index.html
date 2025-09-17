@@ -143,7 +143,6 @@
 
 
 <style id="sp-infobox-style">
-  /* v3.1c：说明框在两大箭头的外层容器里，细长浅黄、无描边/阴影 */
   .sp-hint{
     position:absolute; left:50%; transform:translateX(-50%);
     width:70%; min-height:74px; max-height:92px;
@@ -152,8 +151,10 @@
     overflow:hidden; z-index:6;
   }
   .sp-hint .line{ display:block; margin:3px 0; white-space:nowrap; }
+  .sp-ver{ position:fixed; right:12px; bottom:98px; font:600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:#9e9e9e; pointer-events:none; z-index:50 }
   @media (max-width:420px){
     .sp-hint{ width:76%; min-height:70px; max-height:88px; padding:7px 10px; }
+    .sp-ver{ bottom:112px; }
   }
 </style>
 
@@ -312,17 +313,19 @@
   function isTriangle(el){
     var cs = getComputedStyle(el);
     var bw = [parseFloat(cs.borderTopWidth||0), parseFloat(cs.borderRightWidth||0), parseFloat(cs.borderBottomWidth||0), parseFloat(cs.borderLeftWidth||0)];
-    var big = bw.filter(function(v){ return v>10; }).length>=2; // 至少两边边框>10px（常见箭头特征）
+    var big = bw.filter(function(v){ return v>10; }).length>=2;
     var w = el.offsetWidth, h = el.offsetHeight;
-    return big && (w<10 || h<10); // 宽高接近0，配合大边框 -> CSS 三角形
+    return big && (w<10 || h<10);
   }
   ready(function(){
     var card = document.querySelector('.cardbox') || document.getElementById('cardbox');
     if(!card) return;
-    var stage = card.parentElement || card; // 外层容器（通常包着两大箭头）
+    var stage = card.parentElement || card;
 
-    // 移除旧的 sp-hint，保证只保留一个
+    // 单例：移除旧说明框
     var old = stage.querySelector('.sp-hint'); if(old) old.remove();
+
+    // 插入说明框
     var hint = document.createElement('div');
     hint.className='sp-hint';
     var lines=[
@@ -347,30 +350,39 @@
     var lo=13, hi=18, best=15;
     while(lo<=hi){
       var mid=(lo+hi>>1);
-      if(fits(mid)){ best=mid; lo=mid+1; } else { hi=mid-1; }
+      if(fits(mid)){ best=mid+0; lo=mid+1; } else { hi=mid-1; }
     }
     hint.style.fontSize = best + 'px';
     hint.style.lineHeight = (best>=16?1.28:1.26);
 
-    // —— 关键：位置来自“两大箭头”的垂直中线；找不到则采用距 stage 顶部 20px ——
+    // 位置：以左右箭头中心 y 的平均值为基准，再向下偏移 18px；若识别不到，退化为 28px
     try{
-      var children = Array.from(stage.querySelectorAll('*'));
-      var arr = children.filter(isTriangle);
+      var arr = Array.from(stage.querySelectorAll('*')).filter(isTriangle);
       if(arr.length>=2){
-        // 取最左和最右两个候选作为箭头
         arr.sort(function(a,b){ return a.getBoundingClientRect().left - b.getBoundingClientRect().left; });
         var L = arr[0].getBoundingClientRect();
         var R = arr[arr.length-1].getBoundingClientRect();
         var s = stage.getBoundingClientRect();
-        // 使用左右箭头中心 y 的平均值
         var centerY = ( (L.top+L.bottom)/2 + (R.top+R.bottom)/2 )/2;
-        var topPX = Math.max(10, Math.round(centerY - s.top - hint.offsetHeight/2));
+        var offsetDown = 18;
+        var topPX = Math.max(12, Math.round(centerY - s.top - hint.offsetHeight/2 + offsetDown));
         hint.style.top = topPX + 'px';
       }else{
-        hint.style.top = '20px';
+        hint.style.top = '28px';
       }
     }catch(e){
-      hint.style.top = '20px';
+      hint.style.top = '28px';
+    }
+
+    // 版本标识（固定右下，不遮挡按钮）
+    var ver = document.querySelector('.sp-ver');
+    if(!ver){
+      ver = document.createElement('div');
+      ver.className = 'sp-ver';
+      ver.textContent = 'v3.1d · base v3.0';
+      document.body.appendChild(ver);
+    }else{
+      ver.textContent = 'v3.1d · base v3.0';
     }
   });
 })();
