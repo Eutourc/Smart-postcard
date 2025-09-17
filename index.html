@@ -141,6 +141,23 @@
   @media (max-width:420px){ .sp-ver{ bottom:110px } }
 </style>
 
+
+<style id="sp-infobox-style">
+  /* v3.1b 说明框：细长、浅黄底、无包边/无阴影 */
+  .sp-hint{
+    position:absolute; left:50%; top:8px; transform:translateX(-50%);
+    width:68%; min-height:78px; max-height:96px;
+    padding:8px 12px; background:#fffef6; /* 仅浅黄底 */
+    border:none; box-shadow:none; border-radius:10px;
+    text-align:center; font-weight:900; line-height:1.28;
+    color:#222; overflow:hidden; z-index:6;
+  }
+  .sp-hint .line{ display:block; margin:3px 0; white-space:nowrap; }
+  @media (max-width:420px){
+    .sp-hint{ width:74%; min-height:72px; max-height:88px; padding:7px 10px; }
+  }
+</style>
+
 </head>
 <body>
 <header class="top">
@@ -285,6 +302,49 @@
     if(!document.querySelector('.sp-ver')){
       var ver=document.createElement('div'); ver.className='sp-ver'; ver.textContent='v3.1n · base v3.0'; document.body.appendChild(ver);
     }
+  });
+})();
+</script>
+
+
+<script id="sp-infobox-script">
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn, {once:true}); } }
+  ready(function(){
+    var card = document.querySelector('.cardbox') || document.getElementById('cardbox');
+    if(!card) return;
+    // 确保页面中只有一个说明框
+    var exists = card.querySelector('.sp-hint');
+    if(exists){ exists.remove(); }
+
+    var hint = document.createElement('div');
+    hint.className = 'sp-hint';
+    var lines = [
+      '明信片背面图案！可成为邮票图案！',
+      '您可以任选照片！可用您的自拍照！',
+      '这等于洗了一张 A5 大尺码的照片！'
+    ];
+    hint.innerHTML = lines.map(function(t){ return '<span class="line">'+t+'</span>'; }).join('');
+    card.appendChild(hint);
+
+    // 字号自适应（13–18px），保证三行装下且不换行
+    var ctx = document.createElement('canvas').getContext('2d');
+    var ff  = getComputedStyle(hint).fontFamily || 'system-ui';
+    var maxH = parseFloat(getComputedStyle(hint).maxHeight) || 96;
+    function fits(px){
+      ctx.font = '900 ' + px + 'px ' + ff;
+      var maxW = hint.clientWidth - 24;
+      for(var i=0;i<lines.length;i++){ if(ctx.measureText(lines[i]).width > maxW) return false; }
+      var lh = (px>=16?1.28:1.26) * px;
+      return (lh * lines.length + 4) <= maxH;
+    }
+    var lo=13, hi=18, best=15;
+    while(lo<=hi){
+      var mid=(lo+hi>>1);
+      if(fits(mid)){ best=mid; lo=mid+1; } else { hi=mid-1; }
+    }
+    hint.style.fontSize = best + 'px';
+    hint.style.lineHeight = (best>=16?1.28:1.26);
   });
 })();
 </script>
