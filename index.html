@@ -1,89 +1,63 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v3.5b（基于v3.0，说明框严格三行自适配）</title>
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Smart Postcard — v3.1 （仅新增说明框）</title>
 <style>
-  :root{
-    --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
-    --brandword-size:26px;
-
-    --card-border:1px; --card-border-color:#d1d5db;
-    --big-arrow-color:#0b3a77; --big-arrow-fat:22px; --big-arrow-width:26px;
-    --left-fine:-0.5px;
-
-    --stage-radius:18px; --stage-shadow:0 10px 26px rgba(0,0,0,.08);
-
-    /* 说明框固定细长尺寸（以最长/三行为准） */
-    --hint-width:60%;
-    --hint-minh:74px;
-    --hint-maxh:86px;
-  }
-
+  :root{--brand1:#10b981;--brand2:#22d3ee;--brand3:#34d399;--accent:#F5B800;--arrow:#0b3a77;}
   *{box-sizing:border-box}
-  html,body{margin:0;background:#fff;color:#222;
-    font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-  img{max-width:100%;display:block}
+  html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#fff;color:#222}
+  .top{background:var(--accent);padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:0;z-index:40}
+  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo img{width:64px;height:64px}
+  .brandword{display:flex;flex-direction:column}
+  .brandword .l1,.brandword .l2{font-weight:900;font-size:26px;background:linear-gradient(90deg,var(--brand1),var(--brand2) 55%,var(--brand3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-  .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand img{width:64px;height:64px;object-fit:contain}
-  .brandword .l1,.brandword .l2{
-    font-weight:900;font-size:var(--brandword-size);
-    background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  }
+  main{max-width:980px;margin:0 auto;padding:10px 14px 40px}
+  h1{text-align:center;font-size:24px;margin:18px 0 12px}
 
-  main{max-width:980px;margin:0 auto;padding:10px 14px 12px}
-  h1{text-align:center;font-size:24px;margin:16px 0 10px}
+  .stage{background:#fff;border-radius:18px;padding:12px;box-shadow:0 10px 26px rgba(0,0,0,.08);position:relative}
+  .viewer{display:flex;align-items:center;justify-content:center;padding:6px 0;position:relative}
+  .cardbox{width:92%;max-width:560px;margin:0 auto;border:1px solid #d1d5db;background:#fff;position:relative}
+  .cardbox img{width:100%;display:block;height:auto;border-radius:0}
 
-  .stage{position:relative;background:#fff;border-radius:var(--stage-radius);padding:10px;box-shadow:var(--stage-shadow)}
-  .viewer{position:relative;display:flex;align-items:center;justify-content:center;padding:6px 0}
-  .cardbox{position:relative;width:92%;max-width:560px;margin:0 auto;border:var(--card-border) solid var(--card-border-color);background:#fff}
-  .cardbox img{width:100%;height:auto;display:block}
-
-  /* 说明框：固定细长，文本加粗居中，严格三行自适配 */
-  .hint{
+  /* --- 新增说明框 --- */
+  .sp-hint{
     position:absolute;left:50%;top:8px;transform:translateX(-50%);
-    display:flex;flex-direction:column;justify-content:center;align-items:center;
-    background:#fffef2;border:2px dashed #e4c23a;border-radius:12px;
-    padding:6px 10px;text-align:center;font-weight:900;
-    width:var(--hint-width); min-height:var(--hint-minh); max-height:var(--hint-maxh);
-    line-height:1.28; z-index:5; box-shadow:0 2px 8px rgba(228,194,58,.18);
-    overflow:hidden;
+    width:58%;min-height:72px;max-height:84px;
+    padding:6px 10px;background:#fffef6;
+    border:2px dashed #e7cf72;border-radius:12px;
+    box-shadow:0 1px 6px rgba(231,207,114,.12);
+    font-weight:900;text-align:center;line-height:1.26;
+    overflow:hidden;z-index:60;
   }
-  .hint .line{display:block;margin:2px 0;white-space:nowrap}
+  .sp-hint .line{display:block;margin:2px 0;white-space:nowrap}
 
-  /* 小箭头 */
-  .marker{position:absolute;width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:16px solid #16a34a;filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));pointer-events:none;z-index:4}
+  /* 小箭头（配合说明框） */
+  .sp-marker{position:absolute;width:0;height:0;
+    border-left:13px solid transparent;border-right:13px solid transparent;border-top:16px solid #16a34a;
+    pointer-events:none;z-index:70;
+    filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
+  }
 
-  /* 大箭头：贴边 */
-  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;pointer-events:auto;z-index:3}
-  .big-arrow.left{left:0}
-  .big-arrow.left::before{content:"";display:block;border-top:var(--big-arrow-fat) solid transparent;border-bottom:var(--big-arrow-fat) solid transparent;border-right:var(--big-arrow-width) solid var(--big-arrow-color);margin-left:calc(-1 * var(--big-arrow-width) - var(--card-border) - var(--left-fine));filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
-  .big-arrow.right{right:0}
-  .big-arrow.right::before{content:"";display:block;border-top:var(--big-arrow-fat) solid transparent;border-bottom:var(--big-arrow-fat) solid transparent;border-left:var(--big-arrow-width) solid var(--big-arrow-color);filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
+  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:50}
+  .big-left{left:0}
+  .big-left:before{content:"";display:block;border-top:22px solid transparent;border-bottom:22px solid transparent;border-right:26px solid var(--arrow);margin-left:-27px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
+  .big-right{right:0}
+  .big-right:before{content:"";display:block;border-top:22px solid transparent;border-bottom:22px solid transparent;border-left:26px solid var(--arrow);filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
 
-  .features{text-align:center;margin:8px 0 6px;font-weight:800}
+  .features{text-align:center;margin:12px 0 8px;font-weight:800}
   .btns{display:flex;gap:10px;margin-top:6px}
   .btn{flex:1;padding:10px;border-radius:12px;border:none;font-weight:800}
-  .btn.primary{background:#F5B800}
-  .start{display:block;width:100%;margin-top:8px;padding:12px;border-radius:12px;background:#F5B800;border:none;font-weight:900}
-
-  /* 版本号：放在 stage 右下角，不增高页面、不与按钮重叠 */
-  .ver-foot{position:absolute;right:10px;bottom:8px;font-size:10.5px;color:#999;pointer-events:none}
+  .btn.primary{background:var(--accent)}
+  .start{display:block;width:100%;margin-top:8px;padding:12px;border-radius:12px;background:var(--accent);font-weight:900}
 </style>
 </head>
 <body>
 <header class="top">
-  <div class="bar">
-    <div class="brand"><img src="Logo.png" alt="logo"><div class="brandword"><div class="l1">Smart</div><div class="l2">Postcard</div></div></div>
-  </div>
+  <div class="bar"><div class="logo"><img src="Logo.png" alt="logo"><div class="brandword"><span class="l1">Smart</span><span class="l2">Postcard</span></div></div></div>
 </header>
 
 <main>
@@ -91,16 +65,15 @@
   <section class="stage">
     <div class="viewer">
       <div class="cardbox" id="cardbox">
-        <button class="big-arrow left" id="prev" aria-label="上一项"></button>
-        <button class="big-arrow right" id="next" aria-label="下一项"></button>
+        <div class="big-arrow big-left" id="big-left"></div>
+        <div class="big-arrow big-right" id="big-right"></div>
 
-        <div class="hint" id="hint" aria-live="polite"></div>
-
-        <img id="img-front" src="postcard_cn.png?v=22031" alt="postcard sample">
+        <img id="img-front" src="postcard_cn.png" alt="postcard sample">
         <img id="img-back" src="postcard_back.png" alt="postcard back" style="display:none">
-        <div id="album" style="display:none;width:100%;aspect-ratio:4/3;display:grid;place-items:center;background:repeating-linear-gradient(45deg,#e5f3ff 0 12px,#d6ecff 12px 24px);font-weight:900">电子相册 · 演示占位</div>
 
-        <div class="marker" id="marker"></div>
+        <!-- 新增说明框与小箭头 -->
+        <div id="sp-hint" class="sp-hint"></div>
+        <div id="sp-marker" class="sp-marker"></div>
       </div>
     </div>
 
@@ -114,107 +87,39 @@
       <button class="btn primary">纪念明信片</button>
       <button class="btn">传统明信片</button>
     </div>
-    <button class="start" id="start-btn">开始制作</button>
-
-    <div class="ver-foot">v3.5b</div>
+    <button class="start">开始制作</button>
   </section>
 </main>
 
 <script>
 (function(){
   const copy = [
-    ["明信片背面图案！可成为邮票图案！","您可以任选照片！可用您的自拍照！","这等于洗了一张 A5 大尺码的照片！"],
-    ["珍惜！邮票及明信片画面可使用","您的照片，世界首例，独特唯一"],
-    ["到此一游留念！纪念点载入地图！","扫二维码或凭坐标即可回味和分享"],
-    ["记录感言、日期、天气与温度","这也是您在地图纪念点旁的附言"],
-    ["明信内容"],
-    ["分享一段录像或录音","扫码即可回放"],
-    ["加盖国家或地方纪念戳","是您到此一游的见证！","长按纪念戳，享受 Ai 说"],
-    ["明信片邮寄地址"],
-    ["留念日期即邮戳日期","盖戳日与留念日同步"],
-    ["电子明信片纪念册！免费赠送！","起步五张，寄往邮箱！","以后再做，可集一堂！"]
+    ["明信片背面图案！可成为邮票图案！","您可以任选照片！可用您的自拍照！","这等于洗了一张 A5 大尺码的照片！"]
   ];
-
-  const markerPos = {
-    1:{left:50, top:50}, 2:{left:84.3, top:14},3:{left:68, top:30},4:{left:86, top:62},
-    5:{left:28, top:60},6:{left:86, top:80},7:{left:30, top:80},8:{left:74, top:76},
-    9:{left:44, top:40},10:{left:50, top:50}
-  };
-
-  let idx = 2;
-  const hint = document.getElementById('hint');
-  const marker = document.getElementById('marker');
-  const imgF = document.getElementById('img-front');
-  const imgB = document.getElementById('img-back');
-  const album = document.getElementById('album');
-  const prev = document.getElementById('prev');
-  const next = document.getElementById('next');
-  const box  = document.getElementById('cardbox');
-
-  // 严格三行自适配：字号范围 12–17px，确保最长一行不换行、总高不超过框高
-  function autoSize(lines){
-    const ctx = document.createElement('canvas').getContext('2d');
-    const style = getComputedStyle(hint);
-    const ff = style.fontFamily || 'system-ui';
-    const maxW = hint.clientWidth - 20; // 左右 padding
-    const maxH = parseFloat(getComputedStyle(hint).maxHeight) || 86;
-    let lo=12, hi=17, best=15;
+  const markerPos = {2:{left:84,top:14}};
+  const hint=document.getElementById('sp-hint');
+  const marker=document.getElementById('sp-marker');
+  function autosize(lines){
+    const ctx=document.createElement('canvas').getContext('2d');
+    const ff=getComputedStyle(hint).fontFamily||'system-ui';
+    const maxW=hint.clientWidth-20;const maxH=84;
+    let lo=12,hi=16,best=14;
     function fits(px){
-      ctx.font = `900 ${px}px ${ff}`;
-      // 每行宽度限制
-      if(!lines.every(t => ctx.measureText(t).width <= maxW)) return false;
-      const lh = (px>=16?1.28:1.25) * px;
-      const totalH = lh * lines.length + 4;
-      return totalH <= maxH;
+      ctx.font=`900 ${px}px ${ff}`;
+      if(!lines.every(t=>ctx.measureText(t).width<=maxW)) return false;
+      return (px*1.26*lines.length)<=maxH;
     }
-    while(lo<=hi){
-      const mid=(lo+hi>>1);
-      if(fits(mid)){best=mid;lo=mid+1;}else{hi=mid-1;}
-    }
-    hint.style.fontSize = best+'px';
-    hint.style.lineHeight = (best>=16?1.28:1.25);
+    while(lo<=hi){const mid=(lo+hi>>1);if(fits(mid)){best=mid;lo=mid+1;}else{hi=mid-1;}};
+    hint.style.fontSize=best+'px';
+    hint.style.lineHeight=1.26;
   }
-
-  function renderHint(){
-    const lines = copy[idx-1];
-    hint.innerHTML = lines.map(t=>`<span class="line">${t}</span>`).join("");
-    requestAnimationFrame(()=>autoSize(lines));
+  function render(){
+    const lines=copy[0];
+    hint.innerHTML=lines.map(t=>`<span class="line">${t}</span>`).join("");
+    autosize(lines);
+    const p=markerPos[2];marker.style.left=p.left+'%';marker.style.top=`calc(${p.top}% - 18px)`;
   }
-
-  function renderMedia(){
-    imgF.style.display = (idx>=2 && idx<=9) ? "" : "none";
-    imgB.style.display = (idx===1) ? "" : "none";
-    album.style.display= (idx===10)? "grid" : "none";
-  }
-
-  function renderMarker(){
-    if(idx===10){ marker.style.display='none'; return; }
-    marker.style.display='';
-    const p = markerPos[idx] || {left:50, top:50};
-    marker.style.left = p.left + '%';
-    marker.style.top  = `calc(${p.top}% - 18px)`;
-  }
-
-  function applyAll(){ renderHint(); renderMedia(); renderMarker(); }
-
-  function stepLeft(){ if(idx===10){ idx=2; } else if(idx>=2 && idx<=9){ idx++; } applyAll(); }
-  function stepRight(){ if(idx!==1){ idx=1; } else { idx=2; } applyAll(); }
-
-  prev.addEventListener('click', stepLeft);
-  next.addEventListener('click', stepRight);
-
-  function bindSwipe(el){
-    let sx=0,sy=0,ex=0,ey=0;
-    el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-    el.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
-    el.addEventListener('touchend',()=>{
-      const dx=ex-sx, dy=ey-sy;
-      if(Math.abs(dx)>30 && Math.abs(dx)>Math.abs(dy)){ if(dx<0) stepLeft(); else stepRight(); }
-    },{passive:true});
-  }
-  bindSwipe(box); bindSwipe(hint);
-
-  applyAll();
+  render();
 })();
 </script>
 </body>
