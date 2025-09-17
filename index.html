@@ -1,79 +1,113 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>v3.1u · base v3.0 · 单说明框（基于到位占位图修改）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Smart Postcard v3.1w • base v3.0</title>
 <style>
   :root{
-    --brand:#f1b800;             /* 横幅色（示意） */
-    --teal:#18b3ad;
-    --accent:#1f4ed6;            /* 大箭头色 */
-    --hint-bg:#ffe2bd;           /* 浅黄底，加深一点 */
-    --hint-text:#222;
-    --shadow:0 10px 24px rgba(0,0,0,.12);
+    --page-bg:#fafafa;
+    --banner:#f4b400;
+    --brand:#08a76a;
+    --card-bg:#ffffff;
+    --shadow:0 8px 24px rgba(0,0,0,.08);
+    /* ONLY KNOB we "micro-tune": font-size for the 3-line note box */
+    --note-font:16px;           /* <= adjust 15–17px if needed */
+    --note-line:1.7;
   }
-  html,body{margin:0;padding:0;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:#111;}
-  .banner{display:flex;align-items:center;gap:.75rem;height:72px;background:var(--brand);padding:0 16px;position:sticky;top:0;z-index:10}
-  .logo-dot{width:28px;height:28px;border-radius:50%;background:#35d07f;box-shadow:inset 0 -6px 0 rgba(0,0,0,.12)}
-  .brand{font-size:28px;font-weight:800;letter-spacing:.5px;color:#0f9ba4}
-  .wrap{padding:18px 16px 28px}
-  h1{font-size:28px;margin:2px 0 14px 0;font-weight:800}
-  .stage{position:relative;border-radius:20px;background:rgba(0,0,0,.03);box-shadow:0 2px 0 rgba(0,0,0,.06) inset;overflow:hidden;min-height:420px}
-  .arrows{position:absolute;inset:0;pointer-events:none}
-  .arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-style:solid;filter:drop-shadow(0 4px 8px rgba(0,0,0,.18))}
-  .arrow.left{left:10px;border-width:50px 36px 50px 0;border-color:transparent var(--accent) transparent transparent;}
-  .arrow.right{right:10px;border-width:50px 0 50px 36px;border-color:transparent transparent transparent var(--accent);}
-  /* 占位“到位图”（保留！仅替换内部内容） */
-  .postcard-area{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,88vw);height:auto;aspect-ratio:3/2;border-radius:14px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12),0 10px 22px rgba(0,0,0,.06);}
-  .postcard-area::before{ /* 模拟明信片边框 */
-    content:"";position:absolute;inset:10px;border:1px solid #e6e6e6;border-radius:10px;
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--page-bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+  .banner{background:var(--banner);padding:14px 20px;display:flex;align-items:center;gap:12px}
+  .dot{width:24px;height:24px;border-radius:50%;background:var(--brand)}
+  .brand{font-weight:800;font-size:22px;color:#0c7d79;letter-spacing:.5px}
+  .title{padding:18px 20px 6px;font-size:28px;font-weight:800;color:#222}
+  .stage{margin:0 12px 20px;border-radius:20px;background:#fff;box-shadow:var(--shadow);padding:18px 10px}
+  .viewport{position:relative;border-radius:16px;background:linear-gradient(#f7f7f7,#f1f1f1);padding:18px 10px;overflow:hidden}
+  /* Left/Right big arrows living outside postcard edges */
+  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:36px solid transparent;border-bottom:36px solid transparent;z-index:1;opacity:.95}
+  .big-arrow.left{left:-6px;border-right:48px solid #1e40af}
+  .big-arrow.right{right:-6px;border-left:48px solid #1e40af}
+  /* Postcard frame */
+  .postcard{position:relative;margin:0 auto;width:min(88vw,560px);height:calc(min(88vw,560px)*0.66);background:#fff;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
+  /* Example stamp target marker */
+  .pin{position:absolute;right:10%;top:16%;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:24px solid #16a34a;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
+  /* NOTE box: fixed place between arrows, 3 lines, auto-center above the dividing line */
+  .note{
+    position:absolute;left:50%;top:18%;
+    transform:translate(-50%,0);
+    background:#ffe5bf;border-radius:14px;
+    padding:12px 14px;
+    width:calc(100% - 120px);        /* keep generous gutters to arrows */
+    max-width:520px;                  /* never wider than card */
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    color:#111;text-align:center;font-weight:800;
+    font-size:var(--note-font);line-height:var(--note-line);
   }
-  /* === 单一说明框（基于“到位图”修改，不再新建额外元素） === */
-  .hint{position:absolute;left:50%;top:26%;transform:translate(-50%,-50%); /* 锁死在箭头之间 */
-        max-width:min(540px,80vw);width:min(480px,78vw);
-        background:var(--hint-bg);color:var(--hint-text);
-        border-radius:18px;box-shadow:var(--shadow);padding:18px 20px 28px;
-        font-weight:800;line-height:1.55;text-align:center;}
-  .hint .tri{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
-             width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:20px solid #1aaa6c;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18));}
-  /* 三行排版：通过宽度 + 字号控制；强制换行点用 <br> 明确 */
-  .hint p{margin:0;font-size:20px;letter-spacing:.5px}
-  @media (max-width:420px){
-    .hint{width:84vw;padding:16px 14px 24px}
-    .hint p{font-size:18px;letter-spacing:.2px}
+  .note:after{ /* little green pointer */
+    content:"";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
+    width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid #16a34a;
+    filter:drop-shadow(0 3px 4px rgba(0,0,0,.2));
   }
-  /* 版本角标 */
-  .ver{position:fixed;right:12px;bottom:12px;background:rgba(0,0,0,.06);padding:8px 12px;border-radius:14px;color:#333;font-weight:700}
+  /* 3-line lock: prevent wrapping to 2 or 4 lines by clamping height */
+  .note .lns{display:block;white-space:nowrap}
+  .footer{padding:14px 20px 28px;color:#333;font-weight:700;text-align:center}
+  .ver{position:fixed;right:10px;bottom:14px;background:rgba(0,0,0,.06);color:#333;border-radius:16px;padding:6px 10px;font-weight:700}
 </style>
 </head>
 <body>
   <div class="banner">
-    <div class="logo-dot"></div>
+    <div class="dot"></div>
     <div class="brand">Smart Postcard</div>
   </div>
-  <div class="wrap">
-    <h1>珍藏您举世无双的纪念明信片</h1>
 
-    <div class="stage">
-      <div class="arrows">
-        <div class="arrow left"></div>
-        <div class="arrow right"></div>
+  <div class="title">珍藏您举世无双的纪念明信片</div>
+
+  <section class="stage">
+    <div class="viewport">
+      <i class="big-arrow left"></i>
+      <i class="big-arrow right"></i>
+
+      <!-- NOTE: fixed position & size; only adjust --note-font for fit -->
+      <div class="note" id="noteBox">
+        <span class="lns">明信片背面图案！可成为邮票图案！</span>
+        <span class="lns">您可以任选五张！可用您的自拍照！</span>
+        <span class="lns">这等于洗了一张 A5 大尺寸的照片！</span>
       </div>
 
-      <!-- 保留“到位图”的占位容器，仅修改其内部内容 -->
-      <div class="postcard-area">
-        <!-- 单一说明框：锁定在两大箭头之间 -->
-        <div class="hint" id="hintBox">
-          <p>明信片背面图案！可成为邮票图案！</p>
-          <p>您可以任选五张！可用您的自拍照！</p>
-          <p>这等于洗了一张 <b>A5</b> 大尺寸的照片！</p>
-          <div class="tri"></div>
-        </div>
+      <div class="postcard" id="card">
+        <div class="pin"></div>
       </div>
     </div>
-  </div>
-  <div class="ver">v3.1u · base v3.0</div>
+  </section>
+
+  <div class="footer">操作简单 · 实体印刷 · 全球邮寄 · A5 大尺寸 · 物超所值</div>
+
+  <div class="ver">v3.1w · base v3.0</div>
+
+  <script>
+    // 保证 3 行在常见手机宽度都不溢出：检测后按需微降字号（仅向下 1–2px）。
+    (function(){
+      const box = document.getElementById('noteBox');
+      const fit = () => {
+        const vw = Math.min(window.innerWidth, 560);
+        // 目标：三行总高度不超过 note 的可用高度（近似按行高计算）
+        const style = getComputedStyle(box);
+        let fs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--note-font')) || 16;
+        const lh = parseFloat(style.lineHeight) || (fs * 1.7);
+        const maxW = box.clientWidth;
+        // 如果换行导致出现第四行，就把根变量 --note-font 递减至 14px 下限
+        const lines = box.querySelectorAll('.lns');
+        const overflows = () => Array.from(lines).some(span => span.scrollWidth > maxW);
+        let safe = 0;
+        while (overflows() && fs > 14 && safe++ < 6){
+          fs -= 1;
+          document.documentElement.style.setProperty('--note-font', fs + 'px');
+        }
+      };
+      window.addEventListener('load', fit, {once:true});
+      window.addEventListener('resize', fit);
+    })();
+  </script>
 </body>
 </html>
