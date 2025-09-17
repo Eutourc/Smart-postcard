@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v2.2c（进化版·精微调⑩）</title>
+<title>Smart Postcard — v3.1b（微调）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -142,20 +142,44 @@
 </style>
 
 
-<style id="sp-infobox-style">
-  .sp-hint{
-    position:absolute; left:50%; transform:translateX(-50%);
-    width:70%; min-height:74px; max-height:92px;
-    padding:8px 12px; background:#fffef6; border:none; border-radius:10px;
-    text-align:center; font-weight:900; line-height:1.28; color:#222;
-    overflow:hidden; z-index:6;
-  }
-  .sp-hint .line{ display:block; margin:3px 0; white-space:nowrap; }
-  .sp-ver{ position:fixed; right:12px; bottom:98px; font:600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:#9e9e9e; pointer-events:none; z-index:50 }
-  @media (max-width:420px){
-    .sp-hint{ width:76%; min-height:70px; max-height:88px; padding:7px 10px; }
-    .sp-ver{ bottom:112px; }
-  }
+<style>
+/* Explanation/info box placed between big arrows, responsive */
+.info-box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 8%;
+  max-width: 62%;
+  background: #fff4c9; /* slightly deeper pale yellow */
+  color: #111;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.25;
+  z-index: 40;
+  pointer-events: none; /* decorative */
+  font-size: 14px;
+}
+.big-arrow { z-index: 45; }
+.sp-ver {
+  position: fixed;
+  right: 16px;
+  bottom: 120px;
+  background: rgba(0,0,0,0.06);
+  color: #444;
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.95;
+}
+@media (max-width:420px){
+  .info-box { max-width:75%; font-size:13px; top:7%; }
+  .sp-ver { bottom: 110px; right: 14px; font-size:11px; }
+}
 </style>
 
 </head>
@@ -170,7 +194,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ver">v2.2c</div>
+      <div class="ver"></div>
       <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
       <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
       <div class="dropdown" id="lang-dd">
@@ -190,6 +214,8 @@
 
     <div class="viewer">
       <div class="cardbox" id="cardbox">
+  <div class="info-box" id="sp-info">明信片背面图案！ 可成为邮票图案！\n您可以任选五张！可用您的自拍照！\n这等于洗了一张 A5 大尺码的照片！</div>
+
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
 
@@ -262,7 +288,7 @@
   }
 
   ready(function(){
-    // 1) 去掉横幅 v2.2c 小徽标（若存在）
+    // 1) 去掉横幅  小徽标（若存在）
     Array.from(document.querySelectorAll('*')).some(function(el){
       var t=(el.textContent||'').trim();
       if(/^v\s*2\.2c$/i.test(t)){
@@ -307,86 +333,6 @@
 </script>
 
 
-<script id="sp-infobox-script">
-(function(){
-  function ready(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn, {once:true}); } }
-  function isTriangle(el){
-    var cs = getComputedStyle(el);
-    var bw = [parseFloat(cs.borderTopWidth||0), parseFloat(cs.borderRightWidth||0), parseFloat(cs.borderBottomWidth||0), parseFloat(cs.borderLeftWidth||0)];
-    var big = bw.filter(function(v){ return v>10; }).length>=2;
-    var w = el.offsetWidth, h = el.offsetHeight;
-    return big && (w<10 || h<10);
-  }
-  ready(function(){
-    var card = document.querySelector('.cardbox') || document.getElementById('cardbox');
-    if(!card) return;
-    var stage = card.parentElement || card;
-
-    // 单例：移除旧说明框
-    var old = stage.querySelector('.sp-hint'); if(old) old.remove();
-
-    // 插入说明框
-    var hint = document.createElement('div');
-    hint.className='sp-hint';
-    var lines=[
-      '明信片背面图案！可成为邮票图案！',
-      '您可以任选照片！可用您的自拍照！',
-      '这等于洗了一张 A5 大尺码的照片！'
-    ];
-    hint.innerHTML = lines.map(function(t){ return '<span class="line">'+t+'</span>'; }).join('');
-    stage.appendChild(hint);
-
-    // 自适应字号（13–18px）
-    var ctx = document.createElement('canvas').getContext('2d');
-    var ff  = getComputedStyle(hint).fontFamily || 'system-ui';
-    var maxH = parseFloat(getComputedStyle(hint).maxHeight) || 92;
-    function fits(px){
-      ctx.font = '900 ' + px + 'px ' + ff;
-      var maxW = hint.clientWidth - 24;
-      for(var i=0;i<lines.length;i++){ if(ctx.measureText(lines[i]).width > maxW) return false; }
-      var lh = (px>=16?1.28:1.26) * px;
-      return (lh * lines.length + 4) <= maxH;
-    }
-    var lo=13, hi=18, best=15;
-    while(lo<=hi){
-      var mid=(lo+hi>>1);
-      if(fits(mid)){ best=mid+0; lo=mid+1; } else { hi=mid-1; }
-    }
-    hint.style.fontSize = best + 'px';
-    hint.style.lineHeight = (best>=16?1.28:1.26);
-
-    // 位置：以左右箭头中心 y 的平均值为基准，再向下偏移 18px；若识别不到，退化为 28px
-    try{
-      var arr = Array.from(stage.querySelectorAll('*')).filter(isTriangle);
-      if(arr.length>=2){
-        arr.sort(function(a,b){ return a.getBoundingClientRect().left - b.getBoundingClientRect().left; });
-        var L = arr[0].getBoundingClientRect();
-        var R = arr[arr.length-1].getBoundingClientRect();
-        var s = stage.getBoundingClientRect();
-        var centerY = ( (L.top+L.bottom)/2 + (R.top+R.bottom)/2 )/2;
-        var offsetDown = 18;
-        var topPX = Math.max(12, Math.round(centerY - s.top - hint.offsetHeight/2 + offsetDown));
-        hint.style.top = topPX + 'px';
-      }else{
-        hint.style.top = '28px';
-      }
-    }catch(e){
-      hint.style.top = '28px';
-    }
-
-    // 版本标识（固定右下，不遮挡按钮）
-    var ver = document.querySelector('.sp-ver');
-    if(!ver){
-      ver = document.createElement('div');
-      ver.className = 'sp-ver';
-      ver.textContent = 'v3.1d · base v3.0';
-      document.body.appendChild(ver);
-    }else{
-      ver.textContent = 'v3.1d · base v3.0';
-    }
-  });
-})();
-</script>
-
+<div class="sp-ver">v3.1b · base v3.0</div>
 </body>
 </html>
