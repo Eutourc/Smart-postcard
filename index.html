@@ -143,18 +143,17 @@
 
 
 <style id="sp-infobox-style">
-  /* v3.1b 说明框：细长、浅黄底、无包边/无阴影 */
+  /* v3.1c：说明框在两大箭头的外层容器里，细长浅黄、无描边/阴影 */
   .sp-hint{
-    position:absolute; left:50%; top:8px; transform:translateX(-50%);
-    width:68%; min-height:78px; max-height:96px;
-    padding:8px 12px; background:#fffef6; /* 仅浅黄底 */
-    border:none; box-shadow:none; border-radius:10px;
-    text-align:center; font-weight:900; line-height:1.28;
-    color:#222; overflow:hidden; z-index:6;
+    position:absolute; left:50%; transform:translateX(-50%);
+    width:70%; min-height:74px; max-height:92px;
+    padding:8px 12px; background:#fffef6; border:none; border-radius:10px;
+    text-align:center; font-weight:900; line-height:1.28; color:#222;
+    overflow:hidden; z-index:6;
   }
   .sp-hint .line{ display:block; margin:3px 0; white-space:nowrap; }
   @media (max-width:420px){
-    .sp-hint{ width:74%; min-height:72px; max-height:88px; padding:7px 10px; }
+    .sp-hint{ width:76%; min-height:70px; max-height:88px; padding:7px 10px; }
   }
 </style>
 
@@ -310,27 +309,34 @@
 <script id="sp-infobox-script">
 (function(){
   function ready(fn){ if(document.readyState!=='loading'){ fn(); } else { document.addEventListener('DOMContentLoaded', fn, {once:true}); } }
+  function isTriangle(el){
+    var cs = getComputedStyle(el);
+    var bw = [parseFloat(cs.borderTopWidth||0), parseFloat(cs.borderRightWidth||0), parseFloat(cs.borderBottomWidth||0), parseFloat(cs.borderLeftWidth||0)];
+    var big = bw.filter(function(v){ return v>10; }).length>=2; // 至少两边边框>10px（常见箭头特征）
+    var w = el.offsetWidth, h = el.offsetHeight;
+    return big && (w<10 || h<10); // 宽高接近0，配合大边框 -> CSS 三角形
+  }
   ready(function(){
     var card = document.querySelector('.cardbox') || document.getElementById('cardbox');
     if(!card) return;
-    // 确保页面中只有一个说明框
-    var exists = card.querySelector('.sp-hint');
-    if(exists){ exists.remove(); }
+    var stage = card.parentElement || card; // 外层容器（通常包着两大箭头）
 
+    // 移除旧的 sp-hint，保证只保留一个
+    var old = stage.querySelector('.sp-hint'); if(old) old.remove();
     var hint = document.createElement('div');
-    hint.className = 'sp-hint';
-    var lines = [
+    hint.className='sp-hint';
+    var lines=[
       '明信片背面图案！可成为邮票图案！',
       '您可以任选照片！可用您的自拍照！',
       '这等于洗了一张 A5 大尺码的照片！'
     ];
     hint.innerHTML = lines.map(function(t){ return '<span class="line">'+t+'</span>'; }).join('');
-    card.appendChild(hint);
+    stage.appendChild(hint);
 
-    // 字号自适应（13–18px），保证三行装下且不换行
+    // 自适应字号（13–18px）
     var ctx = document.createElement('canvas').getContext('2d');
     var ff  = getComputedStyle(hint).fontFamily || 'system-ui';
-    var maxH = parseFloat(getComputedStyle(hint).maxHeight) || 96;
+    var maxH = parseFloat(getComputedStyle(hint).maxHeight) || 92;
     function fits(px){
       ctx.font = '900 ' + px + 'px ' + ff;
       var maxW = hint.clientWidth - 24;
@@ -345,6 +351,27 @@
     }
     hint.style.fontSize = best + 'px';
     hint.style.lineHeight = (best>=16?1.28:1.26);
+
+    // —— 关键：位置来自“两大箭头”的垂直中线；找不到则采用距 stage 顶部 20px ——
+    try{
+      var children = Array.from(stage.querySelectorAll('*'));
+      var arr = children.filter(isTriangle);
+      if(arr.length>=2){
+        // 取最左和最右两个候选作为箭头
+        arr.sort(function(a,b){ return a.getBoundingClientRect().left - b.getBoundingClientRect().left; });
+        var L = arr[0].getBoundingClientRect();
+        var R = arr[arr.length-1].getBoundingClientRect();
+        var s = stage.getBoundingClientRect();
+        // 使用左右箭头中心 y 的平均值
+        var centerY = ( (L.top+L.bottom)/2 + (R.top+R.bottom)/2 )/2;
+        var topPX = Math.max(10, Math.round(centerY - s.top - hint.offsetHeight/2));
+        hint.style.top = topPX + 'px';
+      }else{
+        hint.style.top = '20px';
+      }
+    }catch(e){
+      hint.style.top = '20px';
+    }
   });
 })();
 </script>
