@@ -3,157 +3,112 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Smart Postcard — v3.5（基于v3.0升级）</title>
+<title>Smart Postcard — v3.5b（基于v3.0，说明框严格三行自适配）</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <style>
   :root{
-    /* v3.0 原有品牌与布局 */
     --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
     --brandword-size:26px;
 
     --card-border:1px; --card-border-color:#d1d5db;
     --big-arrow-color:#0b3a77; --big-arrow-fat:22px; --big-arrow-width:26px;
-    --left-fine:-0.5px; /* v2.2c 定稿的左箭补偿，沿用 */
+    --left-fine:-0.5px;
 
-    --space-top:10px;
-    --space-after-card:8px;
     --stage-radius:18px; --stage-shadow:0 10px 26px rgba(0,0,0,.08);
 
-    /* 说明框：三行上限细长矩形（基于最长文案） */
-    --hint-width:66%;
-    --hint-minh:78px; /* 约三行高度 */
-    --hint-maxh:90px;
+    /* 说明框固定细长尺寸（以最长/三行为准） */
+    --hint-width:60%;
+    --hint-minh:74px;
+    --hint-maxh:86px;
   }
 
   *{box-sizing:border-box}
   html,body{margin:0;background:#fff;color:#222;
-    font:15.5px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
   img{max-width:100%;display:block}
 
-  /* 顶部横幅（保持 v3.0 基线风格） */
   .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:10px 14px}
+  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px}
   .brand{display:flex;align-items:center;gap:10px}
   .brand img{width:64px;height:64px;object-fit:contain}
-  .brandword{display:flex;flex-direction:column;line-height:1}
   .brandword .l1,.brandword .l2{
-    font-weight:900;font-size:var(--brandword-size);letter-spacing:.5px;
+    font-weight:900;font-size:var(--brandword-size);
     background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    text-shadow:0 1px 1px rgba(0,0,0,.06);
   }
 
-  main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
-  h1{font-size:24px;line-height:1.15;margin:16px 0 var(--space-top);text-align:center}
+  main{max-width:980px;margin:0 auto;padding:10px 14px 12px}
+  h1{text-align:center;font-size:24px;margin:16px 0 10px}
 
-  .stage{flex:1;display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:var(--stage-radius);
-         padding:10px 10px 12px;box-shadow:var(--stage-shadow)}
+  .stage{position:relative;background:#fff;border-radius:var(--stage-radius);padding:10px;box-shadow:var(--stage-shadow)}
+  .viewer{position:relative;display:flex;align-items:center;justify-content:center;padding:6px 0}
+  .cardbox{position:relative;width:92%;max-width:560px;margin:0 auto;border:var(--card-border) solid var(--card-border-color);background:#fff}
+  .cardbox img{width:100%;height:auto;display:block}
 
-  .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:2px}
-  .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
-           border:var(--card-border) solid var(--card-border-color);box-shadow:0 1px 2px rgba(0,0,0,.03)}
-  .cardbox img{width:100%;height:auto;display:block;border-radius:0}
-
-  /* 说明框：固定细长矩形（两箭头之间），文本加粗居中，自适应字号 */
+  /* 说明框：固定细长，文本加粗居中，严格三行自适配 */
   .hint{
-    position:absolute;left:50%;top:6px;transform:translateX(-50%);
+    position:absolute;left:50%;top:8px;transform:translateX(-50%);
     display:flex;flex-direction:column;justify-content:center;align-items:center;
-    background:#fff8d9;border:2px dashed #e4c23a;border-radius:12px;
+    background:#fffef2;border:2px dashed #e4c23a;border-radius:12px;
     padding:6px 10px;text-align:center;font-weight:900;
     width:var(--hint-width); min-height:var(--hint-minh); max-height:var(--hint-maxh);
-    line-height:1.28; z-index:5; box-shadow:0 2px 8px rgba(228,194,58,.25);
+    line-height:1.28; z-index:5; box-shadow:0 2px 8px rgba(228,194,58,.18);
     overflow:hidden;
   }
   .hint .line{display:block;margin:2px 0;white-space:nowrap}
 
-  /* 小箭头（apex 定位） */
-  .marker{
-    position:absolute; width:0;height:0;
-    border-left:13px solid transparent;border-right:13px solid transparent;
-    border-top:16px solid #16a34a; filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
-    pointer-events:none; z-index:4;
-  }
+  /* 小箭头 */
+  .marker{position:absolute;width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:16px solid #16a34a;filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));pointer-events:none;z-index:4}
 
-  /* 大箭头（贴边且纵向居中） */
-  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border:0;background:transparent;padding:0;pointer-events:auto;z-index:3}
+  /* 大箭头：贴边 */
+  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;pointer-events:auto;z-index:3}
   .big-arrow.left{left:0}
-  .big-arrow.left::before{
-    content:"";display:block;width:0;height:0;
-    border-top:var(--big-arrow-fat) solid transparent;border-bottom:var(--big-arrow-fat) solid transparent;
-    border-right:var(--big-arrow-width) solid var(--big-arrow-color);
-    margin-left:calc(-1 * var(--big-arrow-width) - var(--card-border) - var(--left-fine));
-    filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
-  }
+  .big-arrow.left::before{content:"";display:block;border-top:var(--big-arrow-fat) solid transparent;border-bottom:var(--big-arrow-fat) solid transparent;border-right:var(--big-arrow-width) solid var(--big-arrow-color);margin-left:calc(-1 * var(--big-arrow-width) - var(--card-border) - var(--left-fine));filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
   .big-arrow.right{right:0}
-  .big-arrow.right::before{
-    content:"";display:block;width:0;height:0;
-    border-top:var(--big-arrow-fat) solid transparent;border-bottom:var(--big-arrow-fat) solid transparent;
-    border-left:var(--big-arrow-width) solid var(--big-arrow-color);
-    filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
-  }
+  .big-arrow.right::before{content:"";display:block;border-top:var(--big-arrow-fat) solid transparent;border-bottom:var(--big-arrow-fat) solid transparent;border-left:var(--big-arrow-width) solid var(--big-arrow-color);filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
 
-  /* 亮点与按钮（保持 v3.0 基线） */
-  .features{margin:var(--space-after-card) 0 6px;text-align:center;font-size:13px;line-height:1.25}
-  .features p{margin:2px 0;font-weight:800}
-
+  .features{text-align:center;margin:8px 0 6px;font-weight:800}
   .btns{display:flex;gap:10px;margin-top:6px}
-  .btn{flex:1;border:none;border-radius:12px;padding:10px 10px;font-weight:800;font-size:15px}
-  .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
-  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
+  .btn{flex:1;padding:10px;border-radius:12px;border:none;font-weight:800}
+  .btn.primary{background:#F5B800}
+  .start{display:block;width:100%;margin-top:8px;padding:12px;border-radius:12px;background:#F5B800;border:none;font-weight:900}
 
-  /* 页内底部版本号（不增加页面高度） */
-  .ver-foot{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;font-size:11px;color:#999;pointer-events:none}
-
-  @media (max-width:390px){
-    h1{font-size:22px}
-    .hint{min-height:72px}
-  }
+  /* 版本号：放在 stage 右下角，不增高页面、不与按钮重叠 */
+  .ver-foot{position:absolute;right:10px;bottom:8px;font-size:10.5px;color:#999;pointer-events:none}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="bar">
-    <div class="brand">
-      <img src="Logo.png" alt="Smart Postcard">
-      <div class="brandword">
-        <span class="l1">Smart</span>
-        <span class="l2">Postcard</span>
-      </div>
-    </div>
+    <div class="brand"><img src="Logo.png" alt="logo"><div class="brandword"><div class="l1">Smart</div><div class="l2">Postcard</div></div></div>
   </div>
 </header>
 
-<main class="wrap">
+<main>
   <h1>珍藏您举世无双的纪念明信片</h1>
-
   <section class="stage">
     <div class="viewer">
       <div class="cardbox" id="cardbox">
-        <!-- 大箭头（沿用 v3.0 对齐） -->
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
 
-        <!-- 固定细长说明框 -->
         <div class="hint" id="hint" aria-live="polite"></div>
 
-        <!-- 媒体区域：正面、背面、相册占位 -->
         <img id="img-front" src="postcard_cn.png?v=22031" alt="postcard sample">
-        <img id="img-back"  src="postcard_back.png" alt="postcard back" style="display:none">
-        <div id="album" class="album-demo" style="display:none; width:100%; aspect-ratio:4/3; display:grid; place-items:center; background:repeating-linear-gradient(45deg,#e5f3ff 0 12px,#d6ecff 12px 24px); font-weight:900">电子相册 · 演示占位</div>
+        <img id="img-back" src="postcard_back.png" alt="postcard back" style="display:none">
+        <div id="album" style="display:none;width:100%;aspect-ratio:4/3;display:grid;place-items:center;background:repeating-linear-gradient(45deg,#e5f3ff 0 12px,#d6ecff 12px 24px);font-weight:900">电子相册 · 演示占位</div>
 
-        <!-- 小箭头 -->
         <div class="marker" id="marker"></div>
       </div>
     </div>
 
-    <!-- 亮点集锦（v3.0 基线） -->
-    <section class="features" id="features">
+    <div class="features">
       <p>操作简单 · 实体印刷 · 全球邮寄</p>
       <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
       <p>照片打印 · A5 大尺码 · 物超所值</p>
-    </section>
+    </div>
 
     <div class="btns">
       <button class="btn primary">纪念明信片</button>
@@ -161,14 +116,12 @@
     </div>
     <button class="start" id="start-btn">开始制作</button>
 
-    <!-- 页内底部版本号 -->
-    <div class="ver-foot">v3.5</div>
+    <div class="ver-foot">v3.5b</div>
   </section>
 </main>
 
 <script>
 (function(){
-  // —— 文案：来自你提供的 Word，去序号，最多三行 ——
   const copy = [
     ["明信片背面图案！可成为邮票图案！","您可以任选照片！可用您的自拍照！","这等于洗了一张 A5 大尺码的照片！"],
     ["珍惜！邮票及明信片画面可使用","您的照片，世界首例，独特唯一"],
@@ -182,16 +135,13 @@
     ["电子明信片纪念册！免费赠送！","起步五张，寄往邮箱！","以后再做，可集一堂！"]
   ];
 
-  // —— 小箭头：对应区域中心（可继续精微调） ——
   const markerPos = {
     1:{left:50, top:50}, 2:{left:84.3, top:14},3:{left:68, top:30},4:{left:86, top:62},
     5:{left:28, top:60},6:{left:86, top:80},7:{left:30, top:80},8:{left:74, top:76},
     9:{left:44, top:40},10:{left:50, top:50}
   };
 
-  // 初始为序号2（邮票）
   let idx = 2;
-
   const hint = document.getElementById('hint');
   const marker = document.getElementById('marker');
   const imgF = document.getElementById('img-front');
@@ -201,31 +151,28 @@
   const next = document.getElementById('next');
   const box  = document.getElementById('cardbox');
 
-  // —— 文案渲染（加粗居中，固定框内自适应字号） ——
+  // 严格三行自适配：字号范围 12–17px，确保最长一行不换行、总高不超过框高
   function autoSize(lines){
     const ctx = document.createElement('canvas').getContext('2d');
     const style = getComputedStyle(hint);
     const ff = style.fontFamily || 'system-ui';
-    const padX = 20;
-    const maxW = hint.clientWidth - padX;
-    const maxLines = 3;
-    // 在 12px~22px 范围内二分搜索最大可用字号（最长一行不换行）
-    let lo=12, hi=22, best=18;
+    const maxW = hint.clientWidth - 20; // 左右 padding
+    const maxH = parseFloat(getComputedStyle(hint).maxHeight) || 86;
+    let lo=12, hi=17, best=15;
     function fits(px){
       ctx.font = `900 ${px}px ${ff}`;
-      // 宽度限制（每行）
+      // 每行宽度限制
       if(!lines.every(t => ctx.measureText(t).width <= maxW)) return false;
-      // 高度限制（不超过3行）：通过 line-height 估算
-      const lh = (px>=18?1.28:1.25) * px;
-      const h  = lh * lines.length + 4; // +微小余量
-      return h <= parseFloat(getComputedStyle(hint).maxHeight || getComputedStyle(hint).minHeight || 90);
+      const lh = (px>=16?1.28:1.25) * px;
+      const totalH = lh * lines.length + 4;
+      return totalH <= maxH;
     }
     while(lo<=hi){
       const mid=(lo+hi>>1);
       if(fits(mid)){best=mid;lo=mid+1;}else{hi=mid-1;}
     }
     hint.style.fontSize = best+'px';
-    hint.style.lineHeight = (best>=18?1.28:1.25);
+    hint.style.lineHeight = (best>=16?1.28:1.25);
   }
 
   function renderHint(){
@@ -250,16 +197,14 @@
 
   function applyAll(){ renderHint(); renderMedia(); renderMarker(); }
 
-  // —— 交互逻辑（严格按你定义） ——
   function stepLeft(){ if(idx===10){ idx=2; } else if(idx>=2 && idx<=9){ idx++; } applyAll(); }
   function stepRight(){ if(idx!==1){ idx=1; } else { idx=2; } applyAll(); }
 
   prev.addEventListener('click', stepLeft);
   next.addEventListener('click', stepRight);
 
-  // 支持触控滑动（说明框与图片区域均可）
   function bindSwipe(el){
-    let sx=0, sy=0, ex=0, ey=0;
+    let sx=0,sy=0,ex=0,ey=0;
     el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
     el.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
     el.addEventListener('touchend',()=>{
@@ -269,10 +214,7 @@
   }
   bindSwipe(box); bindSwipe(hint);
 
-  // 初始化
   applyAll();
-
-  document.getElementById('start-btn').addEventListener('click',()=>{location.href='#start';});
 })();
 </script>
 </body>
