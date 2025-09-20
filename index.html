@@ -1,72 +1,37 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Smart Postcard v3.1aa · base v3.0</title>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>v3.1F preview</title>
 <style>
-  :root{
-    --brand:#f6c00d;
-    --bubble:#f5d8ac;
-    --stage:#f6f7fb;
-    --ink:#111;
-    --shadow:0 8px 24px rgba(0,0,0,.08);
-  }
-  html,body{margin:0;padding:0;background:#fff;color:var(--ink);
-    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Source Han Sans SC",
-                 "Heiti SC","Droid Sans Fallback",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  }
-  .banner{background:var(--brand);padding:14px 16px;display:flex;align-items:center;gap:12px}
-  .dot{width:18px;height:18px;border-radius:50%;background:#27c06c;box-shadow:inset 0 0 0 4px #9fe6bf}
-  .brand{font-weight:800;font-size:22px;color:#067d8a}
-  .h1{font-weight:800;font-size:28px;line-height:1.25;padding:18px 20px 10px}
-  .stage-wrap{position:relative;margin:0 16px 24px;border-radius:20px;background:#fff;box-shadow:var(--shadow)}
-  .stage{position:relative;margin:14px;border-radius:16px;background:var(--stage);height:58vh;min-height:340px;box-shadow:inset 0 0 0 2px #eee}
-  /* arrows */
-  .arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-style:solid;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25));z-index:3}
-  .arrow.left{left:-12px;border-width:20px 28px 20px 0;border-color:transparent #1f49b6 transparent transparent}
-  .arrow.right{right:-12px;border-width:20px 0 20px 28px;border-color:transparent transparent transparent #1f49b6}
-  /* bubble */
-  .bubble{position:absolute;z-index:5;left:50%;top:12%;transform:translateX(-50%);
-          width:min(72%, 520px); background:var(--bubble); color:#222;
-          border-radius:20px; padding:18px 20px; text-align:center; font-weight:800;
-          line-height:1.6; box-shadow:var(--shadow);}
-  .bubble .txt{font-size:clamp(16px, 2.8vw, 19px);}
-  .pointer{position:absolute;z-index:5;left:50%;transform:translateX(-50%);top:calc(12% + 18px + 1.6em*3 + 8px); /* bubble top + padding + 3 lines + gap */
-           width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:20px solid #22b15e;}
-  /* stage postcard placeholder */
-  .postcard{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
-            width:min(88%, 560px);height:min(62vh, 340px);border-radius:16px;background:#fff;
-            box-shadow:var(--shadow);}
-  .version{position:fixed;right:10px;bottom:10px;background:rgba(240,240,240,.9);
-           border-radius:18px;padding:6px 10px;font-size:12px;color:#444;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Arial,sans-serif;background:#fff}
+  .banner{background:rgb(242, 183, 5);height:72px;display:flex;align-items:center;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .logo{width:40px;height:40px;border-radius:50%;background:rgb(38, 194, 129);margin-right:12px}
+  .brand{font-weight:800;color:#0b3a4a;font-size:20px}
+  .wrap{max-width:420px;margin:0 auto;padding:16px}
+  h1{font-size:18px;margin:10px 0}
+  .stage{background:#fff;border-radius:18px;padding:14px;box-shadow:0 10px 26px rgba(0,0,0,.06);min-height:360px;position:relative}
+  .arrow.left{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:44px solid transparent;border-bottom:44px solid transparent;border-right:64px solid rgb(30, 64, 160)}
+  .arrow.right{position:absolute;right:18px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:44px solid transparent;border-bottom:44px solid transparent;border-left:64px solid rgb(30, 64, 160)}
+  .bubble{position:absolute;left:50%;transform:translateX(-50%);top:22px;width:260px;background:rgb(248, 225, 170);padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.06);text-align:center;font-weight:700}
+  .pointer{width:0;height:0;margin:6px auto 0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid rgb(19, 166, 106)}
+  .ver{position:fixed;right:10px;bottom:10px;background:#fafafa;padding:6px 10px;border-radius:12px;border:1px solid #eee}
 </style>
 </head>
 <body>
-  <div class="banner"><div class="dot"></div><div class="brand">Smart Postcard</div></div>
-  <div class="h1">珍藏您举世无双的纪念明信片</div>
-
-  <div class="stage-wrap">
-    <div class="stage" id="stage">
-      <!-- speech bubble -->
-      <div class="bubble" aria-live="polite">
-        <div class="txt">
-          明信片背面图案！可成为邮票图案！<br>
-          您可以任选照片！可用您的自拍照！<br>
-          这等于洗了一张 A5 大尺寸的照片！
-        </div>
+  <div class="banner"><div class="logo"></div><div class="brand">Smart Postcard</div></div>
+  <div class="wrap">
+    <h1>珍藏您举世无双的纪念明信片</h1>
+    <div class="stage">
+      <div class="arrow left"></div>
+      <div class="arrow right"></div>
+      <div class="bubble">
+        <div>明信片背面图案！ 可成为邮票图案！</div>
+        <div>您可以任意选片！ 可用您的自拍照！</div>
+        <div>这等于洗了一张 A5 大尺寸的照片！</div>
+        <div class="pointer"></div>
       </div>
-      <div class="pointer" aria-hidden="true"></div>
-
-      <!-- nav arrows -->
-      <div class="arrow left" aria-label="上一条"></div>
-      <div class="arrow right" aria-label="下一条"></div>
-
-      <!-- postcard placeholder -->
-      <div class="postcard" aria-hidden="true"></div>
     </div>
   </div>
-
-  <div class="version">v3.1aa · base v3.0</div>
+  <div class="ver">v3.1F · base v3.0（纯净）</div>
 </body>
 </html>
