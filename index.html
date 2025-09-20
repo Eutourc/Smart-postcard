@@ -1,113 +1,72 @@
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard v3.1w • base v3.0</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Smart Postcard v3.1aa · base v3.0</title>
 <style>
   :root{
-    --page-bg:#fafafa;
-    --banner:#f4b400;
-    --brand:#08a76a;
-    --card-bg:#ffffff;
+    --brand:#f6c00d;
+    --bubble:#f5d8ac;
+    --stage:#f6f7fb;
+    --ink:#111;
     --shadow:0 8px 24px rgba(0,0,0,.08);
-    /* ONLY KNOB we "micro-tune": font-size for the 3-line note box */
-    --note-font:16px;           /* <= adjust 15–17px if needed */
-    --note-line:1.7;
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;background:var(--page-bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans CJK SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
-  .banner{background:var(--banner);padding:14px 20px;display:flex;align-items:center;gap:12px}
-  .dot{width:24px;height:24px;border-radius:50%;background:var(--brand)}
-  .brand{font-weight:800;font-size:22px;color:#0c7d79;letter-spacing:.5px}
-  .title{padding:18px 20px 6px;font-size:28px;font-weight:800;color:#222}
-  .stage{margin:0 12px 20px;border-radius:20px;background:#fff;box-shadow:var(--shadow);padding:18px 10px}
-  .viewport{position:relative;border-radius:16px;background:linear-gradient(#f7f7f7,#f1f1f1);padding:18px 10px;overflow:hidden}
-  /* Left/Right big arrows living outside postcard edges */
-  .big-arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-top:36px solid transparent;border-bottom:36px solid transparent;z-index:1;opacity:.95}
-  .big-arrow.left{left:-6px;border-right:48px solid #1e40af}
-  .big-arrow.right{right:-6px;border-left:48px solid #1e40af}
-  /* Postcard frame */
-  .postcard{position:relative;margin:0 auto;width:min(88vw,560px);height:calc(min(88vw,560px)*0.66);background:#fff;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);}
-  /* Example stamp target marker */
-  .pin{position:absolute;right:10%;top:16%;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:24px solid #16a34a;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
-  /* NOTE box: fixed place between arrows, 3 lines, auto-center above the dividing line */
-  .note{
-    position:absolute;left:50%;top:18%;
-    transform:translate(-50%,0);
-    background:#ffe5bf;border-radius:14px;
-    padding:12px 14px;
-    width:calc(100% - 120px);        /* keep generous gutters to arrows */
-    max-width:520px;                  /* never wider than card */
-    box-shadow:0 6px 18px rgba(0,0,0,.12);
-    color:#111;text-align:center;font-weight:800;
-    font-size:var(--note-font);line-height:var(--note-line);
+  html,body{margin:0;padding:0;background:#fff;color:var(--ink);
+    font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei","Source Han Sans SC",
+                 "Heiti SC","Droid Sans Fallback",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   }
-  .note:after{ /* little green pointer */
-    content:"";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
-    width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid #16a34a;
-    filter:drop-shadow(0 3px 4px rgba(0,0,0,.2));
-  }
-  /* 3-line lock: prevent wrapping to 2 or 4 lines by clamping height */
-  .note .lns{display:block;white-space:nowrap}
-  .footer{padding:14px 20px 28px;color:#333;font-weight:700;text-align:center}
-  .ver{position:fixed;right:10px;bottom:14px;background:rgba(0,0,0,.06);color:#333;border-radius:16px;padding:6px 10px;font-weight:700}
+  .banner{background:var(--brand);padding:14px 16px;display:flex;align-items:center;gap:12px}
+  .dot{width:18px;height:18px;border-radius:50%;background:#27c06c;box-shadow:inset 0 0 0 4px #9fe6bf}
+  .brand{font-weight:800;font-size:22px;color:#067d8a}
+  .h1{font-weight:800;font-size:28px;line-height:1.25;padding:18px 20px 10px}
+  .stage-wrap{position:relative;margin:0 16px 24px;border-radius:20px;background:#fff;box-shadow:var(--shadow)}
+  .stage{position:relative;margin:14px;border-radius:16px;background:var(--stage);height:58vh;min-height:340px;box-shadow:inset 0 0 0 2px #eee}
+  /* arrows */
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;border-style:solid;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25));z-index:3}
+  .arrow.left{left:-12px;border-width:20px 28px 20px 0;border-color:transparent #1f49b6 transparent transparent}
+  .arrow.right{right:-12px;border-width:20px 0 20px 28px;border-color:transparent transparent transparent #1f49b6}
+  /* bubble */
+  .bubble{position:absolute;z-index:5;left:50%;top:12%;transform:translateX(-50%);
+          width:min(72%, 520px); background:var(--bubble); color:#222;
+          border-radius:20px; padding:18px 20px; text-align:center; font-weight:800;
+          line-height:1.6; box-shadow:var(--shadow);}
+  .bubble .txt{font-size:clamp(16px, 2.8vw, 19px);}
+  .pointer{position:absolute;z-index:5;left:50%;transform:translateX(-50%);top:calc(12% + 18px + 1.6em*3 + 8px); /* bubble top + padding + 3 lines + gap */
+           width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:20px solid #22b15e;}
+  /* stage postcard placeholder */
+  .postcard{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+            width:min(88%, 560px);height:min(62vh, 340px);border-radius:16px;background:#fff;
+            box-shadow:var(--shadow);}
+  .version{position:fixed;right:10px;bottom:10px;background:rgba(240,240,240,.9);
+           border-radius:18px;padding:6px 10px;font-size:12px;color:#444;box-shadow:0 4px 12px rgba(0,0,0,.08)}
 </style>
 </head>
 <body>
-  <div class="banner">
-    <div class="dot"></div>
-    <div class="brand">Smart Postcard</div>
+  <div class="banner"><div class="dot"></div><div class="brand">Smart Postcard</div></div>
+  <div class="h1">珍藏您举世无双的纪念明信片</div>
+
+  <div class="stage-wrap">
+    <div class="stage" id="stage">
+      <!-- speech bubble -->
+      <div class="bubble" aria-live="polite">
+        <div class="txt">
+          明信片背面图案！可成为邮票图案！<br>
+          您可以任选照片！可用您的自拍照！<br>
+          这等于洗了一张 A5 大尺寸的照片！
+        </div>
+      </div>
+      <div class="pointer" aria-hidden="true"></div>
+
+      <!-- nav arrows -->
+      <div class="arrow left" aria-label="上一条"></div>
+      <div class="arrow right" aria-label="下一条"></div>
+
+      <!-- postcard placeholder -->
+      <div class="postcard" aria-hidden="true"></div>
+    </div>
   </div>
 
-  <div class="title">珍藏您举世无双的纪念明信片</div>
-
-  <section class="stage">
-    <div class="viewport">
-      <i class="big-arrow left"></i>
-      <i class="big-arrow right"></i>
-
-      <!-- NOTE: fixed position & size; only adjust --note-font for fit -->
-      <div class="note" id="noteBox">
-        <span class="lns">明信片背面图案！可成为邮票图案！</span>
-        <span class="lns">您可以任选五张！可用您的自拍照！</span>
-        <span class="lns">这等于洗了一张 A5 大尺寸的照片！</span>
-      </div>
-
-      <div class="postcard" id="card">
-        <div class="pin"></div>
-      </div>
-    </div>
-  </section>
-
-  <div class="footer">操作简单 · 实体印刷 · 全球邮寄 · A5 大尺寸 · 物超所值</div>
-
-  <div class="ver">v3.1w · base v3.0</div>
-
-  <script>
-    // 保证 3 行在常见手机宽度都不溢出：检测后按需微降字号（仅向下 1–2px）。
-    (function(){
-      const box = document.getElementById('noteBox');
-      const fit = () => {
-        const vw = Math.min(window.innerWidth, 560);
-        // 目标：三行总高度不超过 note 的可用高度（近似按行高计算）
-        const style = getComputedStyle(box);
-        let fs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--note-font')) || 16;
-        const lh = parseFloat(style.lineHeight) || (fs * 1.7);
-        const maxW = box.clientWidth;
-        // 如果换行导致出现第四行，就把根变量 --note-font 递减至 14px 下限
-        const lines = box.querySelectorAll('.lns');
-        const overflows = () => Array.from(lines).some(span => span.scrollWidth > maxW);
-        let safe = 0;
-        while (overflows() && fs > 14 && safe++ < 6){
-          fs -= 1;
-          document.documentElement.style.setProperty('--note-font', fs + 'px');
-        }
-      };
-      window.addEventListener('load', fit, {once:true});
-      window.addEventListener('resize', fit);
-    })();
-  </script>
+  <div class="version">v3.1aa · base v3.0</div>
 </body>
 </html>
