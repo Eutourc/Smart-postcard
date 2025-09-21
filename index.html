@@ -1,195 +1,135 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<title>Smart Postcard — v3.1K3 (单文件)</title>
+<title>Smart Postcard • v3.1K4（基于 v3.0 纯净）</title>
 <style>
 :root{
-  --brand:#f2b705;
-  --text:#0f172a;
-  --muted:#f6f7fb;
-  --card:#ffffff;
-  --shadow:0 12px 36px rgba(15,23,42,.08);
-  --radius:22px;
-  /* 尺寸控制点 */
-  --stage-w: 92vw;
-  --stage-max: 600px;
-  --frame-pad: 18px;
-  --bubble-width: 60%;    /* 说明框宽度（相对画框宽度） */
-  --bubble-text: .9rem;   /* 说明文字字号 */
-  --bubble-lh: 1.22;      /* 行距更紧凑 */
-  --arrow-h: 72px;        /* 大箭头高度 */
-  --arrow-thickness: 26px;/* 大箭头厚度（越小越瘦） */
-  --arrow-inset: 22px;    /* 箭头距离边框的内边距 */
-  --tip-size: 20px;       /* 气泡小三角尺寸 */
+  /* ======= 可调变量（只改这几项就能微调） ======= */
+  --frame-top-gap: 18px;        /* 标题与“箭头+说明框+样图”模块之间的距离 */
+  --arrow-zone-h: 260px;        /* 箭头承载区高度（会影响说明框与样图的距离） */
+  --bubble-width: 75%;          /* 说明框宽度（相对内容宽度） */
+  --bubble-fz: 18px;            /* 说明文字字号 */
+  --bubble-lh: 1.22;            /* 说明文字行距 */
+  --bubble-pad: 14px;           /* 说明框内边距 */
+  --bubble-radius: 18px;        /* 说明框圆角 */
+  --arrow-size-w: 84px;         /* 大箭头宽（非等边三角，窄底） */
+  --arrow-size-h: 92px;         /* 大箭头高 */
+  --arrow-thinness: 34%;        /* 箭头底边厚度（越小越尖） */
+  --brand: #0aa36f;
+  --banner: #f1b80e;
+  --text: #1e293b;
+  --muted: #64748b;
+  --bg: #ffffff;
+  --card: #f8fafc;
+  --shadow: 0 14px 36px rgba(16,24,40,.10);
 }
-@media (max-width:390px){
-  :root{
-    --bubble-width: 64%;
-    --bubble-text: .88rem;
-    --arrow-h: 64px;
-    --arrow-thickness: 22px;
-    --arrow-inset: 18px;
-  }
-}
-
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;
-  color:var(--text);
-  background:#fff;
-}
-/* 顶部横幅 */
-.header{
-  background:var(--brand);
-  padding:12px 16px;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.logo-circle{
-  width:28px;height:28px;border-radius:50%;
-  background:#27c07d; box-shadow:inset 0 0 0 6px rgba(255,255,255,.45);
-}
-.brand-title{font-weight:800; font-size:22px; letter-spacing:.5px;}
-.badges{margin-left:auto; display:flex; gap:10px; align-items:center;}
-.badge{background:#fff; padding:4px 10px; border-radius:999px; font-weight:700; font-size:12px; box-shadow:0 6px 14px rgba(0,0,0,.08)}
-
-/* 主体 */
-.wrap{display:flex; justify-content:center;}
-.main{
-  width:var(--stage-w); max-width:var(--stage-max);
-  margin:18px auto 32px;
-}
-h1{
-  font-size:28px; line-height:1.25; margin:6px 0 16px;
-  font-weight:800;
-}
-.stage{
-  background:linear-gradient(180deg,#f7f7fb, #f0f3fa);
-  border-radius:calc(var(--radius) + 8px);
-  padding:12px;
-  box-shadow:var(--shadow);
-}
-.frame{
-  background:#fff;
-  border-radius:var(--radius);
-  padding:var(--frame-pad);
-  box-shadow: inset 0 10px 24px rgba(15,23,42,.06);
-  position:relative;
-  min-height: 420px;
-}
-
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans CJK SC","PingFang SC",sans-serif}
+/* 顶部横幅（干净，无多余方块） */
+.header{position:sticky;top:0;z-index:10;background:var(--banner);box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.header .wrap{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 16px}
+.logo-dot{width:18px;height:18px;border-radius:999px;background:#11c286;box-shadow:inset 0 -5px 10px rgba(0,0,0,.15)}
+.brand{font-weight:800;letter-spacing:.5px;font-size:26px}
+.chip{margin-left:auto;display:flex;gap:12px}
+.badge,.menu{background:#fff;border-radius:16px;padding:6px 10px;font-weight:700}
+.menu{display:flex;align-items:center;gap:6px}
+.menu::before{content:"≡";font-weight:800}
+/* 标题 */
+.h-title{max-width:980px;margin:18px auto 0;padding:0 16px;font-size:28px;font-weight:800;line-height:1.25}
+/* 内容容器 */
+.stage{max-width:980px;margin:var(--frame-top-gap) auto 24px;padding:0 16px}
+.panel{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:20px}
+/* 箭头承载区域 */
+.arrow-zone{position:relative;height:var(--arrow-zone-h)}
 /* 说明框 */
-.bubble{
-  position:absolute; left:50%;
-  transform:translateX(-50%);
-  top:18px;
-  width:var(--bubble-width);
-  background:#f5d99e;
-  border-radius:18px;
-  padding:16px 14px;
-  box-shadow:0 10px 24px rgba(15,23,42,.10);
-}
-.bubble p{
-  margin:0;
-  font-size:var(--bubble-text);
-  line-height:var(--bubble-lh);
-  font-weight:800;
-  text-align:left;
-}
-/* 气泡绿尖角 */
-.bubble::after{
-  content:"";
-  position:absolute;
-  left:50%; transform:translateX(-50%);
-  bottom: -10px;
-  width:0; height:0;
-  border-left: var(--tip-size) solid transparent;
-  border-right: var(--tip-size) solid transparent;
-  border-top: var(--tip-size) solid #20b15a;
-}
-
-/* 大箭头（非等边，瘦长） */
+.bubble{position:absolute;left:50%;transform:translateX(-50%);top:10px;width:var(--bubble-width);background:#f6d9a3;border-radius:var(--bubble-radius);
+  padding:var(--bubble-pad);box-shadow:0 6px 18px rgba(0,0,0,.12);}
+.bubble p{margin:0;font-size:var(--bubble-fz);line-height:var(--bubble-lh);font-weight:800}
+/* 小绿尖 */
+.pointer{position:absolute;left:50%;transform:translateX(-50%);top:calc(10px + 100% + 6px);width:0;height:0;border-left:12px solid transparent;
+  border-right:12px solid transparent;border-top:16px solid #2fb463;}
+/* v3.0 风格的大箭头（非等边修长） */
 .arrow{
-  position:absolute; top:50%;
-  transform:translateY(-50%);
-  width:0; height:0;
-  filter: drop-shadow(0 10px 18px rgba(15,23,42,.18));
+  position:absolute;top:50%;transform:translateY(-10%); /* 稍微靠上，让气泡更居中 */
+  width:var(--arrow-size-w);height:var(--arrow-size-h);
 }
-.arrow.left{
-  left: var(--arrow-inset);
-  border-top: calc(var(--arrow-h)/2) solid transparent;
-  border-bottom: calc(var(--arrow-h)/2) solid transparent;
-  border-right: var(--arrow-thickness) solid #2647c6;
+.arrow svg{width:100%;height:100%}
+.arrow.left{left:6%}
+.arrow.right{right:6%}
+/* 样图卡片（整体下移留白） */
+.demo{margin-top:28px;background:#fff;border-radius:18px;box-shadow:inset 0 0 0 1px #e6eef7, 0 10px 20px rgba(2,6,23,.08);padding:18px}
+.postcard{height:360px;border-radius:12px;border:1px solid #d7e0ef;display:flex;align-items:center;justify-content:center;color:#96a2b6;font-weight:700;font-size:24px}
+/* 页脚 chips */
+.footer{max-width:980px;margin:0 auto 40px;padding:0 16px;color:var(--muted)}
+.code{display:inline-block;margin-top:16px;background:#eef2ff;color:#111827;border-radius:22px;padding:8px 12px;font-weight:800}
+@media (max-width:410px){
+  :root{
+    --bubble-width: 82%;
+    --bubble-fz: 16px;
+    --arrow-zone-h: 240px;
+    --arrow-size-w: 76px;
+    --arrow-size-h: 88px;
+  }
+  .h-title{font-size:24px}
 }
-.arrow.right{
-  right: var(--arrow-inset);
-  border-top: calc(var(--arrow-h)/2) solid transparent;
-  border-bottom: calc(var(--arrow-h)/2) solid transparent;
-  border-left: var(--arrow-thickness) solid #2647c6;
-}
-
-/* 画框占位图（白底） */
-.canvas{
-  margin: 120px auto 18px; /* 给说明框留位 */
-  height: 360px;
-  background:#fff;
-  border-radius:16px;
-  border: 2px solid rgba(15,23,42,.06);
-  box-shadow: inset 0 4px 12px rgba(15,23,42,.06);
-}
-
-.footer{
-  margin:18px auto 6px; text-align:center; color:#475569; font-weight:600;
-}
-.badge-ver{display:inline-block; margin-top:8px; background:#f1f5f9; padding:6px 12px; border-radius:999px; font-size:12px;}
 </style>
 </head>
 <body>
-  <header class="header">
-    <div class="brand">
-      <div class="logo-circle"></div>
-      <div class="brand-title">Smart Postcard</div>
-      <div class="badges">
-        <span class="badge">v3.1K3</span>
-        <span class="badge">中 / EN</span>
-        <span class="badge">≡</span>
+  <!-- 顶部横幅（纯净，无多余小方块） -->
+  <div class="header">
+    <div class="wrap">
+      <div class="logo-dot" aria-hidden="true"></div>
+      <div class="brand">Smart Postcard</div>
+      <div class="chip">
+        <div class="badge">v3.1K4</div>
+        <div class="badge">中 / EN</div>
+        <div class="menu"> </div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <div class="wrap">
-    <main class="main">
-      <h1>珍藏您举世无双的纪念明信片</h1>
+  <h1 class="h-title">珍藏您举世无双的纪念明信片</h1>
 
-      <section class="stage">
-        <div class="frame">
-          <div class="bubble">
-            <p>明信片背面图案！ 可成为邮票图案！<br/>
-            您可以任意选片！ 可用您的自拍照！<br/>
-            这等于洗了一张 <strong>A5</strong> 大尺寸的照片！</p>
-          </div>
-
-          <div class="arrow left" aria-hidden="true"></div>
-          <div class="arrow right" aria-hidden="true"></div>
-
-          <div class="canvas"></div>
+  <div class="stage">
+    <div class="panel">
+      <!-- 箭头 + 说明框区域 -->
+      <div class="arrow-zone">
+        <div class="bubble">
+          <p>明信片背面图案！　可成为邮票图案！</p>
+          <p>您可以任意选片！　可用您的自拍照！</p>
+          <p>这等于洗了一张 <strong>A5</strong> 大尺寸的照片！</p>
         </div>
-      </section>
+        <div class="pointer"></div>
 
-      <div class="footer">
-        操作简单 · 实体印刷 · 全球邮寄 · A5 大尺寸 · 物超所值
-        <div class="badge-ver">base v3.0 · 单文件</div>
+        <!-- 左箭头（修长、非等边三角） -->
+        <div class="arrow left" aria-hidden="true">
+          <svg viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet">
+            <!-- 使用窄底高三角，靠近 v3.0 的修长视觉 -->
+            <polygon points="100,10 20,60 100,110"
+              fill="#2248b8"/>
+          </svg>
+        </div>
+
+        <!-- 右箭头（修长、非等边三角） -->
+        <div class="arrow right" aria-hidden="true">
+          <svg viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet">
+            <polygon points="0,10 80,60 0,110"
+              fill="#2248b8"/>
+          </svg>
+        </div>
       </div>
-    </main>
+
+      <!-- 样图：整体下移，给气泡/箭头充分空间 -->
+      <div class="demo">
+        <div class="postcard">postcard sample</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="code">v3.1K4 · base v3.0（纯净单文件）</span>
   </div>
 </body>
 </html>
