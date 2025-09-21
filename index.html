@@ -54,9 +54,7 @@
   }
 
   .actions{display:flex;align-items:center;gap:8px}
-  .ver{padding:6px 10px;border-radius:999px;background:#fff;
-    font-weight:900;font-size:12px;letter-spacing:.3px;
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  /* .ver pill 被移除（按你的要求不在横幅中显示版本标识） */
   .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .cart{position:relative}
   .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
@@ -129,7 +127,7 @@
 /* v3.0 基础版 · 留白控制（仅下移“明信片样图”）
    1) 不修改说明框/文字
    2) 不修改大箭头/小箭头
-   3) 不修改横幅
+   3) 不修改横幅（但移除版本标识）
    4) 仅通过上外边距把样图整体下移，预留说明框空间 */
 :root{
   --viewer-top-gap: clamp(28px, 6.0vh, 56px);  /* 样图与说明框之间的额外留白 */
@@ -157,7 +155,7 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ver">v2.2c</div>
+      <!-- 版本标识已按要求移除 -->
       <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
       <div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
       <div class="dropdown" id="lang-dd">
