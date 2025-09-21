@@ -1,37 +1,195 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>v3.1F preview</title>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>Smart Postcard — v3.1K3 (单文件)</title>
 <style>
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Arial,sans-serif;background:#fff}
-  .banner{background:rgb(242, 183, 5);height:72px;display:flex;align-items:center;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  .logo{width:40px;height:40px;border-radius:50%;background:rgb(38, 194, 129);margin-right:12px}
-  .brand{font-weight:800;color:#0b3a4a;font-size:20px}
-  .wrap{max-width:420px;margin:0 auto;padding:16px}
-  h1{font-size:18px;margin:10px 0}
-  .stage{background:#fff;border-radius:18px;padding:14px;box-shadow:0 10px 26px rgba(0,0,0,.06);min-height:360px;position:relative}
-  .arrow.left{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:44px solid transparent;border-bottom:44px solid transparent;border-right:64px solid rgb(30, 64, 160)}
-  .arrow.right{position:absolute;right:18px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:44px solid transparent;border-bottom:44px solid transparent;border-left:64px solid rgb(30, 64, 160)}
-  .bubble{position:absolute;left:50%;transform:translateX(-50%);top:22px;width:260px;background:rgb(248, 225, 170);padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.06);text-align:center;font-weight:700}
-  .pointer{width:0;height:0;margin:6px auto 0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid rgb(19, 166, 106)}
-  .ver{position:fixed;right:10px;bottom:10px;background:#fafafa;padding:6px 10px;border-radius:12px;border:1px solid #eee}
+:root{
+  --brand:#f2b705;
+  --text:#0f172a;
+  --muted:#f6f7fb;
+  --card:#ffffff;
+  --shadow:0 12px 36px rgba(15,23,42,.08);
+  --radius:22px;
+  /* 尺寸控制点 */
+  --stage-w: 92vw;
+  --stage-max: 600px;
+  --frame-pad: 18px;
+  --bubble-width: 60%;    /* 说明框宽度（相对画框宽度） */
+  --bubble-text: .9rem;   /* 说明文字字号 */
+  --bubble-lh: 1.22;      /* 行距更紧凑 */
+  --arrow-h: 72px;        /* 大箭头高度 */
+  --arrow-thickness: 26px;/* 大箭头厚度（越小越瘦） */
+  --arrow-inset: 22px;    /* 箭头距离边框的内边距 */
+  --tip-size: 20px;       /* 气泡小三角尺寸 */
+}
+@media (max-width:390px){
+  :root{
+    --bubble-width: 64%;
+    --bubble-text: .88rem;
+    --arrow-h: 64px;
+    --arrow-thickness: 22px;
+    --arrow-inset: 18px;
+  }
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;
+  color:var(--text);
+  background:#fff;
+}
+/* 顶部横幅 */
+.header{
+  background:var(--brand);
+  padding:12px 16px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo-circle{
+  width:28px;height:28px;border-radius:50%;
+  background:#27c07d; box-shadow:inset 0 0 0 6px rgba(255,255,255,.45);
+}
+.brand-title{font-weight:800; font-size:22px; letter-spacing:.5px;}
+.badges{margin-left:auto; display:flex; gap:10px; align-items:center;}
+.badge{background:#fff; padding:4px 10px; border-radius:999px; font-weight:700; font-size:12px; box-shadow:0 6px 14px rgba(0,0,0,.08)}
+
+/* 主体 */
+.wrap{display:flex; justify-content:center;}
+.main{
+  width:var(--stage-w); max-width:var(--stage-max);
+  margin:18px auto 32px;
+}
+h1{
+  font-size:28px; line-height:1.25; margin:6px 0 16px;
+  font-weight:800;
+}
+.stage{
+  background:linear-gradient(180deg,#f7f7fb, #f0f3fa);
+  border-radius:calc(var(--radius) + 8px);
+  padding:12px;
+  box-shadow:var(--shadow);
+}
+.frame{
+  background:#fff;
+  border-radius:var(--radius);
+  padding:var(--frame-pad);
+  box-shadow: inset 0 10px 24px rgba(15,23,42,.06);
+  position:relative;
+  min-height: 420px;
+}
+
+/* 说明框 */
+.bubble{
+  position:absolute; left:50%;
+  transform:translateX(-50%);
+  top:18px;
+  width:var(--bubble-width);
+  background:#f5d99e;
+  border-radius:18px;
+  padding:16px 14px;
+  box-shadow:0 10px 24px rgba(15,23,42,.10);
+}
+.bubble p{
+  margin:0;
+  font-size:var(--bubble-text);
+  line-height:var(--bubble-lh);
+  font-weight:800;
+  text-align:left;
+}
+/* 气泡绿尖角 */
+.bubble::after{
+  content:"";
+  position:absolute;
+  left:50%; transform:translateX(-50%);
+  bottom: -10px;
+  width:0; height:0;
+  border-left: var(--tip-size) solid transparent;
+  border-right: var(--tip-size) solid transparent;
+  border-top: var(--tip-size) solid #20b15a;
+}
+
+/* 大箭头（非等边，瘦长） */
+.arrow{
+  position:absolute; top:50%;
+  transform:translateY(-50%);
+  width:0; height:0;
+  filter: drop-shadow(0 10px 18px rgba(15,23,42,.18));
+}
+.arrow.left{
+  left: var(--arrow-inset);
+  border-top: calc(var(--arrow-h)/2) solid transparent;
+  border-bottom: calc(var(--arrow-h)/2) solid transparent;
+  border-right: var(--arrow-thickness) solid #2647c6;
+}
+.arrow.right{
+  right: var(--arrow-inset);
+  border-top: calc(var(--arrow-h)/2) solid transparent;
+  border-bottom: calc(var(--arrow-h)/2) solid transparent;
+  border-left: var(--arrow-thickness) solid #2647c6;
+}
+
+/* 画框占位图（白底） */
+.canvas{
+  margin: 120px auto 18px; /* 给说明框留位 */
+  height: 360px;
+  background:#fff;
+  border-radius:16px;
+  border: 2px solid rgba(15,23,42,.06);
+  box-shadow: inset 0 4px 12px rgba(15,23,42,.06);
+}
+
+.footer{
+  margin:18px auto 6px; text-align:center; color:#475569; font-weight:600;
+}
+.badge-ver{display:inline-block; margin-top:8px; background:#f1f5f9; padding:6px 12px; border-radius:999px; font-size:12px;}
 </style>
 </head>
 <body>
-  <div class="banner"><div class="logo"></div><div class="brand">Smart Postcard</div></div>
-  <div class="wrap">
-    <h1>珍藏您举世无双的纪念明信片</h1>
-    <div class="stage">
-      <div class="arrow left"></div>
-      <div class="arrow right"></div>
-      <div class="bubble">
-        <div>明信片背面图案！ 可成为邮票图案！</div>
-        <div>您可以任意选片！ 可用您的自拍照！</div>
-        <div>这等于洗了一张 A5 大尺寸的照片！</div>
-        <div class="pointer"></div>
+  <header class="header">
+    <div class="brand">
+      <div class="logo-circle"></div>
+      <div class="brand-title">Smart Postcard</div>
+      <div class="badges">
+        <span class="badge">v3.1K3</span>
+        <span class="badge">中 / EN</span>
+        <span class="badge">≡</span>
       </div>
     </div>
+  </header>
+
+  <div class="wrap">
+    <main class="main">
+      <h1>珍藏您举世无双的纪念明信片</h1>
+
+      <section class="stage">
+        <div class="frame">
+          <div class="bubble">
+            <p>明信片背面图案！ 可成为邮票图案！<br/>
+            您可以任意选片！ 可用您的自拍照！<br/>
+            这等于洗了一张 <strong>A5</strong> 大尺寸的照片！</p>
+          </div>
+
+          <div class="arrow left" aria-hidden="true"></div>
+          <div class="arrow right" aria-hidden="true"></div>
+
+          <div class="canvas"></div>
+        </div>
+      </section>
+
+      <div class="footer">
+        操作简单 · 实体印刷 · 全球邮寄 · A5 大尺寸 · 物超所值
+        <div class="badge-ver">base v3.0 · 单文件</div>
+      </div>
+    </main>
   </div>
-  <div class="ver">v3.1F · base v3.0（纯净）</div>
 </body>
 </html>
