@@ -121,6 +121,78 @@
   .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
   .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
+
+/* --- v3.1 explain bubble (top) --- */
+.explain {
+  margin: 10px auto 6px;
+  max-width: min(88vw, 560px);
+  background: #f2cd99;
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.06);
+  font-size: clamp(12px, 2.9vw, 14px);
+  line-height: 1.25;
+  color: #1b2733;
+  text-align: center;
+  position: relative;
+}
+.explain b { font-weight: 700; }
+.explain::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -10px;
+  width: 0; height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 14px solid #2aa243; /* small green pointer */
+}
+/* compact the space around title / bubble / viewer for symmetric whitespace */
+.stage h1 { margin-bottom: 10px; }
+.viewer { margin-top: 18px; }
+
+
+/* === microtune: explain bubble & side arrows === */
+.explain-row{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin: 8px auto 10px; /* 下移一些，避免过高 */
+  max-width: min(92vw, 760px);
+}
+.explain{
+  font-size: clamp(12px, 2.7vw, 13px); /* 再小一号 */
+  line-height: 1.25;
+  max-width: min(80vw, 520px);         /* 再收窄一些 */
+  padding: 10px 14px;
+  border-radius: 16px;
+  background:#f2cd99;
+  color:#1b2733;
+  text-align:center;
+  box-shadow: 0 2px 4px rgba(0,0,0,.06);
+  position:relative;
+}
+.explain::after{ /* 下面的小绿三角 */
+  content:"";position:absolute;left:50%;transform:translateX(-50%);
+  bottom:-10px;width:0;height:0;border-left:10px solid transparent;
+  border-right:10px solid transparent;border-top:12px solid #2aa243;
+}
+.big-arrow.side{position:relative;display:inline-block;width:0;height:0}
+.big-arrow.side.left::before{
+  content:"";display:block;width:0;height:0;
+  border-top:var(--big-arrow-fat) solid transparent;
+  border-bottom:var(--big-arrow-fat) solid transparent;
+  border-right:var(--big-arrow-width) solid var(--big-arrow-color);
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
+}
+.big-arrow.side.right::before{
+  content:"";display:block;width:0;height:0;
+  border-top:var(--big-arrow-fat) solid transparent;
+  border-bottom:var(--big-arrow-fat) solid transparent;
+  border-left:var(--big-arrow-width) solid var(--big-arrow-color);
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
+}
+/* 隐藏卡片盒子里的原始大箭头，避免双重箭头 */
+.cardbox .big-arrow{ display:none !important; }
 </style>
 
 <style id="spacing-only-v30">
@@ -141,42 +213,37 @@
 #cardbox{
   margin-top: clamp(6px, 1.2vh, 14px);
 }
-</style>
 
-
-<style id="hint-compact-override">
-/* 不动现有布局，仅新增一个更紧凑的横向说明框 */
-#sp-compact-hint {
+/* --- v3.1 explain bubble (top) --- */
+.explain {
+  margin: 10px auto 6px;
+  max-width: min(88vw, 560px);
+  background: #f2cd99;
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.06);
+  font-size: clamp(12px, 2.9vw, 14px);
+  line-height: 1.25;
+  color: #1b2733;
+  text-align: center;
+  position: relative;
+}
+.explain b { font-weight: 700; }
+.explain::after {
+  content: "";
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: clamp(90px, 16.5vh, 180px); /* 适中上移，给样图留白 */
-  background: #F1CB98;
-  color: #203040;
-  border-radius: 16px;
-  padding: 10px 14px;
-  box-shadow: 0 4px 10px rgba(0,0,0,.06);
-  z-index: 10;
-  max-width: min(76vw, 480px);   /* 横向长方形，约等于两箭头之间 */
-  min-width: min(66vw, 360px);
-  text-align: center;
-  font-size: 14px;               /* 更小字号 */
-  line-height: 1.2;              /* 更紧凑行距 */
-  font-weight: 600;
-}
-#sp-compact-hint .caret {
+  bottom: -10px;
   width: 0; height: 0;
-  margin: 6px auto 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 14px solid #2FAF5C; /* 绿色小三角 */
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 14px solid #2aa243; /* small green pointer */
 }
-/* 尝试弱化旧说明框（如果存在），避免双框叠加 */
-[data-hint], .hint, .speech, .bubble {
-  /* 仅降低可见度，不彻底 display:none，避免布局抖动 */
-  opacity: 0.0 !important;
-  pointer-events: none !important;
-}
+/* compact the space around title / bubble / viewer for symmetric whitespace */
+.stage h1 { margin-bottom: 10px; }
+.viewer { margin-top: 18px; }
+
 </style>
 
 </head>
@@ -207,9 +274,20 @@
   <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
-    <div class="hint" id="hint">选择中文/英文版式</div>
+    
 
-    <div class="viewer">
+    
+  <div class="explain-row">
+    <span class="big-arrow side left" aria-hidden="true"></span>
+    <div class="explain" id="explain">
+    明信片背面图案！可成为邮票图案！<br>
+    您可以任选照片！ 可用您的自拍照！<br>
+    这等于洗了一张 <b>A5</b> 大尺寸的照片！
+      </div>
+    <span class="big-arrow side right" aria-hidden="true"></span>
+  </div>
+
+  <div class="viewer">
       <div class="cardbox" id="cardbox">
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
@@ -256,35 +334,5 @@
   });
 })();
 </script>
-
-<script id="hint-compact-inject">
-document.addEventListener('DOMContentLoaded', function(){
-  if (document.getElementById('sp-compact-hint')) return;
-  const hint = document.createElement('div');
-  hint.id = 'sp-compact-hint';
-  hint.setAttribute('role','note');
-  hint.innerHTML = `
-    <div class="text">
-      明信片背面图案！　可成为邮票图案！<br>
-      您可以任选照片！　可用您的自拍照！<br>
-      这等于洗了一张 <span style="letter-spacing:.04em;">A5</span> 大尺寸的照片！
-    </div>
-    <div class="caret" aria-hidden="true"></div>
-  `;
-
-  // 寻找主要展示区作为定位容器（尽量不依赖具体类名）
-  let host = document.querySelector('[data-role="postcard-canvas"]')
-          || document.querySelector('.postcard-canvas')
-          || document.querySelector('#canvas')
-          || document.querySelector('.content, main, .main, .stage')
-          || document.body;
-
-  // 确保 host 是定位上下文
-  const cs = window.getComputedStyle(host);
-  if (cs.position === 'static') host.style.position = 'relative';
-  host.appendChild(hint);
-});
-</script>
-
 </body>
 </html>
