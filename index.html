@@ -143,6 +143,42 @@
 }
 </style>
 
+
+<style id="hint-compact-override">
+/* 不动现有布局，仅新增一个更紧凑的横向说明框 */
+#sp-compact-hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: clamp(90px, 16.5vh, 180px); /* 适中上移，给样图留白 */
+  background: #F1CB98;
+  color: #203040;
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.06);
+  z-index: 10;
+  max-width: min(76vw, 480px);   /* 横向长方形，约等于两箭头之间 */
+  min-width: min(66vw, 360px);
+  text-align: center;
+  font-size: 14px;               /* 更小字号 */
+  line-height: 1.2;              /* 更紧凑行距 */
+  font-weight: 600;
+}
+#sp-compact-hint .caret {
+  width: 0; height: 0;
+  margin: 6px auto 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid #2FAF5C; /* 绿色小三角 */
+}
+/* 尝试弱化旧说明框（如果存在），避免双框叠加 */
+[data-hint], .hint, .speech, .bubble {
+  /* 仅降低可见度，不彻底 display:none，避免布局抖动 */
+  opacity: 0.0 !important;
+  pointer-events: none !important;
+}
+</style>
+
 </head>
 <body>
 <header class="top">
@@ -220,5 +256,35 @@
   });
 })();
 </script>
+
+<script id="hint-compact-inject">
+document.addEventListener('DOMContentLoaded', function(){
+  if (document.getElementById('sp-compact-hint')) return;
+  const hint = document.createElement('div');
+  hint.id = 'sp-compact-hint';
+  hint.setAttribute('role','note');
+  hint.innerHTML = `
+    <div class="text">
+      明信片背面图案！　可成为邮票图案！<br>
+      您可以任选照片！　可用您的自拍照！<br>
+      这等于洗了一张 <span style="letter-spacing:.04em;">A5</span> 大尺寸的照片！
+    </div>
+    <div class="caret" aria-hidden="true"></div>
+  `;
+
+  // 寻找主要展示区作为定位容器（尽量不依赖具体类名）
+  let host = document.querySelector('[data-role="postcard-canvas"]')
+          || document.querySelector('.postcard-canvas')
+          || document.querySelector('#canvas')
+          || document.querySelector('.content, main, .main, .stage')
+          || document.body;
+
+  // 确保 host 是定位上下文
+  const cs = window.getComputedStyle(host);
+  if (cs.position === 'static') host.style.position = 'relative';
+  host.appendChild(hint);
+});
+</script>
+
 </body>
 </html>
