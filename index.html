@@ -107,72 +107,126 @@
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
 
   /* v3.1 说明框（均衡留白：上/下均为14px） */
-  .explain {
-    margin: 14px auto 14px;
-    max-width: min(88vw, 560px);
-    background: #f2cd99;
-    border-radius: 16px;
-    padding: 10px 14px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.06);
-    font-size: clamp(12px, 2.9vw, 14px);
-    line-height: 1.25;
-    color: #1b2733;
-    text-align: center;
-    position: relative;
-  }
+  
   .explain b { font-weight: 700; }
 
 /* === 留白调整：严格让前两处相等 === */
-:root{
-  --gap: 22px;
-  --gap-top: 32px;
-}
+
 
 /* 第一处：横幅↔标题 */
 main.wrap{ padding-top: 0 !important; }
-h1{ margin: var(--gap-top) 0 var(--gap-top) !important; } /* 上32 下32 */
+ /* 上32 下32 */
 
 /* 清除 stage 头部内边距，避免第二处被额外拉大 */
-.stage{ gap: 0 !important; padding-top: 0 !important; }
+
 
 /* 说明框：不再额外加上边距，完全由 h1 的 margin-bottom 决定第二处 */
-.explain{ margin: 0 auto var(--gap) !important; }
+
 
 /* 第三处：说明框↔样图 */
 .viewer{ margin-top: 0 !important; }
 
 @media (max-width: 360px){
-  :root{ --gap: 20px; --gap-top: 28px; }
+  
 }
 @media (min-width: 768px){
-  :root{ --gap: 24px; --gap-top: 36px; }
+  
 }
 /* === 结束 === */
 
 
-/* === 大箭头：不设top，由JS定位；允许在cardbox上方显示 === */
+/* === 大箭头（删除旧法→新法）：垂直由JS居中到说明框；横向基线与cardbox边线对齐 === */
+:root{
+  --arrow-fat: 22px;   /* 上下边各22 => 总高44 */
+  --arrow-width: 26px; /* 箭头“厚度” */
+  --edge-fine: -0.5px; /* 细调，确保基线与边线齐平 */
+}
 .big-arrow{
   position:absolute;
   width:0;height:0;
   border:0;background:transparent;padding:0;
   pointer-events:none;z-index:2;
 }
-.big-arrow.left{ left:-40px; }
+/* 左侧：容器贴左，伪元素向外画出；基线与左边线齐平 */
+.big-arrow.left{ left:0; }
 .big-arrow.left::before{
-  content:"";display:block;
-  border-top:22px solid transparent;
-  border-bottom:22px solid transparent;
-  border-right:26px solid #0b3a77;
+  content:"";display:block;width:0;height:0;
+  border-top:var(--arrow-fat) solid transparent;
+  border-bottom:var(--arrow-fat) solid transparent;
+  border-right:var(--arrow-width) solid #0b3a77;
+  margin-left: calc(-1 * var(--arrow-width) - var(--card-border) - var(--edge-fine));
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
 }
-.big-arrow.right{ right:-40px; }
+/* 右侧：容器贴右，伪元素向外画出；基线与右边线齐平 */
+.big-arrow.right{ right:0; }
 .big-arrow.right::before{
-  content:"";display:block;
-  border-top:22px solid transparent;
-  border-bottom:22px solid transparent;
-  border-left:26px solid #0b3a77;
+  content:"";display:block;width:0;height:0;
+  border-top:var(--arrow-fat) solid transparent;
+  border-bottom:var(--arrow-fat) solid transparent;
+  border-left:var(--arrow-width) solid #0b3a77;
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
 }
+/* === 结束 === */
+
+
+/* === 留白微调：第1、第2处 38px；第3处 22px === */
+h1{ margin: 38px 0 38px !important; }
+.stage{ gap: 0 !important; padding-top: 0 !important; }
+
+.viewer{ margin-top: 0 !important; }
+/* === 结束 === */
+
+
+/* === 留白微调：第1、第2处 36px；第3处 22px === */
+h1{ margin: 36px 0 36px !important; }
+.stage{ gap: 0 !important; padding-top: 0 !important; }
+
+.viewer{ margin-top: 0 !important; }
+/* === 结束 === */
+
+
+/* === 说明框调整：尺寸略小、行距更紧、左右留白对称 === */
+
+/* 防止说明框里强调字过大导致撑开 */
+.explain strong, .explain b{ font-weight: 700; }
+.explain em, .explain i{ font-style: italic; }
+
+
+/* === 说明框调整：加入底色主题，可切换 === */
+
+
+/* 可选主题色 */
+.theme-orange  /* 浅橙色 */
+.theme-blue    /* 浅蓝色 */
+.theme-gray    /* 浅灰色 */
+.theme-yellow  /* 浅黄色 */
+
+/* 强调文字 */
+.explain strong, .explain b{ font-weight: 700; }
+.explain em, .explain i{ font-style: italic; }
+/* === 结束 === */
+
+
+/* === 说明框调整（v3）：与第1、2留白一致，底色可切换 === */
+.explain{
+  margin: 0 auto 36px !important;    /* 第三处留白：36px */
+  padding: 10px 18px !important;
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+  border-radius: 14px !important;
+  box-sizing: border-box;
+  max-width: 92%;
+  background: #fef3c7 !important;    /* 默认浅橙色 */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+/* 主题切换 */
+.theme-orange .explain { background: #fef3c7 !important; }
+.theme-blue   .explain { background: #e0f2fe !important; }
+.theme-gray   .explain { background: #f3f4f6 !important; }
+.theme-yellow .explain { background: #fef9c3 !important; }
+/* 保持区块间不被 gap/padding 额外撑开 */
+.stage{ gap: 0 !important; padding-top: 0 !important; }
+.viewer{ margin-top: 0 !important; }
 /* === 结束 === */
 
 </style>
@@ -256,7 +310,7 @@ h1{ margin: var(--gap-top) 0 var(--gap-top) !important; } /* 上32 下32 */
   });
 })();
 </script>
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 2) — 2025-09-24</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 12) — 2025-09-24</div>
 
 <script>
 (function(){
@@ -269,9 +323,7 @@ h1{ margin: var(--gap-top) 0 var(--gap-top) !important; } /* 上32 下32 */
     var er = ex.getBoundingClientRect();
     var cr = cb.getBoundingClientRect();
     var centerY = er.top + er.height/2;
-    // 箭头视觉高度 44px，居中需减去22px（半高）
-    var y = centerY - cr.top - 22;
-    // 允许负值，使箭头能出现在cardbox之上；cardbox 已 overflow:visible
+    var y = centerY - cr.top - 22; // 半高22px，确保视觉居中
     prev.style.top = y + 'px';
     next.style.top = y + 'px';
   }
