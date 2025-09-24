@@ -326,7 +326,7 @@ h1{ margin: 36px 0 36px !important; }
   });
 })();
 </script>
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 13) — 2025-09-24</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 15) — 2025-09-24</div>
 
 <script>
 (function(){
@@ -348,6 +348,64 @@ h1{ margin: 36px 0 36px !important; }
   window.addEventListener('resize', positionArrows);
   window.addEventListener('orientationchange', positionArrows);
   setTimeout(positionArrows, 80);
+})();
+</script>
+
+
+<script>
+(function(){
+  var DESIRED = 36; // 三处留白目标
+  function fixThirdGap(){
+    var ex = document.getElementById('explain');
+    var cb = document.getElementById('cardbox');
+    if(!ex || !cb) return;
+    // 先清零，避免累积误差
+    cb.style.marginTop = '0px';
+    cb.style.paddingTop = '0px';
+    var er = ex.getBoundingClientRect();
+    var cr = cb.getBoundingClientRect();
+    var actual = cr.top - er.bottom;
+    var delta = DESIRED - actual;
+    // 在现有基础上微调 marginTop，使 gap 精确为 36px
+    var current = parseFloat(getComputedStyle(cb).marginTop) || 0;
+    cb.style.marginTop = (current + delta) + 'px';
+  }
+  window.addEventListener('DOMContentLoaded', fixThirdGap);
+  window.addEventListener('load', fixThirdGap);
+  window.addEventListener('resize', fixThirdGap);
+  window.addEventListener('orientationchange', fixThirdGap);
+  setTimeout(fixThirdGap, 90);
+})();
+</script>
+
+
+<script>
+(function(){
+  var DESIRED = 36; // 三处留白目标
+  function gap(){
+    var ex = document.getElementById('explain');
+    var viewer = document.querySelector('.viewer') || document.getElementById('viewer');
+    var cb = document.getElementById('cardbox');
+    if(!ex) return;
+    // 选择作为"样图模块"的布局元素：优先 .viewer，其次 #cardbox
+    var target = viewer || cb;
+    if(!target) return;
+    // 先清零，避免历史叠加
+    target.style.marginTop = '0px';
+    target.style.paddingTop = '0px';
+    // 计算实际间距
+    var er = ex.getBoundingClientRect();
+    var tr = target.getBoundingClientRect();
+    var actual = tr.top - er.bottom;
+    var delta = DESIRED - actual;
+    var current = parseFloat(getComputedStyle(target).marginTop) || 0;
+    target.style.marginTop = (current + delta) + 'px';
+  }
+  window.addEventListener('DOMContentLoaded', gap);
+  window.addEventListener('load', gap);
+  window.addEventListener('resize', gap);
+  window.addEventListener('orientationchange', gap);
+  setTimeout(gap, 120);
 })();
 </script>
 
