@@ -229,6 +229,22 @@ h1{ margin: 36px 0 36px !important; }
 .viewer{ margin-top: 0 !important; }
 /* === 结束 === */
 
+
+/* === 第三处留白统一（36px）：整体上移“样图+大箭头+小绿箭头” === */
+.explain{ margin-bottom: 36px !important; }   /* 只用说明框的下外边距来决定第三处间距 */
+
+.viewer{ margin-top: 0 !important; padding-top: 0 !important; }
+
+/* 样图容器与相关元素一律取消向上的额外距离，避免叠加 */
+#cardbox, .cardbox, .postcard, .postcard-holder, .postcard-sample{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 保证 stage 不插手间距 */
+.stage{ gap: 0 !important; padding-top: 0 !important; }
+/* === 结束 === */
+
 </style>
 </head>
 <body>
@@ -310,7 +326,7 @@ h1{ margin: 36px 0 36px !important; }
   });
 })();
 </script>
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 12) — 2025-09-24</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 13) — 2025-09-24</div>
 
 <script>
 (function(){
