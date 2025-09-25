@@ -225,6 +225,16 @@ h1{ margin: 36px 0 36px !important; }
 /* === 结束 === */
 
 </style>
+
+<!-- === OVERRIDES: keep 1st & 2nd gaps; fix 3rd gap === -->
+<style>
+/* Make viewer auto-height so it doesn't stretch and create extra whitespace */
+.stage .viewer{ flex:0 !important; margin-top:32px !important; }
+/* Make sure the image box doesn't add extra outside gap */
+.stage .cardbox{ margin-top:0 !important; }
+/* Keep big-arrows positioning script effective */
+</style>
+<!-- === END OVERRIDES === -->
 </head>
 <body>
 <header class="top">
@@ -305,7 +315,7 @@ h1{ margin: 36px 0 36px !important; }
   });
 })();
 </script>
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1c balanced (test build 11) — 2025-09-24</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1cb balanced — third gap = 32px — 2025-09-25</div>
 
 <script>
 (function(){
@@ -330,7 +340,5 @@ h1{ margin: 36px 0 36px !important; }
 })();
 </script>
 
-
-<div style="text-align:center;color:#777;margin:16px 0 40px;">v3.1cb balanced — third gap = 34px — 2025-09-24</div>
 </body>
 </html>
