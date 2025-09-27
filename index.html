@@ -98,7 +98,7 @@
   
   
 
-  .features{margin-top:0!important;margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
+  .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
   .features p{margin:2px 0;font-weight:800}
 
   .btns{display:flex;gap:10px;margin-top:6px}
@@ -228,6 +228,12 @@ h1{ margin: 36px 0 36px !important; }
 /* === injected overrides === */
 .viewer{ align-items:flex-start !important; padding-top:33px !important; }
 </style>
+
+<style>
+/* V4.0 clean overrides: keep minimal and focused */
+img[alt*="postcard"] { display:block !important; margin:0 auto; }
+</style>
+
 </head>
 <body>
 <header class="top">
@@ -252,10 +258,12 @@ h1{ margin: 36px 0 36px !important; }
 </header>
 
 <main class="wrap">
-  <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
+  <div style="height:0;margin:0;line-height:0;display:block;margin-top:-6px;"></div>
+<h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
-    <div class="explain" id="explain">
+    <div style="height:0;margin:0;line-height:0;display:block;margin-top:-6px;"></div>
+<div class="explain" id="explain">
       明信片背面图案！可成为邮票图案！<br>
       您可以任选照片！可用您的自拍照！<br>
       这等于洗了一张 <b>A5</b> 大尺码的照片！
@@ -266,11 +274,10 @@ h1{ margin: 36px 0 36px !important; }
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
 
-        <img id="pc-img" src="postcard_cn.png?v=22031" alt="postcard sample">
+        <div style="height:12px;margin:0;padding:0;line-height:0;display:block;"></div>
+<img id="pc-img" src="postcard_cn.png?v=22031" alt="postcard sample">
         <div class="marker" id="marker"></div>
       </div>
-<div id="third-spacer" style="height:48px"></div>
-
     </div>
 
     <section class="features" id="features">
@@ -336,6 +343,7 @@ h1{ margin: 36px 0 36px !important; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1cb balanced — third gap = 48px — 2025-09-25</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1cb balanced — third gap = 33px — 2025-09-25</div>
+<div style="text-align:center;color:#666;opacity:.8;margin:28px 0 40px;font-size:14px;">Smart Postcard — V4.0 — three-gaps balanced (gap1&2 -6px, gap3 +12px) — 2025-09-27 22:00:27</div>
 </body>
 </html>
