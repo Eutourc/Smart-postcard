@@ -106,7 +106,7 @@
   .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
 
-  /* v3.1 说明框（均衡留白：上/下均为14px） */
+  /*  
   
   .explain b { font-weight: 700; }
 
@@ -234,6 +234,18 @@ h1{ margin: 36px 0 36px !important; }
 img[alt*="postcard"] { display:block !important; margin:0 auto; }
 </style>
 
+<style>
+/* v4.1 override: make the gap between the postcard image and features exactly 33px */
+#features, .features, .selling-points, .points, .feature-list, .benefits {
+  margin-top: 33px !important;
+}
+/* Try to neutralize any spacer below the postcard viewer that could push things down */
+#viewer-spacer, .viewer-spacer, .image-bottom-spacer, .pcd-viewer-spacer {
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+</style>
 </head>
 <body>
 <header class="top">
@@ -282,7 +294,7 @@ img[alt*="postcard"] { display:block !important; margin:0 auto; }
 
     <section class="features" id="features">
       <p>操作简单 · 实体印刷 · 全球邮寄</p>
-      <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
+      <p>旅游纪念 · 集邮佳品 · 珍贵相册</p>
       <p>照片打印 · A5 大尺码 · 物超所值</p>
     </section>
 
@@ -343,7 +355,12 @@ img[alt*="postcard"] { display:block !important; margin:0 auto; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">v3.1cb balanced — third gap = 33px — 2025-09-25</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;"> </div>
 <div style="text-align:center;color:#666;opacity:.8;margin:28px 0 40px;font-size:14px;">Smart Postcard — V4.0 — three-gaps balanced (gap1&2 -6px, gap3 +12px) — 2025-09-27 22:00:27</div>
+
+<div style="text-align:center;font-size:12px;color:#999;margin-top:24px;">
+Smart Postcard — V4.1 — features gap = 33px; wording updated “珍贵相册”
+</div>
+
 </body>
 </html>
