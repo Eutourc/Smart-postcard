@@ -178,7 +178,7 @@ h1{ margin: 38px 0 38px !important; }
 
 
 /* === 留白微调：第1、第2处 36px；第3处 22px === */
-h1{ margin: 36px 0 36px !important; }
+h1{ margin:30px 0 30px !important; }
 .stage{ gap: 0 !important; padding-top: 0 !important; }
 
 .viewer{ margin-top: 2px !important; }
@@ -229,11 +229,16 @@ h1{ margin: 36px 0 36px !important; }
 .viewer{ align-items:flex-start !important; padding-top:33px !important; }
 </style>
 
-<style>
-/* V4.0 clean overrides: keep minimal and focused */
-img[alt*="postcard"] { display:block !important; margin:0 auto; }
-</style>
-
+    <style>
+    #viewer {
+        min-height: auto !important;
+        height: auto !important;
+    }
+    #features {
+        margin-top: 42px !important;
+    }
+    </style>
+    
 </head>
 <body>
 <header class="top">
@@ -258,12 +263,10 @@ img[alt*="postcard"] { display:block !important; margin:0 auto; }
 </header>
 
 <main class="wrap">
-  <div style="height:0;margin:0;line-height:0;display:block;margin-top:-6px;"></div>
-<h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
+  <h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
 
   <section class="stage">
-    <div style="height:0;margin:0;line-height:0;display:block;margin-top:-6px;"></div>
-<div class="explain" id="explain">
+    <div class="explain" id="explain">
       明信片背面图案！可成为邮票图案！<br>
       您可以任选照片！可用您的自拍照！<br>
       这等于洗了一张 <b>A5</b> 大尺码的照片！
@@ -274,13 +277,12 @@ img[alt*="postcard"] { display:block !important; margin:0 auto; }
         <button class="big-arrow left" id="prev" aria-label="上一项"></button>
         <button class="big-arrow right" id="next" aria-label="下一项"></button>
 
-        <div style="height:12px;margin:0;padding:0;line-height:0;display:block;"></div>
-<img id="pc-img" src="postcard_cn.png?v=22031" alt="postcard sample">
+        <img id="pc-img" src="postcard_cn.png?v=22031" alt="postcard sample">
         <div class="marker" id="marker"></div>
       </div>
     </div>
 
-    <section class="features" id="features" style="margin-top:-12px">
+    <section class="features" id="features">
       <p>操作简单 · 实体印刷 · 全球邮寄</p>
       <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
       <p>照片打印 · A5 大尺码 · 物超所值</p>
@@ -343,7 +345,6 @@ img[alt*="postcard"] { display:block !important; margin:0 auto; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;"></div>
-<div style="text-align:center;color:#666;opacity:.8;margin:28px 0 40px;font-size:14px;">Smart Postcard — V4.0 — three-gaps balanced (gap1&2 -6px, gap3 +12px) — 2025-09-27 22:00:27</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">Smart Postcard — <b>v4.0 未变形版</b> — gap1&2=30px, gap3≈42px — 2025-09-28 20:38:10</div>
 </body>
 </html>
