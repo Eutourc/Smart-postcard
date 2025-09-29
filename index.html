@@ -346,5 +346,11 @@ h1{ margin:30px 0 30px !important; }
 
 
 <div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">Smart Postcard — <b>v4.0 未变形版</b> — gap1&2=30px, gap3≈42px — 2025-09-28 20:38:10</div>
+
+<!-- auto-patch: tighten gap4 by shifting features upward 16px -->
+<script>
+(function(){try{var keys=['操作简单','全球邮寄','集邮佳品','照片打印','实体印刷','旅游纪念','珍贵相册','A5 大尺寸'];var nodes=document.querySelectorAll('body *');var best=null,bestHits=0;nodes.forEach(function(n){if(n&&n.textContent){var t=n.textContent;var hit=0;for(var i=0;i<keys.length;i++){if(t.indexOf(keys[i])!==-1)hit++;}if(hit>bestHits){bestHits=hit;best=n;}}});if(best&&bestHits>=3){best.style.marginTop='-16px';}}catch(e){}})();
+</script>
+<!-- /auto-patch -->
 </body>
 </html>
