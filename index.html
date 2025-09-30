@@ -98,7 +98,7 @@
   
   
 
-  .features{margin:10px 0 6px;text-align:center;font-size:12.5px;line-height:1.25}
+  .features{margin:10px 0 6px;text-align:center;font-size:13.5px;line-height:1.25}
   .features p{margin:2px 0;font-weight:800}
 
   .btns{display:flex;gap:10px;margin-top:6px}
@@ -229,6 +229,24 @@ h1{ margin:30px 0 30px !important; }
 .viewer{ align-items:flex-start !important; padding-top:33px !important; }
 </style>
 
+<style>
+
+/* === 特点集锦：隶书风格 + 视觉压缩 === */
+.features{
+  font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif !important;
+  font-size:13.5px !important;        /* 与说明框等大，不喧宾夺主 */
+  line-height:1.32 !important;
+  letter-spacing:0.2px;
+}
+.features .narrow{
+  display:inline-block;
+  transform:scaleX(0.88);            /* 仅横向收窄，不影响高度 */
+  transform-origin:center;
+  letter-spacing:-0.2px;
+}
+
+</style>
+
     <style>
     #viewer {
         min-height: auto !important;
@@ -246,10 +264,6 @@ h1{ margin:30px 0 30px !important; }
   .stage{ flex:0 0 auto !important; }
 </style>
 
-<style>
-/* === v4.1 五留白确认版：features 与按钮组上缘固定 30px === */
-.features + .btns{margin-top:30px !important;}
-</style>
 </head>
 <body>
 <header class="top">
@@ -295,8 +309,8 @@ h1{ margin:30px 0 30px !important; }
 
     <section class="features" id="features">
       <p>操作简单 · 实体印刷 · 全球邮寄</p>
-      <p>旅游纪念 · 集邮佳品 · 珍贵收藏</p>
-      <p>照片打印 · A5 大尺码 · 物超所值</p>
+      <p>旅游纪念 · 集邮佳品 · 珍贵相册</p>
+      <p>照片打印 · <span class="narrow">A5 大尺码</span> · 物超所值</p>
     </section>
 
     <div class="btns">
@@ -356,6 +370,6 @@ h1{ margin:30px 0 30px !important; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">Smart Postcard — <b>v4.0 四留白终版</b> — gap1=30, gap2=30, gap3≈42, gap4=30 — 2025-09-28 20:38:10</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">Smart Postcard — <b>v4.2 特点集锦隶书压缩版（字号-0.5微调） — gap1=30, gap2=30, gap3≈42, gap4=30 — 2025-09-30 21:53:53</div>
 </body>
 </html>
