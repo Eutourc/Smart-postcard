@@ -266,45 +266,38 @@ h1{ margin:30px 0 30px !important; }
 </style>
 
 
-<style>
-:root{
-  --gold-hi:#fff6c9;
-  --gold-mid1:#f2ce89;
-  --gold-mid2:#d7a651;
-  --gold-low:#b78216;
-  --gold-edge:#caa44f;
-  --txt-dark:#2f2f2f;
-  --active-blue:#1f4db8;
+<style id="gold-buttons-auto">
+:root{ --btn-group:100; }
+/* —— 自动对齐横幅宽度的塔型金砖键 —— */
+.btns{ 
+  display:flex !important; gap:12px !important; 
+  justify-content:center !important; 
+  max-width: calc(var(--btn-group) * 1%);
+  margin: 10px auto 8px !important;
 }
-.btns{ gap:12px !important; margin-top:10px !important; }
-.btn, .start{
+.btn, .start{ 
   display:flex !important; align-items:center; justify-content:center;
-  height:56px !important; padding:0 18px !important;
-  border-radius:28px !important; border:1px solid var(--gold-edge) !important;
-  font-weight:900 !important; letter-spacing:.5px;
-  text-align:center; user-select:none;
-  background:linear-gradient(180deg,var(--gold-hi) 0%, var(--gold-mid1) 18%, var(--gold-mid2) 55%, var(--gold-low) 100%) !important;
+  border-radius:22px !important; border:1px solid rgba(140,103,36,.45) !important;
+  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%) !important;
   box-shadow:
-    0 10px 24px rgba(139,101,0,.22),
-    inset 0 2px 1.5px rgba(255,255,255,.85),
-    inset 0 -4px 8px rgba(62,39,0,.35) !important;
-  color:var(--txt-dark) !important;
-  text-shadow:
-    0 -1px 0 rgba(255,255,255,.65),
-    0 1px 0 rgba(0,0,0,.22) !important;
+    inset 0 2px 0 rgba(255,255,255,.85),
+    inset 0 -2px 0 rgba(0,0,0,.18),
+    0 8px 18px rgba(0,0,0,.14) !important;
+  color:#2f2f2f !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18) !important;
+  height: clamp(42px, 6.2vh, 56px) !important;
+  padding: 0 14px !important;
+  font-weight:900 !important;
 }
-.btn{ font-size:18px !important; }
-.start{ font-size:22px !important; }
-.btn.primary{ color:var(--active-blue) !important; }
-.stage .btns .btn{ min-width:0; }
-.stage .start{ width:100%; }
-.btn:active, .start:active{
-  filter:brightness(0.98);
-  box-shadow:
-    0 6px 16px rgba(139,101,0,.25),
-    inset 0 1px 0 rgba(255,255,255,.7),
-    inset 0 -3px 6px rgba(62,39,0,.38) !important;
-}
+/* 两个上键短一些（与原橘键相近），下键更长 */
+.btn{ flex:1 1 auto !important; width: 44% !important; font-size: clamp(15px, 2.2vh, 18px) !important; }
+.start{ width: calc(var(--btn-group) * 1%) !important; margin: 8px auto 0 !important; font-size: clamp(17px, 2.5vh, 20px) !important; border-radius:26px !important; }
+/* 激活态：纪念明信片=蓝字；未激活=深灰 */
+.btn.primary{ color:#1e56d6 !important; }
+@media (max-width: 420px){ .btns{gap:10px !important} }
+
+  /* override: widen small-buttons center gap */
+  .btns{gap:32px !important;}
 </style>
 
 </head>
@@ -416,7 +409,7 @@ h1{ margin:30px 0 30px !important; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">Smart Postcard — v4.3 隶书压缩（gap5=20px） — 2025-10-01 06:44:15</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">Smart Postcard — v4.3 隶书压缩（gap5=32px） — 2025-10-01 06:44:15</div>
 
 <!-- v4.2 + gap5 spacer = 20px -->
 </body>
