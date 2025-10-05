@@ -301,6 +301,15 @@ h1{ margin:30px 0 30px !important; }
   .btns{gap:32px !important;}
 </style>
 
+
+<style id="g6g7-dynamic-style">
+  :root{ --gap7: 7px; }
+  /* g6 固定为 7px：小键组与大键之间的间距 */
+  .btns{ margin: 0 auto 7px !important; }
+  /* g7 动态：大键的上边距由 JS 计算写入 --gap7 */
+  .start{ margin: var(--gap7) auto 0 !important; }
+</style>
+
 </head>
 <body>
 <header class="top">
@@ -412,8 +421,62 @@ h1{ margin:30px 0 30px !important; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">251002_v5.0_bugfix-gap4-spacer — 2025-10-03 05:32:30</div>
+<div id="build-stamp" style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">251002_v5.0_bugfix-gap4-spacer — 2025-10-03 05:32:30</div>
 
 <!-- v4.2 + gap5 spacer = 20px -->
+
+<script id="g6g7-dynamic-script">
+(function(){
+  function px(n){ return (Math.round(n)||0) + 'px'; }
+  function adjust(){
+    var root = document.documentElement;
+    var vv = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+    // 安全区底部（iOS 刘海等）
+    var safeBottom = 0;
+    try{
+      // 读取 env(safe-area-inset-bottom) 的像素值（若浏览器支持）
+      var tmp = getComputedStyle(document.documentElement).getPropertyValue('padding-bottom');
+      // 不依赖这里，下面留作兼容。
+    }catch(e){}
+
+    var top = document.querySelector('header.top');
+    var main = document.querySelector('main.wrap');
+    var btns = document.querySelector('.btns');
+    var start = document.querySelector('.start');
+    var stamp = document.getElementById('build-stamp');
+
+    if(!main || !btns || !start){ return; }
+
+    // 先用“基础值”重置（g6=7px，g7=7px），避免测量循环依赖
+    btns.style.marginBottom = '7px';
+    start.style.marginTop = '7px';
+
+    // 计算当前整体占用的高度（顶部横幅 + 主体 + 底部标记）
+    var topH   = top   ? top.getBoundingClientRect().height   : 0;
+    var mainH  = main  ? main.getBoundingClientRect().height  : 0;
+    var stampH = stamp ? stamp.getBoundingClientRect().height : 0;
+
+    var used = topH + mainH + stampH;
+    var extra = Math.round(vv - used - safeBottom);
+
+    if(extra < 0){ extra = 0; } // 小屏或旋转时不向上挤压
+    // g7 = 7px（基础）+ 需要补齐的剩余高度
+    root.style.setProperty('--gap7', px(7 + extra));
+  }
+
+  // 首次与后续事件
+  ['DOMContentLoaded','load','resize','orientationchange'].forEach(function(ev){
+    window.addEventListener(ev, adjust, {passive:true});
+  });
+
+  // 某些设备在地址栏收起/展开时高度会跳动，这里稍微再试几次
+  var tries = 0;
+  var timer = setInterval(function(){
+    adjust();
+    if(++tries > 10) clearInterval(timer);
+  }, 120);
+})();
+</script>
+
 </body>
 </html>
