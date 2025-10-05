@@ -229,6 +229,14 @@ h1{ margin:30px 0 30px !important; }
 .viewer{ align-items:flex-start !important; padding-top:33px !important; }
 .gap5-spacer{display:block;}
 .gap4-spacer{display:block;}
+
+/* === FULLSCREEN-G7 PATCH (non-intrusive; below gap7) === */
+#fullscreen-g7{
+  height: calc(7px + var(--g7-extra, 0px)); /* keep original 7px; add elastic part only if needed */
+  background: inherit; /* same as card content */
+  border-radius: 0 0 22px 22px; /* follow card bottom radius so it stays visually seamless */
+}
+
 </style>
 
 <style>
@@ -301,13 +309,6 @@ h1{ margin:30px 0 30px !important; }
   .btns{gap:32px !important;}
 </style>
 
-
-<style id="patch-251005-gap67">
-/* v5.0 hotfix — strict equality: gap6 = gap7 = 7px */
-.btns{ margin-top:7px !important; }
-.start{ margin-top:7px !important; }
-</style>
-
 </head>
 <body>
 <header class="top">
@@ -360,7 +361,10 @@ h1{ margin:30px 0 30px !important; }
 <!-- gap5 spacer (height: 20px) - inserted 2025-10-01 06:19:01 -->
 <div class="gap5-spacer" style="height:30px"></div>
 
-    </section>
+    
+  <!-- G7 Flex Filler (keeps v5.0 layout; adds elastic space below g7) -->
+  <div id="fullscreen-g7" aria-hidden="true"></div>
+</section>
 
     <div class="btns">
       <button class="btn primary">纪念明信片</button>
@@ -395,6 +399,32 @@ h1{ margin:30px 0 30px !important; }
 </script>
 
 
+
+<!-- FULLSCREEN-G7 JS -->
+<script>
+(function() {
+  function updateG7() {
+    try {
+      var vh = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+      // scrollHeight is total document height; if smaller than viewport, we have spare room
+      var bodyH = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      var extra = Math.round(vh - bodyH);
+      if (extra < 0) extra = 0;
+      // cap the elastic add-on to avoid comically large gaps on tablets/foldables if the viewport is very tall
+      if (extra > 48) extra = 48;
+      document.documentElement.style.setProperty('--g7-extra', extra + 'px');
+    } catch (e) {
+      // no-op
+    }
+  }
+  window.addEventListener('DOMContentLoaded', updateG7, { once: false, passive: true });
+  window.addEventListener('load', updateG7, { once: false, passive: true });
+  window.addEventListener('resize', updateG7);
+  window.addEventListener('orientationchange', updateG7);
+  // Some Android browsers need a tiny delay after load to report final viewport height
+  setTimeout(updateG7, 80);
+})();
+</script>
 <script>
 (function(){
   function positionArrows(){
@@ -419,7 +449,8 @@ h1{ margin:30px 0 30px !important; }
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">251005_v5.0_gap67=7_patch — 2025-10-05 21:01:43Z</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">251002_v5.0_bugfix-gap4-spacer — 2025-10-03 05:32:30</div>
+<div style="text-align:center;color:#888;font:12px/1.1 system-ui,Arial;margin:6px 0 28px 0;">FULLSCREEN-G7 PATCH · elastic below gap7 (g7 base = 7px)</div>
 
 <!-- v4.2 + gap5 spacer = 20px -->
 </body>
