@@ -73,7 +73,7 @@
         padding:8px 12px;text-align:center;font-size:13.5px;font-weight:800;line-height:1.35;
         max-width:94%;margin:0 auto}
 
-  .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:14px flex:0 0 auto !important; } /* 说明框下方到样图上缘同为14px */
+  .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:14px; flex:0 0 auto !important; } /* 说明框下方到样图上缘同为14px */
   .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
            border:var(--card-border) solid var(--card-border-color);
            box-shadow:0 1px 2px rgba(0,0,0,.03)}
@@ -225,10 +225,11 @@ h1{ margin:30px 0 30px !important; }
 /* === 结束 === */
 
 
-/* === injected overrides === */
-.viewer{ align-items:flex-start !important; padding-top:33px !important; }
+
 .gap5-spacer{display:block;}
 .gap4-spacer{display:block;}
+.gap3-spacer{display:block;}
+
 </style>
 
 <style>
@@ -308,7 +309,7 @@ body > * { position: relative; z-index: 1; }
 * { box-shadow: none !important; }
 img, .card, .panel, .frame, .box, .container, .wrapper, .content, .paper { border:0 !important; }
 .sp-underlay-canvas { position:fixed; inset:0; background:#ffffff; z-index:0; pointer-events:none; }
-[class*="arrow"], [class*="Arrow"], [class*="triangle"], [class*="Triangle"] { position:relative; z-index:2; }
+[class*="arrow"], [class*="Arrow"], [class*="triangle"], [class*="Triangle"] {  z-index:2; }
 body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35vh; background:#ffffff; z-index:0; pointer-events:none; }
 /* === END FIX === */
 </style></head>
@@ -343,6 +344,9 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
       您可以任选照片！可用您的自拍照！<br>
       这等于洗了一张 <b>A5</b> 大尺码的照片！
     </div>
+
+    <!-- gap3 spacer: independent spacing between explain and sample (default 30px) -->
+    <div class="gap3-spacer" style="height:30px"></div>
 
     <div class="viewer">
       <div class="cardbox" id="cardbox">
@@ -422,8 +426,10 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 </script>
 
 
-<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">251002_v5.0_bugfix-gap4-spacer — 2025-10-03 05:32:30</div>
+<div style="text-align:center;margin:28px 0 40px 0;color:#999;font-size:14px;">251008_v5.1r10_gap3_spacer_only — 2025-10-08 12:34:00</div>
 
 <!-- v4.2 + gap5 spacer = 20px -->
+
+<!-- VERSION: 251007_v5.0_underlay_fix_r2 -->
 </body>
 </html>
