@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>Smart Postcard — v6.5r36_seq1_lock_w75_h72</title>
+<title>[Arrow-Down Build] Smart Postcard — v6.5r36_seq1_lock_w75_h72</title>
 <meta content="no-store" http-equiv="Cache-Control">
 <meta content="no-cache" http-equiv="Pragma">
 <meta content="0" http-equiv="Expires"/>
@@ -307,7 +307,7 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 <style id="v68-pointer-css">
 #marker { display:none !important; } /* remove legacy fixed arrow */
 /* dynamic downward pointer */
-#sp_ptr{ position:absolute; width:0;height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:16px solid #27AE60; border-top:0; filter:drop-shadow(0 1px 0 rgba(0,0,0,.15)); z-index:30; pointer-events:none; }
+#sp_ptr{ position:absolute; width:0;height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:16px solid #27AE60; border-bottom:0; filter:drop-shadow(0 1px 0 rgba(0,0,0,.15)); z-index:30; pointer-events:none; }
 #sp_ctrl{ margin:16px auto 36px; max-width:720px; padding:10px 12px; background:#f6f9ff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.06); font-size:16px; }
 #sp_ctrl .row{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:6px 0; }
 #sp_ctrl button,#sp_ctrl input{ font-size:16px; border-radius:999px; padding:10px 14px; border:1px solid #cfd3dc; background:#fff; }
@@ -712,7 +712,7 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
     ptr.style.borderBottomWidth = triH + 'px';
 
     ptr.style.left = (tipX - halfW) + 'px';
-    ptr.style.top  = (tipY - triH) + 'px';
+    ptr.style.top  = tipY + 'px';
 
     if(stat) stat.textContent = 'left: ' + (left*100).toFixed(1) + '%  ·  offsetPx: ' + offsetPx + '  ·  sizePx: ' + sizePx;
     try { localStorage.setItem(LS, JSON.stringify({offsetPx,sizePx,left,left2,left3})); }catch(e){}
