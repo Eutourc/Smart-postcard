@@ -630,6 +630,106 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 }
 </style>
 
+
+<style>
+.__pointer_bridge__host{ position: relative !important; overflow: visible !important; }
+#sp_pointer_tip{
+  position:absolute; pointer-events:none; z-index: 50;
+  width:0;height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:14px solid #29a65c;
+  transform: translate(var(--mx,0px), calc(var(--my,0px) - 18px)) rotate(0deg);
+}
+#sp_pointer_tip[data-dir="down"]{ transform: translate(var(--mx,0px), calc(var(--my,0px) - 18px)) rotate(0deg);}
+#sp_pointer_tip[data-dir="left"]{ transform: translate(var(--mx,0px), var(--my,0px)) rotate(90deg);}
+#sp_pointer_tip[data-dir="up"]  { transform: translate(var(--mx,0px), var(--my,0px)) rotate(180deg);}
+#sp_pointer_tip[data-dir="right"]{transform: translate(var(--mx,0px), var(--my,0px)) rotate(270deg);}
+
+#sp_pointer_demo_panel{
+  position: fixed; left: 0; right: 0; bottom: 16px; display:flex; gap:12px;
+  justify-content:center; z-index: 60; pointer-events:auto;
+}
+#sp_pointer_demo_panel button{
+  padding:10px 14px; border:none; border-radius:26px; background:#2f6fed; color:#fff; font-size:14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+</style>
+<script>
+(function(){
+  function qs(sel, root=document){ return root.querySelector(sel); }
+  function findPostcardEl(){
+    const cands = [
+      '#cardbox','#postcard-box','#postcard','#pc-img','.postcard','.pc-img','img[alt*="postcard"]','input[placeholder*="postcard"]'
+    ];
+    for(const s of cands){
+      const el = qs(s);
+      if(el) return el;
+    }
+    const byTextCandidates = Array.from(document.querySelectorAll('*')).filter(n=>{
+      try{ return /postcard\s+sample/i.test(n.textContent || '') || /postcard\s+sample/i.test(n.placeholder || ''); }catch(e){return false;}
+    });
+    return byTextCandidates[0] || document.body;
+  }
+
+  const target = findPostcardEl();
+  let host = target.closest('*') || target;
+  host.classList.add('__pointer_bridge__host');
+  if(getComputedStyle(host).position === 'static'){
+    host.style.position = 'relative';
+  }
+  host.style.overflow = 'visible';
+
+  let tip = document.getElementById('sp_pointer_tip');
+  if(!tip){
+    tip = document.createElement('div');
+    tip.id = 'sp_pointer_tip';
+    host.appendChild(tip);
+  }
+
+  function placeAtViewport(x,y, dir='down'){
+    const h = host.getBoundingClientRect();
+    tip.style.setProperty('--mx', (x - h.left) + 'px');
+    tip.style.setProperty('--my', (y - h.top) + 'px');
+    tip.setAttribute('data-dir', dir);
+  }
+
+  function rectOf(el){ return el.getBoundingClientRect(); }
+  function imgRect(){
+    const imgCand = qs('img,svg,canvas,video,iframe', host) || target;
+    return rectOf(imgCand);
+  }
+
+  function getSeq2(){
+    const r = imgRect();
+    return { x: r.left + r.width/2, y: r.top };
+  }
+  function getSeq3(){
+    const r = imgRect();
+    const x = r.left + r.width * 0.62;
+    const y = r.top  + r.height * 0.23;
+    return { x, y };
+  }
+
+  function to2(){ const p = getSeq2(); placeAtViewport(p.x, p.y, 'down'); }
+  function to3(){ const p = getSeq3(); placeAtViewport(p.x, p.y, 'down'); }
+
+  window.SP_pointerTo2 = to2;
+  window.SP_pointerTo3 = to3;
+
+  if(!document.getElementById('sp_pointer_demo_panel')){
+    const panel = document.createElement('div');
+    panel.id = 'sp_pointer_demo_panel';
+    panel.innerHTML = '<button type="button" id="btnTo2">回到序号2</button><button type="button" id="btnTo3">移动到序号3</button>';
+    document.body.appendChild(panel);
+    panel.querySelector('#btnTo2').addEventListener('click', to2);
+    panel.querySelector('#btnTo3').addEventListener('click', to3);
+  }
+
+  window.addEventListener('load', ()=> setTimeout(to2, 50), {once:true});
+})();
+</script>
+
 </body>
 
 </html>
