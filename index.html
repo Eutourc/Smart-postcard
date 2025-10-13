@@ -9,6 +9,27 @@
 <meta content="no-cache" http-equiv="Pragma">
 <meta content="0" http-equiv="Expires"/>
 <style>
+/* --- pointer styles (v6.6p step 2<->3) --- */
+#cardbox{ position: relative; }
+#marker{
+  position:absolute;
+  width: 0; height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid #28a745; /* default: arrow pointing down */
+  transform: translate(var(--tx, -50%), var(--ty, 0)) rotate(var(--rot, 0deg));
+  left: var(--left, 50%);
+  top: var(--top, -8px); /* slightly outside the image edge */
+  z-index:5;
+}
+#cardbox.calibrating{ outline: 2px dashed rgba(40,167,69,.5); }
+#calib-hint{
+  position:absolute; left:8px; right:8px; top:8px;
+  font-size:12px; color:#2d7a3f; background:rgba(232,255,232,.9);
+  padding:6px 8px; border-radius:6px; display:none; z-index:6;
+}
+#cardbox.calibrating #calib-hint{ display:block; }
+
   :root{
     --bw-c1:#10b981;
     --bw-c2:#22d3ee;
@@ -343,7 +364,8 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 <button aria-label="上一项" class="big-arrow left" id="prev"></button>
 <button aria-label="下一项" class="big-arrow right" id="next"></button>
 <img alt="postcard sample" id="pc-img" src="postcard_cn.png?v=22031"/>
-<div class="marker" id="marker"></div>
+<div id="calib-hint">校准模式：在明信片图上轻点“序号3”的目标中心；再次三击小箭头可退出。</div>
+<div class="marker" id="marker" title="pointer"></div>
 </div>
 </div>
 <!-- gap4 spacer (controlled height to avoid jumps) -->
@@ -684,6 +706,80 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 <div style="text-align:center; font-size:12px; color:gray; margin-top:20px;">
 BUILD: v6.6p_loopText_ok — 2025-10-12
 </div>
+<script>
+/* --- pointer sync for v6.6 (only seq 2 <-> 3; keep layout intact) --- */
+(function(){
+  const box = document.getElementById('cardbox');
+  const img = document.getElementById('pc-img');
+  const tip = document.getElementById('marker');
+  const leftBtn = document.getElementById('prev');
+  const rightBtn = document.getElementById('next');
+
+  function setTipByEdge(edge, px, py){
+    tip.style.removeProperty('right'); tip.style.removeProperty('bottom'); tip.style.removeProperty('left'); tip.style.removeProperty('top');
+    if(edge==='top'){ tip.style.setProperty('--rot', '0deg'); tip.style.setProperty('--left', px+'%'); tip.style.setProperty('--top','-8px'); tip.style.setProperty('--tx','-50%'); tip.style.setProperty('--ty','0'); }
+    else if(edge==='bottom'){ tip.style.setProperty('--rot', '180deg'); tip.style.setProperty('--left', px+'%'); tip.style.removeProperty('--top'); tip.style.bottom='-8px'; tip.style.setProperty('--tx','-50%'); tip.style.setProperty('--ty','0'); }
+    else if(edge==='left'){ tip.style.setProperty('--rot', '-90deg'); tip.style.setProperty('--top', py+'%'); tip.style.left='-8px'; tip.style.setProperty('--tx','0'); tip.style.setProperty('--ty','-50%'); }
+    else if(edge==='right'){ tip.style.setProperty('--rot', '90deg'); tip.style.setProperty('--top', py+'%'); tip.style.right='-8px'; tip.style.setProperty('--tx','0'); tip.style.setProperty('--ty','-50%'); }
+  }
+
+  function currentSeq(){
+    const lab = document.querySelector('[data-seq-label]');
+    if(lab){ const m = lab.textContent.match(/(\d+)/); if(m) return parseInt(m[1],10); }
+    const m = document.body.innerText.match(/序号\s*(\d+)\s*\/\s*9/);
+    return m ? parseInt(m[1],10) : 2;
+  }
+
+  function placeSeq2(){ setTipByEdge('top', 50, 0); }
+  function placeSeq3(){
+    const saved = localStorage.getItem('sp_seq3_edge');
+    if(saved){ const obj = JSON.parse(saved); setTipByEdge(obj.edge, obj.px, obj.py); }
+    else{ setTipByEdge('top', 23, 0); }
+  }
+
+  function updatePointer(){
+    const s = currentSeq();
+    if(s===2) placeSeq2();
+    else if(s===3) placeSeq3();
+  }
+
+  placeSeq2();
+
+  function wrap(btn){
+    if(!btn) return;
+    const orig = btn.onclick;
+    btn.onclick = (e)=>{ if(orig) orig.call(btn, e); setTimeout(updatePointer, 0); };
+  }
+  wrap(leftBtn); wrap(rightBtn);
+
+  let tapCount=0, tapTimer=0, calibrating=false;
+  tip.addEventListener('click', ()=>{
+    tapCount++; clearTimeout(tapTimer);
+    tapTimer=setTimeout(()=>{tapCount=0;}, 320);
+    if(tapCount>=3){
+      calibrating=!calibrating; tapCount=0;
+      box.classList.toggle('calibrating', calibrating);
+    }
+  });
+  box.addEventListener('click', (ev)=>{
+    if(!calibrating) return;
+    const rect = box.getBoundingClientRect();
+    const x = ((ev.clientX - rect.left) / rect.width) * 100;
+    const y = ((ev.clientY - rect.top) / rect.height) * 100;
+    const dTop=y, dBottom=100-y, dLeft=x, dRight=100-x;
+    const min=Math.min(dTop,dBottom,dLeft,dRight);
+    let edge, px=50, py=50;
+    if(min===dTop){ edge='top'; px=x; }
+    else if(min===dBottom){ edge='bottom'; px=x; }
+    else if(min===dLeft){ edge='left'; py=y; }
+    else { edge='right'; py=y; }
+    localStorage.setItem('sp_seq3_edge', JSON.stringify({edge, px, py}));
+    calibrating=false; box.classList.remove('calibrating');
+    updatePointer();
+  });
+
+  window.addEventListener('resize', updatePointer);
+})();</script>
 </body>
 
 </html>
