@@ -303,6 +303,20 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 .gap3, .gap3-spacer{ height:18px !important; min-height:18px !important; }
 .header, .top-banner, .brand-section{ margin-bottom:calc(var(--gap1, 0px) + 1px) !important; }
 </style>
+
+<style id="v68-pointer-css">
+#marker { display:none !important; } /* remove legacy fixed arrow */
+/* dynamic downward pointer */
+#sp_ptr{ position:absolute; width:0;height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:16px solid #27AE60; border-top:0; filter:drop-shadow(0 1px 0 rgba(0,0,0,.15)); z-index:30; pointer-events:none; }
+#sp_ctrl{ margin:16px auto 36px; max-width:720px; padding:10px 12px; background:#f6f9ff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.06); font-size:16px; }
+#sp_ctrl .row{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:6px 0; }
+#sp_ctrl button,#sp_ctrl input{ font-size:16px; border-radius:999px; padding:10px 14px; border:1px solid #cfd3dc; background:#fff; }
+#sp_ctrl button{ background:#1e63ff; color:#fff; border:none; }
+#sp_ctrl .ghost{ background:#fff; color:#1e63ff; border:1px solid #1e63ff; }
+#sp_ctrl .micro{ background:#fff; color:#333; border:1px solid #cfd3dc; }
+#sp_ctrl .stat{ text-align:center; color:#555; margin-top:4px; font-size:14px; }
+</style>
+
 </head>
 <body><div aria-hidden="true" class="sp-underlay-canvas"></div>
 <header class="top">
@@ -631,102 +645,102 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 </style>
 
 
-<style>
-.__pointer_bridge__host{ position: relative !important; overflow: visible !important; }
-#sp_pointer_tip{
-  position:absolute; pointer-events:none; z-index: 50;
-  width:0;height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:14px solid #29a65c;
-  transform: translate(var(--mx,0px), calc(var(--my,0px) - 18px)) rotate(0deg);
-}
-#sp_pointer_tip[data-dir="down"]{ transform: translate(var(--mx,0px), calc(var(--my,0px) - 18px)) rotate(0deg);}
-#sp_pointer_tip[data-dir="left"]{ transform: translate(var(--mx,0px), var(--my,0px)) rotate(90deg);}
-#sp_pointer_tip[data-dir="up"]  { transform: translate(var(--mx,0px), var(--my,0px)) rotate(180deg);}
-#sp_pointer_tip[data-dir="right"]{transform: translate(var(--mx,0px), var(--my,0px)) rotate(270deg);}
+<div id="sp_ctrl" aria-label="v6.8 指针校准面板（基于 v6.7 原页）">
+  <div class="row">
+    <button id="sp_to2">回到序号2（上缘基准位）</button>
+    <button id="sp_to3" class="ghost">移动到序号3（第1二维码上缘中心）</button>
+  </div>
+  <div class="row">
+    <button class="micro" id="sp_left_dec">← 0.5%</button>
+    <button class="micro" id="sp_left_inc">0.5% →</button>
+    <button class="ghost" id="sp_save2">保存序号2</button>
+    <button class="ghost" id="sp_save3">保存序号3</button>
+    <button class="ghost" id="sp_export">导出参数（JSON）</button>
+  </div>
+  <div class="row">
+    与上缘距离 offsetPx：<input id="sp_offset" type="number" value="10" step="1" style="width:96px"> px
+    <button id="sp_apply_offset" class="ghost">应用</button>
+    箭头尺寸 sizePx：<input id="sp_size" type="number" value="24" step="1" style="width:96px">
+    <button id="sp_apply_size" class="ghost">应用尺寸</button>
+  </div>
+  <div class="stat" id="sp_stat">准备就绪…</div>
+</div>
 
-#sp_pointer_demo_panel{
-  position: fixed; left: 0; right: 0; bottom: 16px; display:flex; gap:12px;
-  justify-content:center; z-index: 60; pointer-events:auto;
-}
-#sp_pointer_demo_panel button{
-  padding:10px 14px; border:none; border-radius:26px; background:#2f6fed; color:#fff; font-size:14px;
-  box-shadow: 0 4px 10px rgba(0,0,0,.15);
-}
-</style>
-<script>
+<script id="v68-pointer-js">
 (function(){
-  function qs(sel, root=document){ return root.querySelector(sel); }
-  function findPostcardEl(){
-    const cands = [
-      '#cardbox','#postcard-box','#postcard','#pc-img','.postcard','.pc-img','img[alt*="postcard"]','input[placeholder*="postcard"]'
-    ];
-    for(const s of cands){
-      const el = qs(s);
-      if(el) return el;
+  try { document.getElementById('marker')?.remove(); } catch(e){}
+  const img = document.getElementById('pc-img');
+  const box = document.getElementById('cardbox') || img?.parentElement || document.body;
+  if(!img || !box){ console.warn('[v6.8] 未找到 pc-img/cardbox'); return; }
+
+  const ptr = document.createElement('div');
+  ptr.id = 'sp_ptr';
+  box.appendChild(ptr);
+
+  let offsetPx = 10;
+  let sizePx   = 24;
+  let left2    = 0.500;
+  let left3    = 0.700;
+  let left     = left2;
+
+  const LS = 'sptr_v67_params';
+  try {
+    const raw = localStorage.getItem(LS);
+    if(raw){
+      const s = JSON.parse(raw);
+      if(s.offsetPx!=null) offsetPx = s.offsetPx;
+      if(s.sizePx!=null) sizePx = s.sizePx;
+      if(s.left2!=null) left2 = s.left2;
+      if(s.left3!=null) left3 = s.left3;
+      if(s.left!=null)  left = s.left;
     }
-    const byTextCandidates = Array.from(document.querySelectorAll('*')).filter(n=>{
-      try{ return /postcard\s+sample/i.test(n.textContent || '') || /postcard\s+sample/i.test(n.placeholder || ''); }catch(e){return false;}
-    });
-    return byTextCandidates[0] || document.body;
+  }catch(e){}
+
+  const $ = id => document.getElementById(id);
+  const stat = $('sp_stat');
+
+  function place(){
+    const rImg = img.getBoundingClientRect();
+    const rBox = box.getBoundingClientRect();
+    const triH = Math.round(sizePx * 0.75);
+    const halfW = Math.round(sizePx / 2);
+    const tipX = (rImg.left - rBox.left) + rImg.width * left;
+    const tipY = (rImg.top  - rBox.top)  - offsetPx;
+
+    ptr.style.borderLeftWidth   = halfW + 'px';
+    ptr.style.borderRightWidth  = halfW + 'px';
+    ptr.style.borderBottomWidth = triH + 'px';
+
+    ptr.style.left = (tipX - halfW) + 'px';
+    ptr.style.top  = (tipY - triH) + 'px';
+
+    if(stat) stat.textContent = 'left: ' + (left*100).toFixed(1) + '%  ·  offsetPx: ' + offsetPx + '  ·  sizePx: ' + sizePx;
+    try { localStorage.setItem(LS, JSON.stringify({offsetPx,sizePx,left,left2,left3})); }catch(e){}
   }
 
-  const target = findPostcardEl();
-  let host = target.closest('*') || target;
-  host.classList.add('__pointer_bridge__host');
-  if(getComputedStyle(host).position === 'static'){
-    host.style.position = 'relative';
-  }
-  host.style.overflow = 'visible';
+  function setLeft(v){ left = Math.max(0, Math.min(1, v)); place(); }
+  function nudge(d){ setLeft(left + d); }
 
-  let tip = document.getElementById('sp_pointer_tip');
-  if(!tip){
-    tip = document.createElement('div');
-    tip.id = 'sp_pointer_tip';
-    host.appendChild(tip);
-  }
+  $('sp_left_dec')?.addEventListener('click', ()=> nudge(-0.005));
+  $('sp_left_inc')?.addEventListener('click', ()=> nudge(+0.005));
+  $('sp_apply_offset')?.addEventListener('click', ()=> { const v = Number($('sp_offset').value||offsetPx); if(!isNaN(v)&&v>=0){ offsetPx=Math.round(v); place(); }});
+  $('sp_apply_size')?.addEventListener('click', ()=> { const v = Number($('sp_size').value||sizePx); if(!isNaN(v)&&v>=6){ sizePx=Math.round(v); place(); }});
+  $('sp_to2')?.addEventListener('click', ()=> setLeft(left2));
+  $('sp_to3')?.addEventListener('click', ()=> setLeft(left3));
+  $('sp_save2')?.addEventListener('click', ()=> { left2 = left; place(); alert('已保存：序号2 = ' + (left*100).toFixed(1) + '%'); });
+  $('sp_save3')?.addEventListener('click', ()=> { left3 = left; place(); alert('已保存：序号3 = ' + (left*100).toFixed(1) + '%'); });
+  $('sp_export')?.addEventListener('click', ()=> {
+    const payload = { version:'v6.8-test', offsetPx, sizePx, left2, left3 };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'v68_pointer_params.json';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+  });
 
-  function placeAtViewport(x,y, dir='down'){
-    const h = host.getBoundingClientRect();
-    tip.style.setProperty('--mx', (x - h.left) + 'px');
-    tip.style.setProperty('--my', (y - h.top) + 'px');
-    tip.setAttribute('data-dir', dir);
-  }
-
-  function rectOf(el){ return el.getBoundingClientRect(); }
-  function imgRect(){
-    const imgCand = qs('img,svg,canvas,video,iframe', host) || target;
-    return rectOf(imgCand);
-  }
-
-  function getSeq2(){
-    const r = imgRect();
-    return { x: r.left + r.width/2, y: r.top };
-  }
-  function getSeq3(){
-    const r = imgRect();
-    const x = r.left + r.width * 0.62;
-    const y = r.top  + r.height * 0.23;
-    return { x, y };
-  }
-
-  function to2(){ const p = getSeq2(); placeAtViewport(p.x, p.y, 'down'); }
-  function to3(){ const p = getSeq3(); placeAtViewport(p.x, p.y, 'down'); }
-
-  window.SP_pointerTo2 = to2;
-  window.SP_pointerTo3 = to3;
-
-  if(!document.getElementById('sp_pointer_demo_panel')){
-    const panel = document.createElement('div');
-    panel.id = 'sp_pointer_demo_panel';
-    panel.innerHTML = '<button type="button" id="btnTo2">回到序号2</button><button type="button" id="btnTo3">移动到序号3</button>';
-    document.body.appendChild(panel);
-    panel.querySelector('#btnTo2').addEventListener('click', to2);
-    panel.querySelector('#btnTo3').addEventListener('click', to3);
-  }
-
-  window.addEventListener('load', ()=> setTimeout(to2, 50), {once:true});
+  ['resize','scroll'].forEach(evt => window.addEventListener(evt, place, {passive:true}));
+  place();
 })();
 </script>
 
