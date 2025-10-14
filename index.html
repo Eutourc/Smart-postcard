@@ -798,6 +798,26 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
   });
 })();
 </script>
+
+<script>
+(function(){
+  try {
+    var DEF = {left2:0.88, left3:0.57, offsetPx:20, sizePx:24, heightScale:0.95};
+    if (window.__SP_LOCKED_PARAMS) {
+      var P = window.__SP_LOCKED_PARAMS;
+      ['left2','left3','offsetPx','sizePx','heightScale'].forEach(function(k){
+        if (P[k] != null) DEF[k] = P[k];
+      });
+    } else {
+      var raw = localStorage.getItem('sptr_v68_params');
+      if (raw) { try { var o = JSON.parse(raw); Object.assign(DEF,o);} catch(e){} }
+    }
+    window.__SP_EFFECTIVE_DEFAULTS__ = DEF;
+    window.__getSpDefaults = function(){ return Object.assign({}, DEF); };
+  } catch(e) { console.error(e); }
+})();
+</script>
+
 </body>
 
 </html>
