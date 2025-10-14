@@ -646,6 +646,16 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 
 
 <div id="sp_ctrl" aria-label="v6.8 指针校准面板（基于 v6.7 原页）">
+  <!-- 最小增量：瘪度调节 + 导出HTML -->
+  <div id="hs_row" style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <label for="hs_input" style="font-weight:600">瘪度 heightScale：</label>
+    <input id="hs_input" type="number" step="0.01" min="0.50" max="1.20" value="0.95"
+           style="width:90px;padding:6px 10px;border:1px solid #d1d5db;border-radius:8px" />
+    <button id="hs_apply" style="padding:6px 12px;border-radius:999px;background:#e8eefb;border:1px solid #a7b7ee">应用瘪度</button>
+    <button id="hs_export" style="padding:6px 12px;border-radius:999px;background:#ffdca8;border:1px solid #e0aa5b">导出当前为 HTML</button>
+    <small id="hs_tip" style="color:#6b7280">提示：范围 0.50–1.20（越小越瘪）。导出后把新HTML发我即可。</small>
+  </div>
+
   <div class="row">
     <button id="sp_to2">回到序号2（上缘基准位）</button>
     <button id="sp_to3" class="ghost">移动到序号3（第1二维码上缘中心）</button>
@@ -744,7 +754,50 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 })();
 </script>
 
+
+<script id="v68-hs-only">
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const ptr = document.getElementById('sp_ptr');
+  if(!ptr){ console.warn('[v6.8] 未找到 #sp_ptr'); return; }
+
+  // 初始套用 input 的瘪度
+  function applyHS(){
+    const v = Math.max(0.5, Math.min(1.2, parseFloat($('hs_input').value||'0.95')));
+    $('hs_input').value = v.toFixed(2);
+    // 保留 translateX(-50%)，仅叠加 scaleY
+    // 如果原样式已经含有 translateX(-50%)，直接覆盖 transform；否则强制写入
+    ptr.style.transform = 'translateX(-50%) scaleY('+ v +')';
+    // 记录到属性，导出时可见
+    ptr.setAttribute('data-height-scale', String(v));
+  }
+  applyHS();
+  $('hs_apply')?.addEventListener('click', applyHS);
+
+  // 导出：把当前 input 的值写回到文档，再导出整个 HTML
+  $('hs_export')?.addEventListener('click', function(){
+    applyHS(); // 确保最新值已应用并写入属性
+    const v = $('hs_input').value;
+    // 同步 input 的 value（导出后重新打开能看到同样默认值）
+    const inp = $('hs_input'); if (inp) inp.setAttribute('value', v);
+
+    // 导出 outerHTML
+    const blob = new Blob(['<!DOCTYPE html>\\n' + document.documentElement.outerHTML], {type:'text/html;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'v6.8_瘪度可调保存版.html';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  });
+
+  // 兼容：当窗口尺寸变化时，不改变瘪度，仅维持 transform
+  window.addEventListener('resize', ()=>{
+    const v = parseFloat($('hs_input').value||'0.95')||0.95;
+    ptr.style.transform = 'translateX(-50%) scaleY('+ v +')';
+  });
+})();
+</script>
 </body>
 
 </html>
-
