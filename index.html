@@ -646,16 +646,6 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 
 
 <div id="sp_ctrl" aria-label="v6.8 指针校准面板（基于 v6.7 原页）">
-  <!-- 最小增量：瘪度调节 + 导出HTML -->
-  <div id="hs_row" style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <label for="hs_input" style="font-weight:600">瘪度 heightScale：</label>
-    <input id="hs_input" type="number" step="0.01" min="0.50" max="1.20" value="0.95"
-           style="width:90px;padding:6px 10px;border:1px solid #d1d5db;border-radius:8px" />
-    <button id="hs_apply" style="padding:6px 12px;border-radius:999px;background:#e8eefb;border:1px solid #a7b7ee">应用瘪度</button>
-    <button id="hs_export" style="padding:6px 12px;border-radius:999px;background:#ffdca8;border:1px solid #e0aa5b">导出当前为 HTML</button>
-    <small id="hs_tip" style="color:#6b7280">提示：范围 0.50–1.20（越小越瘪）。导出后把新HTML发我即可。</small>
-  </div>
-
   <div class="row">
     <button id="sp_to2">回到序号2（上缘基准位）</button>
     <button id="sp_to3" class="ghost">移动到序号3（第1二维码上缘中心）</button>
@@ -755,66 +745,57 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 </script>
 
 
-<script id="v68-hs-only">
-(function(){
-  const $ = (id)=>document.getElementById(id);
-  const ptr = document.getElementById('sp_ptr');
-  if(!ptr){ console.warn('[v6.8] 未找到 #sp_ptr'); return; }
-
-  // 初始套用 input 的瘪度
-  function applyHS(){
-    const v = Math.max(0.5, Math.min(1.2, parseFloat($('hs_input').value||'0.95')));
-    $('hs_input').value = v.toFixed(2);
-    // 保留 translateX(-50%)，仅叠加 scaleY
-    // 如果原样式已经含有 translateX(-50%)，直接覆盖 transform；否则强制写入
-    ptr.style.transform = 'translateX(-50%) scaleY('+ v +')';
-    // 记录到属性，导出时可见
-    ptr.setAttribute('data-height-scale', String(v));
-  }
-  applyHS();
-  $('hs_apply')?.addEventListener('click', applyHS);
-
-  // 导出：把当前 input 的值写回到文档，再导出整个 HTML
-  $('hs_export')?.addEventListener('click', function(){
-    applyHS(); // 确保最新值已应用并写入属性
-    const v = $('hs_input').value;
-    // 同步 input 的 value（导出后重新打开能看到同样默认值）
-    const inp = $('hs_input'); if (inp) inp.setAttribute('value', v);
-
-    // 导出 outerHTML
-    const blob = new Blob(['<!DOCTYPE html>\\n' + document.documentElement.outerHTML], {type:'text/html;charset=utf-8'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'v6.8_瘪度可调保存版.html';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
-  });
-
-  // 兼容：当窗口尺寸变化时，不改变瘪度，仅维持 transform
-  window.addEventListener('resize', ()=>{
-    const v = parseFloat($('hs_input').value||'0.95')||0.95;
-    ptr.style.transform = 'translateX(-50%) scaleY('+ v +')';
-  });
-})();
-</script>
-
+<!-- DEMO v2k: overlay (10 stations + auto/manual) -->
+<style>
+  #v2k-badge{position:fixed;left:8px;top:8px;z-index:2147483647;background:#111827;color:#fff;
+    font:700 12px/1 system-ui,Arial;padding:6px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+  #v2k-root{position:fixed;inset:0;pointer-events:none;z-index:2147483646}
+  .v2k-dot{position:absolute;width:16px;height:16px;border-radius:50%;background:#2563eb;color:#fff;
+    display:flex;align-items:center;justify-content:center;font:700 10px/1 system-ui,Arial;
+    box-shadow:0 0 0 2px rgba(255,255,255,.95);transform:translate(-50%,-50%)}
+  #v2k-arrow{position:absolute;width:24px;height:20.4px;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+  #v2k-arrow svg{width:100%;height:100%;display:block}
+</style>
+<div id="v2k-badge">DEMO v2k · 正在运行</div>
+<div id="v2k-root"></div>
 <script>
 (function(){
-  try {
-    var DEF = {left2:0.88, left3:0.57, offsetPx:20, sizePx:24, heightScale:0.95};
-    if (window.__SP_LOCKED_PARAMS) {
-      var P = window.__SP_LOCKED_PARAMS;
-      ['left2','left3','offsetPx','sizePx','heightScale'].forEach(function(k){
-        if (P[k] != null) DEF[k] = P[k];
-      });
-    } else {
-      var raw = localStorage.getItem('sptr_v68_params');
-      if (raw) { try { var o = JSON.parse(raw); Object.assign(DEF,o);} catch(e){} }
-    }
-    window.__SP_EFFECTIVE_DEFAULTS__ = DEF;
-    window.__getSpDefaults = function(){ return Object.assign({}, DEF); };
-  } catch(e) { console.error(e); }
+  function pickImg(){
+    var pc=document.querySelector('img[alt*="postcard sample" i]')||document.querySelector('img[alt*="postcard" i]');
+    if(pc) return pc;
+    var imgs=[].slice.call(document.images||[]); if(!imgs.length) return null;
+    return imgs.reduce(function(b,e){var r=e.getBoundingClientRect(),a=r.width*r.height;return(!b||a>b.a)?{e:e,a:a}:b},null).e;
+  }
+  var pc=pickImg(); if(!pc) return;
+  var root=document.getElementById('v2k-root');
+  var arrow=document.createElement('div'); arrow.id='v2k-arrow';
+  arrow.innerHTML='<svg viewBox="0 0 100 100"><polygon points="50,0 100,100 0,100" fill="#10b981"/></svg>';
+  root.appendChild(arrow);
+  var S={i:0,t:null,P:[]};
+  function M(){var r=pc.getBoundingClientRect();return{l:r.left,t:r.top,r:r.right,b:r.bottom,w:r.width,h:r.height}}
+  function layout(){
+    var m=M(); if(m.w<=0||m.h<=0) return false;
+    var topY=m.t-5, botY=m.b+5, leftX=m.l-1, rightX=m.r+1, cx=(m.l+m.r)/2, w=m.w;
+    var topL=m.l+w*0.18, topC=cx, topR=m.r-w*0.18, midY=(m.t+m.b)/2, botL=topL, botC=topC, botR=topR;
+    S.P=[{x:topL,y:topY,rot:180},{x:topC,y:topY,rot:180},{x:topC,y:topY,rot:180},{x:topR,y:topY,rot:180},
+         {x:rightX,y:midY,rot:270},{x:botR,y:botY,rot:0},{x:botC,y:botY,rot:0},{x:botL,y:botY,rot:0},
+         {x:leftX,y:midY,rot:90},{x:topL,y:topY,rot:180}];
+    root.innerHTML=''; S.P.forEach(function(p,k){var d=document.createElement('div');d.className='v2k-dot';
+      d.textContent=String(k+1); d.style.left=p.x+'px'; d.style.top=p.y+'px'; root.appendChild(d)}); root.appendChild(arrow);
+    place(S.i); return true;
+  }
+  function place(i){var p=S.P[i]; if(!p) return; arrow.style.left=(p.x-12)+'px'; arrow.style.top=(p.y-10.2)+'px'; arrow.style.transform='rotate('+p.rot+'deg)' }
+  function next(){S.i=(S.i+1)%S.P.length; place(S.i) }
+  function prev(){S.i=(S.i-1+S.P.length)%S.P.length; place(S.i) }
+  function start(){ if(S.t) return; S.t=setInterval(next,5000) }
+  function stop(){ if(!S.t) return; clearInterval(S.t); S.t=null }
+  pc.addEventListener('click',function(){ S.t?stop():start() });
+  var L=document.querySelector('#prev, .big-arrow.left'), R=document.querySelector('#next, .big-arrow.right');
+  if(L) L.addEventListener('click',function(){ prev(); stop() });
+  if(R) R.addEventListener('click',function(){ next(); stop() });
+  function kick(){ if(!layout()) setTimeout(kick,120); else start(); }
+  pc.complete?kick():pc.addEventListener('load',kick);
+  addEventListener('resize',layout); document.addEventListener('visibilitychange',function(){ if(document.hidden) stop() });
 })();
 </script>
 
