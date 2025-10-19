@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>[Arrow-Down Build] Smart Postcard — v6.5r36_seq1_lock_w75_h72</title>
+<title>Smart Postcard — v6.5r36_seq1_lock_w75_h72</title>
 <meta content="no-store" http-equiv="Cache-Control">
 <meta content="no-cache" http-equiv="Pragma">
 <meta content="0" http-equiv="Expires"/>
@@ -303,20 +303,6 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 .gap3, .gap3-spacer{ height:18px !important; min-height:18px !important; }
 .header, .top-banner, .brand-section{ margin-bottom:calc(var(--gap1, 0px) + 1px) !important; }
 </style>
-
-<style id="v68-pointer-css">
-#marker { display:none !important; } /* remove legacy fixed arrow */
-/* dynamic downward pointer */
-#sp_ptr{ position:absolute; width:0;height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:16px solid #27AE60; border-bottom:0; filter:drop-shadow(0 1px 0 rgba(0,0,0,.15)); z-index:30; pointer-events:none; }
-#sp_ctrl{ margin:16px auto 36px; max-width:720px; padding:10px 12px; background:#f6f9ff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.06); font-size:16px; }
-#sp_ctrl .row{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:6px 0; }
-#sp_ctrl button,#sp_ctrl input{ font-size:16px; border-radius:999px; padding:10px 14px; border:1px solid #cfd3dc; background:#fff; }
-#sp_ctrl button{ background:#1e63ff; color:#fff; border:none; }
-#sp_ctrl .ghost{ background:#fff; color:#1e63ff; border:1px solid #1e63ff; }
-#sp_ctrl .micro{ background:#fff; color:#333; border:1px solid #cfd3dc; }
-#sp_ctrl .stat{ text-align:center; color:#555; margin-top:4px; font-size:14px; }
-</style>
-
 </head>
 <body><div aria-hidden="true" class="sp-underlay-canvas"></div>
 <header class="top">
@@ -645,160 +631,170 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 </style>
 
 
-<div id="sp_ctrl" aria-label="v6.8 指针校准面板（基于 v6.7 原页）">
-  <div class="row">
-    <button id="sp_to2">回到序号2（上缘基准位）</button>
-    <button id="sp_to3" class="ghost">移动到序号3（第1二维码上缘中心）</button>
-  </div>
-  <div class="row">
-    <button class="micro" id="sp_left_dec">← 0.5%</button>
-    <button class="micro" id="sp_left_inc">0.5% →</button>
-    <button class="ghost" id="sp_save2">保存序号2</button>
-    <button class="ghost" id="sp_save3">保存序号3</button>
-    <button class="ghost" id="sp_export">导出参数（JSON）</button>
-  </div>
-  <div class="row">
-    与上缘距离 offsetPx：<input id="sp_offset" type="number" value="10" step="1" style="width:96px"> px
-    <button id="sp_apply_offset" class="ghost">应用</button>
-    箭头尺寸 sizePx：<input id="sp_size" type="number" value="24" step="1" style="width:96px">
-    <button id="sp_apply_size" class="ghost">应用尺寸</button>
-  </div>
-  <div class="stat" id="sp_stat">准备就绪…</div>
-</div>
-
-<script id="v68-pointer-js">
-(function(){
-  try { document.getElementById('marker')?.remove(); } catch(e){}
-  const img = document.getElementById('pc-img');
-  const box = document.getElementById('cardbox') || img?.parentElement || document.body;
-  if(!img || !box){ console.warn('[v6.8] 未找到 pc-img/cardbox'); return; }
-
-  const ptr = document.createElement('div');
-  ptr.id = 'sp_ptr';
-  box.appendChild(ptr);
-
-  let offsetPx = 10;
-  let sizePx   = 24;
-  let left2    = 0.500;
-  let left3    = 0.700;
-  let left     = left2;
-
-  const LS = 'sptr_v67_params';
-  try {
-    const raw = localStorage.getItem(LS);
-    if(raw){
-      const s = JSON.parse(raw);
-      if(s.offsetPx!=null) offsetPx = s.offsetPx;
-      if(s.sizePx!=null) sizePx = s.sizePx;
-      if(s.left2!=null) left2 = s.left2;
-      if(s.left3!=null) left3 = s.left3;
-      if(s.left!=null)  left = s.left;
-    }
-  }catch(e){}
-
-  const $ = id => document.getElementById(id);
-  const stat = $('sp_stat');
-
-  function place(){
-    const rImg = img.getBoundingClientRect();
-    const rBox = box.getBoundingClientRect();
-    const triH = Math.round(sizePx * 0.75);
-    const halfW = Math.round(sizePx / 2);
-    const tipX = (rImg.left - rBox.left) + rImg.width * left;
-    const tipY = (rImg.top  - rBox.top)  - offsetPx;
-
-    ptr.style.borderLeftWidth   = halfW + 'px';
-    ptr.style.borderRightWidth  = halfW + 'px';
-    ptr.style.borderBottomWidth = triH + 'px';
-
-    ptr.style.left = (tipX - halfW) + 'px';
-    ptr.style.top  = tipY + 'px';
-
-    if(stat) stat.textContent = 'left: ' + (left*100).toFixed(1) + '%  ·  offsetPx: ' + offsetPx + '  ·  sizePx: ' + sizePx;
-    try { localStorage.setItem(LS, JSON.stringify({offsetPx,sizePx,left,left2,left3})); }catch(e){}
-  }
-
-  function setLeft(v){ left = Math.max(0, Math.min(1, v)); place(); }
-  function nudge(d){ setLeft(left + d); }
-
-  $('sp_left_dec')?.addEventListener('click', ()=> nudge(-0.005));
-  $('sp_left_inc')?.addEventListener('click', ()=> nudge(+0.005));
-  $('sp_apply_offset')?.addEventListener('click', ()=> { const v = Number($('sp_offset').value||offsetPx); if(!isNaN(v)&&v>=0){ offsetPx=Math.round(v); place(); }});
-  $('sp_apply_size')?.addEventListener('click', ()=> { const v = Number($('sp_size').value||sizePx); if(!isNaN(v)&&v>=6){ sizePx=Math.round(v); place(); }});
-  $('sp_to2')?.addEventListener('click', ()=> setLeft(left2));
-  $('sp_to3')?.addEventListener('click', ()=> setLeft(left3));
-  $('sp_save2')?.addEventListener('click', ()=> { left2 = left; place(); alert('已保存：序号2 = ' + (left*100).toFixed(1) + '%'); });
-  $('sp_save3')?.addEventListener('click', ()=> { left3 = left; place(); alert('已保存：序号3 = ' + (left*100).toFixed(1) + '%'); });
-  $('sp_export')?.addEventListener('click', ()=> {
-    const payload = { version:'v6.8-test', offsetPx, sizePx, left2, left3 };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'v68_pointer_params.json';
-    a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 500);
-  });
-
-  ['resize','scroll'].forEach(evt => window.addEventListener(evt, place, {passive:true}));
-  place();
-})();
-</script>
-
-
-<!-- DEMO v2k: overlay (10 stations + auto/manual) -->
+<!-- DEMO v2r4 (click-to-edit + manual bind) -->
 <style>
-  #v2k-badge{position:fixed;left:8px;top:8px;z-index:2147483647;background:#111827;color:#fff;
-    font:700 12px/1 system-ui,Arial;padding:6px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-  #v2k-root{position:fixed;inset:0;pointer-events:none;z-index:2147483646}
-  .v2k-dot{position:absolute;width:16px;height:16px;border-radius:50%;background:#2563eb;color:#fff;
-    display:flex;align-items:center;justify-content:center;font:700 10px/1 system-ui,Arial;
-    box-shadow:0 0 0 2px rgba(255,255,255,.95);transform:translate(-50%,-50%)}
-  #v2k-arrow{position:absolute;width:24px;height:20.4px;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
-  #v2k-arrow svg{width:100%;height:100%;display:block}
+#sp-badge{position:fixed;left:8px;top:8px;z-index:2147483647;background:#111827;color:#fff;font:700 12px/1 system-ui,Arial;padding:6px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#sp-overlay{position:fixed;inset:0;z-index:2147483646;pointer-events:none}
+#sp-arrow{position:absolute;width:26px;height:22px;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+#sp-arrow svg{width:100%;height:100%}
+.sp-hot{position:absolute;width:36px;height:36px;transform:translate(-50%,-50%);pointer-events:auto;background:transparent}
+.sp-dot{position:absolute;width:18px;height:18px;border-radius:50%;background:#2563eb;color:#fff;display:none;align-items:center;justify-content:center;font:700 10px/1 system-ui,Arial;box-shadow:0 0 0 2px rgba(255,255,255,.95);transform:translate(-50%,-50%);pointer-events:auto;cursor:grab;user-select:none;-webkit-user-select:none}
+.sp-edit .sp-dot{display:flex}
+.sp-tools{position:fixed;top:8px;right:8px;z-index:2147483647;display:none;gap:8px}
+.sp-edit .sp-tools{display:flex}
+.sp-tools button{pointer-events:auto;background:#111827;color:#fff;border:none;border-radius:14px;padding:6px 10px;font:600 12px/1 system-ui,Arial;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#sp-tip{position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:2147483647;background:#111827;color:#fff;font:600 12px/1 system-ui,Arial;padding:6px 10px;border-radius:8px;display:none}
 </style>
-<div id="v2k-badge">DEMO v2k · 正在运行</div>
-<div id="v2k-root"></div>
+<div id="sp-badge">DEMO v2r4 · 正在运行（点此编辑）</div>
+<div id="sp-tip">点左上角徽标进入/退出“编辑模式”；编辑模式下点“绑定样图”，然后点页面上的样图来定位。</div>
+<div id="sp-overlay" aria-hidden="true"></div>
+<div class="sp-tools" aria-hidden="true">
+  <button id="sp-bind">绑定样图</button>
+  <button id="sp-save">保存</button>
+  <button id="sp-export">导出</button>
+  <button id="sp-exit">退出</button>
+</div>
 <script>
 (function(){
-  function pickImg(){
-    var pc=document.querySelector('img[alt*="postcard sample" i]')||document.querySelector('img[alt*="postcard" i]');
-    if(pc) return pc;
-    var imgs=[].slice.call(document.images||[]); if(!imgs.length) return null;
-    return imgs.reduce(function(b,e){var r=e.getBoundingClientRect(),a=r.width*r.height;return(!b||a>b.a)?{e:e,a:a}:b},null).e;
+  const KEY='sp-v67-anchors-v2r4';
+  function largestRectInViewport(){
+    const all=[...document.querySelectorAll('img,canvas,svg,video,figure,.postcard,.card,.sample,[data-sample],[data-postcard]')];
+    let best=null;
+    for(const el of all){
+      const r=el.getBoundingClientRect();
+      if(r.width<200 || r.height<150) continue;
+      // 距离视口中心更近者优先
+      const cx=window.innerWidth/2, cy=window.innerHeight/2;
+      const dx=Math.max(r.left - cx, 0, cx - r.right);
+      const dy=Math.max(r.top - cy, 0, cy - r.bottom);
+      const dist = Math.hypot(dx,dy);
+      const score = (r.width*r.height) - dist*5000;
+      if(!best || score>best.score) best={el,score};
+    }
+    return best?best.el:null;
   }
-  var pc=pickImg(); if(!pc) return;
-  var root=document.getElementById('v2k-root');
-  var arrow=document.createElement('div'); arrow.id='v2k-arrow';
+  function pickAnchor(){
+    return document.querySelector('img[alt*="postcard" i]') ||
+           document.querySelector('img[alt*="样图" i]') ||
+           largestRectInViewport();
+  }
+  const DEF=[
+    {id:4,x:18,y:-2,rot:180},
+    {id:10,x:50,y:-2,rot:180},
+    {id:3,x:74,y:-2,rot:180},
+    {id:2,x:88,y:-2,rot:180},
+    {id:5,x:-2,y:50,rot:90},
+    {id:6,x:20,y:102,rot:0},
+    {id:7,x:50,y:102,rot:0},
+    {id:8,x:102,y:67,rot:270},
+    {id:9,x:102,y:38,rot:270}
+  ];
+  function load(){ try{ const s=localStorage.getItem(KEY); if(!s) return DEF.map(x=>({...x})); const data=JSON.parse(s); return (data.anchors||data); }catch(e){ return DEF.map(x=>({...x})); } }
+  let A=load();
+  const overlay=document.getElementById('sp-overlay');
+  const arrow=document.createElement('div');
+  arrow.id='sp-arrow';
   arrow.innerHTML='<svg viewBox="0 0 100 100"><polygon points="50,0 100,100 0,100" fill="#10b981"/></svg>';
-  root.appendChild(arrow);
-  var S={i:0,t:null,P:[]};
-  function M(){var r=pc.getBoundingClientRect();return{l:r.left,t:r.top,r:r.right,b:r.bottom,w:r.width,h:r.height}}
-  function layout(){
-    var m=M(); if(m.w<=0||m.h<=0) return false;
-    var topY=m.t-5, botY=m.b+5, leftX=m.l-1, rightX=m.r+1, cx=(m.l+m.r)/2, w=m.w;
-    var topL=m.l+w*0.18, topC=cx, topR=m.r-w*0.18, midY=(m.t+m.b)/2, botL=topL, botC=topC, botR=topR;
-    S.P=[{x:topL,y:topY,rot:180},{x:topC,y:topY,rot:180},{x:topC,y:topY,rot:180},{x:topR,y:topY,rot:180},
-         {x:rightX,y:midY,rot:270},{x:botR,y:botY,rot:0},{x:botC,y:botY,rot:0},{x:botL,y:botY,rot:0},
-         {x:leftX,y:midY,rot:90},{x:topL,y:topY,rot:180}];
-    root.innerHTML=''; S.P.forEach(function(p,k){var d=document.createElement('div');d.className='v2k-dot';
-      d.textContent=String(k+1); d.style.left=p.x+'px'; d.style.top=p.y+'px'; root.appendChild(d)}); root.appendChild(arrow);
-    place(S.i); return true;
+  overlay.appendChild(arrow);
+  const tip=document.getElementById('sp-tip');
+  const btnBind=document.getElementById('sp-bind');
+  const btnSave=document.getElementById('sp-save');
+  const btnExport=document.getElementById('sp-export');
+  const btnExit=document.getElementById('sp-exit');
+  let anchor=null, hot=[], dots=[];
+  function rect(){ return anchor?anchor.getBoundingClientRect():{left:0,top:0,width:1,height:1}; }
+  function toPx(o){ const r=rect(); return {x:r.left+r.width*(o.x/100), y:r.top+r.height*(o.y/100)}; }
+  function ensure(){
+    overlay.innerHTML='';
+    hot=[]; dots=[];
+    A.forEach((o,i)=>{
+      const p=toPx(o);
+      const h=document.createElement('div'); h.className='sp-hot'; h.style.left=p.x+'px'; h.style.top=p.y+'px'; h.addEventListener('click',()=>jump(o.id,true)); overlay.appendChild(h); hot.push(h);
+      const d=document.createElement('div'); d.className='sp-dot'; d.textContent=String(o.id); d.style.left=p.x+'px'; d.style.top=p.y+'px'; overlay.appendChild(d); dots.push(d);
+      let drag=false,ox=0,oy=0;
+      d.addEventListener('pointerdown',ev=>{ if(!document.body.classList.contains('sp-edit')) return; drag=true; d.setPointerCapture(ev.pointerId); ox=ev.clientX; oy=ev.clientY; });
+      d.addEventListener('pointermove',ev=>{ if(!drag) return; const r=rect(); const dx=ev.clientX-ox, dy=ev.clientY-oy; ox=ev.clientX; oy=ev.clientY; const nx=(parseFloat(d.style.left)+dx - r.left)/r.width*100; const ny=(parseFloat(d.style.top)+dy - r.top)/r.height*100; A[i].x=nx; A[i].y=ny; layout(false); });
+      d.addEventListener('pointerup',ev=>{ drag=false; d.releasePointerCapture(ev.pointerId); });
+    });
+    overlay.appendChild(arrow);
   }
-  function place(i){var p=S.P[i]; if(!p) return; arrow.style.left=(p.x-12)+'px'; arrow.style.top=(p.y-10.2)+'px'; arrow.style.transform='rotate('+p.rot+'deg)' }
-  function next(){S.i=(S.i+1)%S.P.length; place(S.i) }
-  function prev(){S.i=(S.i-1+S.P.length)%S.P.length; place(S.i) }
-  function start(){ if(S.t) return; S.t=setInterval(next,5000) }
-  function stop(){ if(!S.t) return; clearInterval(S.t); S.t=null }
-  pc.addEventListener('click',function(){ S.t?stop():start() });
-  var L=document.querySelector('#prev, .big-arrow.left'), R=document.querySelector('#next, .big-arrow.right');
-  if(L) L.addEventListener('click',function(){ prev(); stop() });
-  if(R) R.addEventListener('click',function(){ next(); stop() });
-  function kick(){ if(!layout()) setTimeout(kick,120); else start(); }
-  pc.complete?kick():pc.addEventListener('load',kick);
-  addEventListener('resize',layout); document.addEventListener('visibilitychange',function(){ if(document.hidden) stop() });
+  function layout(updateHot=true){
+    if(!anchor) return;
+    A.forEach((o,i)=>{ const p=toPx(o); if(updateHot){ hot[i].style.left=p.x+'px'; hot[i].style.top=p.y+'px'; } dots[i].style.left=p.x+'px'; dots[i].style.top=p.y+'px'; });
+    place(state.id);
+  }
+  function place(id){
+    const o=(id===1)?A.find(x=>x.id===10):A.find(x=>x.id===id);
+    if(!o||!anchor) return;
+    const p=toPx(o);
+    arrow.style.left=(p.x-13)+'px';
+    arrow.style.top=(p.y-11)+'px';
+    arrow.style.transform='rotate('+o.rot+'deg)';
+  }
+  const AUTO=[2,1,3,4,5,6,7,8,9,10,'pause2'];
+  const DUR={default:5000,'1':5000,'10':5000,'pause2':10000};
+  let timer=null; let state={id:2, auto:true, idx:0};
+  function tick(){
+    const cur=AUTO[state.idx];
+    if(cur==='pause2'){ state.id=2; place(2); timer=setTimeout(()=>{ state.idx=0; tick(); }, DUR['pause2']); return; }
+    state.id=cur; place(state.id);
+    const d=DUR[String(cur)]||DUR.default;
+    timer=setTimeout(()=>{ state.idx=(state.idx+1)%AUTO.length; tick(); }, d);
+  }
+  function startAuto(){ if(timer) return; state.auto=true; state.idx=0; tick(); }
+  function stopAuto(){ state.auto=false; if(timer){ clearTimeout(timer); timer=null; } }
+  const CW=[2,1,10,9,8,7,6,5,4,3,2];
+  const CCW=[2,3,4,5,6,7,8,9,10,1,2];
+  function nextCW(){ stopAuto(); const i=CW.indexOf(state.id); state.id=CW[(i+1)%CW.length]; place(state.id); }
+  function prevCCW(){ stopAuto(); const i=CCW.indexOf(state.id); state.id=CCW[(i+1)%CCW.length]; place(state.id); }
+  function jump(id,stop){ if(stop) stopAuto(); state.id=id; place(state.id); }
+  function bindArrows(){
+    const lefts=['.arrow-left','.swiper-button-prev','.big-arrow.left','#prev','[data-dir="prev"]','[aria-label="prev"]'];
+    const rights=['.arrow-right','.swiper-button-next','.big-arrow.right','#next','[data-dir="next"]','[aria-label="next"]'];
+    let L=null,R=null;
+    for(const sel of lefts){ const el=document.querySelector(sel); if(el){ L=el; break; } }
+    for(const sel of rights){ const el=document.querySelector(sel); if(el){ R=el; break; } }
+    if(L) L.addEventListener('click',()=>{ prevCCW(); }, {capture:true});
+    if(R) R.addEventListener('click',()=>{ nextCW(); }, {capture:true});
+  }
+  function boot(){
+    anchor=pickAnchor();
+    const badge=document.getElementById('sp-badge');
+    if(!anchor){ badge.textContent='DEMO v2r4 · 未找到样图（点“绑定样图”手动选择）'; }
+    ensure(); layout(true); place(state.id); bindArrows(); startAuto();
+    tip.style.display='block'; setTimeout(()=>tip.style.display='none', 2800);
+    addEventListener('resize',()=>layout(true));
+    addEventListener('scroll',()=>layout(true), {passive:true});
+  }
+  if(document.readyState!=='loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
+  document.getElementById('sp-badge').addEventListener('click',()=>{
+    document.body.classList.toggle('sp-edit');
+    if(document.body.classList.contains('sp-edit')){ stopAuto(); tip.style.display='block'; setTimeout(()=>tip.style.display='none', 2000); }
+    else { startAuto(); }
+  });
+  btnBind.addEventListener('click',()=>{
+    if(!document.body.classList.contains('sp-edit')) return;
+    tip.textContent='请点页面上的样图区域进行绑定';
+    tip.style.display='block';
+    const handler=(ev)=>{
+      ev.preventDefault();
+      const target=document.elementFromPoint(ev.clientX, ev.clientY);
+      const cand=target.closest('img,canvas,svg,video,figure,.postcard,.card,.sample,[data-sample],[data-postcard]') || target;
+      anchor=cand;
+      tip.textContent='已绑定。可拖拽蓝点微调，点“保存”固化。';
+      setTimeout(()=>tip.style.display='none',2000);
+      ensure(); layout(true); place(state.id);
+      document.removeEventListener('click', handler, true);
+    };
+    setTimeout(()=>document.addEventListener('click', handler, true), 0);
+  });
+  btnSave.addEventListener('click',()=>{ localStorage.setItem(KEY, JSON.stringify({anchors:A})); document.body.classList.remove('sp-edit'); startAuto(); });
+  btnExport.addEventListener('click',()=>{ const data=JSON.stringify({anchors:A},null,2); const blob=new Blob([data],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sp-v67-v2r4-anchors.json'; a.click(); });
+  btnExit.addEventListener('click',()=>{ document.body.classList.remove('sp-edit'); startAuto(); });
 })();
 </script>
 
 </body>
 
 </html>
+
