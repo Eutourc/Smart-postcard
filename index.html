@@ -340,7 +340,7 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 <button aria-label="上一项" class="big-arrow left" id="prev"></button>
 <button aria-label="下一项" class="big-arrow right" id="next"></button>
 <img alt="postcard sample" id="pc-img" src="postcard_cn.png?v=22031"/>
-<div class="marker" id="marker"></div>
+
 </div>
 </div>
 <!-- gap4 spacer (controlled height to avoid jumps) -->
@@ -359,29 +359,7 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 <button class="start" id="start-btn">开始制作</button>
 </section>
 </main>
-<script>
-(function(){
-  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,84.3,68,86];
-  let i=1;
-  const hint=document.getElementById('hint');
-  const marker=document.getElementById('marker');
-  function apply(){hint.textContent=hints[i];marker.style.left=positions[i]+'%';}
-  function step(d){i=(i+d+hints.length)%hints.length;apply();}
-  document.getElementById('prev').onclick=()=>step(-1);
-  document.getElementById('next').onclick=()=>step(+1);
-  (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
-    area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-    area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
-    area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
-  })();
-  apply();
 
-  document.getElementById('start-btn').addEventListener('click',()=>{
-    location.href='#start';
-  });
-})();
-</script>
 <script>
 (function(){
   function positionArrows(){
@@ -631,166 +609,99 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 </style>
 
 
-<!-- DEMO v2r4 (click-to-edit + manual bind) -->
-<style>
-#sp-badge{position:fixed;left:8px;top:8px;z-index:2147483647;background:#111827;color:#fff;font:700 12px/1 system-ui,Arial;padding:6px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-#sp-overlay{position:fixed;inset:0;z-index:2147483646;pointer-events:none}
-#sp-arrow{position:absolute;width:26px;height:22px;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
-#sp-arrow svg{width:100%;height:100%}
-.sp-hot{position:absolute;width:36px;height:36px;transform:translate(-50%,-50%);pointer-events:auto;background:transparent}
-.sp-dot{position:absolute;width:18px;height:18px;border-radius:50%;background:#2563eb;color:#fff;display:none;align-items:center;justify-content:center;font:700 10px/1 system-ui,Arial;box-shadow:0 0 0 2px rgba(255,255,255,.95);transform:translate(-50%,-50%);pointer-events:auto;cursor:grab;user-select:none;-webkit-user-select:none}
-.sp-edit .sp-dot{display:flex}
-.sp-tools{position:fixed;top:8px;right:8px;z-index:2147483647;display:none;gap:8px}
-.sp-edit .sp-tools{display:flex}
-.sp-tools button{pointer-events:auto;background:#111827;color:#fff;border:none;border-radius:14px;padding:6px 10px;font:600 12px/1 system-ui,Arial;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-#sp-tip{position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:2147483647;background:#111827;color:#fff;font:600 12px/1 system-ui,Arial;padding:6px 10px;border-radius:8px;display:none}
+<style id="demo67a-overlay-css">
+#demo67a-overlay{position:absolute; inset:0; pointer-events:none;}
+.demo67a-arrow{position:absolute; width:0; height:0; 
+  border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #29a745;
+  filter:drop-shadow(0 0 2px rgba(0,0,0,.35));}
+#demo67a-fab{position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
+  background:#222; color:#fff; border-radius:14px; padding:10px 12px; z-index:2147483647;
+  box-shadow:0 6px 18px rgba(0,0,0,.35); display:flex; gap:10px; align-items:center}
+#demo67a-fab button{background:#2b6fff; color:#fff; border:none; padding:10px 12px; border-radius:10px; font-size:16px}
+#demo67a-fab .stop{background:#e74c3c}
+#demo67a-fab .draghint{opacity:.6; font-size:12px}
 </style>
-<div id="sp-badge">DEMO v2r4 · 正在运行（点此编辑）</div>
-<div id="sp-tip">点左上角徽标进入/退出“编辑模式”；编辑模式下点“绑定样图”，然后点页面上的样图来定位。</div>
-<div id="sp-overlay" aria-hidden="true"></div>
-<div class="sp-tools" aria-hidden="true">
-  <button id="sp-bind">绑定样图</button>
-  <button id="sp-save">保存</button>
-  <button id="sp-export">导出</button>
-  <button id="sp-exit">退出</button>
-</div>
-<script>
-(function(){
-  const KEY='sp-v67-anchors-v2r4';
-  function largestRectInViewport(){
-    const all=[...document.querySelectorAll('img,canvas,svg,video,figure,.postcard,.card,.sample,[data-sample],[data-postcard]')];
-    let best=null;
-    for(const el of all){
-      const r=el.getBoundingClientRect();
-      if(r.width<200 || r.height<150) continue;
-      // 距离视口中心更近者优先
-      const cx=window.innerWidth/2, cy=window.innerHeight/2;
-      const dx=Math.max(r.left - cx, 0, cx - r.right);
-      const dy=Math.max(r.top - cy, 0, cy - r.bottom);
-      const dist = Math.hypot(dx,dy);
-      const score = (r.width*r.height) - dist*5000;
-      if(!best || score>best.score) best={el,score};
-    }
-    return best?best.el:null;
+
+<script id="demo67a-overlay-js">
+(function(){ 
+  const anchors = [{"id": 4, "x": 164.8203125, "y": 420.97589187622066, "rot": 180}, {"id": 10, "x": 273.2112646102905, "y": 419.7399543762207, "rot": 180}, {"id": 3, "x": 310.8189474105835, "y": 420.2828125, "rot": 180}, {"id": 2, "x": 459.6828125, "y": 419.56807937622074, "rot": 180}, {"id": 5, "x": 19.49730110645294, "y": 583.6831321716309, "rot": 90}, {"id": 6, "x": 95.70796875, "y": 796.2274543762207, "rot": 0}, {"id": 7, "x": 166.13125, "y": 795.5343750000001, "rot": 0}, {"id": 8, "x": 536.0493293762207, "y": 630.2612571716309, "rot": 270}, {"id": 9, "x": 535.6437500000001, "y": 516.5924594879151, "rot": 270}];
+  const card = document.querySelector('#cardbox');
+  if(!card) return;
+  const overlay = document.createElement('div'); overlay.id='demo67a-overlay'; 
+  card.style.position='relative'; card.appendChild(overlay);
+
+  const xs = anchors.map(a=>a.x), ys=anchors.map(a=>a.y);
+  const src = {x: Math.min(...xs), y: Math.min(...ys)};
+  src.w = Math.max(...xs) - src.x; src.h = Math.max(...ys) - src.y;
+
+  const norm = anchors.map(a=>({id:a.id, rot:a.rot, nx:(a.x - src.x)/src.w, ny:(a.y - src.y)/src.h})).sort((a,b)=>a.id-b.id);
+  const byId = Object.fromEntries(norm.map(a=>[a.id,a]));
+
+  const arrow = document.createElement('div'); arrow.className='demo67a-arrow'; overlay.appendChild(arrow);
+
+  function placeArrow(a) {
+    const rect = card.getBoundingClientRect();
+    const bw = rect.width, bh = rect.height;
+    let x = a.nx * bw, y = a.ny * bh;
+    const off = 1;
+    let t=0,l=0;
+    if(a.rot===180) { t = y + off; l = x - 12; arrow.style.transform = 'rotate(180deg)'; }
+    else if(a.rot===0) { t = y - 18 - off; l = x - 12; arrow.style.transform = 'rotate(0deg)'; }
+    else if(a.rot===90) { t = y - 12; l = x + off; arrow.style.transform = 'rotate(90deg)'; }
+    else if(a.rot===270) { t = y - 12; l = x - 18 - off; arrow.style.transform = 'rotate(270deg)'; }
+    arrow.style.top = t + 'px'; arrow.style.left = l + 'px';
   }
-  function pickAnchor(){
-    return document.querySelector('img[alt*="postcard" i]') ||
-           document.querySelector('img[alt*="样图" i]') ||
-           largestRectInViewport();
-  }
-  const DEF=[
-    {id:4,x:18,y:-2,rot:180},
-    {id:10,x:50,y:-2,rot:180},
-    {id:3,x:74,y:-2,rot:180},
-    {id:2,x:88,y:-2,rot:180},
-    {id:5,x:-2,y:50,rot:90},
-    {id:6,x:20,y:102,rot:0},
-    {id:7,x:50,y:102,rot:0},
-    {id:8,x:102,y:67,rot:270},
-    {id:9,x:102,y:38,rot:270}
+
+  const explain = document.querySelector('.explain p');
+  const texts = [
+    "序2：明信片背面图案！可成为邮票图案！您可以任选五张照片！可用您的自拍照！这等于洗了一张 A5 大尺寸的照片！",
+    "序1：明信片电子相册封面图案。",
+    "序3：二维码（凯旋门章）。",
+    "序4：日期与气温角标。",
+    "序5：正文（可替换）。",
+    "序6：城市/地标底纹。",
+    "序7：品牌直立标识。",
+    "序8：直达邮寄二维码。",
+    "序9：邮票位图。",
+    "序10：明信片背面（整体）。"
   ];
-  function load(){ try{ const s=localStorage.getItem(KEY); if(!s) return DEF.map(x=>({...x})); const data=JSON.parse(s); return (data.anchors||data); }catch(e){ return DEF.map(x=>({...x})); } }
-  let A=load();
-  const overlay=document.getElementById('sp-overlay');
-  const arrow=document.createElement('div');
-  arrow.id='sp-arrow';
-  arrow.innerHTML='<svg viewBox="0 0 100 100"><polygon points="50,0 100,100 0,100" fill="#10b981"/></svg>';
-  overlay.appendChild(arrow);
-  const tip=document.getElementById('sp-tip');
-  const btnBind=document.getElementById('sp-bind');
-  const btnSave=document.getElementById('sp-save');
-  const btnExport=document.getElementById('sp-export');
-  const btnExit=document.getElementById('sp-exit');
-  let anchor=null, hot=[], dots=[];
-  function rect(){ return anchor?anchor.getBoundingClientRect():{left:0,top:0,width:1,height:1}; }
-  function toPx(o){ const r=rect(); return {x:r.left+r.width*(o.x/100), y:r.top+r.height*(o.y/100)}; }
-  function ensure(){
-    overlay.innerHTML='';
-    hot=[]; dots=[];
-    A.forEach((o,i)=>{
-      const p=toPx(o);
-      const h=document.createElement('div'); h.className='sp-hot'; h.style.left=p.x+'px'; h.style.top=p.y+'px'; h.addEventListener('click',()=>jump(o.id,true)); overlay.appendChild(h); hot.push(h);
-      const d=document.createElement('div'); d.className='sp-dot'; d.textContent=String(o.id); d.style.left=p.x+'px'; d.style.top=p.y+'px'; overlay.appendChild(d); dots.push(d);
-      let drag=false,ox=0,oy=0;
-      d.addEventListener('pointerdown',ev=>{ if(!document.body.classList.contains('sp-edit')) return; drag=true; d.setPointerCapture(ev.pointerId); ox=ev.clientX; oy=ev.clientY; });
-      d.addEventListener('pointermove',ev=>{ if(!drag) return; const r=rect(); const dx=ev.clientX-ox, dy=ev.clientY-oy; ox=ev.clientX; oy=ev.clientY; const nx=(parseFloat(d.style.left)+dx - r.left)/r.width*100; const ny=(parseFloat(d.style.top)+dy - r.top)/r.height*100; A[i].x=nx; A[i].y=ny; layout(false); });
-      d.addEventListener('pointerup',ev=>{ drag=false; d.releasePointerCapture(ev.pointerId); });
-    });
-    overlay.appendChild(arrow);
-  }
-  function layout(updateHot=true){
-    if(!anchor) return;
-    A.forEach((o,i)=>{ const p=toPx(o); if(updateHot){ hot[i].style.left=p.x+'px'; hot[i].style.top=p.y+'px'; } dots[i].style.left=p.x+'px'; dots[i].style.top=p.y+'px'; });
-    place(state.id);
-  }
-  function place(id){
-    const o=(id===1)?A.find(x=>x.id===10):A.find(x=>x.id===id);
-    if(!o||!anchor) return;
-    const p=toPx(o);
-    arrow.style.left=(p.x-13)+'px';
-    arrow.style.top=(p.y-11)+'px';
-    arrow.style.transform='rotate('+o.rot+'deg)';
-  }
-  const AUTO=[2,1,3,4,5,6,7,8,9,10,'pause2'];
-  const DUR={default:5000,'1':5000,'10':5000,'pause2':10000};
-  let timer=null; let state={id:2, auto:true, idx:0};
-  function tick(){
-    const cur=AUTO[state.idx];
-    if(cur==='pause2'){ state.id=2; place(2); timer=setTimeout(()=>{ state.idx=0; tick(); }, DUR['pause2']); return; }
-    state.id=cur; place(state.id);
-    const d=DUR[String(cur)]||DUR.default;
-    timer=setTimeout(()=>{ state.idx=(state.idx+1)%AUTO.length; tick(); }, d);
-  }
-  function startAuto(){ if(timer) return; state.auto=true; state.idx=0; tick(); }
-  function stopAuto(){ state.auto=false; if(timer){ clearTimeout(timer); timer=null; } }
-  const CW=[2,1,10,9,8,7,6,5,4,3,2];
-  const CCW=[2,3,4,5,6,7,8,9,10,1,2];
-  function nextCW(){ stopAuto(); const i=CW.indexOf(state.id); state.id=CW[(i+1)%CW.length]; place(state.id); }
-  function prevCCW(){ stopAuto(); const i=CCW.indexOf(state.id); state.id=CCW[(i+1)%CCW.length]; place(state.id); }
-  function jump(id,stop){ if(stop) stopAuto(); state.id=id; place(state.id); }
-  function bindArrows(){
-    const lefts=['.arrow-left','.swiper-button-prev','.big-arrow.left','#prev','[data-dir="prev"]','[aria-label="prev"]'];
-    const rights=['.arrow-right','.swiper-button-next','.big-arrow.right','#next','[data-dir="next"]','[aria-label="next"]'];
-    let L=null,R=null;
-    for(const sel of lefts){ const el=document.querySelector(sel); if(el){ L=el; break; } }
-    for(const sel of rights){ const el=document.querySelector(sel); if(el){ R=el; break; } }
-    if(L) L.addEventListener('click',()=>{ prevCCW(); }, {capture:true});
-    if(R) R.addEventListener('click',()=>{ nextCW(); }, {capture:true});
-  }
-  function boot(){
-    anchor=pickAnchor();
-    const badge=document.getElementById('sp-badge');
-    if(!anchor){ badge.textContent='DEMO v2r4 · 未找到样图（点“绑定样图”手动选择）'; }
-    ensure(); layout(true); place(state.id); bindArrows(); startAuto();
-    tip.style.display='block'; setTimeout(()=>tip.style.display='none', 2800);
-    addEventListener('resize',()=>layout(true));
-    addEventListener('scroll',()=>layout(true), {passive:true});
-  }
-  if(document.readyState!=='loading') boot(); else document.addEventListener('DOMContentLoaded', boot);
-  document.getElementById('sp-badge').addEventListener('click',()=>{
-    document.body.classList.toggle('sp-edit');
-    if(document.body.classList.contains('sp-edit')){ stopAuto(); tip.style.display='block'; setTimeout(()=>tip.style.display='none', 2000); }
-    else { startAuto(); }
-  });
-  btnBind.addEventListener('click',()=>{
-    if(!document.body.classList.contains('sp-edit')) return;
-    tip.textContent='请点页面上的样图区域进行绑定';
-    tip.style.display='block';
-    const handler=(ev)=>{
-      ev.preventDefault();
-      const target=document.elementFromPoint(ev.clientX, ev.clientY);
-      const cand=target.closest('img,canvas,svg,video,figure,.postcard,.card,.sample,[data-sample],[data-postcard]') || target;
-      anchor=cand;
-      tip.textContent='已绑定。可拖拽蓝点微调，点“保存”固化。';
-      setTimeout(()=>tip.style.display='none',2000);
-      ensure(); layout(true); place(state.id);
-      document.removeEventListener('click', handler, true);
-    };
-    setTimeout(()=>document.addEventListener('click', handler, true), 0);
-  });
-  btnSave.addEventListener('click',()=>{ localStorage.setItem(KEY, JSON.stringify({anchors:A})); document.body.classList.remove('sp-edit'); startAuto(); });
-  btnExport.addEventListener('click',()=>{ const data=JSON.stringify({anchors:A},null,2); const blob=new Blob([data],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sp-v67-v2r4-anchors.json'; a.click(); });
-  btnExit.addEventListener('click',()=>{ document.body.classList.remove('sp-edit'); startAuto(); });
+  function setExplain(index1to10){ if(explain && texts[index1to10-1]) explain.textContent = texts[index1to10-1]; }
+
+  let current = 2;
+  const orderAuto = [2,1,3,4,5,6,7,8,9,10];
+  const rightOrder = [2,1,10,9,8,7,6,5,4,3];
+  const leftOrder  = [2,3,4,5,6,7,8,9,10,1];
+  let autoTimer=null;
+
+  function gotoId(id){ current=id; placeArrow(byId[id]); setExplain(id); }
+  function step(order){ const idx = order.indexOf(current); const next = order[(idx+1)%order.length]; gotoId(next); }
+
+  const init = ()=>{ placeArrow(byId[current]); setExplain(current); };
+  window.addEventListener('load', init);
+  window.addEventListener('resize', ()=>placeArrow(byId[current]));
+
+  const fab = document.createElement('div'); fab.id='demo67a-fab';
+  fab.innerHTML = `<span style="margin-right:6px;opacity:.7">DEMO v6.7a_r3</span>
+    <button id="d67a-prev">上一站</button>
+    <button id="d67a-next">下一站</button>
+    <button id="d67a-auto">开始自动</button>
+    <button class="stop" id="d67a-stop">停止</button>
+    <span class="draghint">⇲ 拖动</span>`;
+  document.body.appendChild(fab);
+  (function drag(el){el.style.touchAction='none';el.style.userSelect='none';let sx,sy,sl,st;
+    el.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY;const r=el.getBoundingClientRect();sl=r.left;st=r.top;el.setPointerCapture(e.pointerId);});
+    el.addEventListener('pointermove',e=>{ if(e.pressure===0) return; const dx=e.clientX-sx, dy=e.clientY-sy; el.style.left=(sl+dx)+'px'; el.style.top=(st+dy)+'px'; el.style.right='auto'; el.style.bottom='auto'; el.style.transform='none';});
+  })(fab);
+
+  document.getElementById('d67a-prev').onclick = ()=>step(leftOrder);
+  document.getElementById('d67a-next').onclick = ()=>step(rightOrder);
+  document.getElementById('d67a-auto').onclick = ()=>{
+    if(autoTimer) clearInterval(autoTimer);
+    let i=0; gotoId(orderAuto[0]);
+    autoTimer = setInterval(()=>{ i=(i+1)%orderAuto.length; gotoId(orderAuto[i]);
+      if(orderAuto[i]===2){ clearInterval(autoTimer); setTimeout(()=>{ document.getElementById('d67a-auto').click(); }, 10000); } }, 5000);
+  };
+  document.getElementById('d67a-stop').onclick = ()=>{ if(autoTimer) clearInterval(autoTimer); autoTimer=null; };
 })();
 </script>
 
