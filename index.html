@@ -340,7 +340,7 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 <button aria-label="上一项" class="big-arrow left" id="prev"></button>
 <button aria-label="下一项" class="big-arrow right" id="next"></button>
 <img alt="postcard sample" id="pc-img" src="postcard_cn.png?v=22031"/>
-
+<div class="marker" id="marker"></div>
 </div>
 </div>
 <!-- gap4 spacer (controlled height to avoid jumps) -->
@@ -359,7 +359,29 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 <button class="start" id="start-btn">开始制作</button>
 </section>
 </main>
+<script>
+(function(){
+  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
+  const positions=[18,84.3,68,86];
+  let i=1;
+  const hint=document.getElementById('hint');
+  const marker=document.getElementById('marker');
+  function apply(){hint.textContent=hints[i];marker.style.left=positions[i]+'%';}
+  function step(d){i=(i+d+hints.length)%hints.length;apply();}
+  document.getElementById('prev').onclick=()=>step(-1);
+  document.getElementById('next').onclick=()=>step(+1);
+  (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
+    area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+    area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
+    area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
+  })();
+  apply();
 
+  document.getElementById('start-btn').addEventListener('click',()=>{
+    location.href='#start';
+  });
+})();
+</script>
 <script>
 (function(){
   function positionArrows(){
@@ -609,99 +631,88 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 </style>
 
 
-<style id="demo67a-overlay-css">
-#demo67a-overlay{position:absolute; inset:0; pointer-events:none;}
-.demo67a-arrow{position:absolute; width:0; height:0; 
-  border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #29a745;
-  filter:drop-shadow(0 0 2px rgba(0,0,0,.35));}
-#demo67a-fab{position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
-  background:#222; color:#fff; border-radius:14px; padding:10px 12px; z-index:2147483647;
-  box-shadow:0 6px 18px rgba(0,0,0,.35); display:flex; gap:10px; align-items:center}
-#demo67a-fab button{background:#2b6fff; color:#fff; border:none; padding:10px 12px; border-radius:10px; font-size:16px}
-#demo67a-fab .stop{background:#e74c3c}
-#demo67a-fab .draghint{opacity:.6; font-size:12px}
-</style>
+<script id="fixBA_marker_gap2_edgeclick_always">
+(function(){
+  function ready(fn){
+    if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',fn,{once:true}); }
+    else{ fn(); }
+  }
+  function rect(el){ return el.getBoundingClientRect(); }
 
-<script id="demo67a-overlay-js">
-(function(){ 
-  const anchors = [{"id": 4, "x": 164.8203125, "y": 420.97589187622066, "rot": 180}, {"id": 10, "x": 273.2112646102905, "y": 419.7399543762207, "rot": 180}, {"id": 3, "x": 310.8189474105835, "y": 420.2828125, "rot": 180}, {"id": 2, "x": 459.6828125, "y": 419.56807937622074, "rot": 180}, {"id": 5, "x": 19.49730110645294, "y": 583.6831321716309, "rot": 90}, {"id": 6, "x": 95.70796875, "y": 796.2274543762207, "rot": 0}, {"id": 7, "x": 166.13125, "y": 795.5343750000001, "rot": 0}, {"id": 8, "x": 536.0493293762207, "y": 630.2612571716309, "rot": 270}, {"id": 9, "x": 535.6437500000001, "y": 516.5924594879151, "rot": 270}];
-  const card = document.querySelector('#cardbox');
-  if(!card) return;
-  const overlay = document.createElement('div'); overlay.id='demo67a-overlay'; 
-  card.style.position='relative'; card.appendChild(overlay);
-
-  const xs = anchors.map(a=>a.x), ys=anchors.map(a=>a.y);
-  const src = {x: Math.min(...xs), y: Math.min(...ys)};
-  src.w = Math.max(...xs) - src.x; src.h = Math.max(...ys) - src.y;
-
-  const norm = anchors.map(a=>({id:a.id, rot:a.rot, nx:(a.x - src.x)/src.w, ny:(a.y - src.y)/src.h})).sort((a,b)=>a.id-b.id);
-  const byId = Object.fromEntries(norm.map(a=>[a.id,a]));
-
-  const arrow = document.createElement('div'); arrow.className='demo67a-arrow'; overlay.appendChild(arrow);
-
-  function placeArrow(a) {
-    const rect = card.getBoundingClientRect();
-    const bw = rect.width, bh = rect.height;
-    let x = a.nx * bw, y = a.ny * bh;
-    const off = 1;
-    let t=0,l=0;
-    if(a.rot===180) { t = y + off; l = x - 12; arrow.style.transform = 'rotate(180deg)'; }
-    else if(a.rot===0) { t = y - 18 - off; l = x - 12; arrow.style.transform = 'rotate(0deg)'; }
-    else if(a.rot===90) { t = y - 12; l = x + off; arrow.style.transform = 'rotate(90deg)'; }
-    else if(a.rot===270) { t = y - 12; l = x - 18 - off; arrow.style.transform = 'rotate(270deg)'; }
-    arrow.style.top = t + 'px'; arrow.style.left = l + 'px';
+  function pickMainImg(){
+    var img=document.getElementById('pc-img');
+    if(img) return img;
+    var list=[].slice.call(document.querySelectorAll('img'));
+    var best=null, area=-1;
+    for(var i=0;i<list.length;i++){
+      var r=list[i].getBoundingClientRect(), a=r.width*r.height;
+      if(a>area){ area=a; best=list[i]; }
+    }
+    return best;
   }
 
-  const explain = document.querySelector('.explain p');
-  const texts = [
-    "序2：明信片背面图案！可成为邮票图案！您可以任选五张照片！可用您的自拍照！这等于洗了一张 A5 大尺寸的照片！",
-    "序1：明信片电子相册封面图案。",
-    "序3：二维码（凯旋门章）。",
-    "序4：日期与气温角标。",
-    "序5：正文（可替换）。",
-    "序6：城市/地标底纹。",
-    "序7：品牌直立标识。",
-    "序8：直达邮寄二维码。",
-    "序9：邮票位图。",
-    "序10：明信片背面（整体）。"
-  ];
-  function setExplain(index1to10){ if(explain && texts[index1to10-1]) explain.textContent = texts[index1to10-1]; }
+  ready(function(){
+    var marker=document.getElementById('marker');
+    var img=pickMainImg();
+    if(!marker || !img) return;
 
-  let current = 2;
-  const orderAuto = [2,1,3,4,5,6,7,8,9,10];
-  const rightOrder = [2,1,10,9,8,7,6,5,4,3];
-  const leftOrder  = [2,3,4,5,6,7,8,9,10,1];
-  let autoTimer=null;
+    if(marker.parentElement!==document.body){ document.body.appendChild(marker); }
+    marker.style.position='absolute';
+    marker.style.transformOrigin='50% 50%';
+    marker.style.zIndex='9999';
+    marker.style.pointerEvents='none';
 
-  function gotoId(id){ current=id; placeArrow(byId[id]); setExplain(id); }
-  function step(order){ const idx = order.indexOf(current); const next = order[(idx+1)%order.length]; gotoId(next); }
+    var GAP=2;
+    var ANCH={
+      1:{edge:'top',    t:0.90},
+      2:{edge:'top',    t:0.18},
+      3:{edge:'top',    t:0.36},
+      4:{edge:'top',    t:0.54},
+      5:{edge:'left',   t:0.50},
+      6:{edge:'bottom', t:0.82},
+      7:{edge:'bottom', t:0.50},
+      8:{edge:'bottom', t:0.22},
+      9:{edge:'right',  t:0.50},
+      10:{edge:'top',   t:0.90}
+    };
 
-  const init = ()=>{ placeArrow(byId[current]); setExplain(current); };
-  window.addEventListener('load', init);
-  window.addEventListener('resize', ()=>placeArrow(byId[current]));
+    var idx=2;
 
-  const fab = document.createElement('div'); fab.id='demo67a-fab';
-  fab.innerHTML = `<span style="margin-right:6px;opacity:.7">DEMO v6.7a_r3</span>
-    <button id="d67a-prev">上一站</button>
-    <button id="d67a-next">下一站</button>
-    <button id="d67a-auto">开始自动</button>
-    <button class="stop" id="d67a-stop">停止</button>
-    <span class="draghint">⇲ 拖动</span>`;
-  document.body.appendChild(fab);
-  (function drag(el){el.style.touchAction='none';el.style.userSelect='none';let sx,sy,sl,st;
-    el.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY;const r=el.getBoundingClientRect();sl=r.left;st=r.top;el.setPointerCapture(e.pointerId);});
-    el.addEventListener('pointermove',e=>{ if(e.pressure===0) return; const dx=e.clientX-sx, dy=e.clientY-sy; el.style.left=(sl+dx)+'px'; el.style.top=(st+dy)+'px'; el.style.right='auto'; el.style.bottom='auto'; el.style.transform='none';});
-  })(fab);
+    function orient(edge){
+      var rot = (edge==='top')?0 : (edge==='right')?90 : (edge==='bottom')?180 : 270;
+      var tx=(edge==='top'||edge==='bottom')?-50:0;
+      var ty=(edge==='left'||edge==='right')?-50:0;
+      marker.style.transform='rotate('+rot+'deg) translate('+tx+'%,'+ty+'%)';
+    }
+    function place(i){
+      idx=i||idx;
+      var a=ANCH[idx]||ANCH[2];
+      var ir=rect(img);
+      orient(a.edge);
+      var mr=marker.getBoundingClientRect(), mw=mr.width||16, mh=mr.height||16;
+      var x=0,y=0;
+      if(a.edge==='top'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top - GAP - mh); }
+      else if(a.edge==='right'){ x=Math.round(ir.left + ir.width + GAP); y=Math.round(ir.top + a.t*ir.height); }
+      else if(a.edge==='bottom'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top + ir.height + GAP); }
+      else { x=Math.round(ir.left - GAP - mw); y=Math.round(ir.top + a.t*ir.height); }
+      marker.style.left=x+'px'; marker.style.top=y+'px';
+    }
+    place(2);
 
-  document.getElementById('d67a-prev').onclick = ()=>step(leftOrder);
-  document.getElementById('d67a-next').onclick = ()=>step(rightOrder);
-  document.getElementById('d67a-auto').onclick = ()=>{
-    if(autoTimer) clearInterval(autoTimer);
-    let i=0; gotoId(orderAuto[0]);
-    autoTimer = setInterval(()=>{ i=(i+1)%orderAuto.length; gotoId(orderAuto[i]);
-      if(orderAuto[i]===2){ clearInterval(autoTimer); setTimeout(()=>{ document.getElementById('d67a-auto').click(); }, 10000); } }, 5000);
-  };
-  document.getElementById('d67a-stop').onclick = ()=>{ if(autoTimer) clearInterval(autoTimer); autoTimer=null; };
+    // Viewport-edge driver: LEFT 20% = 上一站; RIGHT 20% = 下一站
+    function onEdge(e){
+      var x=e.clientX, w=window.innerWidth;
+      if(x < w*0.20){ idx = (idx===10)?1:(idx+1); place(idx); }
+      else if(x > w*0.80){ idx = (idx===1)?10:(idx-1); place(idx); }
+      // middle area: ignore
+    }
+    ['click','pointerup','touchend'].forEach(function(evt){
+      document.addEventListener(evt,onEdge,{capture:true,passive:true});
+    });
+
+    addEventListener('resize', function(){ place(idx); });
+    addEventListener('orientationchange', function(){ setTimeout(function(){ place(idx); }, 50); });
+  });
 })();
 </script>
 
