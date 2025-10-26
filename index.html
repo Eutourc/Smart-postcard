@@ -631,14 +631,10 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 </style>
 
 
-<script id="fixBA_marker_gap2_edgeclick_always">
+<script id="fixBC_marker_seq_and_nudge">
 (function(){
-  function ready(fn){
-    if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',fn,{once:true}); }
-    else{ fn(); }
-  }
+  function ready(fn){ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn,{once:true});} else {fn();} }
   function rect(el){ return el.getBoundingClientRect(); }
-
   function pickMainImg(){
     var img=document.getElementById('pc-img');
     if(img) return img;
@@ -650,7 +646,6 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
     }
     return best;
   }
-
   ready(function(){
     var marker=document.getElementById('marker');
     var img=pickMainImg();
@@ -663,7 +658,106 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
     marker.style.pointerEvents='none';
 
     var GAP=2;
+    var NUDGE={top:0,right:-6,bottom:0,left:-6};
+
     var ANCH={
+      1:{edge:'top',    t:0.90},
+      2:{edge:'top',    t:0.10},
+      3:{edge:'top',    t:0.30},
+      4:{edge:'top',    t:0.50},
+      5:{edge:'left',   t:0.50},
+      6:{edge:'bottom', t:0.90},
+      7:{edge:'bottom', t:0.50},
+      8:{edge:'bottom', t:0.10},
+      9:{edge:'right',  t:0.50},
+      10:{edge:'top',   t:0.90}
+    };
+
+    var SEQ_CW=[2,1,10,9,8,7,6,5,4,3];
+    var SEQ_CCW=SEQ_CW.slice().reverse();
+
+    var seq=SEQ_CW;
+    var posIndex=0;
+
+    function orient(edge){
+      var rot=(edge==='top')?0:(edge==='right')?90:(edge==='bottom')?180:270;
+      var tx=(edge==='top'||edge==='bottom')?-50:0;
+      var ty=(edge==='left'||edge==='right')?-50:0;
+      marker.style.transform='rotate('+rot+'deg) translate('+tx+'%,'+ty+'%)';
+    }
+    function currentStation(){ return seq[posIndex]; }
+
+    function placeByStation(st){
+      var a=ANCH[st];
+      if(!a) return;
+      var ir=rect(img);
+      orient(a.edge);
+      var mr=marker.getBoundingClientRect(), mw=mr.width||16, mh=mr.height||16;
+      var x=0,y=0, n=(NUDGE[a.edge]||0);
+      if(a.edge==='top'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top - GAP - mh + n); }
+      else if(a.edge==='right'){ x=Math.round(ir.left + ir.width + GAP + n); y=Math.round(ir.top + a.t*ir.height); }
+      else if(a.edge==='bottom'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top + ir.height + GAP + n); }
+      else { x=Math.round(ir.left - GAP - mw + n); y=Math.round(ir.top + a.t*ir.height); }
+      marker.style.left=x+'px'; marker.style.top=y+'px';
+    }
+    function place(){ placeByStation(currentStation()); }
+
+    place();
+
+    function goCW(){ seq=SEQ_CW; posIndex=(posIndex+1)%SEQ_CW.length; place(); }
+    function goCCW(){ seq=SEQ_CCW; posIndex=(posIndex+1)%SEQ_CCW.length; place(); }
+
+    function onEdge(e){
+      var x=e.clientX, w=window.innerWidth;
+      if(x < w*0.20){ goCCW(); }
+      else if(x > w*0.80){ goCW(); }
+    }
+    ['click','pointerup','touchend'].forEach(function(evt){
+      document.addEventListener(evt,onEdge,{capture:true,passive:true});
+    });
+
+    addEventListener('resize', place);
+    addEventListener('orientationchange', function(){ setTimeout(place, 50); });
+  });
+})();
+</script>
+
+
+<!-- injected: balance_fix_v1 (left/right symmetry & exact 2px edges) -->
+<script id="balance_fix_v1">
+(function(){
+  function ready(fn){ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn,{once:true});} else {fn();} }
+  function rect(el){ return el.getBoundingClientRect(); }
+  function pickMainImg(){
+    var img=document.getElementById('pc-img');
+    if(img) return img;
+    var list=[].slice.call(document.querySelectorAll('img'));
+    list.sort(function(a,b){ return (rect(b).width*rect(b).height)-(rect(a).width*rect(a).height); });
+    return list[0]||null;
+  }
+  ready(function(){
+    var img = pickMainImg();
+    var marker = document.getElementById('marker') || document.querySelector('.sp-marker,.postcard-marker');
+    var prevBtn = document.getElementById('prev') || document.querySelector('.big-arrow.left,[data-role="prev"]');
+    var nextBtn = document.getElementById('next') || document.querySelector('.big-arrow.right,[data-role="next"]');
+    if(!img || !marker || !prevBtn || !nextBtn) return;
+
+    // Use fixed positioning so viewport coords & placement are consistent
+    marker.style.position = 'fixed';
+    marker.style.zIndex = '9999';
+    marker.style.pointerEvents = 'none';
+    marker.style.transformOrigin = '50% 50%';
+
+    // Exact edge gaps in px
+    var GAP = { top:2, right:2, bottom:2, left:2 };
+    // Optional extra fine-tune (px): positive moves inward toward image
+    var EXTRA = { top:0, right:0, bottom:0, left:0 };
+
+    // If page had a previous NUDGE, neutralize it to avoid double-offset
+    window.__SP_DISABLE_OLD_NUDGE__ = true;
+
+    // Anchors: 1&10 same (top 90%), 2 top 18%, 3 top 36%, 4 top 54%, 5 left mid, 6 bottom 82%, 7 bottom 50%, 8 bottom 22%, 9 right mid
+    var ANCH = {
       1:{edge:'top',    t:0.90},
       2:{edge:'top',    t:0.18},
       3:{edge:'top',    t:0.36},
@@ -676,42 +770,82 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
       10:{edge:'top',   t:0.90}
     };
 
-    var idx=2;
+    var SEQ_CW  = [2,1,10,9,8,7,6,5,4,3];
+    var SEQ_CCW = SEQ_CW.slice().reverse();
+    var idx = 2;
 
     function orient(edge){
-      var rot = (edge==='top')?0 : (edge==='right')?90 : (edge==='bottom')?180 : 270;
-      var tx=(edge==='top'||edge==='bottom')?-50:0;
-      var ty=(edge==='left'||edge==='right')?-50:0;
-      marker.style.transform='rotate('+rot+'deg) translate('+tx+'%,'+ty+'%)';
+      // Arrow points inward: top->down(0deg), right->left(90), bottom->up(180), left->right(270)
+      var rot = edge==='top'?0:edge==='right'?90:edge==='bottom'?180:270;
+      marker.style.transform = 'rotate('+rot+'deg)';
     }
-    function place(i){
-      idx=i||idx;
-      var a=ANCH[idx]||ANCH[2];
-      var ir=rect(img);
+
+    function place(n){
+      var a = ANCH[n], r = rect(img);
+      if(!a) return;
       orient(a.edge);
-      var mr=marker.getBoundingClientRect(), mw=mr.width||16, mh=mr.height||16;
-      var x=0,y=0;
-      if(a.edge==='top'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top - GAP - mh); }
-      else if(a.edge==='right'){ x=Math.round(ir.left + ir.width + GAP); y=Math.round(ir.top + a.t*ir.height); }
-      else if(a.edge==='bottom'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top + ir.height + GAP); }
-      else { x=Math.round(ir.left - GAP - mw); y=Math.round(ir.top + a.t*ir.height); }
-      marker.style.left=x+'px'; marker.style.top=y+'px';
-    }
-    place(2);
 
-    // Viewport-edge driver: LEFT 20% = 上一站; RIGHT 20% = 下一站
-    function onEdge(e){
-      var x=e.clientX, w=window.innerWidth;
-      if(x < w*0.20){ idx = (idx===10)?1:(idx+1); place(idx); }
-      else if(x > w*0.80){ idx = (idx===1)?10:(idx-1); place(idx); }
-      // middle area: ignore
-    }
-    ['click','pointerup','touchend'].forEach(function(evt){
-      document.addEventListener(evt,onEdge,{capture:true,passive:true});
-    });
+      // Measure marker box to align tip precisely
+      var mw = marker.offsetWidth  || 16;
+      var mh = marker.offsetHeight || 16;
 
+      // Compute base coords for tip
+      var x=0, y=0;
+      if(a.edge==='top'){
+        x = Math.round(r.left + a.t*r.width);
+        y = Math.round(r.top  - GAP.top  - mh) - EXTRA.top;
+        marker.style.left = (x - mw/2) + 'px';
+        marker.style.top  = y + 'px';
+      }else if(a.edge==='right'){
+        x = Math.round(r.right + GAP.right) + EXTRA.right;
+        y = Math.round(r.top + a.t*r.height);
+        marker.style.left = (x) + 'px';
+        marker.style.top  = (y - mh/2) + 'px';
+      }else if(a.edge==='bottom'){
+        x = Math.round(r.left + a.t*r.width);
+        y = Math.round(r.bottom + GAP.bottom) + EXTRA.bottom;
+        marker.style.left = (x - mw/2) + 'px';
+        marker.style.top  = (y) + 'px';
+      }else{ // left
+        x = Math.round(r.left - GAP.left - mw) - EXTRA.left;
+        y = Math.round(r.top + a.t*r.height);
+        marker.style.left = x + 'px';
+        marker.style.top  = (y - mh/2) + 'px';
+      }
+    }
+
+    function step(seq){
+      var p = seq.indexOf(idx); if(p<0) p=0;
+      idx = seq[(p+1)%seq.length];
+      place(idx);
+    }
+
+    // Intercept old handlers to avoid double-move
+    function swallow(e){ e.preventDefault(); e.stopImmediatePropagation(); }
+    nextBtn.addEventListener('click', swallow, true);
+    prevBtn.addEventListener('click', swallow, true);
+    nextBtn.addEventListener('click', function(){ step(SEQ_CW);  }, {passive:true});
+    prevBtn.addEventListener('click', function(){ step(SEQ_CCW); }, {passive:true});
+
+    // Initial & resize
+    place(idx);
     addEventListener('resize', function(){ place(idx); });
-    addEventListener('orientationchange', function(){ setTimeout(function(){ place(idx); }, 50); });
+    addEventListener('orientationchange', function(){ setTimeout(function(){ place(idx); }, 60); });
+
+    // Expose quick tuning for you (no code edit needed): in console you can run
+    // window.SP_TUNE({left:1, right:6})  to apply your desired asymmetric inward offsets.
+    window.SP_TUNE = function(o){
+      if(!o) return;
+      if(typeof o.left==='number')  EXTRA.left  = o.left;
+      if(typeof o.right==='number') EXTRA.right = o.right;
+      place(idx);
+    };
+
+    // Apply your requested offsets by default for this build:
+    // left inward 1px, right inward 6px (top/bottom remain 0 extra)
+    EXTRA.left  = 1;
+    EXTRA.right = 6;
+    place(idx);
   });
 })();
 </script>
