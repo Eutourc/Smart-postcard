@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -14,28 +13,23 @@
     --bw-c2:#22d3ee;
     --bw-c3:#34d399;
     --brandword-size:26px;
-
     --card-border:1px;
     --card-border-color:#d1d5db;
-
     --big-arrow-color:#0b3a77;
     --big-arrow-top:-92px;
     --big-arrow-fat:22px;
     --big-arrow-width:26px;
     --left-fine:-0.5px;
-
     --marker-top:-20px;
     --marker-left:84.3%;
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
   }
-
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:#fff;color:#222;
     font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
   img{max-width:100%;display:block}
-
   .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
   .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
   .brand{display:flex;align-items:center;gap:10px}
@@ -51,7 +45,6 @@
     -webkit-text-fill-color:transparent;
     text-shadow:0 1px 1px rgba(0,0,0,.06);
   }
-
   .actions{display:flex;align-items:center;gap:8px}
   .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .cart{position:relative}
@@ -65,21 +58,17 @@
   .dd-item.current{background:#f5f7fa}
   .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
   .menu{font-size:22px;font-weight:900}
-
   main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
   h1{font-size:24px;line-height:1.15;margin:16px 0 14px;text-align:center} /* 增加标题下方留白为14px */
   .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:#fff;border-radius:20px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-
   .hint{background:#fff8d9;border:2px dashed #e4c23a;border-radius:12px;
         padding:8px 12px;text-align:center;font-size:13.5px;font-weight:800;line-height:1.35;
         max-width:94%;margin:0 auto}
-
   .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:14px; flex:0 0 auto !important; } /* 说明框下方到样图上缘同为14px */
   .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
            border:var(--card-border) solid var(--card-border-color);
            box-shadow:0 1px 2px rgba(0,0,0,.03)}
   .cardbox img{width:100%;height:auto;display:block;border-radius:0}
-
   .marker{
     position:absolute;
     top:var(--marker-top);
@@ -92,38 +81,28 @@
     pointer-events:none;
     z-index:9;
   }
-
   
   
   
   
   
-
   .features{margin:10px 0 0px;text-align:center;font-size:13.5px;line-height:1.25}
   .features p{margin:2px 0;font-weight:800}
-
   .btns{display:flex;gap:10px;margin-top:6px}
   .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
   .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
   .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
-
   /* v3.1 说明框（均衡留白：上/下均为14px） */
   
   .explain b { font-weight: 700; }
-
 /* === 留白调整：严格让前两处相等 === */
-
 /* 第一处：横幅↔标题 */
 main.wrap{ padding-top: 0 !important; }
  /* 上32 下32 */
-
 /* 清除 stage 头部内边距，避免第二处被额外拉大 */
-
 /* 说明框：不再额外加上边距，完全由 h1 的 margin-bottom 决定第二处 */
-
 /* 第三处：说明框↔样图 */
 .viewer{ margin-top: 2px !important; }
-
 @media (max-width: 360px){
   
 }
@@ -131,7 +110,6 @@ main.wrap{ padding-top: 0 !important; }
   
 }
 /* === 结束 === */
-
 /* === 大箭头（删除旧法→新法）：垂直由JS居中到说明框；横向基线与cardbox边线对齐 === */
 :root{
   --arrow-fat: 22px;   /* 上下边各22 => 总高44 */
@@ -164,21 +142,16 @@ main.wrap{ padding-top: 0 !important; }
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
 }
 /* === 结束 === */
-
 /* === 留白微调：第1、第2处 38px；第3处 22px === */
 h1{ margin: 38px 0 38px !important; }
 .stage{ gap: 0 !important; padding-top: 0 !important; }
-
 .viewer{ margin-top: 2px !important; }
 /* === 结束 === */
-
 /* === 留白微调：第1、第2处 36px；第3处 22px === */
 h1{ margin:30px 0 30px !important; }
 .stage{ gap: 0 !important; padding-top: 0 !important; }
-
 .viewer{ margin-top: 2px !important; }
 /* === 结束 === */
-
 /* === 说明框调整：尺寸略小、行距更紧、左右留白对称 === */
 .explain{
   margin: 0 auto !important;    /* 与之前第3处保持一致 */
@@ -192,7 +165,6 @@ h1{ margin:30px 0 30px !important; }
 /* 防止说明框里强调字过大导致撑开 */
 .explain strong, .explain b{ font-weight: 700; }
 .explain em, .explain i{ font-style: italic; }
-
 /* === 说明框调整：加入底色主题，可切换 === */
 .explain{
   margin: 0 auto !important;
@@ -205,25 +177,35 @@ h1{ margin:30px 0 30px !important; }
   background: #fef3c7 !important; /* 默认浅橙色 */
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
 /* 可选主题色 */
 .theme-orange .explain { background: #fef3c7 !important; } /* 浅橙色 */
 .theme-blue   .explain { background: #e0f2fe !important; } /* 浅蓝色 */
 .theme-gray   .explain { background: #f3f4f6 !important; } /* 浅灰色 */
 .theme-yellow .explain { background: #fef9c3 !important; } /* 浅黄色 */
-
 /* 强调文字 */
 .explain strong, .explain b{ font-weight: 700; }
 .explain em, .explain i{ font-style: italic; }
 /* === 结束 === */
-
 .gap5-spacer{display:block;}
 .gap4-spacer{display:block;}
 .gap3-spacer{display:block;}
 
+/* === Language badge (no inner square) === */
+.langpill .flag, .dd-item .dd-flag { display:none !important; } /* hide old flag blocks */
+.langpill .badge-lang{font-weight:800; font-size:18px; letter-spacing:.5px;}
+.langpill .badge-lang.en{color:#2b6aff;}
+.langpill .badge-lang.zh{color: #2b6aff; font-size:18px;}
+#lang-dd{display:none; position:absolute; right:0; top:44px; background:#fff; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.12); padding:8px; z-index:999;}
+#lang-dd.open{display:block;}
+#lang-dd .dd-item{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; font-size:15px;}
+#lang-dd .dd-item:hover{background:#f6f6f6;}
+#lang-dd .icon-glyph{font-weight:900;}
+#lang-dd .icon-glyph.en{color:#2b6aff;}
+#lang-dd .icon-glyph.zh{color: #2b6aff;}
+/* keep header layout stable */
+header .actions{position:relative;}
 </style>
 <style>
-
 /* === 特点集锦：隶书风格 + 视觉压缩 === */
 .features{
   font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif !important;
@@ -237,7 +219,6 @@ h1{ margin:30px 0 30px !important; }
   transform-origin:center;
   letter-spacing:-0.2px;
 }
-
 </style>
 <style>
     #viewer {
@@ -282,7 +263,6 @@ h1{ margin:30px 0 30px !important; }
 /* 激活态：纪念明信片=蓝字；未激活=深灰 */
 .btn.primary{ color:#1e56d6 !important; }
 @media (max-width: 420px){ .btns{gap:10px !important} }
-
   /* override: widen small-buttons center gap */
   .btns{gap:32px !important;}
 </style>
@@ -303,7 +283,69 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
 .gap3, .gap3-spacer{ height:18px !important; min-height:18px !important; }
 .header, .top-banner, .brand-section{ margin-bottom:calc(var(--gap1, 0px) + 1px) !important; }
 </style>
-</head>
+<style id="langpill-equalize">
+  .langpill{height:40px !important; padding:0 10px !important; align-items:center !important; max-width:80px !important;}
+  .langpill .badge-lang{display:inline-block !important; line-height:40px !important;}
+  #lang-dd .dd-item{font-size:14px !important; padding:8px 10px !important;}
+</style>
+<style>
+/* v6.8c narrow language pill */
+:root{
+  --lang-pill-height: 44px;  /* keep equal height to circles */
+  --lang-pill-pad-x: 6px;    /* narrower than before */
+}
+/* common selectors to catch our element */
+.lang-toggle, .lang-pill, .lang-btn, .language-toggle, .language-pill, button.lang, .lang-selector{
+  height: var(--lang-pill-height) !important;
+  min-height: var(--lang-pill-height) !important;
+  line-height: calc(var(--lang-pill-height) - 4px) !important;
+  padding-left: var(--lang-pill-pad-x) !important;
+  padding-right: var(--lang-pill-pad-x) !important;
+  border-radius: 9999px !important; /* capsule */
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+/* also try to keep the container's width snug */
+.lang-toggle, .lang-pill, .lang-btn, .language-toggle, .language-pill, button.lang, .lang-selector{
+  width: auto !important;
+}
+/* icon caret spacing smaller */
+.lang-toggle .caret, .lang-pill .caret, .lang-btn .caret, .language-toggle .caret{
+  margin-left: 2px !important;
+}
+/* make sure '简'/'EN' stay blue */
+.lang-toggle, .lang-pill, .lang-btn, .language-toggle, .language-pill, button.lang, .lang-selector{
+  color: #1f6feb !important;
+}
+</style>
+<style id="v69d-langbar-tweak">
+/* Only adjust sizes; keep layout/logic untouched */
+/* Language pill short axis slimmer */
+header .langpill, .langpill {
+  height: 30px !important;
+  min-height: 30px !important;
+  line-height: 30px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+/* Dropdown panel narrower */
+.lang-dd, .lang-dropdown, .lang-menu, .langlist, .language-menu {
+  min-width: 132px !important;
+  max-width: 152px !important;
+  width: 144px !important;
+  padding: 6px 8px !important;
+}
+/* Dropdown items tighter */
+.lang-dd .dd-item, .lang-menu .dd-item, .lang-dropdown .dd-item, .langlist .dd-item, .language-menu .dd-item {
+  padding: 8px 8px !important;
+}
+</style>
+<style>
+/* v7.3 tweak: tighter EN features line-height + slightly darker text */
+.features-en{ line-height:1.28; color:#111; }
+.features-en b, .features-en strong{ color:#000; }
+</style></head>
 <body><div aria-hidden="true" class="sp-underlay-canvas"></div>
 <header class="top">
 <div class="bar">
@@ -376,7 +418,6 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
     area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
   })();
   apply();
-
   document.getElementById('start-btn').addEventListener('click',()=>{
     location.href='#start';
   });
@@ -412,7 +453,6 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
   var left = document.querySelector('#prev, .big-arrow.left, .arw-left');
   var right = document.querySelector('#next, .big-arrow.right, .arw-right');
   if(!box || !right) return;
-
   var h = box.getBoundingClientRect().height;
   if(h>0) box.style.height = h + 'px';
   // keep font/line-height as-is; only center content
@@ -422,24 +462,18 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
     box.style.justifyContent = 'center';
     box.style.textAlign = 'center';
   }
-
   var T = ['明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！', '珍惜！邮票及明信片画面允许使用<br>您的照片！世界首例！独特唯一！', '到此一游留念！纪念点载入地图！<br>扫二维码或凭坐标可回味和分享！<br>长按纪念相册内二维码等于扫码！', '记录当时感言、日期、天气与温度！<br>这也是您在地图纪念点旁写的留言！', '明信内容', '分享一段录像或录音！<br>扫码即可回放！<br>手机上扫码=长按！', '加盖国家或地方纪念戳！<br>这是您到此一游的见证！<br>手机上长按纪念戳，享受Ai解说！', '明信片邮寄地址', '留念日期即邮戳日期！<br>盖戳日与留念日同步！', '电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！'];
-
   function render(idx){ box.innerHTML = T[idx] || ''; }
-
   var seqR = [2,1,10,3,4,5,6,7,8,9,10,1,2].map(n=>n-1);
   var seqL = [2,3,4,5,6,7,8,9,10,1,2].map(n=>n-1);
-
   var current = 1; // start at #2
   render(current);
-
   function step(seq) {
     var pos = seq.indexOf(current);
     if(pos < 0) pos = 0;
     current = seq[(pos+1) % seq.length];
     render(current);
   }
-
   right.addEventListener('click', function(){ step(seqR); }, {passive:true});
   if(left) left.addEventListener('click', function(){ step(seqL); }, {passive:true});
 })();
@@ -452,7 +486,6 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
     var prev = document.getElementById('prev');
     var next = document.getElementById('next');
     if(!explain || !prev || !next) return;
-
     // 启用箭头点击
     try{
       prev.style.pointerEvents = 'auto';
@@ -464,14 +497,12 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
       prev.style.zIndex = prev.style.zIndex || '2';
       next.style.zIndex = next.style.zIndex || '2';
     }catch(e){}
-
     // 文案（#2，#1，#10）
     var texts = [
       '明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺寸的照片！',
       '珍惜！ 邮票及明信片画面允许使用您的照片！<br>世界首例！ 独特唯一！',
       '电子明信片纪念册！ 免费赠送！<br>起步五张， 寄往邮箱！<br>以后再做， 可聚一堂！'
     ];
-
     function lock(){
       var h = explain.getBoundingClientRect().height;
       if(h>0){
@@ -485,26 +516,21 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
     } else {
       window.addEventListener('load', lock, {once:true});
     }
-
     var idx = 0; // 默认 2
     function render(){
       explain.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">'
                         + '<div style="text-align:center">' + texts[idx] + '</div></div>';
     }
     render();
-
     function stepRight(){ idx = (idx + 1) % 3; render(); }
     function stepLeft(){  idx = (idx - 1 + 3) % 3; render(); }
-
     next.addEventListener('click', stepRight, {passive:true});
     prev.addEventListener('click', stepLeft,  {passive:true});
-
     // 右下角标识
     var badge = document.createElement('div');
     badge.style.cssText = 'position:fixed;right:8px;bottom:8px;font-size:10px;color:#999;opacity:.9;pointer-events:none;';
     document.body.appendChild(badge);
   }
-
   if (document.readyState === 'complete' || document.readyState === 'interactive'){
     setup();
   } else {
@@ -524,14 +550,11 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
     var prev = document.getElementById('prev');
     var next = document.getElementById('next');
     if(!explain || !prev || !next) return;
-
     // —— 使用 v6.1 原文案（#1、#2、#10），不额外包裹任何 DIV，避免说明框“变异” ——
     var TEXT_1  = '明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！';
-    var TEXT_2  = '珍惜！邮票及明信片画面允许使用<br>您的照片！世界首例！独特唯一！';
+    var TEXT_2  = '您的照片可成为邮票及明信片画面！\n珍惜当下！历史佳机！独特唯一！';
     var TEXT_10 = '电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！';
-
     var texts = [TEXT_2, TEXT_1, TEXT_10]; // 0=2,1=1,2=10
-
     // —— 高度锁定：以 #1 文案测量一次，保持与 v6.1 一致 ——
     (function lockHeightOnce(){
       try{
@@ -548,12 +571,10 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
         }
       }catch(e){}
     })();
-
     // —— 初始化：直接渲染 #2（与 v6.1 行为一致） ——
     var idx = 0;
     function render(){ explain.innerHTML = texts[idx]; }
     render();
-
     // —— 捕获阶段绑定并拦截旧监听，严格执行 2→1→10 ——
     function stopAll(e){ e.preventDefault(); e.stopImmediatePropagation(); }
     next.addEventListener('click', function(e){ stopAll(e); idx = (idx + 1) % 3; render(); }, {capture:true, passive:false});
@@ -561,9 +582,9 @@ body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35v
   });
 })();
 </script>
-
 <script id="v69_r4" defer>(function(){
-var T={1:"明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！",2:"珍惜！邮票及明信片画面允许使用<br>您的照片！世界首例！独特唯一！",3:"到此一游留念！纪念点载入地图！<br>扫二维码或凭坐标可回味和分享！<br>长按纪念相册内二维码等于扫码！",4:"记录当时感言、日期、天气与温度！<br>这也是您在地图纪念点旁写的留言！",5:"书写您的明信内容！<br>留下您美好的回忆！",6:"分享一段录像或录音！<br>扫码即可回放！<br>手机上扫码=长按！",7:"加盖国家或地方纪念戳！<br>这是您到此一游的见证！<br>手机上长按纪念戳，享受Ai解说！",8:"填写明信片的邮寄地址！<br>国家名称须用英文书写！<br>请参照地址栏中的范例！",9:"留念日期即邮戳日期！<br>盖戳日与留念日同步！",10:"电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！"};
+var T={1:"明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！",2:"您的照片可成为邮票及明信片画面！
+珍惜当下！历史佳机！独特唯一！",3:"到此一游留念！纪念点载入地图！<br>扫二维码或凭坐标可回味和分享！<br>长按纪念相册内二维码等于扫码！",4:"记录当时感言、日期、天气与温度！<br>这也是您在地图纪念点旁写的留言！",5:"书写您的明信内容！<br>留下您美好的回忆！",6:"分享一段录像或录音！<br>扫码即可回放！<br>手机上扫码=长按！",7:"加盖国家或地方纪念戳！<br>这是您到此一游的见证！<br>手机上长按纪念戳，享受Ai解说！",8:"填写明信片的邮寄地址！<br>国家名称须用英文书写！<br>请参照地址栏中的范例！",9:"留念日期即邮戳日期！<br>盖戳日与留念日同步！",10:"电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！"};
 function N(s){return String(s||"").replace(/\s+/g,"").replace(/<br\s*\/?>/gi,"<br>").trim()}
 function H(b,h){var p=document.createElement("div"),cs=getComputedStyle(b);
   p.style.position="absolute";p.style.visibility="hidden";p.style.height="auto";p.style.maxHeight="none";
@@ -571,7 +592,6 @@ function H(b,h){var p=document.createElement("div"),cs=getComputedStyle(b);
   p.style.width=b.getBoundingClientRect().width+"px";p.style.padding=cs.padding;p.style.font=cs.font;
   p.style.lineHeight=cs.lineHeight;p.style.letterSpacing=cs.letterSpacing;p.style.wordBreak=cs.wordBreak;p.style.whiteSpace=cs.whiteSpace;
   p.innerHTML=h;document.body.appendChild(p);var r=Math.ceil(p.scrollHeight);p.remove();return r}
-
 function C(){
   var box=document.getElementById("explain")||document.querySelector("#explain,.explain");
   if(!box) return;
@@ -579,32 +599,26 @@ function C(){
   var W=Math.ceil(box.getBoundingClientRect().width);
   if(W>0){ box.style.width=W+"px"; box.style.minWidth=W+"px"; box.style.maxWidth=W+"px"; box.style.flex="0 0 auto"; }
   var HH=H(box,T[1])+6; if(HH>0){ box.style.height=HH+"px"; box.style.minHeight=HH+"px"; box.style.overflow="hidden"; }
-
   // Chain per your spec: right clockwise; left counter-clockwise; start from 2
   var chain=[2,1,10,9,8,7,6,5,4,3], cur=N(box.innerHTML), idx=0;
   for(var i=0;i<chain.length;i++){ if(cur===N(T[chain[i]]||"")){ idx=i; break; } }
   function R(){ box.innerHTML=T[chain[idx]]||""; }
-
   // Strong override: intercept capture-phase & also attach to likely arrow elements if present
   function onRight(e){ e.preventDefault(); e.stopImmediatePropagation(); idx=(idx+1)%chain.length; R(); }
   function onLeft(e){ e.preventDefault(); e.stopImmediatePropagation(); idx=(idx-1+chain.length)%chain.length; R(); }
-
   document.addEventListener("click",function(e){
     var t=e.target;
     if(t.closest("#next,.big-arrow.right,[data-role='next'],.right-arrow,.arrow-right,.arrow-right-big")) return onRight(e);
     if(t.closest("#prev,.big-arrow.left,[data-role='prev'],.left-arrow,.arrow-left,.arrow-left-big")) return onLeft(e);
   },true);
-
   // Direct bindings if elements exist (covers inline handlers)
   var pr = document.getElementById("prev") || document.querySelector(".big-arrow.left,.left-arrow,.arrow-left,.arrow-left-big");
   var nx = document.getElementById("next") || document.querySelector(".big-arrow.right,.right-arrow,.arrow-right,.arrow-right-big");
   if(pr){ pr.addEventListener("click", onLeft, true); pr.onclick = onLeft; }
   if(nx){ nx.addEventListener("click", onRight, true); nx.onclick = onRight; }
 }
-
 if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", C, {once:true}); } else { C(); }
 })();</script>
-
 <style id="explain_lock_w75_h72">
 #explain, .explain {
   box-sizing: border-box !important;
@@ -630,227 +644,567 @@ if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded
 }
 </style>
 
-
-<script id="fixBC_marker_seq_and_nudge">
+<script id="fixAU_marker_gap_2px_body_anchor">
 (function(){
-  function ready(fn){ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn,{once:true});} else {fn();} }
-  function rect(el){ return el.getBoundingClientRect(); }
-  function pickMainImg(){
-    var img=document.getElementById('pc-img');
-    if(img) return img;
-    var list=[].slice.call(document.querySelectorAll('img'));
-    var best=null, area=-1;
-    for(var i=0;i<list.length;i++){
-      var r=list[i].getBoundingClientRect(), a=r.width*r.height;
-      if(a>area){ area=a; best=list[i]; }
-    }
-    return best;
+  function ready(fn){
+    if(document.readyState==='loading'){
+      document.addEventListener('DOMContentLoaded',fn,{once:true});
+    }else{ fn(); }
   }
   ready(function(){
-    var marker=document.getElementById('marker');
-    var img=pickMainImg();
-    if(!marker || !img) return;
-
-    if(marker.parentElement!==document.body){ document.body.appendChild(marker); }
+    var doc=document;
+    var prev=doc.getElementById('prev')||doc.querySelector('.big-arrow.left, .arrow-left');
+    var next=doc.getElementById('next')||doc.querySelector('.big-arrow.right, .arrow-right');
+    var marker=doc.getElementById('marker');
+    var img=doc.getElementById('pc-img')||doc.querySelector('#pcimg, .pc-img, img[alt="postcard sample"]')||document.querySelector('img');
+    if(!prev||!next||!marker||!img) return;
+    // Anchor marker to BODY to eliminate clipping/overflow issues anywhere
+    if(marker.parentElement!==doc.body){ doc.body.appendChild(marker); }
     marker.style.position='absolute';
     marker.style.transformOrigin='50% 50%';
     marker.style.zIndex='9999';
-    marker.style.pointerEvents='none';
-
-    var GAP=2;
-    var NUDGE={top:0,right:-6,bottom:0,left:-6};
-
+    marker.style.pointerEvents='none'; // avoid intercepting taps
+    var GAP=2; // requested 2px gap
+    // Station layout (coarse; later can be fine-tuned)
     var ANCH={
       1:{edge:'top',    t:0.90},
-      2:{edge:'top',    t:0.10},
-      3:{edge:'top',    t:0.30},
+      2:{edge:'top',    t:0.26},
+      3:{edge:'top',    t:0.38},
       4:{edge:'top',    t:0.50},
       5:{edge:'left',   t:0.50},
-      6:{edge:'bottom', t:0.90},
+      6:{edge:'bottom', t:0.80},
       7:{edge:'bottom', t:0.50},
-      8:{edge:'bottom', t:0.10},
-      9:{edge:'right',  t:0.50},
+      8:{edge:'bottom', t:0.23},
+      9:{edge:'right',  t:0.70},
       10:{edge:'top',   t:0.90}
     };
-
-    var SEQ_CW=[2,1,10,9,8,7,6,5,4,3];
-    var SEQ_CCW=SEQ_CW.slice().reverse();
-
-    var seq=SEQ_CW;
-    var posIndex=0;
-
-    function orient(edge){
-      var rot=(edge==='top')?0:(edge==='right')?90:(edge==='bottom')?180:270;
-      var tx=(edge==='top'||edge==='bottom')?-50:0;
-      var ty=(edge==='left'||edge==='right')?-50:0;
+    var idx=2;
+    function place(i){
+      idx=i||idx;
+      var a=ANCH[idx]||ANCH[2];
+      var ir=img.getBoundingClientRect(); // viewport coords
+      var x=0,y=0;
+      // set rotation first so bbox is correct
+      var rot= (a.edge==='top')?0 : (a.edge==='right')?90 : (a.edge==='bottom')?180 : 270;
+      var tx = (a.edge==='top'||a.edge==='bottom')? -50 : 0;
+      var ty = (a.edge==='right'||a.edge==='left')? -50 : 0;
       marker.style.transform='rotate('+rot+'deg) translate('+tx+'%,'+ty+'%)';
+      // measure rendered bbox
+      var mr=marker.getBoundingClientRect(), mw=mr.width, mh=mr.height;
+      if(a.edge==='top'){
+        x = Math.round(ir.left + a.t*ir.width);
+        y = Math.round(ir.top - GAP - mh);
+      }else if(a.edge==='right'){
+        x = Math.round(ir.left + ir.width + GAP);
+        y = Math.round(ir.top + a.t*ir.height);
+      }else if(a.edge==='bottom'){
+        x = Math.round(ir.left + a.t*ir.width);
+        y = Math.round(ir.top + ir.height + GAP);
+      }else{ // left
+        x = Math.round(ir.left - GAP - mw);
+        y = Math.round(ir.top + a.t*ir.height);
+      }
+      marker.style.left = x + 'px';
+      marker.style.top  = y + 'px';
     }
-    function currentStation(){ return seq[posIndex]; }
-
-    function placeByStation(st){
-      var a=ANCH[st];
-      if(!a) return;
-      var ir=rect(img);
-      orient(a.edge);
-      var mr=marker.getBoundingClientRect(), mw=mr.width||16, mh=mr.height||16;
-      var x=0,y=0, n=(NUDGE[a.edge]||0);
-      if(a.edge==='top'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top - GAP - mh + n); }
-      else if(a.edge==='right'){ x=Math.round(ir.left + ir.width + GAP + n); y=Math.round(ir.top + a.t*ir.height); }
-      else if(a.edge==='bottom'){ x=Math.round(ir.left + a.t*ir.width); y=Math.round(ir.top + ir.height + GAP + n); }
-      else { x=Math.round(ir.left - GAP - mw + n); y=Math.round(ir.top + a.t*ir.height); }
-      marker.style.left=x+'px'; marker.style.top=y+'px';
-    }
-    function place(){ placeByStation(currentStation()); }
-
-    place();
-
-    function goCW(){ seq=SEQ_CW; posIndex=(posIndex+1)%SEQ_CW.length; place(); }
-    function goCCW(){ seq=SEQ_CCW; posIndex=(posIndex+1)%SEQ_CCW.length; place(); }
-
-    function onEdge(e){
-      var x=e.clientX, w=window.innerWidth;
-      if(x < w*0.20){ goCCW(); }
-      else if(x > w*0.80){ goCW(); }
+    function contains(el,t){ return el && (el===t || el.contains(t)); }
+    function onAny(e){
+      var t=e.target;
+      if(contains(prev,t)){ idx = (idx===10)?1:(idx+1); place(idx); }
+      else if(contains(next,t)){ idx = (idx===1)?10:(idx-1); place(idx); }
     }
     ['click','pointerup','touchend'].forEach(function(evt){
-      document.addEventListener(evt,onEdge,{capture:true,passive:true});
+      document.addEventListener(evt,onAny,{capture:true,passive:true});
     });
+    function ensure(){
+      if(img.complete){ place(2); }
+      else{ img.addEventListener('load', function(){ place(2); }, {once:true}); }
+    }
+    ensure();
+    window.addEventListener('resize', function(){ place(idx); });
+    window.addEventListener('orientationchange', function(){ setTimeout(function(){ place(idx); }, 50); });
+  });
+})();
+</script>
 
-    addEventListener('resize', place);
-    addEventListener('orientationchange', function(){ setTimeout(place, 50); });
+<script>
+(function(){
+  const STR = {
+    zh: {
+      title: "珍藏您举世无双的纪念明信片",
+      explain: "您的照片可成为邮票及明信片画面！\n珍惜当下！历史佳机！独特唯一！",
+      features: [
+        "操作简单 · 实体印刷 · 全球邮寄",
+        "旅游纪念 · 集邮佳品 · 珍贵相册",
+        "照片打印 · A5 大尺寸 · 物超所值"
+      ],
+      btnComm: "纪念明信片",
+      btnTrad: "传统明信片",
+      btnStart: "开始制作"
+    },
+    en: {
+      title: "Treasure Your One-Of-A-Kind Souvenir Postcard",
+      explain: "Amazing! Your own photo can appear on stamps and postcards — the first of its kind in the world!<br>Truly one of a kind!",
+      features: [
+        "Easy to make · Physical printing · Worldwide shipping",
+        "Travel souvenir · Philatelic collectible · Precious album",
+        "Photo printing · A5 large size · Great value"
+      ],
+      btnComm: "Commemorative Postcard",
+      btnTrad: "Traditional Postcard",
+      btnStart: "Start"
+    }
+  };
+  const $ = (sel, el=document) => el.querySelector(sel);
+  const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+  const pill = $("#lang-pill");
+  const dd = $("#lang-dd");
+  let current = localStorage.getItem("sp-lang") || "en"; // default English
+  function setPillGlyph(lang){
+    if(!pill) return;
+    const span = document.createElement('span');
+    span.className = 'badge-lang '+lang;
+    span.textContent = lang==='zh' ? '简' : 'EN';
+    // clear and insert glyph + caret (keep caret if exists)
+    const caret = pill.querySelector('.caret') || document.createElement('span');
+    caret.className = 'caret';
+    pill.innerHTML = '';
+    pill.appendChild(span);
+    pill.appendChild(caret);
+  }
+  function applyLang(lang){
+    current = lang;
+    localStorage.setItem("sp-lang", lang);
+    // Title
+    const h = $("#hero-title h1") || $("#hero-title") || $("h1");
+    if(h) h.textContent = STR[lang].title;
+    // Explain text
+    const ex = $(".explain");
+    if(ex) ex.textContent = STR[lang].explain;
+    // Features (keep same bullets & layout; only swap text)
+    const rows = $$(".features .row");
+    const feats = STR[lang].features;
+    rows.forEach((row, i)=>{
+      if(feats[i]) row.textContent = feats[i];
+    });
+    // Buttons
+    const bComm = $("#btn-comm");
+    const bTrad = $("#btn-trad");
+    const bStart = $("#btn-start");
+    if(bComm) bComm.textContent = STR[lang].btnComm;
+    if(bTrad) bTrad.textContent = STR[lang].btnTrad;
+    if(bStart) bStart.textContent = STR[lang].btnStart;
+    // Dropdown current highlight
+    $$("#lang-dd .dd-item").forEach(item=>{
+      item.classList.toggle('current', item.dataset.lang===lang);
+    });
+    setPillGlyph(lang);
+  }
+  // Build dropdown icons as glyphs (no inner squares)
+  $$("#lang-dd .dd-item").forEach(item=>{
+    const lang=item.dataset.lang;
+    const icon = document.createElement('span');
+    icon.className = 'icon-glyph '+lang;
+    icon.textContent = lang==='zh' ? '简' : 'EN';
+    // remove old flag if present
+    const ddFlag = item.querySelector('.dd-flag');
+    if(ddFlag) ddFlag.remove();
+    item.insertBefore(icon, item.firstChild);
+    item.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      dd.classList.remove('open');
+      applyLang(lang);
+    });
+  });
+  // Toggle dropdown anchored to pill
+  if(pill && dd){
+    pill.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      dd.classList.toggle('open');
+    });
+    document.addEventListener('click', ()=> dd.classList.remove('open'));
+  }
+  // Init
+  applyLang(current);
+})();
+</script>
+
+<style id="langpill-patch">
+header [data-lang-pill],
+header .lang-pill,
+header .language-pill {
+  height: 28px !important;
+  min-height: 28px !important;
+  line-height: 28px !important;
+  padding: 2px 12px 2px 10px !important;
+  border-radius: 9999px !important;
+  background: #fff !important;
+  border: 2px solid rgba(0,0,0,0.06) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04) inset !important;
+}
+header [data-lang-pill] .lang-text,
+header .lang-pill .lang-text,
+header .language-pill .lang-text {
+  color: #1e40af !important;
+  font-weight: 700 !important;
+}
+header [data-lang-pill] .lang-caret,
+header .lang-pill .lang-caret,
+header .language-pill .lang-caret {
+  margin-left: 2px !important;
+}
+</style>
+<script id="langpill-fix">
+(function(){
+  function approx(e){
+    const cs = getComputedStyle(e);
+    const bg = cs.backgroundColor.replace(/\s+/g,'');
+    const br = parseFloat(cs.borderTopLeftRadius)||0;
+    const w = e.offsetWidth;
+    const h = e.offsetHeight;
+    const txt = (e.textContent||'').trim();
+    return (/(简|EN)/.test(txt)) && (bg.includes('255,255,255')) && br>=10 && (w>h*1.6) && h>=26 && h<=44;
+  }
+  function tagPill(el){
+    if(!el) return;
+    el.setAttribute('data-lang-pill','');
+    let textSpan = Array.from(el.querySelectorAll('*')).find(n=>/(简|EN)/.test((n.textContent||'').trim()) && n.children.length===0);
+    if(!textSpan){
+      textSpan = document.createElement('span');
+      textSpan.textContent = (el.textContent||'').trim();
+      el.innerHTML = '';
+      el.appendChild(textSpan);
+    }
+    textSpan.classList.add('lang-text');
+    let caret = Array.from(el.querySelectorAll('svg, i, span')).find(n=>/▼|▾|▿|⯆|⏷/.test(n.textContent||'') || /chevron|caret|arrow/i.test(n.className||''));
+    if(!caret){
+      caret = document.createElement('span');
+      caret.textContent = '▾';
+      el.appendChild(caret);
+    }
+    caret.classList.add('lang-caret');
+    el.style.height = '28px';
+    el.style.minHeight = '28px';
+    el.style.lineHeight = '28px';
+    el.style.padding = '2px 12px 2px 10px';
+    el.style.borderRadius = '9999px';
+    el.style.background = '#fff';
+    el.style.border = '2px solid rgba(0,0,0,0.06)';
+    el.style.display = 'inline-flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.gap = '10px';
+    textSpan.style.color = '#1e40af';
+    textSpan.style.fontWeight = '700';
+  }
+  window.addEventListener('DOMContentLoaded', function(){
+    let candidate = null;
+    const root = document.querySelector('header') || document.body;
+    const els = root.querySelectorAll('*');
+    for(const el of els){
+      try{
+        if(approx(el)) { candidate = el; break; }
+      }catch(_){}
+    }
+    if(!candidate){
+      for(const el of document.querySelectorAll('*')){
+        try{
+          if(approx(el)) { candidate = el; break; }
+        }catch(_){}
+      }
+    }
+    if(candidate) tagPill(candidate);
   });
 })();
 </script>
 
 
-<!-- injected: balance_fix_v1 (left/right symmetry & exact 2px edges) -->
-<script id="balance_fix_v1">
+<style id="explain-lineheight-fix-r9">
+#explain, .explain {
+  white-space: pre-line !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+}
+</style>
+
+
+<!-- v7.4 unify: EN/CN 都有10条；默认显示序号2；右箭头顺时针；语言键互不干扰；三行居中 -->
+<script id="sp-explain-unified-10">
 (function(){
-  function ready(fn){ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',fn,{once:true});} else {fn();} }
-  function rect(el){ return el.getBoundingClientRect(); }
-  function pickMainImg(){
-    var img=document.getElementById('pc-img');
-    if(img) return img;
-    var list=[].slice.call(document.querySelectorAll('img'));
-    list.sort(function(a,b){ return (rect(b).width*rect(b).height)-(rect(a).width*rect(a).height); });
-    return list[0]||null;
+  var EN = [
+    "The postcard / stamp image!\nMay replace it with your photo!\nA large A5 photo is developed!",
+    "Allow to use your own photo!\nTreasure the historic chance!\nIt is one of a kind worldwide!",
+    "Your visiting commemoration!\nYou can mark it on the map!\nScan QR code to relive / share!",
+    "Record a feeling, date, weather,\ntemperature! It’s the postscript\n on your map memorial point!",
+    "Write your heartfelt words!\nKeep your cherished memories!",
+    "Record your video / audio!\nScan QR code to play it back!\nLong-press QR code on phone!",
+    "Add a local memorial seal!\nIt is a witness to your visit!\nLong-press it for AI Commentary!",
+    "Please fill in the mailing address!\nCountry names must be English!\nSee example in the address field!",
+    "The postmark & commemorative dates are ensured to be identical!",
+    "Digital postcard album — free!\nStart with five! Emailed to you!\nIf more later, may put all in one!"
+  ];
+  var CN = [
+    "明信片背面图案！可成为邮票图案！\n您可以任选照片！可用您的自拍照！\n这等于洗了一张 A5 大尺码的照片！",
+    "您的照片可成为邮票及明信片画面！\n 珍惜当下！历史佳机！独特唯一！",
+    "到此一游留念！纪念点载入地图！\n扫二维码或凭坐标可回味和分享！\n长按纪念相册内二维码等于扫码！",
+    "记录当时感言、日期、天气与温度！\n这也是您在地图纪念点旁写的留言！",
+    "书写您的明信内容！\n留下您美好的回忆！",
+    "分享一段录像或录音！\n    扫码即可回放！\n 手机上扫码=长按！",
+    "      加盖国家或地方纪念戳！\n      这是您到此一游的见证！\n手机上长按纪念戳，享受Ai解说！",
+    "填写明信片的邮寄地址！\n国家名称须用英文书写！\n请参照地址栏中的范例！",
+    "留念日期即邮戳日期！\n盖戳日与留念日同步！",
+    "电子明信片纪念册！免费赠送！\n     起步五张，寄往邮箱！\n     以后再做，可聚一堂！"
+  ];
+  var order = [0,1,2,3,4,5,6,7,8,9];
+  var defaultIndex = 1;
+  var pos = defaultIndex;
+  var active = false, bound=false;
+  var prevEl=null, nextEl=null;
+
+  function getLang(){
+    var ls=(localStorage.getItem('sp-lang')||'').toLowerCase();
+    var htmlLang=(document.documentElement.getAttribute('lang')||'').toLowerCase();
+    var lang = ls || htmlLang || '';
+    return (lang==='en') ? 'en' : 'zh';
   }
-  ready(function(){
-    var img = pickMainImg();
-    var marker = document.getElementById('marker') || document.querySelector('.sp-marker,.postcard-marker');
-    var prevBtn = document.getElementById('prev') || document.querySelector('.big-arrow.left,[data-role="prev"]');
-    var nextBtn = document.getElementById('next') || document.querySelector('.big-arrow.right,[data-role="next"]');
-    if(!img || !marker || !prevBtn || !nextBtn) return;
+  function textArr(){ return (getLang()==='en') ? EN : CN; }
 
-    // Use fixed positioning so viewport coords & placement are consistent
-    marker.style.position = 'fixed';
-    marker.style.zIndex = '9999';
-    marker.style.pointerEvents = 'none';
-    marker.style.transformOrigin = '50% 50%';
+  function box(){ return document.getElementById('explain') || document.querySelector('#explain, .explain'); }
+  function style(b){ b.style.whiteSpace='pre-line'; b.style.textAlign='center'; b.style.lineHeight='1.2'; }
+  function render(){ var b=box(); if(!b) return; style(b); var A=textArr(); b.textContent = A[ order[pos] ]; }
 
-    // Exact edge gaps in px
-    var GAP = { top:2, right:2, bottom:2, left:2 };
-    // Optional extra fine-tune (px): positive moves inward toward image
-    var EXTRA = { top:0, right:0, bottom:0, left:0 };
+  function stepRight(e){ if(!active) return; if(e){e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();} var A=textArr(); pos=(pos+1)%A.length; render(); }
+  function stepLeft(e){  if(!active) return; if(e){e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();} var A=textArr(); pos=(pos+A.length-1)%A.length; render(); }
 
-    // If page had a previous NUDGE, neutralize it to avoid double-offset
-    window.__SP_DISABLE_OLD_NUDGE__ = true;
-
-    // Anchors: 1&10 same (top 90%), 2 top 18%, 3 top 36%, 4 top 54%, 5 left mid, 6 bottom 82%, 7 bottom 50%, 8 bottom 22%, 9 right mid
-    var ANCH = {
-      1:{edge:'top',    t:0.90},
-      2:{edge:'top',    t:0.18},
-      3:{edge:'top',    t:0.36},
-      4:{edge:'top',    t:0.54},
-      5:{edge:'left',   t:0.50},
-      6:{edge:'bottom', t:0.82},
-      7:{edge:'bottom', t:0.50},
-      8:{edge:'bottom', t:0.22},
-      9:{edge:'right',  t:0.50},
-      10:{edge:'top',   t:0.90}
-    };
-
-    var SEQ_CW  = [2,1,10,9,8,7,6,5,4,3];
-    var SEQ_CCW = SEQ_CW.slice().reverse();
-    var idx = 2;
-
-    function orient(edge){
-      // Arrow points inward: top->down(0deg), right->left(90), bottom->up(180), left->right(270)
-      var rot = edge==='top'?0:edge==='right'?90:edge==='bottom'?180:270;
-      marker.style.transform = 'rotate('+rot+'deg)';
+  function bind(){
+    if(bound) return;
+    var a=document.getElementById('prev')||document.querySelector('[data-prev], .arrow-left, .prev');
+    var b=document.getElementById('next')||document.querySelector('[data-next], .arrow-right, .next');
+    var cand=[]; if(a) cand.push(a); if(b && b!==a) cand.push(b);
+    if(cand.length===2){
+      cand.sort(function(x,y){ return x.getBoundingClientRect().left - y.getBoundingClientRect().left; });
+      prevEl=cand[0]; nextEl=cand[1];
+    }else{ prevEl=a; nextEl=b; }
+    if(prevEl){ prevEl.addEventListener('click', stepLeft);  prevEl.addEventListener('touchstart', stepLeft, {passive:false}); }
+    if(nextEl){ nextEl.addEventListener('click', stepRight); nextEl.addEventListener('touchstart', stepRight,{passive:false}); }
+    bound=true;
+  }
+  function unbind(){
+    if(!bound) return;
+    try{
+      if(prevEl){ prevEl.removeEventListener('click', stepLeft);  prevEl.removeEventListener('touchstart', stepLeft, {passive:false}); }
+      if(nextEl){ nextEl.removeEventListener('click', stepRight); nextEl.removeEventListener('touchstart', stepRight,{passive:false}); }
+    }catch(e){}
+    bound=false; prevEl=null; nextEl=null;
+  }
+  function guard(){
+    if(!active) return;
+    var b=box(); if(!b) return;
+    if(b.innerHTML && b.innerHTML.indexOf('<br')>=0){
+      b.textContent = b.innerHTML.replace(/<br\s*\/?\s*>/gi, '\n'); style(b);
     }
+  }
+  function activate(){
+    active=true; pos=defaultIndex; bind(); render();
+  }
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn, {once:true}); else fn(); }
+  ready(function(){
+    activate();
+    // 尝试在语言切换（若页面设置了 html lang 或 localStorage）后，回到序号2并渲染
+    window.addEventListener('storage', function(){ pos=defaultIndex; render(); }, false);
+    var tries=0, iv=setInterval(function(){ tries++; guard(); if(tries>20) clearInterval(iv); }, 250);
+  });
+})();
+</script>
 
-    function place(n){
-      var a = ANCH[n], r = rect(img);
-      if(!a) return;
-      orient(a.edge);
 
-      // Measure marker box to align tip precisely
-      var mw = marker.offsetWidth  || 16;
-      var mh = marker.offsetHeight || 16;
+<!-- SmartPostcard overlay controller v7.8 -->
+<style id="sp-overlay-style">
+  .sp-hitbox{position:absolute; z-index:9999; top:0; bottom:0; width:84px;}
+  .sp-hitbox-left{left:0;}
+  .sp-hitbox-right{right:0;}
+</style>
+<script id="sp-controller-v78">
+(function(){
+  var EN = [
+    "The postcard / stamp image!\nMay replace it with your photo!\nA large A5 photo is developed!",
+    "Allow to use your own photo!\nTreasure the historic chance!\nIt is one of a kind worldwide!",
+    "Your visiting commemoration!\nYou can mark it on the map!\nScan QR code to relive / share!",
+    "Record a feeling, date, weather,\ntemperature! It’s the postscript\n on your map memorial point!",
+    "Write your heartfelt words!\nKeep your cherished memories!",
+    "Record your video / audio!\nScan QR code to play it back!\nLong-press QR code on phone!",
+    "Add a local memorial seal!\nIt is a witness to your visit!\nLong-press it for AI Commentary!",
+    "Please fill in the mailing address!\nCountry names must be English!\nSee example in the address field!",
+    "The postmark & commemorative dates are ensured to be identical!",
+    "Digital postcard album — free!\nStart with five! Emailed to you!\nIf more later, may put all in one!"
+  ];
+  var CN = [
+    "明信片背面图案！可成为邮票图案！\n您可以任选照片！可用您的自拍照！\n这等于洗了一张 A5 大尺码的照片！",
+    "您的照片可成为邮票及明信片画面！\n 珍惜当下！历史佳机！独特唯一！",
+    "到此一游留念！纪念点载入地图！\n扫二维码或凭坐标可回味和分享！\n长按纪念相册内二维码等于扫码！",
+    "记录当时感言、日期、天气与温度！\n这也是您在地图纪念点旁写的留言！",
+    "书写您的明信内容！\n留下您美好的回忆！",
+    "分享一段录像或录音！\n    扫码即可回放！\n 手机上扫码=长按！",
+    "      加盖国家或地方纪念戳！\n      这是您到此一游的见证！\n手机上长按纪念戳，享受Ai解说！",
+    "填写明信片的邮寄地址！\n国家名称须用英文书写！\n请参照地址栏中的范例！",
+    "留念日期即邮戳日期！\n盖戳日与留念日同步！",
+    "电子明信片纪念册！免费赠送！\n     起步五张，寄往邮箱！\n     以后再做，可聚一堂！"
+  ];
+  var defaultIndex = 1;
+  var pos = defaultIndex;
+  var curLang = 'en';
+  var moTitle = null;
 
-      // Compute base coords for tip
-      var x=0, y=0;
-      if(a.edge==='top'){
-        x = Math.round(r.left + a.t*r.width);
-        y = Math.round(r.top  - GAP.top  - mh) - EXTRA.top;
-        marker.style.left = (x - mw/2) + 'px';
-        marker.style.top  = y + 'px';
-      }else if(a.edge==='right'){
-        x = Math.round(r.right + GAP.right) + EXTRA.right;
-        y = Math.round(r.top + a.t*r.height);
-        marker.style.left = (x) + 'px';
-        marker.style.top  = (y - mh/2) + 'px';
-      }else if(a.edge==='bottom'){
-        x = Math.round(r.left + a.t*r.width);
-        y = Math.round(r.bottom + GAP.bottom) + EXTRA.bottom;
-        marker.style.left = (x - mw/2) + 'px';
-        marker.style.top  = (y) + 'px';
-      }else{ // left
-        x = Math.round(r.left - GAP.left - mw) - EXTRA.left;
-        y = Math.round(r.top + a.t*r.height);
-        marker.style.left = x + 'px';
-        marker.style.top  = (y - mh/2) + 'px';
+  function q(s){ return document.querySelector(s); }
+  function findTitle(){
+    return q('h1, h2, .headline, .hero-title') || document.body;
+  }
+  function detectLang(){
+    var t = (findTitle().innerText||'').trim();
+    if(/[\u4e00-\u9fa5]/.test(t)) return 'zh';
+    if(/Treasure|one-of-a-kind|postcard/i.test(t)) return 'en';
+    return curLang;
+  }
+  function bank(){ return curLang==='en' ? EN : CN; }
+  function findBox(){
+    return q('#explain, .explain, [data-explain], .bubble, .explain-box, .tip, .note, .desc, .speech, .msg');
+  }
+  function ensureBoxStyles(el){
+    el.style.whiteSpace='pre-line';
+    el.style.textAlign='center';
+    el.style.lineHeight='1.2';
+  }
+  function setBoxText(s){
+    var el=findBox(); if(!el) return;
+    ensureBoxStyles(el);
+    el.innerHTML = s.replace(/\n/g,'<br>');
+  }
+  function render(){ setBoxText(bank()[pos]); }
+  function resetToDefault(){ pos = defaultIndex; render(); }
+
+  var leftHB=null, rightHB=null;
+  function placeHitboxes(){
+    var box=findBox(); if(!box) return;
+    var rect=box.getBoundingClientRect();
+    var root = document.body;
+    if(!leftHB){
+      leftHB=document.createElement('div');
+      leftHB.className='sp-hitbox sp-hitbox-left';
+      leftHB.addEventListener('click', function(e){
+        var A=bank(); pos=(pos+1)%A.length; render();
+        e.stopPropagation(); e.preventDefault();
+      }, true);
+      root.appendChild(leftHB);
+    }
+    if(!rightHB){
+      rightHB=document.createElement('div');
+      rightHB.className='sp-hitbox sp-hitbox-right';
+      rightHB.addEventListener('click', function(e){
+        var A=bank(); pos=(pos + A.length - 1)%A.length; render();
+        e.stopPropagation(); e.preventDefault();
+      }, true);
+      root.appendChild(rightHB);
+    }
+    var top = window.scrollY + rect.top + rect.height/2 - 42;
+    leftHB.style.top = rightHB.style.top = top+'px';
+    leftHB.style.height = rightHB.style.height = '84px';
+  }
+  function removeTestText(){
+    var el=findBox(); if(!el) return;
+    var txt = el.innerText||'';
+    if(/Amazing! Your own photo can appear on stamps/i.test(txt)){
+      resetToDefault();
+    }
+  }
+  function watchTitle(){
+    if(moTitle) moTitle.disconnect();
+    curLang = detectLang();
+    moTitle = new MutationObserver(function(){
+      var L = detectLang();
+      if(L!==curLang){ curLang=L; resetToDefault(); }
+    });
+    moTitle.observe(findTitle(), {childList:true, subtree:true, characterData:true});
+  }
+  function init(){
+    watchTitle();
+    render();
+    removeTestText();
+    placeHitboxes();
+    window.addEventListener('resize', placeHitboxes);
+    setTimeout(placeHitboxes, 600);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+  else init();
+})();
+</script>
+
+
+<!-- v7.3 英文特点集锦切换（仅影响 features；不改其它逻辑） -->
+<style id="features-en-style">
+  .features.lang-en p{ line-height:1.35 !important; }
+</style>
+<script id="features-en-switch">
+(function(){
+  var sec = document.querySelector('section.features#features');
+  if(!sec) return;
+  // 缓存中文原始三行（保持原样HTML，含 <span class="narrow">A5 大尺码</span>）
+  var CN_HTML = sec.innerHTML;
+
+  var EN_LINES = [
+    "Easy to make · Physical printing",
+    "Precious album · Worldwide delivery",
+    "Travel souvenir · Philatelic collectible",
+    "Photo printing · A5 large size · Great value"
+  ];
+  var EN_HTML = EN_LINES.map(function(s){
+    return '<p>'+s+'</p>';
+  }).join('');
+
+  function currentLang(){
+    // 1) localStorage 约定
+    var ls = (localStorage.getItem('sp-lang')||'').toLowerCase();
+    if(ls==='en'||ls==='zh') return ls;
+    // 2) 看标题是否含中文
+    var h = document.getElementById('hero-title') || document.querySelector('h1');
+    var t = (h && h.innerText) ? h.innerText : document.title || '';
+    return /[\u4e00-\u9fa5]/.test(t) ? 'zh' : 'en';
+  }
+  function apply(){
+    var L = currentLang();
+    if(L==='en'){
+      if(sec.getAttribute('data-lang')!=='en'){
+        sec.setAttribute('data-lang','en');
+        sec.classList.add('lang-en');
+        sec.innerHTML = EN_HTML + '<div class="gap5-spacer" style="height:30px"></div>';
+      }
+    }else{
+      if(sec.getAttribute('data-lang')!=='zh'){
+        sec.setAttribute('data-lang','zh');
+        sec.classList.remove('lang-en');
+        sec.innerHTML = CN_HTML;
       }
     }
+  }
+  // 初始
+  document.addEventListener('DOMContentLoaded', apply, {once:true});
+  if(document.readyState!=='loading') apply();
 
-    function step(seq){
-      var p = seq.indexOf(idx); if(p<0) p=0;
-      idx = seq[(p+1)%seq.length];
-      place(idx);
-    }
+  // 监听标题变化（语言切换时通常会变）
+  var h = document.getElementById('hero-title') || document.querySelector('h1') || document.body;
+  var mo = new MutationObserver(function(){ apply(); });
+  mo.observe(h, {childList:true, characterData:true, subtree:true});
 
-    // Intercept old handlers to avoid double-move
-    function swallow(e){ e.preventDefault(); e.stopImmediatePropagation(); }
-    nextBtn.addEventListener('click', swallow, true);
-    prevBtn.addEventListener('click', swallow, true);
-    nextBtn.addEventListener('click', function(){ step(SEQ_CW);  }, {passive:true});
-    prevBtn.addEventListener('click', function(){ step(SEQ_CCW); }, {passive:true});
+  // 监听 localStorage
+  window.addEventListener('storage', apply, false);
 
-    // Initial & resize
-    place(idx);
-    addEventListener('resize', function(){ place(idx); });
-    addEventListener('orientationchange', function(){ setTimeout(function(){ place(idx); }, 60); });
-
-    // Expose quick tuning for you (no code edit needed): in console you can run
-    // window.SP_TUNE({left:1, right:6})  to apply your desired asymmetric inward offsets.
-    window.SP_TUNE = function(o){
-      if(!o) return;
-      if(typeof o.left==='number')  EXTRA.left  = o.left;
-      if(typeof o.right==='number') EXTRA.right = o.right;
-      place(idx);
-    };
-
-    // Apply your requested offsets by default for this build:
-    // left inward 1px, right inward 6px (top/bottom remain 0 extra)
-    EXTRA.left  = 1;
-    EXTRA.right = 6;
-    place(idx);
-  });
+  // 兜底：语言菜单点击后微延迟再应用
+  document.addEventListener('click', function(){ setTimeout(apply, 60); }, true);
 })();
 </script>
 
 </body>
-
 </html>
-
