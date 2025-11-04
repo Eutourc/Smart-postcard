@@ -1206,5 +1206,33 @@ header .language-pill .lang-caret {
 })();
 </script>
 
+
+<!-- v7.3b — unify typography for explain & features (size/leading/color一致) -->
+<style id="v73b-typography-unify">
+  .explain, #explain {
+    font-size: 14px !important;
+    line-height: 1.28 !important;
+    color: #111 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .features, .features p {
+    font-family: inherit !important;
+    font-size: 14px !important;
+    line-height: 1.28 !important;
+    color: #111 !important;
+  }
+  .features p { margin: 4px 0 !important; }
+  .features.lang-en, .features.lang-en p { color: #111 !important; }
+</style>
+
 </body>
 </html>
+
+<!-- v7.3j features tight v20: line-height 0.00 -->
+<style id="v73j-features-tight-v20">
+  section.features, section.features p {
+    line-height: 0.00 !important;
+  }
+  section.features p { margin: 0 !important; }
+</style>
