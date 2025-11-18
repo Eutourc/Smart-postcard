@@ -1,428 +1,249 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>Smart Postcard — v6.5r36_seq1_lock_w75_h72</title>
-<meta content="no-store" http-equiv="Cache-Control">
-<meta content="no-cache" http-equiv="Pragma">
-<meta content="0" http-equiv="Expires"/>
-<style>
-  :root{
-    --bw-c1:#10b981;
-    --bw-c2:#22d3ee;
-    --bw-c3:#34d399;
-    --brandword-size:26px;
-    --card-border:1px;
-    --card-border-color:#d1d5db;
-    --big-arrow-color:#0b3a77;
-    --big-arrow-top:-92px;
-    --big-arrow-fat:22px;
-    --big-arrow-width:26px;
-    --left-fine:-0.5px;
-    --marker-top:-20px;
-    --marker-left:84.3%;
-    --marker-fat:16px;
-    --marker-base:13px;
-    --marker-color:#16a34a;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#fff;color:#222;
-    font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-  img{max-width:100%;display:block}
-  .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand img{width:64px;height:64px;object-fit:contain}
-  .brandword{display:flex;flex-direction:column;line-height:1}
-  .brandword .l1,.brandword .l2{
-    font-weight:900;
-    font-size:var(--brandword-size);
-    letter-spacing:.5px;
-    background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
-    text-shadow:0 1px 1px rgba(0,0,0,.06);
-  }
-  .actions{display:flex;align-items:center;gap:8px}
-  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .cart{position:relative}
-  .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
-  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-  .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
-  .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
-  .dropdown.open{display:block}
-  .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
-  .dd-item.current{background:#f5f7fa}
-  .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-  .menu{font-size:22px;font-weight:900}
-  main.wrap{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:10px 14px 12px}
-  h1{font-size:24px;line-height:1.15;margin:16px 0 14px;text-align:center} /* 增加标题下方留白为14px */
-  .stage{flex:1;display:flex;flex-direction:column;gap:8px;background:#fff;border-radius:20px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
-  .hint{background:#fff8d9;border:2px dashed #e4c23a;border-radius:12px;
-        padding:8px 12px;text-align:center;font-size:13.5px;font-weight:800;line-height:1.35;
-        max-width:94%;margin:0 auto}
-  .viewer{position:relative;flex:1;display:flex;align-items:center;margin-top:14px; flex:0 0 auto !important; } /* 说明框下方到样图上缘同为14px */
-  .cardbox{position:relative;flex:0 1 92%;margin:0 auto;border-radius:0;overflow:visible;background:#fff;
-           border:var(--card-border) solid var(--card-border-color);
-           box-shadow:0 1px 2px rgba(0,0,0,.03)}
-  .cardbox img{width:100%;height:auto;display:block;border-radius:0}
-  .marker{
-    position:absolute;
-    top:var(--marker-top);
-    left:var(--marker-left);
-    width:0;height:0;
-    border-left:var(--marker-base) solid transparent;
-    border-right:var(--marker-base) solid transparent;
-    border-top:var(--marker-fat) solid var(--marker-color);
-    filter:drop-shadow(0 2px 4px rgba(22,163,74,.35));
-    pointer-events:none;
-    z-index:9;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Smart Postcard — EN v2.8 (explain + v7.4a side big-arrows aligned to postcard edges, symmetric gaps + tap-to-load & remember)</title>
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    :root{
+      --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
+      --brandword-size:26px;
+      --title-size:23px;
+      --gapTop: 26px; /* header-to-title total gap (was main padding-top 10px + gap1 22px) */
+      --title-lh:1.06;
+      --title-lh:1.06;
+
+      /* independent gaps for EN */
+       /* header ↔ title */
+      --gap2: 28px; /* title ↔ explain */
+      --gap3: 28px; /* explain ↔ card slot (same as gap2 for symmetry) */
+
+      /* explain bubble exact spec from v7.4a */
+      --explain-bg:#FEF9C3;
+      --explain-width:70%;
+      --explain-minh:72px;
+      --explain-pad-y:10px;
+      --explain-pad-x:16px;
+      --explain-radius:16px;
+
+      --card-border:1px;
+      --card-border-color:#d1d5db;
+    
+      --arrow-fat:22px;
+      --arrow-width:26px;
+      --edge-fine:-0.5px;}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:#fff;color:#222;
+      font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    img{max-width:100%;display:block}
+
+    /* ===== v1.0 header clone ===== */
+    .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+    .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{width:64px;height:64px;object-fit:contain}
+    .brandword{display:flex;flex-direction:column;line-height:1}
+    .brandword .l1,.brandword .l2{
+      font-weight:900;font-size:var(--brandword-size);letter-spacing:.5px;
+      background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+      text-shadow:0 1px 1px rgba(0,0,0,.06);
+    }
+    .actions{display:flex;align-items:center;gap:8px}
+    .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+    .cart{position:relative}
+    .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
+    .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+    .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+    .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
+    .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
+    .dropdown.open{display:block}
+    .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
+    .dd-item.current{background:#f5f7fa}
+    .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+    .menu{font-size:22px;font-weight:900}
+    /* ===== end header ===== */
+
+    .gap{display:block;width:100%;}
+    .gapTop{height:var(--gapTop);}
+    .gap2{height:var(--gap2);}
+
+
+    main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
+    h1.page-title{
+      font-size:var(--title-size);
+      line-height:var(--title-lh);
+      font-weight:800;
+      color:#222;
+      text-align:center;
+      margin:0;
+    }
+
+    .stage{display:flex;flex-direction:column;background:#fff;border-radius:20px}
+
+    .explain{
+      box-sizing:border-box !important;
+      margin:0 auto !important;
+      width:var(--explain-width) !important;
+      max-width:var(--explain-width) !important;
+      min-width:var(--explain-width) !important;
+      min-height:var(--explain-minh) !important;
+      padding:var(--explain-pad-y) var(--explain-pad-x) !important;
+      background:var(--explain-bg) !important;
+      border-radius:var(--explain-radius) !important;
+      box-shadow:0 2px 6px rgba(0,0,0,.10) !important;
+      text-align:center !important;
+      white-space:normal !important;
+      word-break:keep-all !important;
+      overflow-wrap:anywhere !important;
+      overflow:hidden !important;
+      font-size:18px !important; line-height:1.10 !important; font-weight:500; color:#222;
+    }
+
+    .viewer{position:relative;margin-top:var(--gap3);}
+    .cardbox{
+      position:relative;
+      flex:0 1 92%;
+      margin:0 auto;
+      max-width:640px;
+      border-radius:0;
+      overflow:visible;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+    }
+
+    .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
   
-  
-  
-  
-  
-  .features{margin:10px 0 0px;text-align:center;font-size:13.5px;line-height:1.25}
-  .features p{margin:2px 0;font-weight:800}
-  .btns{display:flex;gap:10px;margin-top:6px}
-  .btn{flex:1;border:none;border-radius:12px;padding:9px 10px;font-weight:800;font-size:14.5px}
-  .btn.primary{background:#F5B800;box-shadow:0 4px 8px rgba(245,184,0,.35)}
-  .start{display:block;width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:8px;background:#F5B800;font-weight:900;font-size:18px}
-  /* v3.1 说明框（均衡留白：上/下均为14px） */
-  
-  .explain b { font-weight: 700; }
-/* === 留白调整：严格让前两处相等 === */
-/* 第一处：横幅↔标题 */
-main.wrap{ padding-top: 0 !important; }
- /* 上32 下32 */
-/* 清除 stage 头部内边距，避免第二处被额外拉大 */
-/* 说明框：不再额外加上边距，完全由 h1 的 margin-bottom 决定第二处 */
-/* 第三处：说明框↔样图 */
-.viewer{ margin-top: 2px !important; }
-@media (max-width: 360px){
-  
-}
-@media (min-width: 768px){
-  
-}
-/* === 结束 === */
-/* === 大箭头（删除旧法→新法）：垂直由JS居中到说明框；横向基线与cardbox边线对齐 === */
-:root{
-  --arrow-fat: 22px;   /* 上下边各22 => 总高44 */
-  --arrow-width: 26px; /* 箭头“厚度” */
-  --edge-fine: -0.5px; /* 细调，确保基线与边线齐平 */
-}
+/* === v7.4a title micro-tune (size 23px) === */
+.sp-en-title{}
+
+
+/* === v7.4a side big-arrows (copied) === */
 .big-arrow{
   position:absolute;
   width:0;height:0;
-  border:0;background:transparent;padding:0;
-  pointer-events:none;z-index:2;
+  border:0;
+  background:transparent;
+  padding:0;
+  pointer-events:none;
+  z-index:2;
 }
-/* 左侧：容器贴左，伪元素向外画出；基线与左边线齐平 */
 .big-arrow.left{ left:0; }
 .big-arrow.left::before{
-  content:"";display:block;width:0;height:0;
+  content:"";
+  display:block;
+  width:0;height:0;
   border-top:var(--arrow-fat) solid transparent;
   border-bottom:var(--arrow-fat) solid transparent;
   border-right:var(--arrow-width) solid #0b3a77;
-  margin-left: calc(-1 * var(--arrow-width) - var(--card-border) - var(--edge-fine));
+  /* base line exactly at postcard left edge */
+  margin-left: calc(-1 * var(--arrow-width));
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
 }
-/* 右侧：容器贴右，伪元素向外画出；基线与右边线齐平 */
 .big-arrow.right{ right:0; }
 .big-arrow.right::before{
-  content:"";display:block;width:0;height:0;
+  content:"";
+  display:block;
+  width:0;height:0;
   border-top:var(--arrow-fat) solid transparent;
   border-bottom:var(--arrow-fat) solid transparent;
   border-left:var(--arrow-width) solid #0b3a77;
   filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
 }
-/* === 结束 === */
-/* === 留白微调：第1、第2处 38px；第3处 22px === */
-h1{ margin: 38px 0 38px !important; }
-.stage{ gap: 0 !important; padding-top: 0 !important; }
-.viewer{ margin-top: 2px !important; }
-/* === 结束 === */
-/* === 留白微调：第1、第2处 36px；第3处 22px === */
-h1{ margin:30px 0 30px !important; }
-.stage{ gap: 0 !important; padding-top: 0 !important; }
-.viewer{ margin-top: 2px !important; }
-/* === 结束 === */
-/* === 说明框调整：尺寸略小、行距更紧、左右留白对称 === */
+.card-placeholder{
+  width:100%;
+  padding:120px 12px;
+  text-align:center;
+  font-size:14px;
+  color:#9ca3af;
+}
+/* === end side big-arrows === */
+
+    .cardbox-inner{
+      position:relative;
+      width:100%;
+      padding-top:70%;
+      background:transparent;
+      overflow:hidden;
+    }
+    .cardbox-inner::before{content:none;}
+</style>
+<style>
 .explain{
   margin: 0 auto !important;    /* 与之前第3处保持一致 */
   padding: 10px 18px !important;      /* 略收紧内部空间 */
   font-size: 14px !important;         /* 字号缩小 */
-  line-height: 1.35 !important;       /* 行间距减小 */
+  line-height: 1.16 !important;       /* 行间距减小 */
   border-radius: 14px !important;     /* 保持圆角，略小更精致 */
   box-sizing: border-box;
-  max-width: 92%;
-}
-/* 防止说明框里强调字过大导致撑开 */
-.explain strong, .explain b{ font-weight: 700; }
-.explain em, .explain i{ font-style: italic; }
-/* === 说明框调整：加入底色主题，可切换 === */
-.explain{
-  margin: 0 auto !important;
-  padding: 10px 18px !important;
-  font-size: 14px !important;
-  line-height: 1.35 !important;
-  border-radius: 14px !important;
-  box-sizing: border-box;
-  max-width: 92%;
-  background: #fef3c7 !important; /* 默认浅橙色 */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-/* 可选主题色 */
-.theme-orange .explain { background: #fef3c7 !important; } /* 浅橙色 */
-.theme-blue   .explain { background: #e0f2fe !important; } /* 浅蓝色 */
-.theme-gray   .explain { background: #f3f4f6 !important; } /* 浅灰色 */
-.theme-yellow .explain { background: #fef9c3 !important; } /* 浅黄色 */
-/* 强调文字 */
-.explain strong, .explain b{ font-weight: 700; }
-.explain em, .explain i{ font-style: italic; }
-/* === 结束 === */
-.gap5-spacer{display:block;}
-.gap4-spacer{display:block;}
-.gap3-spacer{display:block;}
-
-/* === Language badge (no inner square) === */
-.langpill .flag, .dd-item .dd-flag { display:none !important; } /* hide old flag blocks */
-.langpill .badge-lang{font-weight:800; font-size:18px; letter-spacing:.5px;}
-.langpill .badge-lang.en{color:#2b6aff;}
-.langpill .badge-lang.zh{color: #2b6aff; font-size:18px;}
-#lang-dd{display:none; position:absolute; right:0; top:44px; background:#fff; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.12); padding:8px; z-index:999;}
-#lang-dd.open{display:block;}
-#lang-dd .dd-item{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; font-size:15px;}
-#lang-dd .dd-item:hover{background:#f6f6f6;}
-#lang-dd .icon-glyph{font-weight:900;}
-#lang-dd .icon-glyph.en{color:#2b6aff;}
-#lang-dd .icon-glyph.zh{color: #2b6aff;}
-/* keep header layout stable */
-header .actions{position:relative;}
-</style>
-<style>
-/* === 特点集锦：隶书风格 + 视觉压缩 === */
-.features{
-  font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif !important;
-  font-size:13.5px !important;        /* 与说明框等大，不喧宾夺主 */
-  line-height:1.32 !important;
-  letter-spacing:0.2px;
-}
-.features .narrow{
-  display:inline-block;
-  transform:scaleX(0.88);            /* 仅横向收窄，不影响高度 */
-  transform-origin:center;
-  letter-spacing:-0.2px;
+  max-width: 85%;
 }
 </style>
-<style>
-    #viewer {
-        min-height: auto !important;
-        height: auto !important;
-    }
-    #features {
-        margin-top: 0px !important;
-    }
-    </style>
-<!-- v4.0 四留白修正：取消 main.wrap 100svh 与 .stage: flex:1 带来的撑高效应 -->
-<style>
-  main.wrap{ min-height:auto !important; }
-  .stage{ flex:0 0 auto !important; }
-</style>
-<style id="gold-buttons-auto">
-:root{ --btn-group:100; }
-/* —— 自动对齐横幅宽度的塔型金砖键 —— */
-.btns{ 
-  display:flex !important; gap:12px !important; 
-  justify-content:center !important; 
-  max-width: calc(var(--btn-group) * 1%);
-  margin: 0px auto 8px !important;
-}
-.btn, .start{ 
-  display:flex !important; align-items:center; justify-content:center;
-  border-radius:22px !important; border:1px solid rgba(140,103,36,.45) !important;
-  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%) !important;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.85),
-    inset 0 -2px 0 rgba(0,0,0,.18),
-    0 8px 18px rgba(0,0,0,.14) !important;
-  color:#2f2f2f !important;
-  text-shadow: 0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18) !important;
-  height: clamp(42px, 6.2vh, 56px) !important;
-  padding: 0 14px !important;
-  font-weight:900 !important;
-}
-/* 两个上键短一些（与原橘键相近），下键更长 */
-.btn{ flex:1 1 auto !important; width: 44% !important; font-size: clamp(15px, 2.2vh, 18px) !important; }
-.start{ width: calc(var(--btn-group) * 1%) !important; margin: 8px auto 0 !important; font-size: clamp(17px, 2.5vh, 20px) !important; border-radius:26px !important; }
-/* 激活态：纪念明信片=蓝字；未激活=深灰 */
-.btn.primary{ color:#1e56d6 !important; }
-@media (max-width: 420px){ .btns{gap:10px !important} }
-  /* override: widen small-buttons center gap */
-  .btns{gap:32px !important;}
-</style>
-<style>
-/* === FULLSCREEN CANVAS UNDERLAY FIX (G7) === */
-html, body { background:#ffffff !important; height:100%; }
-body > * { position: relative; z-index: 1; }
-* { box-shadow: none !important; }
-img, .card, .panel, .frame, .box, .container, .wrapper, .content, .paper { border:0 !important; }
-.sp-underlay-canvas { position:fixed; inset:0; background:#ffffff; z-index:0; pointer-events:none; }
-[class*="arrow"], [class*="Arrow"], [class*="triangle"], [class*="Triangle"] {  z-index:2; }
-body::before { content:""; position:fixed; left:0; right:0; bottom:0; height:35vh; background:#ffffff; z-index:0; pointer-events:none; }
-/* === END FIX === */
-</style></meta></meta>
-<style id="gap-locks">
-/* 锁定第3留白=18px；第1留白+1px */
-.viewer{ margin-top:18px !important; }
-.gap3, .gap3-spacer{ height:18px !important; min-height:18px !important; }
-.header, .top-banner, .brand-section{ margin-bottom:calc(var(--gap1, 0px) + 1px) !important; }
-</style>
-<style id="langpill-equalize">
-  .langpill{height:40px !important; padding:0 10px !important; align-items:center !important; max-width:80px !important;}
-  .langpill .badge-lang{display:inline-block !important; line-height:40px !important;}
-  #lang-dd .dd-item{font-size:14px !important; padding:8px 10px !important;}
-</style>
-<style>
-/* v6.8c narrow language pill */
-:root{
-  --lang-pill-height: 44px;  /* keep equal height to circles */
-  --lang-pill-pad-x: 6px;    /* narrower than before */
-}
-/* common selectors to catch our element */
-.lang-toggle, .lang-pill, .lang-btn, .language-toggle, .language-pill, button.lang, .lang-selector{
-  height: var(--lang-pill-height) !important;
-  min-height: var(--lang-pill-height) !important;
-  line-height: calc(var(--lang-pill-height) - 4px) !important;
-  padding-left: var(--lang-pill-pad-x) !important;
-  padding-right: var(--lang-pill-pad-x) !important;
-  border-radius: 9999px !important; /* capsule */
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-}
-/* also try to keep the container's width snug */
-.lang-toggle, .lang-pill, .lang-btn, .language-toggle, .language-pill, button.lang, .lang-selector{
-  width: auto !important;
-}
-/* icon caret spacing smaller */
-.lang-toggle .caret, .lang-pill .caret, .lang-btn .caret, .language-toggle .caret{
-  margin-left: 2px !important;
-}
-/* make sure '简'/'EN' stay blue */
-.lang-toggle, .lang-pill, .lang-btn, .language-toggle, .language-pill, button.lang, .lang-selector{
-  color: #1f6feb !important;
-}
-</style>
-<style id="v69d-langbar-tweak">
-/* Only adjust sizes; keep layout/logic untouched */
-/* Language pill short axis slimmer */
-header .langpill, .langpill {
-  height: 30px !important;
-  min-height: 30px !important;
-  line-height: 30px !important;
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
-}
-/* Dropdown panel narrower */
-.lang-dd, .lang-dropdown, .lang-menu, .langlist, .language-menu {
-  min-width: 132px !important;
-  max-width: 152px !important;
-  width: 144px !important;
-  padding: 6px 8px !important;
-}
-/* Dropdown items tighter */
-.lang-dd .dd-item, .lang-menu .dd-item, .lang-dropdown .dd-item, .langlist .dd-item, .language-menu .dd-item {
-  padding: 8px 8px !important;
-}
-</style>
-<style>
-/* v7.3 tweak: tighter EN features line-height + slightly darker text */
-.features-en{ line-height:1.28; color:#111; }
-.features-en b, .features-en strong{ color:#000; }
-</style></head>
-<body><div aria-hidden="true" class="sp-underlay-canvas"></div>
+</head>
+<body>
 <header class="top">
-<div class="bar">
-<div class="brand">
-<img alt="Smart Postcard" src="Logo.png"/>
-<div class="brandword">
-<span class="l1">Smart</span>
-<span class="l2">Postcard</span>
-</div>
-</div>
-<div class="actions">
-<div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
-<div class="langpill" id="lang-pill"><span class="flag" id="flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span class="caret"></span></div>
-<div class="dropdown" id="lang-dd">
-<div class="dd-item current" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
-<div class="dd-item" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
-</div>
-<div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
-</div>
-</div>
+ <div class="bar">
+  <div class="brand">
+   <img alt="Smart Postcard" src="Logo.png"/>
+   <div class="brandword">
+    <span class="l1">Smart</span>
+    <span class="l2">Postcard</span>
+   </div>
+  </div>
+  <div class="actions">
+   <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
+   <div class="langpill" id="lang-pill">
+     <span class="flag" id="flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span>
+     <span class="caret"></span>
+   </div>
+   <div class="dropdown" id="lang-dd">
+     <div class="dd-item current" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
+     <div class="dd-item" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
+   </div>
+   <div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
+  </div>
+ </div>
 </header>
-<main class="wrap">
-<h1 id="hero-title">珍藏您举世无双的纪念明信片</h1>
-<section class="stage">
-<div class="explain" id="explain" class="explain">
-      明信片背面图案！可成为邮票图案！<br/>
-      您可以任选照片！可用您的自拍照！<br/>
-      这等于洗了一张 <b>A5</b> 大尺码的照片！
+
+<main>
+  <div class="gap gapTop" aria-hidden="true"></div>
+  <h1 class="page-title sp-en-title">Treasure Your One‑Of‑A‑Kind<br/>Souvenir Postcard</h1>
+  <div class="gap gap2" aria-hidden="true"></div>
+
+  <section class="stage">
+    <div class="explain" id="explain">Please fill in the mailing address!<br/>Country names must be English!<br/>See example in the address field!</div>
+    <div class="viewer">
+      <div class="cardbox" id="cardbox">
+        <button aria-label="Previous stop" class="big-arrow left" id="prev"></button>
+        <button aria-label="Next stop" class="big-arrow right" id="next"></button>
+        <div class="cardbox-inner" id="cardbox-inner">
+        <img id="pc-img" alt="Smart Postcard sample" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;border-radius:0;">
+        <div id="pc-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;text-align:center;padding:0 12px;">
+          Tap here to load a postcard image
+        </div>
+      </div>
+      </div>
+      <input type="file" id="pc-file" accept="image/*" style="display:none;">
     </div>
-<!-- gap3 spacer: independent spacing between explain and sample (default 30px) -->
-<div class="gap3-spacer" style="height:30px"></div>
-<div class="viewer">
-<div class="cardbox" id="cardbox">
-<button aria-label="上一项" class="big-arrow left" id="prev"></button>
-<button aria-label="下一项" class="big-arrow right" id="next"></button>
-<img alt="postcard sample" id="pc-img" src="postcard_cn.png?v=22031"/>
-<div class="marker" id="marker"></div>
-</div>
-</div>
-<!-- gap4 spacer (controlled height to avoid jumps) -->
-<div class="gap4-spacer" style="height:28px"></div>
-<section class="features" id="features">
-<p>操作简单 · 实体印刷 · 全球邮寄</p>
-<p>旅游纪念 · 集邮佳品 · 珍贵相册</p>
-<p>照片打印 · <span class="narrow">A5 大尺码</span> · 物超所值</p>
-<!-- gap5 spacer (height: 20px) - inserted 2025-10-01 06:19:01 -->
-<div class="gap5-spacer" style="height:30px"></div>
-</section>
-<div class="btns">
-<button class="btn primary">纪念明信片</button>
-<button class="btn">传统明信片</button>
-</div>
-<button class="start" id="start-btn">开始制作</button>
-</section>
+  </section>
+
+  <div class="version">251118 — EN v2.8 (same layout as v1.7, plus v7.4a side big-arrows aligned to postcard edges, symmetric gaps + tap-to-load & remember)</div>
 </main>
+
 <script>
 (function(){
-  const hints=["选择中文/英文版式","自定义邮票图案","自选或上传地标印章","扫码可看图文声像"];
-  const positions=[18,84.3,68,86];
-  let i=1;
-  const hint=document.getElementById('hint');
-  const marker=document.getElementById('marker');
-  function apply(){hint.textContent=hints[i];marker.style.left=positions[i]+'%';}
-  function step(d){i=(i+d+hints.length)%hints.length;apply();}
-  document.getElementById('prev').onclick=()=>step(-1);
-  document.getElementById('next').onclick=()=>step(+1);
-  (function(){const area=document.getElementById('cardbox');let sx=0,sy=0,ex=0,ey=0;
-    area.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
-    area.addEventListener('touchmove',e=>{ex=e.touches[0].clientX;ey=e.touches[0].clientY;},{passive:true});
-    area.addEventListener('touchend',()=>{const dx=ex-sx,dy=ey-sy;if(Math.abs(dx)>30&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);});
-  })();
-  apply();
-  document.getElementById('start-btn').addEventListener('click',()=>{
-    location.href='#start';
-  });
+  const pill = document.getElementById('lang-pill');
+  const dd = document.getElementById('lang-dd');
+  if(!pill || !dd) return;
+  pill.addEventListener('click', (e)=>{ e.stopPropagation(); dd.classList.toggle('open'); });
+  document.addEventListener('click', ()=> dd.classList.remove('open'));
 })();
 </script>
+
 <script>
 (function(){
   function positionArrows(){
@@ -443,796 +264,44 @@ header .langpill, .langpill {
   window.addEventListener('resize', positionArrows);
   window.addEventListener('orientationchange', positionArrows);
   setTimeout(positionArrows, 80);
-})();
+})()
 </script>
-<!-- v4.2 + gap5 spacer = 20px -->
-<!-- VERSION: 251007_v5.0_underlay_fix_r2 -->
+
 <script>
-(function(){'use strict';
-  var box = document.querySelector('#explain, .explain, #hint, .hint');
-  var left = document.querySelector('#prev, .big-arrow.left, .arw-left');
-  var right = document.querySelector('#next, .big-arrow.right, .arw-right');
-  if(!box || !right) return;
-  var h = box.getBoundingClientRect().height;
-  if(h>0) box.style.height = h + 'px';
-  // keep font/line-height as-is; only center content
-  if(getComputedStyle(box).display === 'block') {
-    box.style.display = 'flex';
-    box.style.alignItems = 'center';
-    box.style.justifyContent = 'center';
-    box.style.textAlign = 'center';
-  }
-  var T = ['明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！', '珍惜！邮票及明信片画面允许使用<br>您的照片！世界首例！独特唯一！', '到此一游留念！纪念点载入地图！<br>扫二维码或凭坐标可回味和分享！<br>长按纪念相册内二维码等于扫码！', '记录当时感言、日期、天气与温度！<br>这也是您在地图纪念点旁写的留言！', '明信内容', '分享一段录像或录音！<br>扫码即可回放！<br>手机上扫码=长按！', '加盖国家或地方纪念戳！<br>这是您到此一游的见证！<br>手机上长按纪念戳，享受Ai解说！', '明信片邮寄地址', '留念日期即邮戳日期！<br>盖戳日与留念日同步！', '电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！'];
-  function render(idx){ box.innerHTML = T[idx] || ''; }
-  var seqR = [2,1,10,3,4,5,6,7,8,9,10,1,2].map(n=>n-1);
-  var seqL = [2,3,4,5,6,7,8,9,10,1,2].map(n=>n-1);
-  var current = 1; // start at #2
-  render(current);
-  function step(seq) {
-    var pos = seq.indexOf(current);
-    if(pos < 0) pos = 0;
-    current = seq[(pos+1) % seq.length];
-    render(current);
-  }
-  right.addEventListener('click', function(){ step(seqR); }, {passive:true});
-  if(left) left.addEventListener('click', function(){ step(seqL); }, {passive:true});
-})();
-</script>
-<script id="sp-cycle2">
-/* v6.3 — 基于 v6.1 的双箭头循环（2-1-10）——最小注入，不改 DOM/CSS */
 (function(){
-  function setup(){
-    var explain = document.getElementById('explain');
-    var prev = document.getElementById('prev');
-    var next = document.getElementById('next');
-    if(!explain || !prev || !next) return;
-    // 启用箭头点击
-    try{
-      prev.style.pointerEvents = 'auto';
-      next.style.pointerEvents = 'auto';
-      prev.style.cursor = 'pointer';
-      next.style.cursor = 'pointer';
-      if (getComputedStyle(prev).position === 'static') prev.style.position = 'relative';
-      if (getComputedStyle(next).position === 'static') next.style.position = 'relative';
-      prev.style.zIndex = prev.style.zIndex || '2';
-      next.style.zIndex = next.style.zIndex || '2';
-    }catch(e){}
-    // 文案（#2，#1，#10）
-    var texts = [
-      '明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺寸的照片！',
-      '珍惜！ 邮票及明信片画面允许使用您的照片！<br>世界首例！ 独特唯一！',
-      '电子明信片纪念册！ 免费赠送！<br>起步五张， 寄往邮箱！<br>以后再做， 可聚一堂！'
-    ];
-    function lock(){
-      var h = explain.getBoundingClientRect().height;
-      if(h>0){
-        explain.style.minHeight = h + 'px';
-        explain.style.height = h + 'px';
-      }
-      explain.style.textAlign = 'center';
+  var box = document.getElementById('cardbox-inner');
+  var img = document.getElementById('pc-img');
+  var hint = document.getElementById('pc-hint');
+  var input = document.getElementById('pc-file');
+  if(!box || !img || !input) return;
+  // restore last postcard if remembered
+  try{
+    var saved = window.localStorage && localStorage.getItem('sp_demo_postcard');
+    if(saved){
+      img.src = saved;
+      img.style.display = 'block';
+      if(hint) hint.style.display = 'none';
     }
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(lock);
-    } else {
-      window.addEventListener('load', lock, {once:true});
-    }
-    var idx = 0; // 默认 2
-    function render(){
-      explain.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">'
-                        + '<div style="text-align:center">' + texts[idx] + '</div></div>';
-    }
-    render();
-    function stepRight(){ idx = (idx + 1) % 3; render(); }
-    function stepLeft(){  idx = (idx - 1 + 3) % 3; render(); }
-    next.addEventListener('click', stepRight, {passive:true});
-    prev.addEventListener('click', stepLeft,  {passive:true});
-    // 右下角标识
-    var badge = document.createElement('div');
-    badge.style.cssText = 'position:fixed;right:8px;bottom:8px;font-size:10px;color:#999;opacity:.9;pointer-events:none;';
-    document.body.appendChild(badge);
-  }
-  if (document.readyState === 'complete' || document.readyState === 'interactive'){
-    setup();
-  } else {
-    document.addEventListener('DOMContentLoaded', setup, {once:true});
-  }
-})();
-</script>
-<script id="sp-cycle-fix-r2">
-/*! v6.3r2 — 仅修正两点：①默认说明框不变异（沿用 v6.1 的内容/排版）；②顺序固定为 2→1→10（左键逆序）。*/
-(function(){
-  function ready(fn){
-    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', fn, {once:true}); }
-    else { fn(); }
-  }
-  ready(function(){
-    var explain = document.getElementById('explain');
-    var prev = document.getElementById('prev');
-    var next = document.getElementById('next');
-    if(!explain || !prev || !next) return;
-    // —— 使用 v6.1 原文案（#1、#2、#10），不额外包裹任何 DIV，避免说明框“变异” ——
-    var TEXT_1  = '明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！';
-    var TEXT_2  = '您的照片可成为邮票及明信片画面！\n珍惜当下！历史佳机！独特唯一！';
-    var TEXT_10 = '电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！';
-    var texts = [TEXT_2, TEXT_1, TEXT_10]; // 0=2,1=1,2=10
-    // —— 高度锁定：以 #1 文案测量一次，保持与 v6.1 一致 ——
-    (function lockHeightOnce(){
+  }catch(e){}
+  box.addEventListener('click', function(){
+    input.click();
+  });
+  input.addEventListener('change', function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var data = ev.target.result || '';
+      img.src = data;
+      img.style.display = 'block';
+      if(hint) hint.style.display = 'none';
       try{
-        var probe = document.createElement('div');
-        probe.style.cssText = 'position:absolute;visibility:hidden;height:auto;max-height:none;white-space:normal;pointer-events:none;width:'+getComputedStyle(explain).width;
-        probe.innerHTML = TEXT_1;
-        document.body.appendChild(probe);
-        var h = Math.ceil(probe.scrollHeight);
-        probe.remove();
-        if(h>0){
-          explain.style.minHeight = h+'px';
-          explain.style.height = h+'px';
-          // 不改变 display/对齐方式，保持 v6.1 既有样式生效
-        }
+        window.localStorage && localStorage.setItem('sp_demo_postcard', data);
       }catch(e){}
-    })();
-    // —— 初始化：直接渲染 #2（与 v6.1 行为一致） ——
-    var idx = 0;
-    function render(){ explain.innerHTML = texts[idx]; }
-    render();
-    // —— 捕获阶段绑定并拦截旧监听，严格执行 2→1→10 ——
-    function stopAll(e){ e.preventDefault(); e.stopImmediatePropagation(); }
-    next.addEventListener('click', function(e){ stopAll(e); idx = (idx + 1) % 3; render(); }, {capture:true, passive:false});
-    prev.addEventListener('click', function(e){ stopAll(e); idx = (idx - 1 + 3) % 3; render(); }, {capture:true, passive:false});
-  });
-})();
-</script>
-<script id="v69_r4" defer>(function(){
-var T={1:"明信片背面图案！可成为邮票图案！<br>您可以任选照片！可用您的自拍照！<br>这等于洗了一张 A5 大尺码的照片！",2:"您的照片可成为邮票及明信片画面！
-珍惜当下！历史佳机！独特唯一！",3:"到此一游留念！纪念点载入地图！<br>扫二维码或凭坐标可回味和分享！<br>长按纪念相册内二维码等于扫码！",4:"记录当时感言、日期、天气与温度！<br>这也是您在地图纪念点旁写的留言！",5:"书写您的明信内容！<br>留下您美好的回忆！",6:"分享一段录像或录音！<br>扫码即可回放！<br>手机上扫码=长按！",7:"加盖国家或地方纪念戳！<br>这是您到此一游的见证！<br>手机上长按纪念戳，享受Ai解说！",8:"填写明信片的邮寄地址！<br>国家名称须用英文书写！<br>请参照地址栏中的范例！",9:"留念日期即邮戳日期！<br>盖戳日与留念日同步！",10:"电子明信片纪念册！免费赠送！<br>起步五张，寄往邮箱！<br>以后再做，可聚一堂！"};
-function N(s){return String(s||"").replace(/\s+/g,"").replace(/<br\s*\/?>/gi,"<br>").trim()}
-function H(b,h){var p=document.createElement("div"),cs=getComputedStyle(b);
-  p.style.position="absolute";p.style.visibility="hidden";p.style.height="auto";p.style.maxHeight="none";
-  p.style.left="-9999px";p.style.top="-9999px";p.style.pointerEvents="none";p.style.boxSizing="border-box";
-  p.style.width=b.getBoundingClientRect().width+"px";p.style.padding=cs.padding;p.style.font=cs.font;
-  p.style.lineHeight=cs.lineHeight;p.style.letterSpacing=cs.letterSpacing;p.style.wordBreak=cs.wordBreak;p.style.whiteSpace=cs.whiteSpace;
-  p.innerHTML=h;document.body.appendChild(p);var r=Math.ceil(p.scrollHeight);p.remove();return r}
-function C(){
-  var box=document.getElementById("explain")||document.querySelector("#explain,.explain");
-  if(!box) return;
-  // Lock by #1 + small padding
-  var W=Math.ceil(box.getBoundingClientRect().width);
-  if(W>0){ box.style.width=W+"px"; box.style.minWidth=W+"px"; box.style.maxWidth=W+"px"; box.style.flex="0 0 auto"; }
-  var HH=H(box,T[1])+6; if(HH>0){ box.style.height=HH+"px"; box.style.minHeight=HH+"px"; box.style.overflow="hidden"; }
-  // Chain per your spec: right clockwise; left counter-clockwise; start from 2
-  var chain=[2,1,10,9,8,7,6,5,4,3], cur=N(box.innerHTML), idx=0;
-  for(var i=0;i<chain.length;i++){ if(cur===N(T[chain[i]]||"")){ idx=i; break; } }
-  function R(){ box.innerHTML=T[chain[idx]]||""; }
-  // Strong override: intercept capture-phase & also attach to likely arrow elements if present
-  function onRight(e){ e.preventDefault(); e.stopImmediatePropagation(); idx=(idx+1)%chain.length; R(); }
-  function onLeft(e){ e.preventDefault(); e.stopImmediatePropagation(); idx=(idx-1+chain.length)%chain.length; R(); }
-  document.addEventListener("click",function(e){
-    var t=e.target;
-    if(t.closest("#next,.big-arrow.right,[data-role='next'],.right-arrow,.arrow-right,.arrow-right-big")) return onRight(e);
-    if(t.closest("#prev,.big-arrow.left,[data-role='prev'],.left-arrow,.arrow-left,.arrow-left-big")) return onLeft(e);
-  },true);
-  // Direct bindings if elements exist (covers inline handlers)
-  var pr = document.getElementById("prev") || document.querySelector(".big-arrow.left,.left-arrow,.arrow-left,.arrow-left-big");
-  var nx = document.getElementById("next") || document.querySelector(".big-arrow.right,.right-arrow,.arrow-right,.arrow-right-big");
-  if(pr){ pr.addEventListener("click", onLeft, true); pr.onclick = onLeft; }
-  if(nx){ nx.addEventListener("click", onRight, true); nx.onclick = onRight; }
-}
-if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", C, {once:true}); } else { C(); }
-})();</script>
-<style id="explain_lock_w75_h72">
-#explain, .explain {
-  box-sizing: border-box !important;
-  margin: 0 auto !important;
-  width: 75% !important;
-  max-width: 75% !important;
-  min-width: 75% !important;
-  min-height: 72px !important;
-  padding: 10px 16px !important;
-  background: #FEF9C3 !important;
-  border-radius: 16px !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,.10) !important;
-  text-align: center !important;
-  white-space: normal !important;
-  word-break: keep-all !important;
-  overflow-wrap: anywhere !important;
-  overflow: hidden !important;
-}
-#explain::before, #explain::after,
-.explain::before, .explain::after {
-  display: none !important;
-  content: none !important;
-}
-</style>
-
-<script id="fixAU_marker_gap_2px_body_anchor">
-(function(){
-  function ready(fn){
-    if(document.readyState==='loading'){
-      document.addEventListener('DOMContentLoaded',fn,{once:true});
-    }else{ fn(); }
-  }
-  ready(function(){
-    var doc=document;
-    var prev=doc.getElementById('prev')||doc.querySelector('.big-arrow.left, .arrow-left');
-    var next=doc.getElementById('next')||doc.querySelector('.big-arrow.right, .arrow-right');
-    var marker=doc.getElementById('marker');
-    var img=doc.getElementById('pc-img')||doc.querySelector('#pcimg, .pc-img, img[alt="postcard sample"]')||document.querySelector('img');
-    if(!prev||!next||!marker||!img) return;
-    // Anchor marker to BODY to eliminate clipping/overflow issues anywhere
-    if(marker.parentElement!==doc.body){ doc.body.appendChild(marker); }
-    marker.style.position='absolute';
-    marker.style.transformOrigin='50% 50%';
-    marker.style.zIndex='9999';
-    marker.style.pointerEvents='none'; // avoid intercepting taps
-    var GAP=2; // requested 2px gap
-    // Station layout (coarse; later can be fine-tuned)
-    var ANCH={
-      1:{edge:'top',    t:0.90},
-      2:{edge:'top',    t:0.26},
-      3:{edge:'top',    t:0.38},
-      4:{edge:'top',    t:0.50},
-      5:{edge:'left',   t:0.50},
-      6:{edge:'bottom', t:0.80},
-      7:{edge:'bottom', t:0.50},
-      8:{edge:'bottom', t:0.23},
-      9:{edge:'right',  t:0.70},
-      10:{edge:'top',   t:0.90}
     };
-    var idx=2;
-    function place(i){
-      idx=i||idx;
-      var a=ANCH[idx]||ANCH[2];
-      var ir=img.getBoundingClientRect(); // viewport coords
-      var x=0,y=0;
-      // set rotation first so bbox is correct
-      var rot= (a.edge==='top')?0 : (a.edge==='right')?90 : (a.edge==='bottom')?180 : 270;
-      var tx = (a.edge==='top'||a.edge==='bottom')? -50 : 0;
-      var ty = (a.edge==='right'||a.edge==='left')? -50 : 0;
-      marker.style.transform='rotate('+rot+'deg) translate('+tx+'%,'+ty+'%)';
-      // measure rendered bbox
-      var mr=marker.getBoundingClientRect(), mw=mr.width, mh=mr.height;
-      if(a.edge==='top'){
-        x = Math.round(ir.left + a.t*ir.width);
-        y = Math.round(ir.top - GAP - mh);
-      }else if(a.edge==='right'){
-        x = Math.round(ir.left + ir.width + GAP);
-        y = Math.round(ir.top + a.t*ir.height);
-      }else if(a.edge==='bottom'){
-        x = Math.round(ir.left + a.t*ir.width);
-        y = Math.round(ir.top + ir.height + GAP);
-      }else{ // left
-        x = Math.round(ir.left - GAP - mw);
-        y = Math.round(ir.top + a.t*ir.height);
-      }
-      marker.style.left = x + 'px';
-      marker.style.top  = y + 'px';
-    }
-    function contains(el,t){ return el && (el===t || el.contains(t)); }
-    function onAny(e){
-      var t=e.target;
-      if(contains(prev,t)){ idx = (idx===10)?1:(idx+1); place(idx); }
-      else if(contains(next,t)){ idx = (idx===1)?10:(idx-1); place(idx); }
-    }
-    ['click','pointerup','touchend'].forEach(function(evt){
-      document.addEventListener(evt,onAny,{capture:true,passive:true});
-    });
-    function ensure(){
-      if(img.complete){ place(2); }
-      else{ img.addEventListener('load', function(){ place(2); }, {once:true}); }
-    }
-    ensure();
-    window.addEventListener('resize', function(){ place(idx); });
-    window.addEventListener('orientationchange', function(){ setTimeout(function(){ place(idx); }, 50); });
+    reader.readAsDataURL(file);
   });
 })();
 </script>
-
-<script>
-(function(){
-  const STR = {
-    zh: {
-      title: "珍藏您举世无双的纪念明信片",
-      explain: "您的照片可成为邮票及明信片画面！\n珍惜当下！历史佳机！独特唯一！",
-      features: [
-        "操作简单 · 实体印刷 · 全球邮寄",
-        "旅游纪念 · 集邮佳品 · 珍贵相册",
-        "照片打印 · A5 大尺寸 · 物超所值"
-      ],
-      btnComm: "纪念明信片",
-      btnTrad: "传统明信片",
-      btnStart: "开始制作"
-    },
-    en: {
-      title: "Treasure Your One-Of-A-Kind Souvenir Postcard",
-      explain: "Amazing! Your own photo can appear on stamps and postcards — the first of its kind in the world!<br>Truly one of a kind!",
-      features: [
-        "Easy to make · Physical printing · Worldwide shipping",
-        "Travel souvenir · Philatelic collectible · Precious album",
-        "Photo printing · A5 large size · Great value"
-      ],
-      btnComm: "Commemorative Postcard",
-      btnTrad: "Traditional Postcard",
-      btnStart: "Start"
-    }
-  };
-  const $ = (sel, el=document) => el.querySelector(sel);
-  const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
-  const pill = $("#lang-pill");
-  const dd = $("#lang-dd");
-  let current = localStorage.getItem("sp-lang") || "en"; // default English
-  function setPillGlyph(lang){
-    if(!pill) return;
-    const span = document.createElement('span');
-    span.className = 'badge-lang '+lang;
-    span.textContent = lang==='zh' ? '简' : 'EN';
-    // clear and insert glyph + caret (keep caret if exists)
-    const caret = pill.querySelector('.caret') || document.createElement('span');
-    caret.className = 'caret';
-    pill.innerHTML = '';
-    pill.appendChild(span);
-    pill.appendChild(caret);
-  }
-  function applyLang(lang){
-    current = lang;
-    localStorage.setItem("sp-lang", lang);
-    // Title
-    const h = $("#hero-title h1") || $("#hero-title") || $("h1");
-    if(h) h.textContent = STR[lang].title;
-    // Explain text
-    const ex = $(".explain");
-    if(ex) ex.textContent = STR[lang].explain;
-    // Features (keep same bullets & layout; only swap text)
-    const rows = $$(".features .row");
-    const feats = STR[lang].features;
-    rows.forEach((row, i)=>{
-      if(feats[i]) row.textContent = feats[i];
-    });
-    // Buttons
-    const bComm = $("#btn-comm");
-    const bTrad = $("#btn-trad");
-    const bStart = $("#btn-start");
-    if(bComm) bComm.textContent = STR[lang].btnComm;
-    if(bTrad) bTrad.textContent = STR[lang].btnTrad;
-    if(bStart) bStart.textContent = STR[lang].btnStart;
-    // Dropdown current highlight
-    $$("#lang-dd .dd-item").forEach(item=>{
-      item.classList.toggle('current', item.dataset.lang===lang);
-    });
-    setPillGlyph(lang);
-  }
-  // Build dropdown icons as glyphs (no inner squares)
-  $$("#lang-dd .dd-item").forEach(item=>{
-    const lang=item.dataset.lang;
-    const icon = document.createElement('span');
-    icon.className = 'icon-glyph '+lang;
-    icon.textContent = lang==='zh' ? '简' : 'EN';
-    // remove old flag if present
-    const ddFlag = item.querySelector('.dd-flag');
-    if(ddFlag) ddFlag.remove();
-    item.insertBefore(icon, item.firstChild);
-    item.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      dd.classList.remove('open');
-      applyLang(lang);
-    });
-  });
-  // Toggle dropdown anchored to pill
-  if(pill && dd){
-    pill.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      dd.classList.toggle('open');
-    });
-    document.addEventListener('click', ()=> dd.classList.remove('open'));
-  }
-  // Init
-  applyLang(current);
-})();
-</script>
-
-<style id="langpill-patch">
-header [data-lang-pill],
-header .lang-pill,
-header .language-pill {
-  height: 28px !important;
-  min-height: 28px !important;
-  line-height: 28px !important;
-  padding: 2px 12px 2px 10px !important;
-  border-radius: 9999px !important;
-  background: #fff !important;
-  border: 2px solid rgba(0,0,0,0.06) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 10px !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04) inset !important;
-}
-header [data-lang-pill] .lang-text,
-header .lang-pill .lang-text,
-header .language-pill .lang-text {
-  color: #1e40af !important;
-  font-weight: 700 !important;
-}
-header [data-lang-pill] .lang-caret,
-header .lang-pill .lang-caret,
-header .language-pill .lang-caret {
-  margin-left: 2px !important;
-}
-</style>
-<script id="langpill-fix">
-(function(){
-  function approx(e){
-    const cs = getComputedStyle(e);
-    const bg = cs.backgroundColor.replace(/\s+/g,'');
-    const br = parseFloat(cs.borderTopLeftRadius)||0;
-    const w = e.offsetWidth;
-    const h = e.offsetHeight;
-    const txt = (e.textContent||'').trim();
-    return (/(简|EN)/.test(txt)) && (bg.includes('255,255,255')) && br>=10 && (w>h*1.6) && h>=26 && h<=44;
-  }
-  function tagPill(el){
-    if(!el) return;
-    el.setAttribute('data-lang-pill','');
-    let textSpan = Array.from(el.querySelectorAll('*')).find(n=>/(简|EN)/.test((n.textContent||'').trim()) && n.children.length===0);
-    if(!textSpan){
-      textSpan = document.createElement('span');
-      textSpan.textContent = (el.textContent||'').trim();
-      el.innerHTML = '';
-      el.appendChild(textSpan);
-    }
-    textSpan.classList.add('lang-text');
-    let caret = Array.from(el.querySelectorAll('svg, i, span')).find(n=>/▼|▾|▿|⯆|⏷/.test(n.textContent||'') || /chevron|caret|arrow/i.test(n.className||''));
-    if(!caret){
-      caret = document.createElement('span');
-      caret.textContent = '▾';
-      el.appendChild(caret);
-    }
-    caret.classList.add('lang-caret');
-    el.style.height = '28px';
-    el.style.minHeight = '28px';
-    el.style.lineHeight = '28px';
-    el.style.padding = '2px 12px 2px 10px';
-    el.style.borderRadius = '9999px';
-    el.style.background = '#fff';
-    el.style.border = '2px solid rgba(0,0,0,0.06)';
-    el.style.display = 'inline-flex';
-    el.style.alignItems = 'center';
-    el.style.justifyContent = 'center';
-    el.style.gap = '10px';
-    textSpan.style.color = '#1e40af';
-    textSpan.style.fontWeight = '700';
-  }
-  window.addEventListener('DOMContentLoaded', function(){
-    let candidate = null;
-    const root = document.querySelector('header') || document.body;
-    const els = root.querySelectorAll('*');
-    for(const el of els){
-      try{
-        if(approx(el)) { candidate = el; break; }
-      }catch(_){}
-    }
-    if(!candidate){
-      for(const el of document.querySelectorAll('*')){
-        try{
-          if(approx(el)) { candidate = el; break; }
-        }catch(_){}
-      }
-    }
-    if(candidate) tagPill(candidate);
-  });
-})();
-</script>
-
-
-<style id="explain-lineheight-fix-r9">
-#explain, .explain {
-  white-space: pre-line !important;
-  text-align: center !important;
-  line-height: 1.2 !important;
-}
-</style>
-
-
-<!-- v7.4 unify: EN/CN 都有10条；默认显示序号2；右箭头顺时针；语言键互不干扰；三行居中 -->
-<script id="sp-explain-unified-10">
-(function(){
-  var EN = [
-    "The postcard / stamp image!\nMay replace it with your photo!\nA large A5 photo is developed!",
-    "Allow to use your own photo!\nTreasure the historic chance!\nIt is one of a kind worldwide!",
-    "Your visiting commemoration!\nYou can mark it on the map!\nScan QR code to relive / share!",
-    "Record a feeling, date, weather,\ntemperature! It’s the postscript\n on your map memorial point!",
-    "Write your heartfelt words!\nKeep your cherished memories!",
-    "Record your video / audio!\nScan QR code to play it back!\nLong-press QR code on phone!",
-    "Add a local memorial seal!\nIt is a witness to your visit!\nLong-press it for AI Commentary!",
-    "Please fill in the mailing address!\nCountry names must be English!\nSee example in the address field!",
-    "The postmark & commemorative dates are ensured to be identical!",
-    "Digital postcard album — free!\nStart with five! Emailed to you!\nIf more later, may put all in one!"
-  ];
-  var CN = [
-    "明信片背面图案！可成为邮票图案！\n您可以任选照片！可用您的自拍照！\n这等于洗了一张 A5 大尺码的照片！",
-    "您的照片可成为邮票及明信片画面！\n 珍惜当下！历史佳机！独特唯一！",
-    "到此一游留念！纪念点载入地图！\n扫二维码或凭坐标可回味和分享！\n长按纪念相册内二维码等于扫码！",
-    "记录当时感言、日期、天气与温度！\n这也是您在地图纪念点旁写的留言！",
-    "书写您的明信内容！\n留下您美好的回忆！",
-    "分享一段录像或录音！\n    扫码即可回放！\n 手机上扫码=长按！",
-    "      加盖国家或地方纪念戳！\n      这是您到此一游的见证！\n手机上长按纪念戳，享受Ai解说！",
-    "填写明信片的邮寄地址！\n国家名称须用英文书写！\n请参照地址栏中的范例！",
-    "留念日期即邮戳日期！\n盖戳日与留念日同步！",
-    "电子明信片纪念册！免费赠送！\n     起步五张，寄往邮箱！\n     以后再做，可聚一堂！"
-  ];
-  var order = [0,1,2,3,4,5,6,7,8,9];
-  var defaultIndex = 1;
-  var pos = defaultIndex;
-  var active = false, bound=false;
-  var prevEl=null, nextEl=null;
-
-  function getLang(){
-    var ls=(localStorage.getItem('sp-lang')||'').toLowerCase();
-    var htmlLang=(document.documentElement.getAttribute('lang')||'').toLowerCase();
-    var lang = ls || htmlLang || '';
-    return (lang==='en') ? 'en' : 'zh';
-  }
-  function textArr(){ return (getLang()==='en') ? EN : CN; }
-
-  function box(){ return document.getElementById('explain') || document.querySelector('#explain, .explain'); }
-  function style(b){ b.style.whiteSpace='pre-line'; b.style.textAlign='center'; b.style.lineHeight='1.2'; }
-  function render(){ var b=box(); if(!b) return; style(b); var A=textArr(); b.textContent = A[ order[pos] ]; }
-
-  function stepRight(e){ if(!active) return; if(e){e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();} var A=textArr(); pos=(pos+1)%A.length; render(); }
-  function stepLeft(e){  if(!active) return; if(e){e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();} var A=textArr(); pos=(pos+A.length-1)%A.length; render(); }
-
-  function bind(){
-    if(bound) return;
-    var a=document.getElementById('prev')||document.querySelector('[data-prev], .arrow-left, .prev');
-    var b=document.getElementById('next')||document.querySelector('[data-next], .arrow-right, .next');
-    var cand=[]; if(a) cand.push(a); if(b && b!==a) cand.push(b);
-    if(cand.length===2){
-      cand.sort(function(x,y){ return x.getBoundingClientRect().left - y.getBoundingClientRect().left; });
-      prevEl=cand[0]; nextEl=cand[1];
-    }else{ prevEl=a; nextEl=b; }
-    if(prevEl){ prevEl.addEventListener('click', stepLeft);  prevEl.addEventListener('touchstart', stepLeft, {passive:false}); }
-    if(nextEl){ nextEl.addEventListener('click', stepRight); nextEl.addEventListener('touchstart', stepRight,{passive:false}); }
-    bound=true;
-  }
-  function unbind(){
-    if(!bound) return;
-    try{
-      if(prevEl){ prevEl.removeEventListener('click', stepLeft);  prevEl.removeEventListener('touchstart', stepLeft, {passive:false}); }
-      if(nextEl){ nextEl.removeEventListener('click', stepRight); nextEl.removeEventListener('touchstart', stepRight,{passive:false}); }
-    }catch(e){}
-    bound=false; prevEl=null; nextEl=null;
-  }
-  function guard(){
-    if(!active) return;
-    var b=box(); if(!b) return;
-    if(b.innerHTML && b.innerHTML.indexOf('<br')>=0){
-      b.textContent = b.innerHTML.replace(/<br\s*\/?\s*>/gi, '\n'); style(b);
-    }
-  }
-  function activate(){
-    active=true; pos=defaultIndex; bind(); render();
-  }
-  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn, {once:true}); else fn(); }
-  ready(function(){
-    activate();
-    // 尝试在语言切换（若页面设置了 html lang 或 localStorage）后，回到序号2并渲染
-    window.addEventListener('storage', function(){ pos=defaultIndex; render(); }, false);
-    var tries=0, iv=setInterval(function(){ tries++; guard(); if(tries>20) clearInterval(iv); }, 250);
-  });
-})();
-</script>
-
-
-<!-- SmartPostcard overlay controller v7.8 -->
-<style id="sp-overlay-style">
-  .sp-hitbox{position:absolute; z-index:9999; top:0; bottom:0; width:84px;}
-  .sp-hitbox-left{left:0;}
-  .sp-hitbox-right{right:0;}
-</style>
-<script id="sp-controller-v78">
-(function(){
-  var EN = [
-    "The postcard / stamp image!\nMay replace it with your photo!\nA large A5 photo is developed!",
-    "Allow to use your own photo!\nTreasure the historic chance!\nIt is one of a kind worldwide!",
-    "Your visiting commemoration!\nYou can mark it on the map!\nScan QR code to relive / share!",
-    "Record a feeling, date, weather,\ntemperature! It’s the postscript\n on your map memorial point!",
-    "Write your heartfelt words!\nKeep your cherished memories!",
-    "Record your video / audio!\nScan QR code to play it back!\nLong-press QR code on phone!",
-    "Add a local memorial seal!\nIt is a witness to your visit!\nLong-press it for AI Commentary!",
-    "Please fill in the mailing address!\nCountry names must be English!\nSee example in the address field!",
-    "The postmark & commemorative dates are ensured to be identical!",
-    "Digital postcard album — free!\nStart with five! Emailed to you!\nIf more later, may put all in one!"
-  ];
-  var CN = [
-    "明信片背面图案！可成为邮票图案！\n您可以任选照片！可用您的自拍照！\n这等于洗了一张 A5 大尺码的照片！",
-    "您的照片可成为邮票及明信片画面！\n 珍惜当下！历史佳机！独特唯一！",
-    "到此一游留念！纪念点载入地图！\n扫二维码或凭坐标可回味和分享！\n长按纪念相册内二维码等于扫码！",
-    "记录当时感言、日期、天气与温度！\n这也是您在地图纪念点旁写的留言！",
-    "书写您的明信内容！\n留下您美好的回忆！",
-    "分享一段录像或录音！\n    扫码即可回放！\n 手机上扫码=长按！",
-    "      加盖国家或地方纪念戳！\n      这是您到此一游的见证！\n手机上长按纪念戳，享受Ai解说！",
-    "填写明信片的邮寄地址！\n国家名称须用英文书写！\n请参照地址栏中的范例！",
-    "留念日期即邮戳日期！\n盖戳日与留念日同步！",
-    "电子明信片纪念册！免费赠送！\n     起步五张，寄往邮箱！\n     以后再做，可聚一堂！"
-  ];
-  var defaultIndex = 1;
-  var pos = defaultIndex;
-  var curLang = 'en';
-  var moTitle = null;
-
-  function q(s){ return document.querySelector(s); }
-  function findTitle(){
-    return q('h1, h2, .headline, .hero-title') || document.body;
-  }
-  function detectLang(){
-    var t = (findTitle().innerText||'').trim();
-    if(/[\u4e00-\u9fa5]/.test(t)) return 'zh';
-    if(/Treasure|one-of-a-kind|postcard/i.test(t)) return 'en';
-    return curLang;
-  }
-  function bank(){ return curLang==='en' ? EN : CN; }
-  function findBox(){
-    return q('#explain, .explain, [data-explain], .bubble, .explain-box, .tip, .note, .desc, .speech, .msg');
-  }
-  function ensureBoxStyles(el){
-    el.style.whiteSpace='pre-line';
-    el.style.textAlign='center';
-    el.style.lineHeight='1.2';
-  }
-  function setBoxText(s){
-    var el=findBox(); if(!el) return;
-    ensureBoxStyles(el);
-    el.innerHTML = s.replace(/\n/g,'<br>');
-  }
-  function render(){ setBoxText(bank()[pos]); }
-  function resetToDefault(){ pos = defaultIndex; render(); }
-
-  var leftHB=null, rightHB=null;
-  function placeHitboxes(){
-    var box=findBox(); if(!box) return;
-    var rect=box.getBoundingClientRect();
-    var root = document.body;
-    if(!leftHB){
-      leftHB=document.createElement('div');
-      leftHB.className='sp-hitbox sp-hitbox-left';
-      leftHB.addEventListener('click', function(e){
-        var A=bank(); pos=(pos+1)%A.length; render();
-        e.stopPropagation(); e.preventDefault();
-      }, true);
-      root.appendChild(leftHB);
-    }
-    if(!rightHB){
-      rightHB=document.createElement('div');
-      rightHB.className='sp-hitbox sp-hitbox-right';
-      rightHB.addEventListener('click', function(e){
-        var A=bank(); pos=(pos + A.length - 1)%A.length; render();
-        e.stopPropagation(); e.preventDefault();
-      }, true);
-      root.appendChild(rightHB);
-    }
-    var top = window.scrollY + rect.top + rect.height/2 - 42;
-    leftHB.style.top = rightHB.style.top = top+'px';
-    leftHB.style.height = rightHB.style.height = '84px';
-  }
-  function removeTestText(){
-    var el=findBox(); if(!el) return;
-    var txt = el.innerText||'';
-    if(/Amazing! Your own photo can appear on stamps/i.test(txt)){
-      resetToDefault();
-    }
-  }
-  function watchTitle(){
-    if(moTitle) moTitle.disconnect();
-    curLang = detectLang();
-    moTitle = new MutationObserver(function(){
-      var L = detectLang();
-      if(L!==curLang){ curLang=L; resetToDefault(); }
-    });
-    moTitle.observe(findTitle(), {childList:true, subtree:true, characterData:true});
-  }
-  function init(){
-    watchTitle();
-    render();
-    removeTestText();
-    placeHitboxes();
-    window.addEventListener('resize', placeHitboxes);
-    setTimeout(placeHitboxes, 600);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init, {once:true});
-  else init();
-})();
-</script>
-
-
-<!-- v7.3 英文特点集锦切换（仅影响 features；不改其它逻辑） -->
-<style id="features-en-style">
-  .features.lang-en p{ line-height:1.35 !important; }
-</style>
-<script id="features-en-switch">
-(function(){
-  var sec = document.querySelector('section.features#features');
-  if(!sec) return;
-  // 缓存中文原始三行（保持原样HTML，含 <span class="narrow">A5 大尺码</span>）
-  var CN_HTML = sec.innerHTML;
-
-  var EN_LINES = [
-    "Easy to make · Physical printing",
-    "Precious album · Worldwide delivery",
-    "Travel souvenir · Philatelic collectible",
-    "Photo printing · A5 large size · Great value"
-  ];
-  var EN_HTML = EN_LINES.map(function(s){
-    return '<p>'+s+'</p>';
-  }).join('');
-
-  function currentLang(){
-    // 1) localStorage 约定
-    var ls = (localStorage.getItem('sp-lang')||'').toLowerCase();
-    if(ls==='en'||ls==='zh') return ls;
-    // 2) 看标题是否含中文
-    var h = document.getElementById('hero-title') || document.querySelector('h1');
-    var t = (h && h.innerText) ? h.innerText : document.title || '';
-    return /[\u4e00-\u9fa5]/.test(t) ? 'zh' : 'en';
-  }
-  function apply(){
-    var L = currentLang();
-    if(L==='en'){
-      if(sec.getAttribute('data-lang')!=='en'){
-        sec.setAttribute('data-lang','en');
-        sec.classList.add('lang-en');
-        sec.innerHTML = EN_HTML + '<div class="gap5-spacer" style="height:30px"></div>';
-      }
-    }else{
-      if(sec.getAttribute('data-lang')!=='zh'){
-        sec.setAttribute('data-lang','zh');
-        sec.classList.remove('lang-en');
-        sec.innerHTML = CN_HTML;
-      }
-    }
-  }
-  // 初始
-  document.addEventListener('DOMContentLoaded', apply, {once:true});
-  if(document.readyState!=='loading') apply();
-
-  // 监听标题变化（语言切换时通常会变）
-  var h = document.getElementById('hero-title') || document.querySelector('h1') || document.body;
-  var mo = new MutationObserver(function(){ apply(); });
-  mo.observe(h, {childList:true, characterData:true, subtree:true});
-
-  // 监听 localStorage
-  window.addEventListener('storage', apply, false);
-
-  // 兜底：语言菜单点击后微延迟再应用
-  document.addEventListener('click', function(){ setTimeout(apply, 60); }, true);
-})();
-</script>
-
-
-<!-- v7.3b — unify typography for explain & features (size/leading/color一致) -->
-<style id="v73b-typography-unify">
-  .explain, #explain {
-    font-size: 14px !important;
-    line-height: 1.28 !important;
-    color: #111 !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .features, .features p {
-    font-family: inherit !important;
-    font-size: 14px !important;
-    line-height: 1.28 !important;
-    color: #111 !important;
-  }
-  .features p { margin: 4px 0 !important; }
-  .features.lang-en, .features.lang-en p { color: #111 !important; }
-</style>
-
 </body>
 </html>
-
-<!-- v7.3j features tight v20: line-height 0.00 -->
-<style id="v73j-features-tight-v20">
-  section.features, section.features p {
-    line-height: 0.00 !important;
-  }
-  section.features p { margin: 0 !important; }
-</style>
