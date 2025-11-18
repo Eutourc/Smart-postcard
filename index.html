@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Smart Postcard — EN v1.8a (explain + v7.4a side big-arrows aligned to postcard edges, symmetric gaps + default Oslo postcard)</title>
+  <title>Smart Postcard — EN v2.8 (explain + v7.4a side big-arrows aligned to postcard edges, symmetric gaps + tap-to-load & remember)</title>
   <meta http-equiv="Cache-Control" content="no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -171,6 +171,10 @@
       overflow:hidden;
     }
     .cardbox-inner::before{content:none;}
+
+#pc-img{border:1px solid #cfd2d6;box-sizing:border-box;}
+#pc-img{background:#ffffff;}
+#pc-hint{display:none;}
 </style>
 <style>
 .explain{
@@ -221,15 +225,17 @@
         <button aria-label="Previous stop" class="big-arrow left" id="prev"></button>
         <button aria-label="Next stop" class="big-arrow right" id="next"></button>
         <div class="cardbox-inner" id="cardbox-inner">
-          <img src="postcard-oslo-en-sample.png"
-               alt="Smart Postcard sample"
-               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0;">
+        <img id="pc-img" alt="Smart Postcard sample" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;border-radius:0;">
+        <div id="pc-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;text-align:center;padding:0 12px;">
+          Tap here to load a postcard image
         </div>
       </div>
+      </div>
+      <input type="file" id="pc-file" accept="image/*" style="display:none;">
     </div>
   </section>
 
-  <div class="version">251118 — EN v1.8a (same layout as v1.7, plus v7.4a side big-arrows aligned to postcard edges, symmetric gaps + default Oslo postcard image)</div>
+  <div class="version">251118 — EN v1.8b (same layout as v1.7, plus v7.4a side big-arrows aligned to postcard edges, symmetric gaps + default Oslo postcard image)</div>
 </main>
 
 <script>
@@ -265,5 +271,57 @@
 })()
 </script>
 
+<script>
+(function(){
+  var box = document.getElementById('cardbox-inner');
+  var img = document.getElementById('pc-img');
+  var hint = document.getElementById('pc-hint');
+  var input = document.getElementById('pc-file');
+  if(!box || !img || !input) return;
+  // restore last postcard if remembered
+  try{
+    var saved = window.localStorage && localStorage.getItem('sp_demo_postcard');
+    if(saved){
+      img.src = saved;
+      img.style.display = 'block';
+      if(hint) hint.style.display = 'none';
+    }
+  }catch(e){}
+  box.addEventListener('click', function(){
+    input.click();
+  });
+  input.addEventListener('change', function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var data = ev.target.result || '';
+      img.src = data;
+      img.style.display = 'block';
+      if(hint) hint.style.display = 'none';
+      try{
+        window.localStorage && localStorage.setItem('sp_demo_postcard', data);
+      }catch(e){}
+    };
+    reader.readAsDataURL(file);
+  });
+})();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var img = document.getElementById('pc-img');
+  var hint = document.getElementById('pc-hint');
+  if(img && !img.getAttribute('src')){
+    img.setAttribute('src','postcard-oslo-en-sample.png');
+  }
+  if(img){
+    img.style.display = 'block';
+  }
+  if(hint){
+    hint.style.display = 'none';
+  }
+});
+</script>
 </body>
 </html>
