@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Smart Postcard — EN v2.8 (explain + v7.4a side big-arrows aligned to postcard edges, symmetric gaps + tap-to-load & remember)</title>
+  <title>Smart Postcard — EN v1.8d (explain + v7.4a side big-arrows aligned to postcard edges, symmetric gaps + tap-to-load & remember)</title>
   <meta http-equiv="Cache-Control" content="no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -19,7 +19,7 @@
       /* independent gaps for EN */
        /* header ↔ title */
       --gap2: 28px; /* title ↔ explain */
-      --gap3: 36px; /* explain ↔ card slot (same as gap2 for symmetry) */
+      --gap3: 28px; /* explain ↔ card slot (same as gap2 for symmetry) */
 
       /* explain bubble exact spec from v7.4a */
       --explain-bg:#FEF9C3;
@@ -106,7 +106,7 @@
     .viewer{position:relative;margin-top:var(--gap3);}
     .cardbox{
       position:relative;
-      flex:0 1 88%;
+      flex:0 1 92%;
       margin:0 auto;
       max-width:640px;
       border-radius:0;
@@ -221,7 +221,7 @@
         <button aria-label="Previous stop" class="big-arrow left" id="prev"></button>
         <button aria-label="Next stop" class="big-arrow right" id="next"></button>
         <div class="cardbox-inner" id="cardbox-inner">
-        <img id="pc-img" alt="Smart Postcard sample" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;border-radius:0;">
+        <img id="pc-img" alt="Smart Postcard sample" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
         <div id="pc-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;text-align:center;padding:0 12px;">
           Tap here to load a postcard image
         </div>
