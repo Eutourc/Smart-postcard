@@ -1,187 +1,88 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Smart Postcard — EN v1.8g (explain + v7.4a side big-arrows aligned to postcard edges, symmetric gaps + default Oslo postcard image)</title>
-  <meta http-equiv="Cache-Control" content="no-store" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <style>
-    :root{
-      --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
-      --brandword-size:26px;
-      --title-size:23px;
-      --gapTop: 26px; /* header-to-title total gap (was main padding-top 10px + gap1 22px) */
-      --title-lh:1.06;
-      --title-lh:1.06;
-
-      /* independent gaps for EN */
-       /* header ↔ title */
-      --gap2: 28px; /* title ↔ explain */
-      --gap3: 28px; /* explain ↔ card slot (same as gap2 for symmetry) */
-
-      /* explain bubble exact spec from v7.4a */
-      --explain-bg:#FEF9C3;
-      --explain-width:70%;
-      --explain-minh:72px;
-      --explain-pad-y:10px;
-      --explain-pad-x:16px;
-      --explain-radius:16px;
-
-      --card-border:1px;
-      --card-border-color:#d1d5db;
-    
-      --arrow-fat:22px;
-      --arrow-width:26px;
-      --edge-fine:-0.5px;}
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:#fff;color:#222;
-      font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-    img{max-width:100%;display:block}
-
-    /* ===== v1.0 header clone ===== */
-    .top{position:sticky;top:0;z-index:50;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-    .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand img{width:64px;height:64px;object-fit:contain}
-    .brandword{display:flex;flex-direction:column;line-height:1}
-    .brandword .l1,.brandword .l2{
-      font-weight:900;font-size:var(--brandword-size);letter-spacing:.5px;
-      background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
-      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-      text-shadow:0 1px 1px rgba(0,0,0,.06);
-    }
-    .actions{display:flex;align-items:center;gap:8px}
-    .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-    .cart{position:relative}
-    .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
-    .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-    .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-    .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
-    .dropdown{position:absolute; right:58px; top:56px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 28px rgba(0,0,0,.18); overflow:hidden; display:none; min-width:160px}
-    .dropdown.open{display:block}
-    .dd-item{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:700}
-    .dd-item.current{background:#f5f7fa}
-    .dd-flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-    .menu{font-size:22px;font-weight:900}
-    /* ===== end header ===== */
-
-    .gap{display:block;width:100%;}
-    .gapTop{height:var(--gapTop);}
-    .gap2{height:var(--gap2);}
-
-
-    main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
-    h1.page-title{
-      font-size:var(--title-size);
-      line-height:var(--title-lh);
-      font-weight:800;
-      color:#222;
-      text-align:center;
-      margin:0;
-    }
-
-    .stage{display:flex;flex-direction:column;background:#fff;border-radius:20px}
-
-    .explain{
-      box-sizing:border-box !important;
-      margin:0 auto !important;
-      width:var(--explain-width) !important;
-      max-width:var(--explain-width) !important;
-      min-width:var(--explain-width) !important;
-      min-height:var(--explain-minh) !important;
-      padding:var(--explain-pad-y) var(--explain-pad-x) !important;
-      background:var(--explain-bg) !important;
-      border-radius:var(--explain-radius) !important;
-      box-shadow:0 2px 6px rgba(0,0,0,.10) !important;
-      text-align:center !important;
-      white-space:normal !important;
-      word-break:keep-all !important;
-      overflow-wrap:anywhere !important;
-      overflow:hidden !important;
-      font-size:18px !important; line-height:1.10 !important; font-weight:500; color:#222;
-    }
-
-    .viewer{position:relative;margin-top:var(--gap3);}
-    .cardbox{
-      position:relative;
-      flex:0 1 92%;
-      margin:0 auto;
-      max-width:640px;
-      border-radius:0;
-      overflow:visible;
-      background:transparent;
-      border:none;
-      box-shadow:none;
-    }
-
-    .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
-  
-/* === v7.4a title micro-tune (size 23px) === */
-.sp-en-title{}
-
-
-/* === v7.4a side big-arrows (copied) === */
-.big-arrow{
-  position:absolute;
-  width:0;height:0;
-  border:0;
-  background:transparent;
-  padding:0;
-  pointer-events:none;
-  z-index:2;
-}
-.big-arrow.left{ left:0; }
-.big-arrow.left::before{
-  content:"";
-  display:block;
-  width:0;height:0;
-  border-top:var(--arrow-fat) solid transparent;
-  border-bottom:var(--arrow-fat) solid transparent;
-  border-right:var(--arrow-width) solid #0b3a77;
-  /* base line exactly at postcard left edge */
-  margin-left: calc(-1 * var(--arrow-width));
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
-}
-.big-arrow.right{ right:0; }
-.big-arrow.right::before{
-  content:"";
-  display:block;
-  width:0;height:0;
-  border-top:var(--arrow-fat) solid transparent;
-  border-bottom:var(--arrow-fat) solid transparent;
-  border-left:var(--arrow-width) solid #0b3a77;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.18));
-}
-.card-placeholder{
-  width:100%;
-  padding:120px 12px;
-  text-align:center;
-  font-size:14px;
-  color:#9ca3af;
-}
-/* === end side big-arrows === */
-
-    .cardbox-inner{
-      position:relative;
-      width:100%;
-      padding-top:70%;
-      background:transparent;
-      overflow:hidden;
-    }
-    .cardbox-inner::before{content:none;}
-</style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Smart Postcard — EN v1.8h</title>
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <style>
-.explain{
-  margin: 0 auto !important;    /* 与之前第3处保持一致 */
-  padding: 10px 18px !important;      /* 略收紧内部空间 */
-  font-size: 14px !important;         /* 字号缩小 */
-  line-height: 1.16 !important;       /* 行间距减小 */
-  border-radius: 14px !important;     /* 保持圆角，略小更精致 */
-  box-sizing: border-box;
-  max-width: 85%;
-}
+  :root{
+    --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
+    --brandword-size:26px;
+    --title-size:23px;
+    --gapTop:26px;
+    --title-lh:1.06;
+    --gap2:28px;
+    --gap3:28px;
+    --explain-bg:#FEF9C3;
+    --card-border:1px;
+    --card-border-color:#9ca3af;
+    --arrow-fat:22px;
+    --arrow-width:26px;
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;background:#fff;color:#222;
+    font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  }
+  img{max-width:100%;display:block}
+  .top{position:sticky;top:0;z-index:10;background:#F5B800;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  .bar{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand img{width:64px;height:64px;object-fit:contain}
+  .brandword{display:flex;flex-direction:column;line-height:1}
+  .brandword .l1,.brandword .l2{
+    font-weight:900;font-size:var(--brandword-size);letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .actions{display:flex;align-items:center;gap:8px}
+  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .cart{position:relative}
+  .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
+  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+  .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
+  .menu{font-size:22px;font-weight:900}
+  main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
+  .gapTop{height:var(--gapTop);}
+  .gap2{height:var(--gap2);}
+  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;}
+  .stage{display:flex;flex-direction:column;background:#fff;border-radius:20px;padding:0 var(--gap3);}
+  .explain{
+    margin:0 auto !important;padding:10px 18px !important;
+    font-size:14px !important;line-height:1.16 !important;
+    border-radius:14px !important;
+    background:var(--explain-bg);text-align:center;
+  }
+  .viewer{position:relative;margin-top:var(--gap3);}
+  .cardbox{
+    position:relative;width:100%;margin:0;
+    border-radius:6px;overflow:hidden;background:#fff;
+    border:var(--card-border) solid var(--card-border-color);
+    box-shadow:0 2px 6px rgba(0,0,0,.06);
+  }
+  .cardbox-inner{position:relative;width:100%;padding-top:70%;overflow:hidden;background:#fff;}
+  .cardbox-inner::before{content:none;}
+  .big-arrow{position:absolute;width:0;height:0;border:0;background:transparent;padding:0;pointer-events:none;z-index:2;}
+  .big-arrow.left{left:0;}
+  .big-arrow.left::before{
+    content:"";display:block;width:0;height:0;
+    border-top:var(--arrow-fat) solid transparent;
+    border-bottom:var(--arrow-fat) solid transparent;
+    border-right:var(--arrow-width) solid #0b3a77;
+    margin-left:calc(-1 * var(--arrow-width));
+  }
+  .big-arrow.right{right:0;}
+  .big-arrow.right::before{
+    content:"";display:block;width:0;height:0;
+    border-top:var(--arrow-fat) solid transparent;
+    border-bottom:var(--arrow-fat) solid transparent;
+    border-left:var(--arrow-width) solid #0b3a77;
+  }
+  .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
 </style>
 </head>
 <body>
@@ -200,54 +101,44 @@
      <span class="flag" id="flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span>
      <span class="caret"></span>
    </div>
-   <div class="dropdown" id="lang-dd">
-     <div class="dd-item current" data-lang="en"><span class="dd-flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span><span>English</span></div>
-     <div class="dd-item" data-lang="zh"><span class="dd-flag" style="background:linear-gradient(180deg,#de2910 0 50%, #ffde00 50% 100%);"></span><span>中文</span></div>
-   </div>
    <div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
   </div>
  </div>
 </header>
 
 <main>
-  <div class="gap gapTop" aria-hidden="true"></div>
-  <h1 class="page-title sp-en-title">Treasure Your One‑Of‑A‑Kind<br/>Souvenir Postcard</h1>
-  <div class="gap gap2" aria-hidden="true"></div>
+  <div class="gapTop"></div>
+  <h1 class="page-title">Treasure Your One‑Of‑A‑Kind<br/>Souvenir Postcard</h1>
+  <div class="gap2"></div>
 
   <section class="stage">
-    <div class="explain" id="explain">Please fill in the mailing address!<br/>Country names must be English!<br/>See example in the address field!</div>
+    <div class="explain">
+      Please fill in the mailing address!<br/>
+      Country names must be English!<br/>
+      See example in the address field!
+    </div>
     <div class="viewer">
       <div class="cardbox" id="cardbox">
         <button aria-label="Previous stop" class="big-arrow left" id="prev"></button>
         <button aria-label="Next stop" class="big-arrow right" id="next"></button>
         <div class="cardbox-inner" id="cardbox-inner">
-        <img id="pc-img" src="postcard-oslo-en-sample.png" alt="Smart Postcard sample" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
-        <div id="pc-hint" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;text-align:center;padding:0 12px;">
-          Tap here to load a postcard image
+          <img id="pc-img" src="postcard-oslo-en-sample.png"
+               alt="Smart Postcard sample"
+               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
         </div>
       </div>
-      </div>
-      
     </div>
   </section>
 
-  <div class="version">251118 — EN v1.8g (same layout as v1.7, plus v7.4a side big-arrows aligned to postcard edges, symmetric gaps + default Oslo postcard image)</div>
+  <div class="version">
+    251119 — EN v1.8h (border added, gap3 = gap2, side gaps = gap3)
+  </div>
 </main>
 
 <script>
 (function(){
-  const pill = document.getElementById('lang-pill');
-  const dd = document.getElementById('lang-dd');
-  if(!pill || !dd) return;
-  pill.addEventListener('click', (e)=>{ e.stopPropagation(); dd.classList.toggle('open'); });
-  document.addEventListener('click', ()=> dd.classList.remove('open'));
-})();
-</script>
-
-<script>
-(function(){
   function positionArrows(){
-    var ex = document.getElementById('explain');
+    var ex = document.querySelector('.explain');
     var cb = document.getElementById('cardbox');
     var prev = document.getElementById('prev');
     var next = document.getElementById('next');
@@ -255,7 +146,7 @@
     var er = ex.getBoundingClientRect();
     var cr = cb.getBoundingClientRect();
     var centerY = er.top + er.height/2;
-    var y = centerY - cr.top - 22; // 半高22px，确保视觉居中
+    var y = centerY - cr.top - 22;
     prev.style.top = y + 'px';
     next.style.top = y + 'px';
   }
@@ -263,10 +154,7 @@
   window.addEventListener('load', positionArrows);
   window.addEventListener('resize', positionArrows);
   window.addEventListener('orientationchange', positionArrows);
-  setTimeout(positionArrows, 80);
-})()
+})();
 </script>
-
-
 </body>
 </html>
