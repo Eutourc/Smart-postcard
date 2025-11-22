@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v1.8D</title>
+<title>Smart Postcard — EN v1.9 arrows aligned</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -15,15 +15,15 @@
     --gapTop:26px;
     --title-lh:1.06;
     --gap2:28px;
-    --gap3:32px;
-    --sideGap:28px;
-    --sideGapL:25px;
-    --sideGapR:26px;
+    --gap3:31.5px; /* third gap +1.5px total */
+    --sideGapL:24px; /* left reduced 1px */
+    --sideGapR:25px; /* right unchanged */
     --explain-bg:#FEF9C3;
     --card-border:1px;
     --card-border-color:#d1d5db;
     --arrow-fat:22px;
     --arrow-width:26px;
+    --gap4:27.5px;
   }
   *{box-sizing:border-box}
   html,body{
@@ -60,7 +60,10 @@
     border-radius:14px !important;
     background:var(--explain-bg);text-align:center;
   }
-  .viewer{position:relative;margin-top:var(--gap3);}
+  .viewer{
+    position:relative;
+    margin-top:var(--gap3);
+  }
   .cardbox{
     position:relative;width:100%;margin:0;
     border-radius:0;overflow:hidden;background:#fff;
@@ -69,7 +72,12 @@
   }
   .cardbox-inner{position:relative;width:100%;padding-top:70%;overflow:hidden;background:#fff;}
   .cardbox-inner::before{content:none;}
-  .big-arrow{position:absolute;width:0;height:0;border:0;background:transparent;padding:0;pointer-events:none;z-index:2;}
+  .big-arrow{
+    position:absolute;
+    width:0;height:0;border:0;background:transparent;padding:0;
+    pointer-events:none;
+    z-index:2;
+  }
   .big-arrow.left{left:0;}
   .big-arrow.left::before{
     content:"";display:block;width:0;height:0;
@@ -85,6 +93,16 @@
     border-bottom:var(--arrow-fat) solid transparent;
     border-left:var(--arrow-width) solid #0b3a77;
   }
+  .features{
+    margin-top:var(--gap4);
+    text-align:center;
+    font-size:14px;
+    line-height:1.16;
+    font-weight:700;
+    color:#000000;
+  }
+  .features-line{display:block;}
+  .features-line + .features-line{margin-top:0;}
   .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
 </style>
 </head>
@@ -121,9 +139,9 @@
       See example in the address field!
     </div>
     <div class="viewer">
+      <button aria-label="Previous stop" class="big-arrow left" id="prev"></button>
+      <button aria-label="Next stop" class="big-arrow right" id="next"></button>
       <div class="cardbox" id="cardbox">
-        <button aria-label="Previous stop" class="big-arrow left" id="prev"></button>
-        <button aria-label="Next stop" class="big-arrow right" id="next"></button>
         <div class="cardbox-inner" id="cardbox-inner">
           <img id="pc-img" src="postcard-oslo-en-sample.png"
                alt="Smart Postcard sample"
@@ -131,10 +149,16 @@
         </div>
       </div>
     </div>
+    <section class="features" aria-label="Smart Postcard features">
+      <div class="features-line">Easy to make · Physical printing</div>
+      <div class="features-line">Precious album · Worldwide delivery</div>
+      <div class="features-line">Travel souvenir · Philatelic collectible</div>
+      <div class="features-line">Photo printing · A5 large size · Great value</div>
+    </section>
   </section>
 
   <div class="version">
-    251120 — EN v1.8D (gap3 +2px, left -3px, right -2px)
+    251122 — EN v2.1g features (gap3 = 31.5px, gap4 = 27.5px; left 24px, right 25px, bold700)
   </div>
 </main>
 
@@ -142,14 +166,14 @@
 (function(){
   function positionArrows(){
     var ex = document.querySelector('.explain');
-    var cb = document.getElementById('cardbox');
+    var viewer = document.querySelector('.viewer');
     var prev = document.getElementById('prev');
     var next = document.getElementById('next');
-    if(!ex || !cb || !prev || !next) return;
+    if(!ex || !viewer || !prev || !next) return;
     var er = ex.getBoundingClientRect();
-    var cr = cb.getBoundingClientRect();
+    var vr = viewer.getBoundingClientRect();
     var centerY = er.top + er.height/2;
-    var y = centerY - cr.top - 22;
+    var y = centerY - vr.top - 22; // 22 = arrow-fat
     prev.style.top = y + 'px';
     next.style.top = y + 'px';
   }
