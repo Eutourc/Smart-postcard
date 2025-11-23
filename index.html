@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v1.9 arrows aligned</title>
+<title>Smart Postcard — EN v2.2j gold buttons tower-up tuned</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -15,15 +15,14 @@
     --gapTop:26px;
     --title-lh:1.06;
     --gap2:28px;
-    --gap3:31.5px; /* third gap +1.5px total */
-    --sideGapL:24px; /* left reduced 1px */
-    --sideGapR:25px; /* right unchanged */
+    --gap3:31.5px;          /* 第三留白：说明框→样图 基准 */
+    --sideGapL:24px;        /* 左缩 1px */
+    --sideGapR:25px;        /* 右不变 */
     --explain-bg:#FEF9C3;
     --card-border:1px;
     --card-border-color:#d1d5db;
     --arrow-fat:22px;
     --arrow-width:26px;
-    --gap4:27.5px;
   }
   *{box-sizing:border-box}
   html,body{
@@ -53,16 +52,23 @@
   .gapTop{height:var(--gapTop);}
   .gap2{height:var(--gap2);}
   h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;}
-  .stage{display:flex;flex-direction:column;background:#fff;border-radius:20px;padding-left:var(--sideGapL);padding-right:var(--sideGapR);}
+  .stage{
+    display:flex;flex-direction:column;
+    background:#fff;border-radius:20px;
+    padding-left:var(--sideGapL);padding-right:var(--sideGapR);
+  }
   .explain{
-    margin:0 auto !important;padding:10px 18px !important;
-    font-size:14px !important;line-height:1.16 !important;
+    margin:0 auto !important;
+    padding:10px 18px !important;
+    font-size:14px !important;
+    line-height:1.16 !important;
     border-radius:14px !important;
-    background:var(--explain-bg);text-align:center;
+    background:var(--explain-bg);
+    text-align:center;
   }
   .viewer{
     position:relative;
-    margin-top:var(--gap3);
+    margin-top:var(--gap3);        /* 第三留白：说明框→样图 */
   }
   .cardbox{
     position:relative;width:100%;margin:0;
@@ -93,8 +99,10 @@
     border-bottom:var(--arrow-fat) solid transparent;
     border-left:var(--arrow-width) solid #0b3a77;
   }
+
+  /* 特点集锦：略微缩小上方留白，做视觉校正 */
   .features{
-    margin-top:var(--gap4);
+    margin-top:calc(var(--gap3) - 4px);  /* 31.5 - 4 => 视觉接近第三留白 */
     text-align:center;
     font-size:14px;
     line-height:1.16;
@@ -103,6 +111,57 @@
   }
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
+
+  /* CTA 区：与特点集锦相同的矫正，保证三段留白视觉接近 */
+  .cta{
+    margin-top:calc(var(--gap3) - 4px);
+    margin-bottom:12px;
+  }
+
+  /* —— 功能键：上排两键略微再收紧，下排细长略宽 —— */
+  .cta-row-top{
+    display:flex;
+    justify-content:center;      /* 两个键作为整体居中 */
+    column-gap:14px;             /* 中间留白进一步收紧 */
+    width:100%;                  /* 跟随容器宽度 */
+    margin:0 auto;               /* 居中放置 */
+  }
+  .btn-gold,
+  .btn-main{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:22px;
+    border:1px solid rgba(140,103,36,.45);
+    background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.85),
+      inset 0 -2px 0 rgba(0,0,0,.18),
+      0 8px 18px rgba(0,0,0,.14);
+    color:#2f2f2f;
+    text-shadow:0 1px 0 rgba(255,255,255,.75),0 -1px 0 rgba(0,0,0,.18);
+    font-family:inherit;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  /* 上面两键：小一点，字体也小一点 */
+  .btn-gold{
+    flex:0 0 auto;               /* 按内容宽度，自然排布 */
+    height:38px;
+    font-size:13px;
+    padding:0 16px;              /* 两侧稍加内边距，显得不拥挤 */
+  }
+  /* 下面主键：细长、略宽但不显得巨大 */
+  .btn-main{
+    display:block;
+    width:100%;                 /* 满格主键 */
+    margin:12px 0 0;
+    height:40px;                /* 维持细长 */
+    font-size:16px;
+    border-radius:24px;
+  }
+  .btn-primary{color:#1e56d6;}
+
   .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
 </style>
 </head>
@@ -149,6 +208,7 @@
         </div>
       </div>
     </div>
+
     <section class="features" aria-label="Smart Postcard features">
       <div class="features-line">Easy to make · Physical printing</div>
       <div class="features-line">Precious album · Worldwide delivery</div>
@@ -157,8 +217,16 @@
     </section>
   </section>
 
+  <section class="cta" aria-label="Choose postcard type">
+    <div class="cta-row-top">
+      <button class="btn-gold btn-primary" type="button">Souvenir postcard</button>
+      <button class="btn-gold" type="button">Traditional postcard</button>
+    </div>
+    <button class="btn-main" type="button">Treasure Now</button>
+  </section>
+
   <div class="version">
-    251122 — EN v2.1g features (gap3 = 31.5px, gap4 = 27.5px; left 24px, right 25px, bold700)
+    251122 — EN v2.3 final gold buttons tower-up (top centered, slim main button)
   </div>
 </main>
 
