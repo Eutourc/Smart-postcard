@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v4.1b_a 三箭头互动_小箭头距边9点5px_序号1与10切换试验版</title>
+<title>Smart Postcard — EN v4.1b_三箭头互动_小箭头距边9点5px</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -358,20 +358,21 @@ ying::before{
 
   function renderExplain(){
     box.innerHTML = messages[state.current] || "";
+    updatePostcardImage();
+  }
+
+  function updatePostcardImage(){
     var img = document.getElementById('pc-img');
-    if(img){
-      var n = state.current;
-      var src;
-      if(n === 1){
-        src = 'oslo_ski_jump_background.jpg'; // 序号1：跳台背景图（请用这名字放图）
-      }else if(n === 10){
-        src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
-      }else{
-        src = 'postcard-oslo-en-sample.png'; // 其他序号：明信片样图
-      }
-      if(img.getAttribute('src') !== src){
-        img.setAttribute('src', src);
-      }
+    if(!img) return;
+    var step = Number(state.current);
+    var src = 'postcard-oslo-en-sample.png'; // 默认：样图
+    if(step === 1){
+      src = 'oslo_ski_jump_background.jpg'; // 序号1：跳台背景图
+    }else if(step === 10){
+      src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：电子相册封面
+    }
+    if(img.getAttribute('src') !== src){
+      img.setAttribute('src', src);
     }
   }
 
