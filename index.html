@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v4.2_站点精调初版</title>
+<title>Smart Postcard — EN v4.1b_a 三箭头互动_小箭头距边9点5px_序号1与10切换试验版</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -297,7 +297,8 @@ ying::before{
     <button class="btn-main" type="button">Treasure Now</button>
   </section>
 
-  251201 — EN v4.2 站点精调初版</div>
+  U1129 — EN v4.1b 三箭头互动 · 小箭头距边 9.5px
+  </div>
 </main>
 
 <script>
@@ -357,6 +358,21 @@ ying::before{
 
   function renderExplain(){
     box.innerHTML = messages[state.current] || "";
+    var img = document.getElementById('pc-img');
+    if(img){
+      var n = state.current;
+      var src;
+      if(n === 1){
+        src = 'oslo_ski_jump_background.jpg'; // 序号1：跳台背景图（请用这名字放图）
+      }else if(n === 10){
+        src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
+      }else{
+        src = 'postcard-oslo-en-sample.png'; // 其他序号：明信片样图
+      }
+      if(img.getAttribute('src') !== src){
+        img.setAttribute('src', src);
+      }
+    }
   }
 
   function syncMarker(){
