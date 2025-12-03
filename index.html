@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v4.1b_三箭头互动_小箭头距边9点5px</title>
+<title>Smart Postcard — EN v4.2 三箭头互动_手动自演达标_站点1与10精准对中版</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -340,7 +340,7 @@ ying::before{
 
   var leftOrder  = [2,3,4,5,6,7,8,9,10,1];
   var rightOrder = [2,1,10,9,8,7,6,5,4,3];
-  var autoOrder  = [2,1,3,4,5,6,7,8,9,10];
+  var autoOrder  = [1,2,3,4,5,6,7,8,9,10];
 
   function nextIn(order, current, fallback){
     var i = order.indexOf(current);
@@ -357,24 +357,21 @@ ying::before{
   var state = window.SP_state;
 
   function renderExplain(){
-    box.innerHTML = messages[state.current] || "";
-    updatePostcardImage();
-  }
-
-  function updatePostcardImage(){
-    var img = document.getElementById('pc-img');
-    if(!img) return;
-    var step = Number(state.current);
-    var src = 'postcard-oslo-en-sample.png'; // 默认：样图
-    if(step === 1){
-      src = 'oslo_ski_jump_background.jpg'; // 序号1：跳台背景图
-    }else if(step === 10){
-      src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：电子相册封面
+  box.innerHTML = messages[state.current] || "";
+  var img = document.getElementById('pc-img');
+  if(img){
+    var n = state.current;
+    var src = 'postcard-oslo-en-sample.png'; // 默认样图
+    if(n === 1){
+      src = 'oslo_ski_jump_background.jpg'; // 序号1：背景图
+    }else if(n === 10){
+      src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
     }
     if(img.getAttribute('src') !== src){
       img.setAttribute('src', src);
     }
   }
+}
 
   function syncMarker(){
     if(window.SP10_render) window.SP10_render();
@@ -392,12 +389,15 @@ ying::before{
     syncMarker();
   }
 
-  var AUTO_SHORT = 5000;
+  var AUTO_SHORT = 10000;
   var AUTO_LONG  = 10000;
   var autoTimer  = null;
-  window.SP_autoRunning = window.SP_autoRunning || false;
-  var autoBtn = document.getElementById('auto-play');
-  var autoIndex = 0;
+window.SP_autoRunning = window.SP_autoRunning || false;
+window.SP_autoPaused  = window.SP_autoPaused  || false;
+var autoBtn = document.getElementById('auto-play');
+var autoIndex = 0;
+var autoJustStarted = false;
+var lastAutoClick = 0;
 
   function clearAuto(){
     if(autoTimer){
@@ -414,31 +414,41 @@ ying::before{
   }
 
   function stepAuto(){
-    if(!window.SP_autoRunning) return;
-    autoIndex = (autoIndex + 1) % autoOrder.length;
-    state.current = autoOrder[autoIndex];
-    renderExplain();
-    syncMarker();
-    scheduleNext();
+  if(!window.SP_autoRunning) return;
+  if(autoJustStarted){
+    autoJustStarted = false;
+    state.current = 1; // 第一次从2切到1
+  }else{
+    var idx = autoOrder.indexOf(state.current);
+    if(idx === -1) idx = 0;
+    var nextIdx = (idx + 1) % autoOrder.length;
+    state.current = autoOrder[nextIdx];
   }
+  renderExplain();
+  syncMarker();
+  scheduleNext();
+}
 
   function startAuto(){
-    if(window.SP_autoRunning) return;
-    window.SP_autoRunning = true;
-    if(autoBtn) autoBtn.classList.add('playing');
-    state.current = 2;
-    autoIndex = 0; // autoOrder[0] = 2
-    renderExplain();
-    syncMarker();
-    scheduleNext();
-  }
+  if(window.SP_autoRunning) return;
+  window.SP_autoRunning = true;
+  window.SP_autoPaused = false;
+  if(autoBtn) autoBtn.classList.add('playing');
+  // 无论当前停在哪个站点，只要点自动演示，就回到默认站点2
+  state.current = 2;
+  renderExplain();
+  syncMarker();
+  autoJustStarted = true;
+  scheduleNext();
+}
 
   function stopAuto(){
-    if(!window.SP_autoRunning) return;
-    window.SP_autoRunning = false;
-    if(autoBtn) autoBtn.classList.remove('playing');
-    clearAuto();
-  }
+  if(!window.SP_autoRunning && !window.SP_autoPaused) return;
+  window.SP_autoRunning = false;
+  window.SP_autoPaused = false;
+  if(autoBtn) autoBtn.classList.remove('playing');
+  clearAuto();
+}
 
   left.addEventListener('click', function(){
     stopAuto();
@@ -450,11 +460,39 @@ ying::before{
   });
 
   if(autoBtn){
-    autoBtn.addEventListener('click', function(){
-      if(window.SP_autoRunning){ stopAuto(); }
-      else{ startAuto(); }
-    });
-  }
+  autoBtn.addEventListener('click', function(){
+    var now = Date.now();
+    var delta = now - lastAutoClick;
+    lastAutoClick = now;
+
+    // 连续点两次：无论当前状态如何，回到序号2重新开始自动演示
+    if(delta > 0 && delta < 400){
+      stopAuto();
+      startAuto();
+      return;
+    }
+
+    // 正在自动演示 → 暂停
+    if(window.SP_autoRunning){
+      window.SP_autoRunning = false;
+      window.SP_autoPaused = true;
+      if(autoBtn) autoBtn.classList.remove('playing');
+      clearAuto();
+    }
+    // 已暂停 → 从当前位置继续
+    else if(window.SP_autoPaused){
+      window.SP_autoRunning = true;
+      window.SP_autoPaused = false;
+      if(autoBtn) autoBtn.classList.add('playing');
+      autoJustStarted = false; // 不再走“2→1”的首步，直接按当前站点继续
+      scheduleNext();
+    }
+    // 完全停止状态 → 从序号2开始自动演示
+    else{
+      startAuto();
+    }
+  });
+}
 
   window.SP_goLeft = goLeft;
   window.SP_goRight = goRight;
@@ -472,17 +510,17 @@ ying::before{
 (function(){
   
   var anchors = [
-    {n:1, nx:0.491168, ny:0.000456, rot:180},
-    {n:2, nx:0.852161, ny:0.000000, rot:180},
-    {n:3, nx:0.563973, ny:0.001898, rot:180},
-    {n:4, nx:0.281333, ny:0.003738, rot:180},
-    {n:5, nx:0.000000, ny:0.435712, rot:90},
-    {n:6, nx:0.147537, ny:1.000000, rot:0},
-    {n:7, nx:0.283871, ny:0.998160, rot:0},
-    {n:8, nx:1.000000, ny:0.559373, rot:270},
-    {n:9, nx:0.999215, ny:0.257592, rot:270},
-    {n:10, nx:0.491168, ny:0.000456, rot:180}
-  ];
+  {n:1, nx:0.500000, ny:0.000000, rot:180},
+  {n:2, nx:0.852161, ny:0.000000, rot:180},
+  {n:3, nx:0.563973, ny:0.001898, rot:180},
+  {n:4, nx:0.281333, ny:0.003738, rot:180},
+  {n:5, nx:0.000000, ny:0.435712, rot:90},
+  {n:6, nx:0.147537, ny:1.000000, rot:0},
+  {n:7, nx:0.283871, ny:0.998160, rot:0},
+  {n:8, nx:1.000000, ny:0.559373, rot:270},
+  {n:9, nx:0.999215, ny:0.257592, rot:270},
+  {n:10, nx:0.500000, ny:0.000000, rot:180}
+];
 
   function renderMarker(){
     var marker = document.getElementById('marker');
