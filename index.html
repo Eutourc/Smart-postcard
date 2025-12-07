@@ -103,6 +103,79 @@
   }
   .cardbox-inner{position:relative;width:100%;padding-top:70%;overflow:visible;background:#fff;}
   .cardbox-inner::before{content:none;}
+  .hotspot{
+    position:absolute;
+    border:none;
+    background:transparent;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    z-index:3;
+  }
+  .hotspot:focus{outline:none;}
+  /* shared center hotspot for seq 1 & 10 (single vs double tap, vertical strip from below seq3 down to above seal) */
+  .hotspot-center{
+    top:20.10%;
+    left:46.00%;
+    width:12.00%;
+    height:58.41%;
+  }
+  /* hotspot for seq 2 (stamp — expanded downward) */
+  .hotspot-stamp{
+    top:-12.00%;
+    left:79.05%;
+    width:20.00%;
+    height:30.00%;
+  }
+  /* hotspot for seq 3 (QR1 — expanded downward) */
+  .hotspot-qr1{
+    top:-11.81%;
+    left:48.07%;
+    width:20.00%;
+    height:30.00%;
+  }
+  /* hotspot for seq 4 (weather bar — extend downward from original center, bottom aligned with seq 3) */
+  .hotspot-weather{
+    top:-4.63%;
+    left:8.13%;
+    width:42.00%;
+    height:22.82%;
+  }
+  /* hotspot for seq 5 (writing area — fully inside card, right edge visibly retracted) */
+  .hotspot-writing{
+    top:27.00%;
+    left:0.00%;
+    width:44.50%;
+    height:36.00%;
+  }
+  /* hotspot for seq 6 (QR2 — expanded upward, extra 30px up, vertical rectangle) */
+  .hotspot-qr2{
+    top:81.07%;
+    left:2.00%;
+    width:20.00%;
+    height:25.66%;
+  }
+  /* hotspot for seq 7 (seal — expanded upward, extra 30px up, vertical rectangle) */
+  .hotspot-seal{
+    top:78.51%;
+    left:19.00%;
+    width:22.00%;
+    height:27.66%;
+  }
+  /* hotspot for seq 8 (address — expanded leftwards, more inside) */
+  .hotspot-address{
+    top:40.00%;
+    left:72.00%;
+    width:28.00%;
+    height:36.00%;
+  }
+  /* hotspot for seq 9 (postmark — center shifted additional 20px left) */
+  .hotspot-postmark{
+    top:20.84%;
+    left:78.04%;
+    width:14.00%;
+    height:16.00%;
+  }
   .big-arrow{
     position:absolute;
     width:0;height:0;border:0;background:transparent;padding:0;
@@ -277,6 +350,15 @@ ying::before{
                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
           <button class="auto-play" id="auto-play" aria-label="Auto demo"></button>
+<button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
+<button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
+<button class="hotspot hotspot-qr1" id="hotspot-qr1" aria-label="Map hotspot"></button>
+<button class="hotspot hotspot-weather" id="hotspot-weather" aria-label="Weather hotspot"></button>
+<button class="hotspot hotspot-writing" id="hotspot-writing" aria-label="Writing hotspot"></button>
+<button class="hotspot hotspot-qr2" id="hotspot-qr2" aria-label="Media hotspot"></button>
+<button class="hotspot hotspot-seal" id="hotspot-seal" aria-label="Seal hotspot"></button>
+<button class="hotspot hotspot-address" id="hotspot-address" aria-label="Address hotspot"></button>
+<button class="hotspot hotspot-postmark" id="hotspot-postmark" aria-label="Postmark hotspot"></button>
         </div>
       </div>
     </div>
@@ -297,7 +379,7 @@ ying::before{
     <button class="btn-main" type="button">Treasure Now</button>
   </section>
 
-  U1129 — EN v4.2c 三箭头互动 · 手动自演达标 · 坐标定版
+  251205_EN_v5.1_Smart Postcard Milestone Edition
   </div>
 </main>
 
@@ -458,6 +540,49 @@ var lastAutoClick = 0;
     stopAuto();
     goRight();
   });
+function goTo(n){
+  if(typeof n !== 'number') return;
+  state.current = n;
+  renderExplain();
+  syncMarker();
+}
+function bindHotspot(id, target){
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('click', function(){
+    stopAuto();
+    goTo(target);
+  });
+}
+function bindCenterHotspot(id){
+  var el = document.getElementById(id);
+  if(!el) return;
+  var lastTap = 0;
+  el.addEventListener('click', function(){
+    var now = Date.now();
+    var delta = now - lastTap;
+    lastTap = now;
+    stopAuto();
+    // quick second tap => go to seq 10 (digital album)
+    if(delta > 0 && delta < 400){
+      goTo(10);
+    }else{
+      // normal single tap => seq 1 (postcard / stamp image)
+      goTo(1);
+    }
+  });
+}
+
+bindCenterHotspot('hotspot-center');
+
+bindHotspot('hotspot-stamp', 2);
+bindHotspot('hotspot-qr1', 3);
+bindHotspot('hotspot-weather', 4);
+bindHotspot('hotspot-writing', 5);
+bindHotspot('hotspot-qr2', 6);
+bindHotspot('hotspot-seal', 7);
+bindHotspot('hotspot-address', 8);
+bindHotspot('hotspot-postmark', 9);
 
   if(autoBtn){
   autoBtn.addEventListener('click', function(){
