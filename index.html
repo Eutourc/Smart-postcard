@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v4.6_seq9_up10px</title>
+<title>Smart Postcard — CN v6.0</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -12,10 +12,10 @@
     --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
     --brandword-size:26px;
     --title-size:23px;
-    --gapTop:26px;
+    --gapTop:33.5px;
     --title-lh:1.06;
-    --gap2:28px;
-    --gap3:31.5px;
+    --gap2:31.0px;
+    --gap3:33.0px;
     --sideGapL:24px;
     --sideGapR:25px;
     --explain-bg:#FEF9C3;
@@ -23,8 +23,8 @@
     --card-border-color:#d1d5db;
     --arrow-fat:22px;
     --arrow-width:26px;
-    --ex-pad-y:10px;
-    --ex-pad-x:18px;
+    --ex-pad-y:12px;
+    --ex-pad-x:16px;
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
@@ -56,7 +56,7 @@
   main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
   .gapTop{height:var(--gapTop);}
   .gap2{height:var(--gap2);}
-  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;}
+  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:600;text-align:center;margin:0;color:#111111;}
   .stage{
     display:flex;flex-direction:column;
     background:#fff;border-radius:20px;
@@ -70,8 +70,8 @@
     padding:var(--ex-pad-y) var(--ex-pad-x);
     border-radius:14px;
     background:var(--explain-bg);
-    font-size:14px;
-    line-height:1.16;
+    font-size:13px;
+    line-height:1.32;
     text-align:center;
   }
   .explain-keeper{
@@ -88,8 +88,8 @@
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:14px;
-    line-height:1.16;
+    font-size:13px;
+    line-height:1.32;
   }
   .viewer{
     position:relative;
@@ -113,12 +113,12 @@
     z-index:3;
   }
   .hotspot:focus{outline:none;}
-  /* shared center hotspot (top +20px third, height -40px third) */
+  /* shared center hotspot (top +5px) */
   .hotspot-center{
-    top:25.09%;
+    top:20.93%;
     left:46.00%;
     width:14.35%;
-    height:51.20%;
+    height:58.41%;
   }
   /* hotspot for seq 2 (stamp — expanded downward) */
   .hotspot-stamp{
@@ -132,14 +132,14 @@
     top:-11.81%;
     left:48.07%;
     width:20.00%;
-    height:30.55%;
+    height:30.00%;
   }
   /* hotspot for seq 4 (weather bar — extend downward from original center, bottom aligned with seq 3) */
   .hotspot-weather{
     top:-4.63%;
     left:8.13%;
     width:42.00%;
-    height:23.37%;
+    height:22.82%;
   }
   /* hotspot for seq 5 (writing area — fully inside card, right edge visibly retracted) */
   .hotspot-writing{
@@ -197,18 +197,29 @@
     border-bottom:var(--arrow-fat) solid transparent;
     border-left:var(--arrow-width) solid #0b3a77;
   }
+ 
+
   .features{
-    margin-top:calc(var(--gap3) - 4px);
+    margin-top:calc(var(--gap3) - 2px);
     text-align:center;
-    font-size:14px;
-    line-height:1.16;
+    font-size:13px;
+    line-height:1.32;
     font-weight:700;
-    color:#000000;
+    color:#111111;
+    font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif;
+    letter-spacing:0.2px;
+  color:#1a1a1a;}
+  .features .narrow{
+    display:inline-block;
+    transform:scaleX(0.88);
+    transform-origin:center;
+    letter-spacing:-0.2px;
   }
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
-  .cta{
-    margin-top:calc(var(--gap3) - 4px);
+
+.cta{
+    margin-top:calc(var(--gap3) - 2px);
     margin-bottom:12px;
   }
   .cta-row-top{
@@ -312,7 +323,7 @@ ying::before{
   <div class="actions">
    <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
    <div class="langpill" id="lang-pill">
-     <span class="flag" id="flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span>
+     <span class="flag" id="flag" style="background:linear-gradient(135deg,#de2910 0 60%, #de2910 60% 100%);"></span>
      <span class="caret"></span>
    </div>
    <div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
@@ -322,21 +333,20 @@ ying::before{
 
 <main>
   <div class="gapTop"></div>
-  <h1 class="page-title">Treasure Your One-Of-A-Kind<br/>Souvenir Postcard</h1>
+  <h1 class="page-title">珍藏您举世无双的纪念明信片</h1>
   <div class="gap2"></div>
 
   <section class="stage">
     <!-- 说明框：序号8 做“定尺”，默认展示序号2 -->
     <div class="explain">
       <div class="explain-keeper">
-        Please fill in the mailing address!<br/>
-        Country names must be English!<br/>
-        See example in the address field!
+        记录当时感言、日期、天气与温度！<br/>
+这也是您在地图纪念点旁写的留言！<br/>
+这等于洗了一张 A5 大尺码的照片！
       </div>
       <div id="explain-text">
-        Allow to use your own photo!<br/>
-        Treasure the historic chance!<br/>
-        It is one of a kind worldwide!
+        您的照片可成为邮票及明信片画面！<br/>
+ 珍惜当下！历史佳机！独特唯一！
       </div>
     </div>
 
@@ -345,7 +355,7 @@ ying::before{
       <button aria-label="Next stop" class="big-arrow right" id="next"></button>
       <div class="cardbox" id="cardbox">
         <div class="cardbox-inner" id="cardbox-inner">
-          <img id="pc-img" src="postcard-oslo-en-sample.png"
+          <img id="pc-img" src="postcard-oslo-cn-sample.png"
                alt="Smart Postcard sample"
                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
@@ -364,22 +374,21 @@ ying::before{
     </div>
 
     <section class="features" aria-label="Smart Postcard features">
-      <div class="features-line">Easy to make · Physical printing</div>
-      <div class="features-line">Precious album · Worldwide delivery</div>
-      <div class="features-line">Travel souvenir · Philatelic collectible</div>
-      <div class="features-line">Photo printing · A5 large size · Great value</div>
+      <div class="features-line">操作简单 · 实体印刷 · 全球邮寄</div>
+      <div class="features-line">旅游纪念 · 集邮佳品 · 珍贵相册</div>
+      <div class="features-line">照片打印 · A5大尺码 · 物超所值</div>
     </section>
   </section>
 
   <section class="cta" aria-label="Choose postcard type">
     <div class="cta-row-top">
-      <button class="btn-gold btn-primary" type="button">Souvenir postcard</button>
-      <button class="btn-gold" type="button">Traditional postcard</button>
+      <button class="btn-gold btn-primary" type="button">纪念明信片</button>
+      <button class="btn-gold" type="button">传统明信片</button>
     </div>
-    <button class="btn-main" type="button">Treasure Now</button>
+    <button class="btn-main" type="button">开始制作</button>
   </section>
 
-  251205_EN_v5.1_Smart Postcard Milestone Edition
+  251208_CN_v7.0_Smart Postcard 中文版功能键版
   </div>
 </main>
 
@@ -408,16 +417,16 @@ ying::before{
 <script>
 (function(){
   var messages = {
-    1: "&nbsp;&nbsp;The postcard / stamp image!<br/>May replace it with your photo!<br/>A large A5 photo is developed!",
-    2: "Allow to use your own photo!<br/>Treasure the historic chance!<br/>It is one of a kind worldwide!",
-    3: "Your visiting commemoration!<br/>&nbsp;&nbsp;You can mark it on the map!<br/>Scan QR code to relive / share!",
-    4: "Record a feeling, date, weather, temperature! It is the postscript<br/>&nbsp;on your map memorial point!",
-    5: "&nbsp;&nbsp;&nbsp;&nbsp;Write your heartfelt words!<br/>Keep your cherished memories!",
-    6: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record your video / audio!<br/>Scan QR code to play it back!<br/>Long-press QR code on phones!",
-    7: "Add a local memorial seal!<br/>It is a witness to your visit!<br/>Long-press for AI Commentary!",
-    8: "Please fill in the mailing address!<br/>Country names must be English!<br/>See example in the address field!",
-    9: "Commemoration and postmark<br/>dates are guaranteed to match!",
-    10:"Digital postcard album — free!<br/>Start with five! Emailed to you!<br/>If more later, may put all in one!"
+    1: "明信片背面图案！可成为邮票图案！<br/>您可以任选照片！可用您的自拍照！<br/>这等于洗了一张 A5 大尺码的照片！",
+    2: "您的照片可成为邮票及明信片画面！<br/> 珍惜当下！历史佳机！独特唯一！",
+    3: "到此一游留念！纪念点载入地图！<br/>扫二维码或凭坐标可回味和分享！<br/>长按纪念相册内二维码等于扫码！",
+    4: "记录当时感言、日期、天气与温度！<br/>这也是您在地图纪念点旁写的留言！",
+    5: "书写您的明信内容！<br/>留下您美好的回忆！",
+    6: "留念一段录像或录音！<br/>    扫码即可回放！<br/> 手机上长按=扫码！",
+    7: "      加盖国家或地方纪念戳！<br/>      这是您到此一游的见证！<br/>手机上长按纪念戳，享受Ai解说！",
+    8: "填写明信片的邮寄地址！<br/>国家名称须用英文书写！<br/>请参照地址栏中的范例！",
+    9: "留念日期即邮戳日期！<br/>盖戳日与留念日同步！",
+    10:"电子明信片纪念册！免费赠送！<br/>     起步五张，寄往邮箱！<br/>     以后再做，可聚一堂！"
   };
 
   var leftOrder  = [2,3,4,5,6,7,8,9,10,1];
