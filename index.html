@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — EN v4.6_seq9_up10px</title>
+<title>Smart Postcard — CN v6.7B</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -12,19 +12,19 @@
     --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
     --brandword-size:26px;
     --title-size:23px;
-    --gapTop:26px;
+    --gapTop:33.5px;
     --title-lh:1.06;
-    --gap2:28px;
-    --gap3:31.5px;
+    --gap2:31.0px;
+    --gap3:33.0px;
     --sideGapL:24px;
     --sideGapR:25px;
-    --explain-bg:#FEF9C3;
+    --explain-bg:#FFF8D9;
     --card-border:1px;
     --card-border-color:#d1d5db;
     --arrow-fat:22px;
     --arrow-width:26px;
-    --ex-pad-y:10px;
-    --ex-pad-x:18px;
+    --ex-pad-y:12px;
+    --ex-pad-x:16px;
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
@@ -56,28 +56,24 @@
   main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
   .gapTop{height:var(--gapTop);}
   .gap2{height:var(--gap2);}
-  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;}
+  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:700;text-align:center;margin:0;color:#111111;}
   .stage{
     display:flex;flex-direction:column;
     background:#fff;border-radius:20px;
     padding-left:var(--sideGapL);padding-right:var(--sideGapR);
   }
-  /* 固定说明框：用序号8文字做“尺子”，锁定长宽，显示文字绝对定位在里面 */
   .explain{
     position:relative;
-    display:inline-block;      /* 不占满整行，宽度由内容决定 */
-    align-self:center;         /* 在 stage 中居中 */
+    display:inline-block;
+    align-self:center;
     padding:var(--ex-pad-y) var(--ex-pad-x);
     border-radius:14px;
     background:var(--explain-bg);
-    font-size:14px;
-    line-height:1.16;
+    font-size:13.5px;
+    line-height:1.35;
     text-align:center;
   }
-  .explain-keeper{
-    visibility:hidden;         /* 只作为定尺，不参与显示 */
-    white-space:normal;
-  }
+  .explain-keeper{visibility:hidden;white-space:normal;}
   #explain-text{
     position:absolute;
     left:var(--ex-pad-x);
@@ -88,13 +84,10 @@
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:14px;
-    line-height:1.16;
+    font-size:13.5px;
+    line-height:1.35;
   }
-  .viewer{
-    position:relative;
-    margin-top:var(--gap3);
-  }
+  .viewer{position:relative;margin-top:var(--gap3);}
   .cardbox{
     position:relative;width:100%;margin:0;
     border-radius:0;overflow:visible;background:#fff;
@@ -103,79 +96,17 @@
   }
   .cardbox-inner{position:relative;width:100%;padding-top:70%;overflow:visible;background:#fff;}
   .cardbox-inner::before{content:none;}
-  .hotspot{
-    position:absolute;
-    border:none;
-    background:transparent;
-    padding:0;
-    margin:0;
-    cursor:pointer;
-    z-index:3;
-  }
+  .hotspot{position:absolute;border:none;background:transparent;padding:0;margin:0;cursor:pointer;z-index:3;}
   .hotspot:focus{outline:none;}
-  /* shared center hotspot (top +20px third, height -40px third) */
-  .hotspot-center{
-    top:25.09%;
-    left:46.00%;
-    width:14.35%;
-    height:51.20%;
-  }
-  /* hotspot for seq 2 (stamp — expanded downward) */
-  .hotspot-stamp{
-    top:-12.00%;
-    left:79.05%;
-    width:20.00%;
-    height:30.00%;
-  }
-  /* hotspot for seq 3 (QR1 — expanded downward) */
-  .hotspot-qr1{
-    top:-11.81%;
-    left:48.07%;
-    width:20.00%;
-    height:30.55%;
-  }
-  /* hotspot for seq 4 (weather bar — extend downward from original center, bottom aligned with seq 3) */
-  .hotspot-weather{
-    top:-4.63%;
-    left:8.13%;
-    width:42.00%;
-    height:23.37%;
-  }
-  /* hotspot for seq 5 (writing area — fully inside card, right edge visibly retracted) */
-  .hotspot-writing{
-    top:27.00%;
-    left:0.00%;
-    width:44.50%;
-    height:36.00%;
-  }
-  /* hotspot for seq 6 (QR2 — expanded upward, extra 170px up, vertical rectangle) */
-  .hotspot-qr2{
-    top:73.30%;
-    left:2.00%;
-    width:20.00%;
-    height:33.43%;
-  }
-  /* hotspot for seq 7 (seal — expanded upward, extra 170px up, vertical rectangle) */
-  .hotspot-seal{
-    top:70.74%;
-    left:19.00%;
-    width:22.00%;
-    height:35.43%;
-  }
-  /* hotspot for seq 8 (left shift 40px more) */
-  .hotspot-address{
-    top:40.00%;
-    left:64.94%;
-    width:28.00%;
-    height:36.00%;
-  }
-  /* hotspot for seq 9 (left shift 5px) */
-  .hotspot-postmark{
-    top:18.62%;
-    left:64.51%;
-    width:14.00%;
-    height:16.00%;
-  }
+  .hotspot-center{top:20.93%;left:46.00%;width:14.35%;height:58.41%;}
+  .hotspot-stamp{top:-12.00%;left:79.05%;width:20.00%;height:30.00%;}
+  .hotspot-qr1{top:-11.81%;left:48.07%;width:20.00%;height:30.00%;}
+  .hotspot-weather{top:-4.63%;left:8.13%;width:42.00%;height:22.82%;}
+  .hotspot-writing{top:27.00%;left:0.00%;width:44.50%;height:36.00%;}
+  .hotspot-qr2{top:73.30%;left:2.00%;width:20.00%;height:33.43%;}
+  .hotspot-seal{top:70.74%;left:19.00%;width:22.00%;height:35.43%;}
+  .hotspot-address{top:40.00%;left:64.94%;width:28.00%;height:36.00%;}
+  .hotspot-postmark{top:18.62%;left:64.51%;width:14.00%;height:16.00%;}
   .big-arrow{
     position:absolute;
     width:0;height:0;border:0;background:transparent;padding:0;
@@ -198,64 +129,20 @@
     border-left:var(--arrow-width) solid #0b3a77;
   }
   .features{
-    margin-top:calc(var(--gap3) - 4px);
+    margin-top:calc(var(--gap3) - 2px);
     text-align:center;
-    font-size:14px;
-    line-height:1.16;
+    font-size:13.5px;
+    line-height:1.35;
     font-weight:700;
-    color:#000000;
+    font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif;
+    letter-spacing:0.2px;
+    color:#1a1a1a;
   }
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
-  .cta{
-    margin-top:calc(var(--gap3) - 4px);
-    margin-bottom:12px;
-  }
-  .cta-row-top{
-    display:flex;
-    justify-content:center;
-    column-gap:14px;
-    width:100%;
-    margin:0 auto;
-  }
-  .btn-gold,
-  .btn-main{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:22px;
-    border:1px solid rgba(140,103,36,.45);
-    background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
-    box-shadow:
-      inset 0 2px 0 rgba(255,255,255,.85),
-      inset 0 -2px 0 rgba(0,0,0,.18),
-      0 8px 18px rgba(0,0,0,.14);
-    color:#2f2f2f;
-    text-shadow:0 1px 0 rgba(255,255,255,.75),0 -1px 0 rgba(0,0,0,.18);
-    font-family:inherit;
-    font-weight:900;
-    white-space:nowrap;
-  }
-  .btn-gold{
-    flex:0 0 auto;
-    height:38px;
-    font-size:13px;
-    padding:0 16px;
-  }
-  .btn-main{
-    display:block;
-    width:100%;
-    margin:12px 0 0;
-    height:40px;
-    font-size:16px;
-    border-radius:24px;
-  }
-  .btn-primary{color:#1e56d6;}
 
   .marker{
-    position:absolute;
-    width:0;
-    height:0;
+    position:absolute;width:0;height:0;
     border-left:var(--marker-base) solid transparent;
     border-right:var(--marker-base) solid transparent;
     border-top:var(--marker-fat) solid var(--marker-color);
@@ -265,34 +152,37 @@
   }
 
   .auto-play{
-    position:absolute;
-    right:10px;
-    bottom:10px;
-    width:26px;
-    height:26px;
-    border-radius:999px;
-    border:none;
-    background:#ffffff;
-    box-shadow:0 2px 6px rgba(0,0,0,.3);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    padding:0;
+    position:absolute;right:10px;bottom:10px;
+    width:26px;height:26px;border-radius:999px;border:none;
+    background:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,.3);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
   }
-  .auto-play::before{
-    content:"▶";
-    font-size:13px;
-    transform:translateX(1px);
-  }
-  .auto-play.playing::before{
-    content:"Ⅱ";
-    transform:translateX(0);
-    font-size:12px;
-  }
-  .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
+  .auto-play::before{content:"▶";font-size:13px;transform:translateX(1px);}
+  .auto-play.playing::before{content:"Ⅱ";transform:translateX(0);font-size:12px;}
+</style>
+
+<style id="btn-fixed-v6.0-match">
+.btns{display:flex;justify-content:center;gap:31px;margin: calc(var(--gap3) - 2px) auto 0;}
+.btn{
+  flex:0 0 auto;min-width:108px;height:44px;padding:0 11px;border-radius:24px;
+  border:1px solid rgba(140,103,36,.45);
+  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.14);
+  color:#2f2f2f;text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
+  font-weight:700;font-size:15.5px;white-space:nowrap;
+}
+.btn.primary{color:#1e56d6;}
+.start{
+  display:flex;align-items:center;justify-content:center;height:44px;width:calc(100% - 24px);
+  margin:17px auto 0;padding:0 11px;border-radius:24px;border:1px solid rgba(140,103,36,.45);
+  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.14);
+  color:#2f2f2f;text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
+  font-weight:700;font-size:17.5px;
+}
 </style>
 </head>
+
 <body>
 <header class="top">
  <div class="bar">
@@ -306,7 +196,7 @@
   <div class="actions">
    <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
    <div class="langpill" id="lang-pill">
-     <span class="flag" id="flag" style="background:linear-gradient(90deg,#00247d 0 33%, #fff 33% 66%, #cf142b 66%);"></span>
+     <span class="flag" id="flag" style="background:linear-gradient(135deg,#de2910 0 60%, #de2910 60% 100%);"></span>
      <span class="caret"></span>
    </div>
    <div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
@@ -316,21 +206,19 @@
 
 <main>
   <div class="gapTop"></div>
-  <h1 class="page-title">Treasure Your One-Of-A-Kind<br/>Souvenir Postcard</h1>
+  <h1 class="page-title">珍藏您举世无双的纪念明信片</h1>
   <div class="gap2"></div>
 
   <section class="stage">
-    <!-- 说明框：序号8 做“定尺”，默认展示序号2 -->
     <div class="explain">
       <div class="explain-keeper">
-        Please fill in the mailing address!<br/>
-        Country names must be English!<br/>
-        See example in the address field!
+        记录当时感言、日期、天气与温度！<br/>
+这也是您在地图纪念点旁写的留言！<br/>
+这等于洗了一张 A5 大尺码的照片！
       </div>
       <div id="explain-text">
-        Allow to use your own photo!<br/>
-        Treasure the historic chance!<br/>
-        It is one of a kind worldwide!
+        您的照片可成为邮票及明信片画面！<br/>
+ 珍惜当下！历史佳机！独特唯一！
       </div>
     </div>
 
@@ -339,43 +227,38 @@
       <button aria-label="Next stop" class="big-arrow right" id="next"></button>
       <div class="cardbox" id="cardbox">
         <div class="cardbox-inner" id="cardbox-inner">
-          <!-- ✅ 改1：默认样图短名 -->
-          <img id="pc-img" src="postcard_en.png"
+          <!-- ✅ 默认先显示中文样图 -->
+          <img id="pc-img" src="postcard_cn.png"
                alt="Smart Postcard sample"
                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
           <button class="auto-play" id="auto-play" aria-label="Auto demo"></button>
 
-<button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
-<button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
-<button class="hotspot hotspot-qr1" id="hotspot-qr1" aria-label="Map hotspot"></button>
-<button class="hotspot hotspot-weather" id="hotspot-weather" aria-label="Weather hotspot"></button>
-<button class="hotspot hotspot-writing" id="hotspot-writing" aria-label="Writing hotspot"></button>
-<button class="hotspot hotspot-qr2" id="hotspot-qr2" aria-label="Media hotspot"></button>
-<button class="hotspot hotspot-seal" id="hotspot-seal" aria-label="Seal hotspot"></button>
-<button class="hotspot hotspot-address" id="hotspot-address" aria-label="Address hotspot"></button>
-<button class="hotspot hotspot-postmark" id="hotspot-postmark" aria-label="Postmark hotspot"></button>
+          <button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
+          <button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
+          <button class="hotspot hotspot-qr1" id="hotspot-qr1" aria-label="Map hotspot"></button>
+          <button class="hotspot hotspot-weather" id="hotspot-weather" aria-label="Weather hotspot"></button>
+          <button class="hotspot hotspot-writing" id="hotspot-writing" aria-label="Writing hotspot"></button>
+          <button class="hotspot hotspot-qr2" id="hotspot-qr2" aria-label="Media hotspot"></button>
+          <button class="hotspot hotspot-seal" id="hotspot-seal" aria-label="Seal hotspot"></button>
+          <button class="hotspot hotspot-address" id="hotspot-address" aria-label="Address hotspot"></button>
+          <button class="hotspot hotspot-postmark" id="hotspot-postmark" aria-label="Postmark hotspot"></button>
         </div>
       </div>
     </div>
 
     <section class="features" aria-label="Smart Postcard features">
-      <div class="features-line">Easy to make · Physical printing</div>
-      <div class="features-line">Precious album · Worldwide delivery</div>
-      <div class="features-line">Travel souvenir · Philatelic collectible</div>
-      <div class="features-line">Photo printing · A5 large size · Great value</div>
+      <div class="features-line">操作简单 · 实体印刷 · 全球邮寄</div>
+      <div class="features-line">旅游纪念 · 集邮佳品 · 珍贵相册</div>
+      <div class="features-line">照片打印 · A5大尺码 · 物超所值</div>
     </section>
   </section>
 
-  <section class="cta" aria-label="Choose postcard type">
-    <div class="cta-row-top">
-      <button class="btn-gold btn-primary" type="button">Souvenir postcard</button>
-      <button class="btn-gold" type="button">Traditional postcard</button>
-    </div>
-    <button class="btn-main" type="button">Treasure Now</button>
-  </section>
-
-  <!-- ✅ 改3：删除底部标识文字（演示干净版） -->
+  <div class="btns">
+    <button class="btn primary">纪念明信片</button>
+    <button class="btn">传统明信片</button>
+  </div>
+  <button class="start" id="start-btn">开始制作</button>
 </main>
 
 <script>
@@ -389,7 +272,7 @@
     var er = ex.getBoundingClientRect();
     var vr = viewer.getBoundingClientRect();
     var centerY = er.top + er.height/2;
-    var y = centerY - vr.top - 22; // 22 = arrow-fat
+    var y = centerY - vr.top - 22;
     prev.style.top = y + 'px';
     next.style.top = y + 'px';
   }
@@ -403,16 +286,16 @@
 <script>
 (function(){
   var messages = {
-    1: "&nbsp;&nbsp;The postcard / stamp image!<br/>May replace it with your photo!<br/>A large A5 photo is developed!",
-    2: "Allow to use your own photo!<br/>Treasure the historic chance!<br/>It is one of a kind worldwide!",
-    3: "Your visiting commemoration!<br/>&nbsp;&nbsp;You can mark it on the map!<br/>Scan QR code to relive / share!",
-    4: "Record a feeling, date, weather, temperature! It is the postscript<br/>&nbsp;on your map memorial point!",
-    5: "&nbsp;&nbsp;&nbsp;&nbsp;Write your heartfelt words!<br/>Keep your cherished memories!",
-    6: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record your video / audio!<br/>Scan QR code to play it back!<br/>Long-press QR code on phones!",
-    7: "Add a local memorial seal!<br/>It is a witness to your visit!<br/>Long-press for AI Commentary!",
-    8: "Please fill in the mailing address!<br/>Country names must be English!<br/>See example in the address field!",
-    9: "Commemoration and postmark<br/>dates are guaranteed to match!",
-    10:"Digital postcard album — free!<br/>Start with five! Emailed to you!<br/>If more later, may put all in one!"
+    1: "明信片背面图案！可成为邮票图案！<br/>您可以任选照片！可用您的自拍照！<br/>这等于洗了一张 A5 大尺码的照片！",
+    2: "您的照片可成为邮票及明信片画面！<br/> 珍惜当下！历史佳机！独特唯一！",
+    3: "到此一游留念！纪念点载入地图！<br/>扫二维码或凭坐标可回味和分享！<br/>长按纪念相册内二维码等于扫码！",
+    4: "记录当时感言、日期、天气与温度！<br/>这也是您在地图纪念点旁写的留言！",
+    5: "书写您的明信内容！<br/>留下您美好的回忆！",
+    6: "留念一段录像或录音！<br/>    扫码即可回放！<br/> 手机上长按=扫码！",
+    7: "      加盖国家或地方纪念戳！<br/>      这是您到此一游的见证！<br/>手机上长按纪念戳，享受Ai解说！",
+    8: "填写明信片的邮寄地址！<br/>国家名称须用英文书写！<br/>请参照地址栏中的范例！",
+    9: "留念日期即邮戳日期！<br/>盖戳日与留念日同步！",
+    10:"电子明信片纪念册！免费赠送！<br/>     起步五张，寄往邮箱！<br/>     以后再做，可聚一堂！"
   };
 
   var leftOrder  = [2,3,4,5,6,7,8,9,10,1];
@@ -438,36 +321,22 @@
     var img = document.getElementById('pc-img');
     if(img){
       var n = state.current;
-
-      // ✅ 改2：默认样图短名；序号1才显示背景；序号10相册封面
-      var src = 'postcard_en.png';
+      var src = 'postcard_cn.png';              // ✅ 默认：中文版样图
       if(n === 1){
-        src = 'oslo_ski_jump_background.jpg';
+        src = 'cn_v6.7B_bg_and_stamp.jpg';      // ✅ 只有序号1：背景/背面大图
       }else if(n === 10){
         src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png';
       }
-
       if(img.getAttribute('src') !== src){
         img.setAttribute('src', src);
       }
     }
   }
 
-  function syncMarker(){
-    if(window.SP10_render) window.SP10_render();
-  }
+  function syncMarker(){ if(window.SP10_render) window.SP10_render(); }
 
-  function goLeft(){
-    state.current = nextIn(leftOrder, state.current, 2);
-    renderExplain();
-    syncMarker();
-  }
-
-  function goRight(){
-    state.current = nextIn(rightOrder, state.current, 2);
-    renderExplain();
-    syncMarker();
-  }
+  function goLeft(){ state.current = nextIn(leftOrder, state.current, 2); renderExplain(); syncMarker(); }
+  function goRight(){ state.current = nextIn(rightOrder, state.current, 2); renderExplain(); syncMarker(); }
 
   var AUTO_SHORT = 10000;
   var AUTO_LONG  = 10000;
@@ -478,51 +347,32 @@
   var autoJustStarted = false;
   var lastAutoClick = 0;
 
-  function clearAuto(){
-    if(autoTimer){
-      clearTimeout(autoTimer);
-      autoTimer = null;
-    }
-  }
-
+  function clearAuto(){ if(autoTimer){ clearTimeout(autoTimer); autoTimer=null; } }
   function scheduleNext(){
     clearAuto();
     if(!window.SP_autoRunning) return;
     var delay = (state.current === 2 ? AUTO_LONG : AUTO_SHORT);
     autoTimer = setTimeout(stepAuto, delay);
   }
-
   function stepAuto(){
     if(!window.SP_autoRunning) return;
-    if(autoJustStarted){
-      autoJustStarted = false;
-      state.current = 1;
-    }else{
-      var idx = autoOrder.indexOf(state.current);
-      if(idx === -1) idx = 0;
-      state.current = autoOrder[(idx + 1) % autoOrder.length];
+    if(autoJustStarted){ autoJustStarted=false; state.current=1; }
+    else{
+      var idx = autoOrder.indexOf(state.current); if(idx===-1) idx=0;
+      state.current = autoOrder[(idx+1)%autoOrder.length];
     }
-    renderExplain();
-    syncMarker();
-    scheduleNext();
+    renderExplain(); syncMarker(); scheduleNext();
   }
-
   function startAuto(){
     if(window.SP_autoRunning) return;
-    window.SP_autoRunning = true;
-    window.SP_autoPaused = false;
+    window.SP_autoRunning = true; window.SP_autoPaused = false;
     if(autoBtn) autoBtn.classList.add('playing');
-    state.current = 2;
-    renderExplain();
-    syncMarker();
-    autoJustStarted = true;
-    scheduleNext();
+    state.current = 2; renderExplain(); syncMarker();
+    autoJustStarted = true; scheduleNext();
   }
-
   function stopAuto(){
     if(!window.SP_autoRunning && !window.SP_autoPaused) return;
-    window.SP_autoRunning = false;
-    window.SP_autoPaused = false;
+    window.SP_autoRunning = false; window.SP_autoPaused = false;
     if(autoBtn) autoBtn.classList.remove('playing');
     clearAuto();
   }
@@ -530,28 +380,18 @@
   left.addEventListener('click', function(){ stopAuto(); goLeft(); });
   right.addEventListener('click', function(){ stopAuto(); goRight(); });
 
-  function goTo(n){
-    if(typeof n !== 'number') return;
-    state.current = n;
-    renderExplain();
-    syncMarker();
-  }
-  function bindHotspot(id, target){
-    var el = document.getElementById(id);
-    if(!el) return;
+  function goTo(n){ if(typeof n!=='number') return; state.current=n; renderExplain(); syncMarker(); }
+  function bindHotspot(id,target){
+    var el=document.getElementById(id); if(!el) return;
     el.addEventListener('click', function(){ stopAuto(); goTo(target); });
   }
   function bindCenterHotspot(id){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var lastTap = 0;
+    var el=document.getElementById(id); if(!el) return;
+    var lastTap=0;
     el.addEventListener('click', function(){
-      var now = Date.now();
-      var delta = now - lastTap;
-      lastTap = now;
+      var now=Date.now(); var delta=now-lastTap; lastTap=now;
       stopAuto();
-      if(delta > 0 && delta < 400){ goTo(10); }
-      else{ goTo(1); }
+      if(delta>0 && delta<400){ goTo(10); } else { goTo(1); }
     });
   }
 
@@ -567,30 +407,17 @@
 
   if(autoBtn){
     autoBtn.addEventListener('click', function(){
-      var now = Date.now();
-      var delta = now - lastAutoClick;
-      lastAutoClick = now;
-
-      if(delta > 0 && delta < 400){
-        stopAuto();
-        startAuto();
-        return;
-      }
-
+      var now=Date.now(); var delta=now-lastAutoClick; lastAutoClick=now;
+      if(delta>0 && delta<400){ stopAuto(); startAuto(); return; }
       if(window.SP_autoRunning){
-        window.SP_autoRunning = false;
-        window.SP_autoPaused = true;
+        window.SP_autoRunning=false; window.SP_autoPaused=true;
         if(autoBtn) autoBtn.classList.remove('playing');
         clearAuto();
       }else if(window.SP_autoPaused){
-        window.SP_autoRunning = true;
-        window.SP_autoPaused = false;
+        window.SP_autoRunning=true; window.SP_autoPaused=false;
         if(autoBtn) autoBtn.classList.add('playing');
-        autoJustStarted = false;
-        scheduleNext();
-      }else{
-        startAuto();
-      }
+        autoJustStarted=false; scheduleNext();
+      }else startAuto();
     });
   }
 
@@ -627,8 +454,8 @@
     var a = anchors.find(function(x){ return x.n === cur; }) || anchors[1];
     marker.style.left = (a.nx * 100) + '%';
     marker.style.top  = (a.ny * 100) + '%';
-    var deg = (a.rot + 180) % 360;
 
+    var deg = (a.rot + 180) % 360;
     var offset = 9.5;
     var dx = 0, dy = 0;
     if(deg === 0){ dy = -offset; }
@@ -643,6 +470,15 @@
   window.addEventListener('load', renderMarker);
   window.addEventListener('resize', renderMarker);
   window.SP10_render = renderMarker;
+})();
+</script>
+
+<script>
+(function(){
+  var btn=document.getElementById('start-btn') || document.querySelector('.start');
+  if(btn){
+    btn.addEventListener('click', function(){ location.href='#start'; });
+  }
 })();
 </script>
 
