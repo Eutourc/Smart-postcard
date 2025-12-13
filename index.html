@@ -62,11 +62,10 @@
     background:#fff;border-radius:20px;
     padding-left:var(--sideGapL);padding-right:var(--sideGapR);
   }
-  /* 固定说明框：用序号8文字做“尺子”，锁定长宽，显示文字绝对定位在里面 */
   .explain{
     position:relative;
-    display:inline-block;      /* 不占满整行，宽度由内容决定 */
-    align-self:center;         /* 在 stage 中居中 */
+    display:inline-block;
+    align-self:center;
     padding:var(--ex-pad-y) var(--ex-pad-x);
     border-radius:14px;
     background:var(--explain-bg);
@@ -74,10 +73,7 @@
     line-height:1.35;
     text-align:center;
   }
-  .explain-keeper{
-    visibility:hidden;         /* 只作为定尺，不参与显示 */
-    white-space:normal;
-  }
+  .explain-keeper{visibility:hidden;white-space:normal;}
   #explain-text{
     position:absolute;
     left:var(--ex-pad-x);
@@ -91,10 +87,7 @@
     font-size:13.5px;
     line-height:1.35;
   }
-  .viewer{
-    position:relative;
-    margin-top:var(--gap3);
-  }
+  .viewer{position:relative;margin-top:var(--gap3);}
   .cardbox{
     position:relative;width:100%;margin:0;
     border-radius:0;overflow:visible;background:#fff;
@@ -103,79 +96,17 @@
   }
   .cardbox-inner{position:relative;width:100%;padding-top:70%;overflow:visible;background:#fff;}
   .cardbox-inner::before{content:none;}
-  .hotspot{
-    position:absolute;
-    border:none;
-    background:transparent;
-    padding:0;
-    margin:0;
-    cursor:pointer;
-    z-index:3;
-  }
+  .hotspot{position:absolute;border:none;background:transparent;padding:0;margin:0;cursor:pointer;z-index:3;}
   .hotspot:focus{outline:none;}
-  /* shared center hotspot (top +5px) */
-  .hotspot-center{
-    top:20.93%;
-    left:46.00%;
-    width:14.35%;
-    height:58.41%;
-  }
-  /* hotspot for seq 2 (stamp — expanded downward) */
-  .hotspot-stamp{
-    top:-12.00%;
-    left:79.05%;
-    width:20.00%;
-    height:30.00%;
-  }
-  /* hotspot for seq 3 (QR1 — expanded downward) */
-  .hotspot-qr1{
-    top:-11.81%;
-    left:48.07%;
-    width:20.00%;
-    height:30.00%;
-  }
-  /* hotspot for seq 4 (weather bar — extend downward from original center, bottom aligned with seq 3) */
-  .hotspot-weather{
-    top:-4.63%;
-    left:8.13%;
-    width:42.00%;
-    height:22.82%;
-  }
-  /* hotspot for seq 5 (writing area — fully inside card, right edge visibly retracted) */
-  .hotspot-writing{
-    top:27.00%;
-    left:0.00%;
-    width:44.50%;
-    height:36.00%;
-  }
-  /* hotspot for seq 6 (QR2 — expanded upward, extra 170px up, vertical rectangle) */
-  .hotspot-qr2{
-    top:73.30%;
-    left:2.00%;
-    width:20.00%;
-    height:33.43%;
-  }
-  /* hotspot for seq 7 (seal — expanded upward, extra 170px up, vertical rectangle) */
-  .hotspot-seal{
-    top:70.74%;
-    left:19.00%;
-    width:22.00%;
-    height:35.43%;
-  }
-  /* hotspot for seq 8 (left shift 40px more) */
-  .hotspot-address{
-    top:40.00%;
-    left:64.94%;
-    width:28.00%;
-    height:36.00%;
-  }
-  /* hotspot for seq 9 (left shift 5px) */
-  .hotspot-postmark{
-    top:18.62%;
-    left:64.51%;
-    width:14.00%;
-    height:16.00%;
-  }
+  .hotspot-center{top:20.93%;left:46.00%;width:14.35%;height:58.41%;}
+  .hotspot-stamp{top:-12.00%;left:79.05%;width:20.00%;height:30.00%;}
+  .hotspot-qr1{top:-11.81%;left:48.07%;width:20.00%;height:30.00%;}
+  .hotspot-weather{top:-4.63%;left:8.13%;width:42.00%;height:22.82%;}
+  .hotspot-writing{top:27.00%;left:0.00%;width:44.50%;height:36.00%;}
+  .hotspot-qr2{top:73.30%;left:2.00%;width:20.00%;height:33.43%;}
+  .hotspot-seal{top:70.74%;left:19.00%;width:22.00%;height:35.43%;}
+  .hotspot-address{top:40.00%;left:64.94%;width:28.00%;height:36.00%;}
+  .hotspot-postmark{top:18.62%;left:64.51%;width:14.00%;height:16.00%;}
   .big-arrow{
     position:absolute;
     width:0;height:0;border:0;background:transparent;padding:0;
@@ -197,18 +128,16 @@
     border-bottom:var(--arrow-fat) solid transparent;
     border-left:var(--arrow-width) solid #0b3a77;
   }
-
   .features{
     margin-top:calc(var(--gap3) - 2px);
     text-align:center;
     font-size:13.5px;
     line-height:1.35;
     font-weight:700;
-
     font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif;
     letter-spacing:0.2px;
-    color:#1a1a1a;}
-
+    color:#1a1a1a;
+  }
   .features .narrow{
     display:inline-block;
     transform:scaleX(0.88);
@@ -220,8 +149,7 @@
 
   .marker{
     position:absolute;
-    width:0;
-    height:0;
+    width:0;height:0;
     border-left:var(--marker-base) solid transparent;
     border-right:var(--marker-base) solid transparent;
     border-top:var(--marker-fat) solid var(--marker-color);
@@ -256,16 +184,14 @@
     transform:translateX(0);
     font-size:12px;
   }
-ying::before{
+  ying::before{
     content:"Ⅱ";
     transform:translateX(0);
     font-size:12px;
   }
-  .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
 </style>
 
 <style id="btn-fixed-v6.0-match">
-/* === Buttons: replace old/buggy button styles (no overlays, no !important) === */
 .btns{
   display:flex;
   justify-content:center;
@@ -275,7 +201,7 @@ ying::before{
 .btn{
   flex:0 0 auto;
   min-width: 108px;
-  height: 45px;                 /* ✅ 定型：44px → 45px */
+  height: 44px;
   padding: 0 11px;
   border-radius: 24px;
   border:1px solid rgba(140,103,36,.45);
@@ -286,8 +212,8 @@ ying::before{
     0 8px 18px rgba(0,0,0,.14);
   color:#2f2f2f;
   text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
-  font-weight:700;              /* 去粗体 */
-  font-size: 15.5px;             /* 文字小一号 */
+  font-weight:700;
+  font-size: 15.5px;
   white-space:nowrap;
 }
 .btn.primary{ color:#1e56d6; }
@@ -296,8 +222,8 @@ ying::before{
   display:flex;
   align-items:center;
   justify-content:center;
-  height:45px;                  /* ✅ 定型：44px → 45px */
-  width: calc(100% - 24px);     /* 两侧各减15px */
+  height:44px;
+  width: calc(100% - 24px);
   margin: 17px auto 0;
   padding: 0 11px;
   border-radius:24px;
@@ -309,8 +235,8 @@ ying::before{
     0 8px 18px rgba(0,0,0,.14);
   color:#2f2f2f;
   text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
-  font-weight:700;              /* 去粗体 */
-  font-size: 18px;              /* ✅ 定型：17.5px → 18px */
+  font-weight:700;
+  font-size: 17.5px;
 }
 </style>
 
@@ -342,7 +268,6 @@ ying::before{
   <div class="gap2"></div>
 
   <section class="stage">
-    <!-- 说明框：序号8 做“定尺”，默认展示序号2 -->
     <div class="explain">
       <div class="explain-keeper">
         记录当时感言、日期、天气与温度！<br/>
@@ -365,15 +290,15 @@ ying::before{
                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
           <button class="auto-play" id="auto-play" aria-label="Auto demo"></button>
-<button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
-<button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
-<button class="hotspot hotspot-qr1" id="hotspot-qr1" aria-label="Map hotspot"></button>
-<button class="hotspot hotspot-weather" id="hotspot-weather" aria-label="Weather hotspot"></button>
-<button class="hotspot hotspot-writing" id="hotspot-writing" aria-label="Writing hotspot"></button>
-<button class="hotspot hotspot-qr2" id="hotspot-qr2" aria-label="Media hotspot"></button>
-<button class="hotspot hotspot-seal" id="hotspot-seal" aria-label="Seal hotspot"></button>
-<button class="hotspot hotspot-address" id="hotspot-address" aria-label="Address hotspot"></button>
-<button class="hotspot hotspot-postmark" id="hotspot-postmark" aria-label="Postmark hotspot"></button>
+          <button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
+          <button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
+          <button class="hotspot hotspot-qr1" id="hotspot-qr1" aria-label="Map hotspot"></button>
+          <button class="hotspot hotspot-weather" id="hotspot-weather" aria-label="Weather hotspot"></button>
+          <button class="hotspot hotspot-writing" id="hotspot-writing" aria-label="Writing hotspot"></button>
+          <button class="hotspot hotspot-qr2" id="hotspot-qr2" aria-label="Media hotspot"></button>
+          <button class="hotspot hotspot-seal" id="hotspot-seal" aria-label="Seal hotspot"></button>
+          <button class="hotspot hotspot-address" id="hotspot-address" aria-label="Address hotspot"></button>
+          <button class="hotspot hotspot-postmark" id="hotspot-postmark" aria-label="Postmark hotspot"></button>
         </div>
       </div>
     </div>
@@ -386,12 +311,10 @@ ying::before{
   </section>
 
   <div class="btns">
-      <button class="btn primary">纪念明信片</button>
-      <button class="btn">传统明信片</button>
-    </div>
-    <button class="start" id="start-btn">开始制作</button>
-
-  251212_CN_v6.7_step3_三项微调确认版_上两键间距-1px_上下行距-1px_开始制作+0.5号</div>
+    <button class="btn primary">纪念明信片</button>
+    <button class="btn">传统明信片</button>
+  </div>
+  <button class="start" id="start-btn">开始制作</button>
 </main>
 
 <script>
@@ -405,7 +328,7 @@ ying::before{
     var er = ex.getBoundingClientRect();
     var vr = viewer.getBoundingClientRect();
     var centerY = er.top + er.height/2;
-    var y = centerY - vr.top - 22; // 22 = arrow-fat
+    var y = centerY - vr.top - 22;
     prev.style.top = y + 'px';
     next.style.top = y + 'px';
   }
@@ -454,9 +377,9 @@ ying::before{
     var img = document.getElementById('pc-img');
     if(img){
       var n = state.current;
-      var src = 'postcard-oslo-en-sample.png'; // 默认样图
-      if(n === 1){
-        src = 'oslo_ski_jump_background.jpg'; // 序号1：背景图
+      var src = 'postcard-oslo-cn-sample.png'; // 默认样图（中文版）
+      if(n === 1 || n === 2){
+        src = 'cn_v6.7B_bg_and_stamp.jpg'; // 序号1/2：背面图案 + 邮票画面（同一张）
       }else if(n === 10){
         src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
       }
@@ -509,7 +432,7 @@ ying::before{
     if(!window.SP_autoRunning) return;
     if(autoJustStarted){
       autoJustStarted = false;
-      state.current = 1; // 第一次从2切到1
+      state.current = 1;
     }else{
       var idx = autoOrder.indexOf(state.current);
       if(idx === -1) idx = 0;
@@ -541,14 +464,8 @@ ying::before{
     clearAuto();
   }
 
-  left.addEventListener('click', function(){
-    stopAuto();
-    goLeft();
-  });
-  right.addEventListener('click', function(){
-    stopAuto();
-    goRight();
-  });
+  left.addEventListener('click', function(){ stopAuto(); goLeft(); });
+  right.addEventListener('click', function(){ stopAuto(); goRight(); });
 
   function goTo(n){
     if(typeof n !== 'number') return;
@@ -559,10 +476,7 @@ ying::before{
   function bindHotspot(id, target){
     var el = document.getElementById(id);
     if(!el) return;
-    el.addEventListener('click', function(){
-      stopAuto();
-      goTo(target);
-    });
+    el.addEventListener('click', function(){ stopAuto(); goTo(target); });
   }
   function bindCenterHotspot(id){
     var el = document.getElementById(id);
@@ -573,16 +487,12 @@ ying::before{
       var delta = now - lastTap;
       lastTap = now;
       stopAuto();
-      if(delta > 0 && delta < 400){
-        goTo(10);
-      }else{
-        goTo(1);
-      }
+      if(delta > 0 && delta < 400){ goTo(10); }
+      else{ goTo(1); }
     });
   }
 
   bindCenterHotspot('hotspot-center');
-
   bindHotspot('hotspot-stamp', 2);
   bindHotspot('hotspot-qr1', 3);
   bindHotspot('hotspot-weather', 4);
@@ -599,25 +509,20 @@ ying::before{
       lastAutoClick = now;
 
       if(delta > 0 && delta < 400){
-        stopAuto();
-        startAuto();
-        return;
+        stopAuto(); startAuto(); return;
       }
-
       if(window.SP_autoRunning){
         window.SP_autoRunning = false;
         window.SP_autoPaused = true;
         if(autoBtn) autoBtn.classList.remove('playing');
         clearAuto();
-      }
-      else if(window.SP_autoPaused){
+      }else if(window.SP_autoPaused){
         window.SP_autoRunning = true;
         window.SP_autoPaused = false;
         if(autoBtn) autoBtn.classList.add('playing');
         autoJustStarted = false;
         scheduleNext();
-      }
-      else{
+      }else{
         startAuto();
       }
     });
@@ -654,10 +559,9 @@ ying::before{
     var s = window.SP_state || { current: 2 };
     var cur = typeof s.current === 'number' ? s.current : 2;
     var a = anchors.find(function(x){ return x.n === cur; }) || anchors[1];
-    var left = (a.nx * 100) + '%';
-    var top  = (a.ny * 100) + '%';
-    marker.style.left = left;
-    marker.style.top  = top;
+    marker.style.left = (a.nx * 100) + '%';
+    marker.style.top  = (a.ny * 100) + '%';
+
     var deg = (a.rot + 180) % 360;
     var offset = 9.5;
     var dx = 0, dy = 0;
@@ -665,6 +569,7 @@ ying::before{
     else if(deg === 180){ dy = offset; }
     else if(deg === 90){ dx = offset; }
     else if(deg === 270){ dx = -offset; }
+
     marker.style.transform =
       'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) rotate(' + deg + 'deg) scale(0.9)';
   }
