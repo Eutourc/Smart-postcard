@@ -197,7 +197,6 @@
     border-bottom:var(--arrow-fat) solid transparent;
     border-left:var(--arrow-width) solid #0b3a77;
   }
- 
 
   .features{
     margin-top:calc(var(--gap3) - 2px);
@@ -205,7 +204,7 @@
     font-size:13.5px;
     line-height:1.35;
     font-weight:700;
-    
+
     font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif;
     letter-spacing:0.2px;
     color:#1a1a1a;}
@@ -219,7 +218,7 @@
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
 
-.marker{
+  .marker{
     position:absolute;
     width:0;
     height:0;
@@ -276,7 +275,7 @@ ying::before{
 .btn{
   flex:0 0 auto;
   min-width: 108px;
-  height: 44px;
+  height: 45px;                 /* ✅ 定型：44px → 45px */
   padding: 0 11px;
   border-radius: 24px;
   border:1px solid rgba(140,103,36,.45);
@@ -297,7 +296,7 @@ ying::before{
   display:flex;
   align-items:center;
   justify-content:center;
-  height:44px;                  /* 同步缩短高度 */
+  height:45px;                  /* ✅ 定型：44px → 45px */
   width: calc(100% - 24px);     /* 两侧各减15px */
   margin: 17px auto 0;
   padding: 0 11px;
@@ -311,7 +310,7 @@ ying::before{
   color:#2f2f2f;
   text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
   font-weight:700;              /* 去粗体 */
-  font-size: 17.5px;               /* 比上键略大一点，但比原来小 */
+  font-size: 18px;              /* ✅ 定型：17.5px → 18px */
 }
 </style>
 
@@ -451,21 +450,21 @@ ying::before{
   var state = window.SP_state;
 
   function renderExplain(){
-  box.innerHTML = messages[state.current] || "";
-  var img = document.getElementById('pc-img');
-  if(img){
-    var n = state.current;
-    var src = 'postcard-oslo-en-sample.png'; // 默认样图
-    if(n === 1){
-      src = 'oslo_ski_jump_background.jpg'; // 序号1：背景图
-    }else if(n === 10){
-      src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
-    }
-    if(img.getAttribute('src') !== src){
-      img.setAttribute('src', src);
+    box.innerHTML = messages[state.current] || "";
+    var img = document.getElementById('pc-img');
+    if(img){
+      var n = state.current;
+      var src = 'postcard-oslo-en-sample.png'; // 默认样图
+      if(n === 1){
+        src = 'oslo_ski_jump_background.jpg'; // 序号1：背景图
+      }else if(n === 10){
+        src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
+      }
+      if(img.getAttribute('src') !== src){
+        img.setAttribute('src', src);
+      }
     }
   }
-}
 
   function syncMarker(){
     if(window.SP10_render) window.SP10_render();
@@ -486,12 +485,11 @@ ying::before{
   var AUTO_SHORT = 10000;
   var AUTO_LONG  = 10000;
   var autoTimer  = null;
-window.SP_autoRunning = window.SP_autoRunning || false;
-window.SP_autoPaused  = window.SP_autoPaused  || false;
-var autoBtn = document.getElementById('auto-play');
-var autoIndex = 0;
-var autoJustStarted = false;
-var lastAutoClick = 0;
+  window.SP_autoRunning = window.SP_autoRunning || false;
+  window.SP_autoPaused  = window.SP_autoPaused  || false;
+  var autoBtn = document.getElementById('auto-play');
+  var autoJustStarted = false;
+  var lastAutoClick = 0;
 
   function clearAuto(){
     if(autoTimer){
@@ -508,41 +506,40 @@ var lastAutoClick = 0;
   }
 
   function stepAuto(){
-  if(!window.SP_autoRunning) return;
-  if(autoJustStarted){
-    autoJustStarted = false;
-    state.current = 1; // 第一次从2切到1
-  }else{
-    var idx = autoOrder.indexOf(state.current);
-    if(idx === -1) idx = 0;
-    var nextIdx = (idx + 1) % autoOrder.length;
-    state.current = autoOrder[nextIdx];
+    if(!window.SP_autoRunning) return;
+    if(autoJustStarted){
+      autoJustStarted = false;
+      state.current = 1; // 第一次从2切到1
+    }else{
+      var idx = autoOrder.indexOf(state.current);
+      if(idx === -1) idx = 0;
+      var nextIdx = (idx + 1) % autoOrder.length;
+      state.current = autoOrder[nextIdx];
+    }
+    renderExplain();
+    syncMarker();
+    scheduleNext();
   }
-  renderExplain();
-  syncMarker();
-  scheduleNext();
-}
 
   function startAuto(){
-  if(window.SP_autoRunning) return;
-  window.SP_autoRunning = true;
-  window.SP_autoPaused = false;
-  if(autoBtn) autoBtn.classList.add('playing');
-  // 无论当前停在哪个站点，只要点自动演示，就回到默认站点2
-  state.current = 2;
-  renderExplain();
-  syncMarker();
-  autoJustStarted = true;
-  scheduleNext();
-}
+    if(window.SP_autoRunning) return;
+    window.SP_autoRunning = true;
+    window.SP_autoPaused = false;
+    if(autoBtn) autoBtn.classList.add('playing');
+    state.current = 2;
+    renderExplain();
+    syncMarker();
+    autoJustStarted = true;
+    scheduleNext();
+  }
 
   function stopAuto(){
-  if(!window.SP_autoRunning && !window.SP_autoPaused) return;
-  window.SP_autoRunning = false;
-  window.SP_autoPaused = false;
-  if(autoBtn) autoBtn.classList.remove('playing');
-  clearAuto();
-}
+    if(!window.SP_autoRunning && !window.SP_autoPaused) return;
+    window.SP_autoRunning = false;
+    window.SP_autoPaused = false;
+    if(autoBtn) autoBtn.classList.remove('playing');
+    clearAuto();
+  }
 
   left.addEventListener('click', function(){
     stopAuto();
@@ -552,84 +549,79 @@ var lastAutoClick = 0;
     stopAuto();
     goRight();
   });
-function goTo(n){
-  if(typeof n !== 'number') return;
-  state.current = n;
-  renderExplain();
-  syncMarker();
-}
-function bindHotspot(id, target){
-  var el = document.getElementById(id);
-  if(!el) return;
-  el.addEventListener('click', function(){
-    stopAuto();
-    goTo(target);
-  });
-}
-function bindCenterHotspot(id){
-  var el = document.getElementById(id);
-  if(!el) return;
-  var lastTap = 0;
-  el.addEventListener('click', function(){
-    var now = Date.now();
-    var delta = now - lastTap;
-    lastTap = now;
-    stopAuto();
-    // quick second tap => go to seq 10 (digital album)
-    if(delta > 0 && delta < 400){
-      goTo(10);
-    }else{
-      // normal single tap => seq 1 (postcard / stamp image)
-      goTo(1);
-    }
-  });
-}
 
-bindCenterHotspot('hotspot-center');
+  function goTo(n){
+    if(typeof n !== 'number') return;
+    state.current = n;
+    renderExplain();
+    syncMarker();
+  }
+  function bindHotspot(id, target){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('click', function(){
+      stopAuto();
+      goTo(target);
+    });
+  }
+  function bindCenterHotspot(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var lastTap = 0;
+    el.addEventListener('click', function(){
+      var now = Date.now();
+      var delta = now - lastTap;
+      lastTap = now;
+      stopAuto();
+      if(delta > 0 && delta < 400){
+        goTo(10);
+      }else{
+        goTo(1);
+      }
+    });
+  }
 
-bindHotspot('hotspot-stamp', 2);
-bindHotspot('hotspot-qr1', 3);
-bindHotspot('hotspot-weather', 4);
-bindHotspot('hotspot-writing', 5);
-bindHotspot('hotspot-qr2', 6);
-bindHotspot('hotspot-seal', 7);
-bindHotspot('hotspot-address', 8);
-bindHotspot('hotspot-postmark', 9);
+  bindCenterHotspot('hotspot-center');
+
+  bindHotspot('hotspot-stamp', 2);
+  bindHotspot('hotspot-qr1', 3);
+  bindHotspot('hotspot-weather', 4);
+  bindHotspot('hotspot-writing', 5);
+  bindHotspot('hotspot-qr2', 6);
+  bindHotspot('hotspot-seal', 7);
+  bindHotspot('hotspot-address', 8);
+  bindHotspot('hotspot-postmark', 9);
 
   if(autoBtn){
-  autoBtn.addEventListener('click', function(){
-    var now = Date.now();
-    var delta = now - lastAutoClick;
-    lastAutoClick = now;
+    autoBtn.addEventListener('click', function(){
+      var now = Date.now();
+      var delta = now - lastAutoClick;
+      lastAutoClick = now;
 
-    // 连续点两次：无论当前状态如何，回到序号2重新开始自动演示
-    if(delta > 0 && delta < 400){
-      stopAuto();
-      startAuto();
-      return;
-    }
+      if(delta > 0 && delta < 400){
+        stopAuto();
+        startAuto();
+        return;
+      }
 
-    // 正在自动演示 → 暂停
-    if(window.SP_autoRunning){
-      window.SP_autoRunning = false;
-      window.SP_autoPaused = true;
-      if(autoBtn) autoBtn.classList.remove('playing');
-      clearAuto();
-    }
-    // 已暂停 → 从当前位置继续
-    else if(window.SP_autoPaused){
-      window.SP_autoRunning = true;
-      window.SP_autoPaused = false;
-      if(autoBtn) autoBtn.classList.add('playing');
-      autoJustStarted = false; // 不再走“2→1”的首步，直接按当前站点继续
-      scheduleNext();
-    }
-    // 完全停止状态 → 从序号2开始自动演示
-    else{
-      startAuto();
-    }
-  });
-}
+      if(window.SP_autoRunning){
+        window.SP_autoRunning = false;
+        window.SP_autoPaused = true;
+        if(autoBtn) autoBtn.classList.remove('playing');
+        clearAuto();
+      }
+      else if(window.SP_autoPaused){
+        window.SP_autoRunning = true;
+        window.SP_autoPaused = false;
+        if(autoBtn) autoBtn.classList.add('playing');
+        autoJustStarted = false;
+        scheduleNext();
+      }
+      else{
+        startAuto();
+      }
+    });
+  }
 
   window.SP_goLeft = goLeft;
   window.SP_goRight = goRight;
@@ -641,22 +633,9 @@ bindHotspot('hotspot-postmark', 9);
 })();
 </script>
 
-
-
 <script>
 (function(){
-  
   var anchors = [
-
-
-
-
-
-
-
-
-
-
     {n:1, nx:0.491168, ny:0.000456, rot:180},
     {n:2, nx:0.880461, ny:0.000000, rot:180},
     {n:3, nx:0.570673, ny:0.001898, rot:180},
@@ -667,18 +646,7 @@ bindHotspot('hotspot-postmark', 9);
     {n:8, nx:1.000000, ny:0.584399, rot:270},
     {n:9, nx:0.999215, ny:0.243292, rot:270},
     {n:10, nx:0.491168, ny:0.000456, rot:180}
-  
-
-
-
-
-  
-
-
-
-
-
-];
+  ];
 
   function renderMarker(){
     var marker = document.getElementById('marker');
@@ -691,16 +659,14 @@ bindHotspot('hotspot-postmark', 9);
     marker.style.left = left;
     marker.style.top  = top;
     var deg = (a.rot + 180) % 360;
-// offset 9px ≈ arrow tip outside postcard edge
-var offset = 9.5;
-var dx = 0, dy = 0;
-if(deg === 0){ dy = -offset; }
-else if(deg === 180){ dy = offset; }
-else if(deg === 90){ dx = offset; }
-else if(deg === 270){ dx = -offset; }
-// scale 0.9: slightly smaller marker for tighter EN margins
-marker.style.transform =
-  'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) rotate(' + deg + 'deg) scale(0.9)';
+    var offset = 9.5;
+    var dx = 0, dy = 0;
+    if(deg === 0){ dy = -offset; }
+    else if(deg === 180){ dy = offset; }
+    else if(deg === 90){ dx = offset; }
+    else if(deg === 270){ dx = -offset; }
+    marker.style.transform =
+      'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) rotate(' + deg + 'deg) scale(0.9)';
   }
 
   window.addEventListener('load', renderMarker);
@@ -708,8 +674,6 @@ marker.style.transform =
   window.SP10_render = renderMarker;
 })();
 </script>
-
-
 
 <script>
 (function(){
