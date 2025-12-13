@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — CN v6.7</title>
+<title>Smart Postcard — CN v6.7B</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -138,18 +138,11 @@
     letter-spacing:0.2px;
     color:#1a1a1a;
   }
-  .features .narrow{
-    display:inline-block;
-    transform:scaleX(0.88);
-    transform-origin:center;
-    letter-spacing:-0.2px;
-  }
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
 
   .marker{
-    position:absolute;
-    width:0;height:0;
+    position:absolute;width:0;height:0;
     border-left:var(--marker-base) solid transparent;
     border-right:var(--marker-base) solid transparent;
     border-top:var(--marker-fat) solid var(--marker-color);
@@ -159,88 +152,37 @@
   }
 
   .auto-play{
-    position:absolute;
-    right:10px;
-    bottom:10px;
-    width:26px;
-    height:26px;
-    border-radius:999px;
-    border:none;
-    background:#ffffff;
-    box-shadow:0 2px 6px rgba(0,0,0,.3);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    padding:0;
+    position:absolute;right:10px;bottom:10px;
+    width:26px;height:26px;border-radius:999px;border:none;
+    background:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,.3);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
   }
-  .auto-play::before{
-    content:"▶";
-    font-size:13px;
-    transform:translateX(1px);
-  }
-  .auto-play.playing::before{
-    content:"Ⅱ";
-    transform:translateX(0);
-    font-size:12px;
-  }
-  ying::before{
-    content:"Ⅱ";
-    transform:translateX(0);
-    font-size:12px;
-  }
+  .auto-play::before{content:"▶";font-size:13px;transform:translateX(1px);}
+  .auto-play.playing::before{content:"Ⅱ";transform:translateX(0);font-size:12px;}
 </style>
 
 <style id="btn-fixed-v6.0-match">
-.btns{
-  display:flex;
-  justify-content:center;
-  gap:31px;
-  margin: calc(var(--gap3) - 2px) auto 0;
-}
+.btns{display:flex;justify-content:center;gap:31px;margin: calc(var(--gap3) - 2px) auto 0;}
 .btn{
-  flex:0 0 auto;
-  min-width: 108px;
-  height: 44px;
-  padding: 0 11px;
-  border-radius: 24px;
+  flex:0 0 auto;min-width:108px;height:44px;padding:0 11px;border-radius:24px;
   border:1px solid rgba(140,103,36,.45);
   background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.85),
-    inset 0 -2px 0 rgba(0,0,0,.18),
-    0 8px 18px rgba(0,0,0,.14);
-  color:#2f2f2f;
-  text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
-  font-weight:700;
-  font-size: 15.5px;
-  white-space:nowrap;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.14);
+  color:#2f2f2f;text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
+  font-weight:700;font-size:15.5px;white-space:nowrap;
 }
-.btn.primary{ color:#1e56d6; }
-
+.btn.primary{color:#1e56d6;}
 .start{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:44px;
-  width: calc(100% - 24px);
-  margin: 17px auto 0;
-  padding: 0 11px;
-  border-radius:24px;
-  border:1px solid rgba(140,103,36,.45);
+  display:flex;align-items:center;justify-content:center;height:44px;width:calc(100% - 24px);
+  margin:17px auto 0;padding:0 11px;border-radius:24px;border:1px solid rgba(140,103,36,.45);
   background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.85),
-    inset 0 -2px 0 rgba(0,0,0,.18),
-    0 8px 18px rgba(0,0,0,.14);
-  color:#2f2f2f;
-  text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
-  font-weight:700;
-  font-size: 17.5px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.14);
+  color:#2f2f2f;text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
+  font-weight:700;font-size:17.5px;
 }
 </style>
-
 </head>
+
 <body>
 <header class="top">
  <div class="bar">
@@ -285,11 +227,13 @@
       <button aria-label="Next stop" class="big-arrow right" id="next"></button>
       <div class="cardbox" id="cardbox">
         <div class="cardbox-inner" id="cardbox-inner">
-          <img id="pc-img" src="postcard-oslo-cn-sample.png"
+          <!-- ✅ 默认先显示中文样图 -->
+          <img id="pc-img" src="postcard_cn.png"
                alt="Smart Postcard sample"
                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
           <button class="auto-play" id="auto-play" aria-label="Auto demo"></button>
+
           <button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
           <button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
           <button class="hotspot hotspot-qr1" id="hotspot-qr1" aria-label="Map hotspot"></button>
@@ -377,11 +321,11 @@
     var img = document.getElementById('pc-img');
     if(img){
       var n = state.current;
-      var src = 'postcard-oslo-cn-sample.png'; // 默认样图（中文版）
-      if(n === 1 || n === 2){
-        src = 'cn_v6.7B_bg_and_stamp.jpg'; // 序号1/2：背面图案 + 邮票画面（同一张）
+      var src = 'postcard_cn.png';              // ✅ 默认：中文版样图
+      if(n === 1){
+        src = 'cn_v6.7B_bg_and_stamp.jpg';      // ✅ 只有序号1：背景/背面大图
       }else if(n === 10){
-        src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png'; // 序号10：相册封面
+        src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png';
       }
       if(img.getAttribute('src') !== src){
         img.setAttribute('src', src);
@@ -389,21 +333,10 @@
     }
   }
 
-  function syncMarker(){
-    if(window.SP10_render) window.SP10_render();
-  }
+  function syncMarker(){ if(window.SP10_render) window.SP10_render(); }
 
-  function goLeft(){
-    state.current = nextIn(leftOrder, state.current, 2);
-    renderExplain();
-    syncMarker();
-  }
-
-  function goRight(){
-    state.current = nextIn(rightOrder, state.current, 2);
-    renderExplain();
-    syncMarker();
-  }
+  function goLeft(){ state.current = nextIn(leftOrder, state.current, 2); renderExplain(); syncMarker(); }
+  function goRight(){ state.current = nextIn(rightOrder, state.current, 2); renderExplain(); syncMarker(); }
 
   var AUTO_SHORT = 10000;
   var AUTO_LONG  = 10000;
@@ -414,52 +347,32 @@
   var autoJustStarted = false;
   var lastAutoClick = 0;
 
-  function clearAuto(){
-    if(autoTimer){
-      clearTimeout(autoTimer);
-      autoTimer = null;
-    }
-  }
-
+  function clearAuto(){ if(autoTimer){ clearTimeout(autoTimer); autoTimer=null; } }
   function scheduleNext(){
     clearAuto();
     if(!window.SP_autoRunning) return;
     var delay = (state.current === 2 ? AUTO_LONG : AUTO_SHORT);
     autoTimer = setTimeout(stepAuto, delay);
   }
-
   function stepAuto(){
     if(!window.SP_autoRunning) return;
-    if(autoJustStarted){
-      autoJustStarted = false;
-      state.current = 1;
-    }else{
-      var idx = autoOrder.indexOf(state.current);
-      if(idx === -1) idx = 0;
-      var nextIdx = (idx + 1) % autoOrder.length;
-      state.current = autoOrder[nextIdx];
+    if(autoJustStarted){ autoJustStarted=false; state.current=1; }
+    else{
+      var idx = autoOrder.indexOf(state.current); if(idx===-1) idx=0;
+      state.current = autoOrder[(idx+1)%autoOrder.length];
     }
-    renderExplain();
-    syncMarker();
-    scheduleNext();
+    renderExplain(); syncMarker(); scheduleNext();
   }
-
   function startAuto(){
     if(window.SP_autoRunning) return;
-    window.SP_autoRunning = true;
-    window.SP_autoPaused = false;
+    window.SP_autoRunning = true; window.SP_autoPaused = false;
     if(autoBtn) autoBtn.classList.add('playing');
-    state.current = 2;
-    renderExplain();
-    syncMarker();
-    autoJustStarted = true;
-    scheduleNext();
+    state.current = 2; renderExplain(); syncMarker();
+    autoJustStarted = true; scheduleNext();
   }
-
   function stopAuto(){
     if(!window.SP_autoRunning && !window.SP_autoPaused) return;
-    window.SP_autoRunning = false;
-    window.SP_autoPaused = false;
+    window.SP_autoRunning = false; window.SP_autoPaused = false;
     if(autoBtn) autoBtn.classList.remove('playing');
     clearAuto();
   }
@@ -467,28 +380,18 @@
   left.addEventListener('click', function(){ stopAuto(); goLeft(); });
   right.addEventListener('click', function(){ stopAuto(); goRight(); });
 
-  function goTo(n){
-    if(typeof n !== 'number') return;
-    state.current = n;
-    renderExplain();
-    syncMarker();
-  }
-  function bindHotspot(id, target){
-    var el = document.getElementById(id);
-    if(!el) return;
+  function goTo(n){ if(typeof n!=='number') return; state.current=n; renderExplain(); syncMarker(); }
+  function bindHotspot(id,target){
+    var el=document.getElementById(id); if(!el) return;
     el.addEventListener('click', function(){ stopAuto(); goTo(target); });
   }
   function bindCenterHotspot(id){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var lastTap = 0;
+    var el=document.getElementById(id); if(!el) return;
+    var lastTap=0;
     el.addEventListener('click', function(){
-      var now = Date.now();
-      var delta = now - lastTap;
-      lastTap = now;
+      var now=Date.now(); var delta=now-lastTap; lastTap=now;
       stopAuto();
-      if(delta > 0 && delta < 400){ goTo(10); }
-      else{ goTo(1); }
+      if(delta>0 && delta<400){ goTo(10); } else { goTo(1); }
     });
   }
 
@@ -504,27 +407,17 @@
 
   if(autoBtn){
     autoBtn.addEventListener('click', function(){
-      var now = Date.now();
-      var delta = now - lastAutoClick;
-      lastAutoClick = now;
-
-      if(delta > 0 && delta < 400){
-        stopAuto(); startAuto(); return;
-      }
+      var now=Date.now(); var delta=now-lastAutoClick; lastAutoClick=now;
+      if(delta>0 && delta<400){ stopAuto(); startAuto(); return; }
       if(window.SP_autoRunning){
-        window.SP_autoRunning = false;
-        window.SP_autoPaused = true;
+        window.SP_autoRunning=false; window.SP_autoPaused=true;
         if(autoBtn) autoBtn.classList.remove('playing');
         clearAuto();
       }else if(window.SP_autoPaused){
-        window.SP_autoRunning = true;
-        window.SP_autoPaused = false;
+        window.SP_autoRunning=true; window.SP_autoPaused=false;
         if(autoBtn) autoBtn.classList.add('playing');
-        autoJustStarted = false;
-        scheduleNext();
-      }else{
-        startAuto();
-      }
+        autoJustStarted=false; scheduleNext();
+      }else startAuto();
     });
   }
 
