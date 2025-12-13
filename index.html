@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — CN v6.0</title>
+<title>Smart Postcard — CN v6.7</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -18,7 +18,7 @@
     --gap3:33.0px;
     --sideGapL:24px;
     --sideGapR:25px;
-    --explain-bg:#FEF9C3;
+    --explain-bg:#FFF8D9;
     --card-border:1px;
     --card-border-color:#d1d5db;
     --arrow-fat:22px;
@@ -56,7 +56,7 @@
   main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
   .gapTop{height:var(--gapTop);}
   .gap2{height:var(--gap2);}
-  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:600;text-align:center;margin:0;color:#111111;}
+  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:700;text-align:center;margin:0;color:#111111;}
   .stage{
     display:flex;flex-direction:column;
     background:#fff;border-radius:20px;
@@ -70,8 +70,8 @@
     padding:var(--ex-pad-y) var(--ex-pad-x);
     border-radius:14px;
     background:var(--explain-bg);
-    font-size:13px;
-    line-height:1.32;
+    font-size:13.5px;
+    line-height:1.35;
     text-align:center;
   }
   .explain-keeper{
@@ -88,8 +88,8 @@
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:13px;
-    line-height:1.32;
+    font-size:13.5px;
+    line-height:1.35;
   }
   .viewer{
     position:relative;
@@ -202,13 +202,14 @@
   .features{
     margin-top:calc(var(--gap3) - 2px);
     text-align:center;
-    font-size:13px;
-    line-height:1.32;
+    font-size:13.5px;
+    line-height:1.35;
     font-weight:700;
-    color:#111111;
+    
     font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif;
     letter-spacing:0.2px;
-  color:#1a1a1a;}
+    color:#1a1a1a;}
+
   .features .narrow{
     display:inline-block;
     transform:scaleX(0.88);
@@ -218,53 +219,7 @@
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
 
-.cta{
-    margin-top:calc(var(--gap3) - 2px);
-    margin-bottom:12px;
-  }
-  .cta-row-top{
-    display:flex;
-    justify-content:space-evenly;
-    
-    width:100%;
-    margin:0 auto;
-  }
-  .btn-gold,
-  .btn-main{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:22px;
-    border:1px solid rgba(140,103,36,.45);
-    background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
-    box-shadow:
-      inset 0 2px 0 rgba(255,255,255,.85),
-      inset 0 -2px 0 rgba(0,0,0,.18),
-      0 8px 18px rgba(0,0,0,.14);
-    color:#2f2f2f;
-    text-shadow:0 1px 0 rgba(255,255,255,.75),0 -1px 0 rgba(0,0,0,.18);
-    font-family:inherit;
-    font-weight:900;
-    white-space:nowrap;
-  }
-  .btn-gold{
-    flex:0 0 auto;
-    height:38px;
-    font-size:13px;
-    padding:0 16px;
-  }
-  .btn-main{
-    display:block;
-    width:100%;
-    margin:12px 0 0;
-    height:40px;
-    font-size:16px;
-    border-radius:24px;
-  }
-  .btn-primary{color:#1e56d6;}
-
-  
-  .marker{
+.marker{
     position:absolute;
     width:0;
     height:0;
@@ -309,6 +264,57 @@ ying::before{
   }
   .version{text-align:center;color:#8b95a3;font-size:12px;margin:12px 0 20px}
 </style>
+
+<style id="btn-fixed-v6.0-match">
+/* === Buttons: replace old/buggy button styles (no overlays, no !important) === */
+.btns{
+  display:flex;
+  justify-content:center;
+  gap:31px;
+  margin: calc(var(--gap3) - 2px) auto 0;
+}
+.btn{
+  flex:0 0 auto;
+  min-width: 108px;
+  height: 44px;
+  padding: 0 11px;
+  border-radius: 24px;
+  border:1px solid rgba(140,103,36,.45);
+  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.85),
+    inset 0 -2px 0 rgba(0,0,0,.18),
+    0 8px 18px rgba(0,0,0,.14);
+  color:#2f2f2f;
+  text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
+  font-weight:700;              /* 去粗体 */
+  font-size: 15.5px;             /* 文字小一号 */
+  white-space:nowrap;
+}
+.btn.primary{ color:#1e56d6; }
+
+.start{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:44px;                  /* 同步缩短高度 */
+  width: calc(100% - 24px);     /* 两侧各减15px */
+  margin: 17px auto 0;
+  padding: 0 11px;
+  border-radius:24px;
+  border:1px solid rgba(140,103,36,.45);
+  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.85),
+    inset 0 -2px 0 rgba(0,0,0,.18),
+    0 8px 18px rgba(0,0,0,.14);
+  color:#2f2f2f;
+  text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
+  font-weight:700;              /* 去粗体 */
+  font-size: 17.5px;               /* 比上键略大一点，但比原来小 */
+}
+</style>
+
 </head>
 <body>
 <header class="top">
@@ -380,16 +386,13 @@ ying::before{
     </section>
   </section>
 
-  <section class="cta" aria-label="Choose postcard type">
-    <div class="cta-row-top">
-      <button class="btn-gold btn-primary" type="button">纪念明信片</button>
-      <button class="btn-gold" type="button">传统明信片</button>
+  <div class="btns">
+      <button class="btn primary">纪念明信片</button>
+      <button class="btn">传统明信片</button>
     </div>
-    <button class="btn-main" type="button">开始制作</button>
-  </section>
+    <button class="start" id="start-btn">开始制作</button>
 
-  251208_CN_v7.0_Smart Postcard 中文版功能键版
-  </div>
+  251212_CN_v6.7_step3_三项微调确认版_上两键间距-1px_上下行距-1px_开始制作+0.5号</div>
 </main>
 
 <script>
@@ -706,6 +709,16 @@ marker.style.transform =
 })();
 </script>
 
+
+
+<script>
+(function(){
+  var btn=document.getElementById('start-btn') || document.querySelector('.start');
+  if(btn){
+    btn.addEventListener('click', function(){ location.href='#start'; });
+  }
+})();
+</script>
 
 </body>
 </html>
