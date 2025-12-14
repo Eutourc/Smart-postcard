@@ -1,426 +1,241 @@
 <!doctype html>
-<html lang="sv">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Smart Postcard — sv_v7.0</title>
+  <title>Smart Postcard — v7.0 Language Hub</title>
 
   <style>
     :root{
-      --w: 390px;
+      --bar-h: 118px; /* 横幅高度（可微调，但先别动） */
+      --pill-bg: rgba(255,255,255,.88);
+      --pill-border: rgba(0,0,0,.12);
+      --pill-shadow: 0 8px 18px rgba(0,0,0,.18);
+      --text: #111;
     }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      background:#f4f4f4;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-      display:flex;
-      justify-content:center;
-    }
-    .phone{
-      width:min(100vw, var(--w));
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "PingFang SC","Hiragino Sans GB","Microsoft YaHei", sans-serif;
       background:#fff;
-      min-height:100vh;
-      box-shadow:0 10px 40px rgba(0,0,0,.08);
-      overflow:hidden;
+      color:var(--text);
     }
 
-    /* ===== Header ===== */
-    header{
-      background:#e3aa00;
-      padding:10px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+    /* ===== 顶部横幅（保持你现有美观风格：用你仓库里的 header.jpg / Logo.png） ===== */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      height: var(--bar-h);
+      background: #d7a100;
+      overflow: hidden;
     }
+    .topbar::before{
+      content:"";
+      position:absolute; inset:0;
+      background: url("header.jpg") center/cover no-repeat;
+      opacity: 1;
+    }
+
+    /* Logo（如果你的 EN/CN 页面顶部 logo 不是这样，也没关系：这里只负责横幅外观） */
     .brand{
+      position:absolute;
+      left: 14px;
+      top: 10px;
       display:flex;
       align-items:center;
       gap:10px;
-      min-width:0;
+      pointer-events:none;
     }
-    .logo{
-      width:56px;
-      height:40px;
+    .brand img{
+      width:64px; height:64px;
       object-fit:contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.25));
     }
-    .brandtext{
-      display:flex;
-      flex-direction:column;
-      line-height:1.02;
-      min-width:0;
-    }
-    .brandtext .t1{
-      font-size:14px;
-      color:#000;
-      letter-spacing:.2px;
-    }
-    .brandtext .t2{
-      font-size:30px;
-      font-weight:900;
-      color:#21a6ad;
-      letter-spacing:.2px;
-    }
-
-    .actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-shrink:0;
-    }
-    .circle{
-      width:44px; height:44px;
-      background:#fff;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      position:relative;
-    }
-    .badge{
-      position:absolute;
-      right:-2px; top:-2px;
-      width:18px; height:18px;
-      background:#e53935;
-      color:#fff;
-      border-radius:50%;
-      font-size:11px;
-      display:grid;
-      place-items:center;
-      font-weight:800;
-    }
-    .hamburger{
-      width:22px; height:16px;
-      position:relative;
-    }
-    .hamburger span{
-      position:absolute; left:0; right:0;
-      height:3px; background:#333; border-radius:2px;
-    }
-    .hamburger span:nth-child(1){ top:0;}
-    .hamburger span:nth-child(2){ top:6px;}
-    .hamburger span:nth-child(3){ top:12px;}
-
-    /* Language pill (inside header, no fixed bar) */
-    .langpill{
-      width:64px;
-      height:36px;
-      border-radius:18px;
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      padding:0 10px;
-      border:1px solid rgba(0,0,0,.10);
-      position:relative;
-      cursor:pointer;
-      user-select:none;
-    }
-    .langpill .caret{
-      width:0; height:0;
-      border-left:5px solid transparent;
-      border-right:5px solid transparent;
-      border-top:6px solid #333;
-      margin-top:2px;
-    }
-    .langpill .langlabel{
-      font-weight:900;
-      font-size:14px;
+    .brand .txt{
       line-height:1;
+      font-weight:800;
+      font-size:34px;
+      color:#18b7b3;
+      text-shadow: 0 2px 0 rgba(0,0,0,.10);
+    }
+    .brand .txt small{
+      display:block;
+      font-size:22px;
+      font-weight:700;
+      color:#0a7f7c;
+      margin-top:4px;
     }
 
-    /* === Language dropdown (in-header) === */
-    .langmenu{
+    /* ===== 语言栏：放在横幅右上角，不破坏横幅美观 ===== */
+    .langbar{
       position:absolute;
-      right:0;
-      top:46px;
-      background:#fff;
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:14px;
-      box-shadow:0 12px 30px rgba(0,0,0,.12);
-      overflow:hidden;
-      min-width:190px;
-      display:none;
-      z-index:9999;
-    }
-    .langmenu.open{display:block;}
-    .langitem{
+      right: 12px;
+      top: 18px;
       display:flex;
       align-items:center;
       gap:10px;
-      padding:12px 14px;
-      text-decoration:none;
+      padding:10px 12px;
+      border-radius: 22px;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      box-shadow: var(--pill-shadow);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .langbtn{
+      appearance:none;
+      border: 0;
+      background: transparent;
+      padding: 6px 10px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 15px;
+      line-height: 1;
+      cursor: pointer;
       color:#111;
-      font-weight:800;
     }
-    .langitem:hover{background:rgba(0,0,0,.03);}
-    .langtag{
-      min-width:34px;
-      height:24px;
-      border-radius:8px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:13px;
-      background:rgba(0,0,0,.06);
+    .langbtn.active{
+      background: rgba(0,0,0,.10);
     }
-    .flag-sv{
-      width:34px; height:24px; border-radius:6px;
-      background:#006aa7;
-      position:relative;
-      overflow:hidden;
-    }
-    .flag-sv:before{
-      content:"";
-      position:absolute; left:0; top:42%;
-      width:100%; height:16%;
-      background:#fecc00;
-    }
-    .flag-sv:after{
-      content:"";
-      position:absolute; left:34%;
-      width:12%; height:100%;
-      background:#fecc00;
-    }
-    .langname{font-weight:800;}
-
-    /* ===== Main content ===== */
-    main{ padding:14px 12px 18px; }
-    .title{
-      text-align:center;
-      font-size:36px;
-      font-weight:900;
-      letter-spacing:.2px;
-      margin:10px 0 10px;
-      line-height:1.05;
-      color:#222;
+    .langbtn:active{
+      transform: translateY(1px);
     }
 
-    .carousel{
-      display:grid;
-      grid-template-columns: 58px 1fr 58px;
-      align-items:start;
-      gap:10px;
-      margin-top:8px;
-    }
-    .arrow{
-      width:0; height:0;
-      border-top:22px solid transparent;
-      border-bottom:22px solid transparent;
-      margin-top:62px;
-    }
-    .arrow.left{ border-right:44px solid #0b3a70; }
-    .arrow.right{ border-left:44px solid #0b3a70; justify-self:end; }
-    .explain{
-      background:#fff3bf; /* 与英文版保持一致的柔和底色 */
-      border-radius:22px;
-      padding:18px 18px;
-      text-align:center;
-      font-weight:800;
-      font-size:18px;
-      line-height:1.25;
-      color:#2b2b2b;
-      margin:0 auto 12px;
-      max-width:260px;
-    }
-    .down-tri{
-      width:0;height:0;
-      border-left:12px solid transparent;
-      border-right:12px solid transparent;
-      border-top:18px solid #1f9b3a;
-      margin:2px auto 10px;
-    }
-    .sampleWrap{
-      position:relative;
-      background:#fff;
-      border:1px solid #d6d6d6;
+    /* ===== 主内容：用 iframe 装载各语言独立首页，确保“一个 index 统管四页” ===== */
+    .frameWrap{
       width:100%;
-      height:210px;
-      overflow:hidden;
+      height: calc(100vh - var(--bar-h));
+      background:#fff;
     }
-    .sampleImg{
+    iframe{
       width:100%;
       height:100%;
-      object-fit:contain;
+      border:0;
       display:block;
       background:#fff;
     }
-    .playBtn{
-      position:absolute;
-      right:14px;
-      bottom:16px;
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      background:#fff;
-      border:1px solid rgba(0,0,0,.22);
-      display:grid;
-      place-items:center;
-    }
-    .playBtn:before{
-      content:"";
-      width:0;height:0;
-      border-top:9px solid transparent;
-      border-bottom:9px solid transparent;
-      border-left:14px solid #111;
-      margin-left:3px;
-    }
 
-    .features{
-      text-align:center;
-      font-size:22px;
-      font-weight:800;
-      color:#1f1f1f;
-      line-height:1.25;
-      margin:18px 6px 16px;
-      letter-spacing:.2px;
+    /* 小屏适配：把横幅略缩矮一点（不改变布局，只适配） */
+    @media (max-width: 420px){
+      :root{ --bar-h: 106px; }
+      .brand .txt{ font-size:30px; }
+      .brand .txt small{ font-size:20px; }
+      .brand img{ width:58px; height:58px; }
+      .langbtn{ font-size:14px; padding:6px 9px; }
     }
-
-    .btnRow{
-      display:flex;
-      justify-content:center;
-      gap:16px;
-      margin:8px 0 12px;
-    }
-    .btnSmall{
-      width:150px;
-      height:46px;
-      border-radius:24px;
-      border:1px solid rgba(0,0,0,.22);
-      background:linear-gradient(#f7d68a,#d8a940);
-      font-weight:900;
-      font-size:18px;
-      color:#1d1d1d;
-      display:grid;
-      place-items:center;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
-    }
-    .btnBig{
-      width:100%;
-      height:54px;
-      border-radius:28px;
-      border:1px solid rgba(0,0,0,.22);
-      background:linear-gradient(#f7d68a,#d8a940);
-      font-weight:900;
-      font-size:26px;
-      color:#1d1d1d;
-      display:grid;
-      place-items:center;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
-    }
-
   </style>
 </head>
 
 <body>
-  <div class="phone">
-    <header>
-      <div class="brand">
-        <img class="logo" src="Logo.png" alt="Smart Postcard logo">
-        <div class="brandtext">
-          <div class="t1">Smart</div>
-          <div class="t2">Smart Postcard</div>
-        </div>
+  <header class="topbar" role="banner" aria-label="Smart Postcard Top Bar">
+    <div class="brand">
+      <img src="Logo.png" alt="Smart Postcard logo" />
+      <div class="txt">
+        Smart
+        <small>Postcard</small>
       </div>
+    </div>
 
-      <div class="actions">
-        <div class="circle" aria-label="cart">
-          <div class="badge">0</div>
-          <span style="font-size:22px;">🛒</span>
-        </div>
+    <!-- 语言按钮：中文不用国旗；英文用 EN；瑞典语可用 SV -->
+    <nav class="langbar" aria-label="Language switcher">
+      <button class="langbtn" data-lang="cn" title="简体中文">简</button>
+      <button class="langbtn" data-lang="tc" title="繁體中文">繁</button>
+      <button class="langbtn" data-lang="en" title="English">EN</button>
+      <button class="langbtn" data-lang="sv" title="Svenska">SV</button>
+    </nav>
+  </header>
 
-        <!-- Language (in header) -->
-        <div class="langpill" id="lang-pill" aria-label="language">
-          <span class="caret"></span>
-          <span class="langlabel" id="lang-label"></span>
-          <div class="langmenu" id="lang-menu" role="menu" aria-label="Language menu">
-            <a class="langitem" role="menuitem" href="cn_v7.0.html" data-code="cn"><span class="langtag">简</span><span class="langname">简体中文</span></a>
-            <a class="langitem" role="menuitem" href="tc_v7.0.html" data-code="tc"><span class="langtag">繁</span><span class="langname">繁體中文</span></a>
-            <a class="langitem" role="menuitem" href="en_v7.0.html" data-code="en"><span class="langtag">EN</span><span class="langname">English</span></a>
-            <a class="langitem" role="menuitem" href="sv_v7.0.html" data-code="sv"><span class="langtag flag-sv" aria-hidden="true"></span><span class="langname">Svenska</span></a>
-          </div>
-        </div>
+  <main class="frameWrap">
+    <iframe id="contentFrame" src="en_v7.0.html" loading="eager" referrerpolicy="no-referrer"></iframe>
+  </main>
 
-        <div class="circle" aria-label="menu">
-          <div class="hamburger" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-      </div>
-    </header>
+  <script>
+    (function(){
+      const fileMap = {
+        en: "en_v7.0.html",
+        cn: "cn_v7.0.html",
+        tc: "tc_v7.0.html",
+        sv: "sv_v7.0.html"
+      };
 
-    <main>
-      <div class="title">Treasure Your One-Of-A-Kind<br>Souvenir Postcard</div>
+      const titleMap = {
+        en: "Smart Postcard — EN v7.0",
+        cn: "Smart Postcard — CN v7.0",
+        tc: "Smart Postcard — TC v7.0",
+        sv: "Smart Postcard — SV v7.0"
+      };
 
-      <div class="carousel">
-        <div class="arrow left"></div>
+      const frame = document.getElementById("contentFrame");
+      const buttons = Array.from(document.querySelectorAll(".langbtn"));
 
-        <div>
-          <div class="explain">
-            Använd ditt eget foto!<br>
-            Ta vara på chansen.<br>
-            Unikt i världen!
-          </div>
-
-          <div class="down-tri"></div>
-
-          <div class="sampleWrap">
-            <img class="sampleImg" src="postcard_en.png" alt="Smart Postcard sample">
-            <div class="playBtn" aria-label="play"></div>
-          </div>
-        </div>
-
-        <div class="arrow right"></div>
-      </div>
-
-      <div class="features">
-        Easy to make · Physical printing<br>
-        Precious album · Worldwide delivery<br>
-        Travel souvenir · Philatelic collectible<br>
-        Photo printing · A5 large size · Great value
-      </div>
-
-      <div class="btnRow">
-        <div class="btnSmall">Souvenir postcard</div>
-        <div class="btnSmall">Traditional postcard</div>
-      </div>
-
-      <div class="btnBig">Treasure Now</div>
-    </main>
-  </div>
-
-<script>
-(function(){
-  const pill = document.getElementById('lang-pill');
-  const menu = document.getElementById('lang-menu');
-  const label = document.getElementById('lang-label');
-  const current = "sv";
-  const labelMap = {cn:"简", tc:"繁", en:"EN", sv:"SV"};
-  if(label) label.textContent = labelMap[current] || "EN";
-  try{ localStorage.setItem('sp_lang', current); }catch(e){}
-
-  function closeMenu(){ if(menu) menu.classList.remove('open'); }
-  function toggleMenu(e){ e && e.preventDefault(); e && e.stopPropagation(); if(menu) menu.classList.toggle('open'); }
-
-  if(pill) pill.addEventListener('click', toggleMenu);
-  document.addEventListener('click', closeMenu);
-  document.addEventListener('keydown', (e)=>{ if(e.key==="Escape") closeMenu(); });
-  if(menu) {
-    menu.addEventListener('click', (e)=>{
-      const a = e.target.closest('a[data-code]');
-      if(a) {
-        const code = a.getAttribute('data-code');
-        try{ localStorage.setItem('sp_lang', code); }catch(e){}
+      function setActive(lang){
+        buttons.forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+        document.title = titleMap[lang] || "Smart Postcard — v7.0";
       }
-      e.stopPropagation();
-    });
-  }
-})();
-</script>
 
+      function pickInitialLang(){
+        const h = (location.hash || "").replace("#","");
+        return fileMap[h] ? h : "en";
+      }
+
+      function switchLang(lang){
+        if(!fileMap[lang]) lang = "en";
+        setActive(lang);
+        // 只换 iframe，不会破坏横幅，也不会出现“必须回到默认英语才灵”的问题
+        frame.src = fileMap[lang];
+        location.hash = lang;
+      }
+
+      // 关键：隐藏 iframe 内部页面自带的 header（否则会出现你截图那种“双横幅覆盖变异”）
+      function hideInnerHeader(){
+        try{
+          const doc = frame.contentDocument;
+          if(!doc) return;
+
+          // 常见 header 选择器（尽量宽容）
+          const candidates = [
+            "header",
+            ".topbar",
+            ".header",
+            "#header",
+            ".site-header",
+            ".navbar"
+          ];
+
+          candidates.forEach(sel=>{
+            const el = doc.querySelector(sel);
+            if(el) el.style.display = "none";
+          });
+
+          // 某些版本可能在 body 上加了顶部留白，为避免空白，再尝试压掉
+          const body = doc.body;
+          if(body){
+            body.style.marginTop = "0";
+            body.style.paddingTop = "0";
+          }
+        }catch(e){
+          // 同源下应该不会失败；若失败也不影响切换，只是会看到内页头部
+        }
+      }
+
+      frame.addEventListener("load", hideInnerHeader);
+
+      buttons.forEach(btn=>{
+        btn.addEventListener("click", ()=> switchLang(btn.dataset.lang));
+      });
+
+      // 首次进入按 hash；否则默认 EN
+      const init = pickInitialLang();
+      setActive(init);
+      frame.src = fileMap[init];
+      // 兼容：某些手机第一次 load 事件慢，补一次
+      setTimeout(hideInnerHeader, 350);
+    })();
+  </script>
 </body>
 </html>
