@@ -1,137 +1,426 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Smart Postcard — Language Router (Temporary)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-store" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+  <title>Smart Postcard — sv_v7.0</title>
+
   <style>
-    html,body{height:100%;margin:0;background:#fff;}
-    /* 全屏 iframe：只显示各语言“完整首页” */
-    #frame{
-      position:fixed; inset:0;
-      width:100%; height:100%;
-      border:0; background:#fff;
+    :root{
+      --w: 390px;
+    }
+    body{
+      margin:0;
+      background:#f4f4f4;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      display:flex;
+      justify-content:center;
+    }
+    .phone{
+      width:min(100vw, var(--w));
+      background:#fff;
+      min-height:100vh;
+      box-shadow:0 10px 40px rgba(0,0,0,.08);
+      overflow:hidden;
     }
 
-    /* 右上角极简语言条（避免与各语言页自身头部冲突） */
-    .langbar{
-      position:fixed;
-      top:10px; right:10px;
-      z-index:999999;
-      display:flex; gap:8px; align-items:center;
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.92);
-      box-shadow:0 6px 18px rgba(0,0,0,.12);
-      backdrop-filter:saturate(120%) blur(6px);
-      -webkit-backdrop-filter:saturate(120%) blur(6px);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif;
+    /* ===== Header ===== */
+    header{
+      background:#e3aa00;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
-    .btn{
-      border:0;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .logo{
+      width:56px;
+      height:40px;
+      object-fit:contain;
+    }
+    .brandtext{
+      display:flex;
+      flex-direction:column;
+      line-height:1.02;
+      min-width:0;
+    }
+    .brandtext .t1{
+      font-size:14px;
+      color:#000;
+      letter-spacing:.2px;
+    }
+    .brandtext .t2{
+      font-size:30px;
+      font-weight:900;
+      color:#21a6ad;
+      letter-spacing:.2px;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-shrink:0;
+    }
+    .circle{
+      width:44px; height:44px;
+      background:#fff;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+    .badge{
+      position:absolute;
+      right:-2px; top:-2px;
+      width:18px; height:18px;
+      background:#e53935;
+      color:#fff;
+      border-radius:50%;
+      font-size:11px;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+    }
+    .hamburger{
+      width:22px; height:16px;
+      position:relative;
+    }
+    .hamburger span{
+      position:absolute; left:0; right:0;
+      height:3px; background:#333; border-radius:2px;
+    }
+    .hamburger span:nth-child(1){ top:0;}
+    .hamburger span:nth-child(2){ top:6px;}
+    .hamburger span:nth-child(3){ top:12px;}
+
+    /* Language pill (inside header, no fixed bar) */
+    .langpill{
+      width:64px;
+      height:36px;
+      border-radius:18px;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      padding:0 10px;
+      border:1px solid rgba(0,0,0,.10);
+      position:relative;
       cursor:pointer;
-      padding:8px 10px;
-      border-radius:999px;
-      background:#f2f2f2;
+      user-select:none;
+    }
+    .langpill .caret{
+      width:0; height:0;
+      border-left:5px solid transparent;
+      border-right:5px solid transparent;
+      border-top:6px solid #333;
+      margin-top:2px;
+    }
+    .langpill .langlabel{
+      font-weight:900;
       font-size:14px;
       line-height:1;
-      white-space:nowrap;
-    }
-    .btn.active{ background:#222; color:#fff; }
-    .flag{
-      width:22px; height:16px; display:inline-block; vertical-align:-2px;
-      border-radius:3px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);
-      background-size:cover; background-position:center;
-      margin-right:6px;
-    }
-    /* 瑞典国旗（小语种可用国旗：你已同意） */
-    .sv-flag{
-      background-image:
-        linear-gradient(#006aa7 0 100%),
-        linear-gradient(to right, transparent 0 30%, #fecc00 30% 40%, transparent 40% 100%),
-        linear-gradient(to bottom, transparent 0 45%, #fecc00 45% 60%, transparent 60% 100%);
-      background-blend-mode:normal;
     }
 
-    /* 小屏优化 */
-    @media (max-width:380px){
-      .langbar{ top:8px; right:8px; gap:6px; padding:7px 8px; }
-      .btn{ padding:7px 9px; font-size:13px; }
+    /* === Language dropdown (in-header) === */
+    .langmenu{
+      position:absolute;
+      right:0;
+      top:46px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:14px;
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+      overflow:hidden;
+      min-width:190px;
+      display:none;
+      z-index:9999;
     }
+    .langmenu.open{display:block;}
+    .langitem{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      text-decoration:none;
+      color:#111;
+      font-weight:800;
+    }
+    .langitem:hover{background:rgba(0,0,0,.03);}
+    .langtag{
+      min-width:34px;
+      height:24px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:13px;
+      background:rgba(0,0,0,.06);
+    }
+    .flag-sv{
+      width:34px; height:24px; border-radius:6px;
+      background:#006aa7;
+      position:relative;
+      overflow:hidden;
+    }
+    .flag-sv:before{
+      content:"";
+      position:absolute; left:0; top:42%;
+      width:100%; height:16%;
+      background:#fecc00;
+    }
+    .flag-sv:after{
+      content:"";
+      position:absolute; left:34%;
+      width:12%; height:100%;
+      background:#fecc00;
+    }
+    .langname{font-weight:800;}
+
+    /* ===== Main content ===== */
+    main{ padding:14px 12px 18px; }
+    .title{
+      text-align:center;
+      font-size:36px;
+      font-weight:900;
+      letter-spacing:.2px;
+      margin:10px 0 10px;
+      line-height:1.05;
+      color:#222;
+    }
+
+    .carousel{
+      display:grid;
+      grid-template-columns: 58px 1fr 58px;
+      align-items:start;
+      gap:10px;
+      margin-top:8px;
+    }
+    .arrow{
+      width:0; height:0;
+      border-top:22px solid transparent;
+      border-bottom:22px solid transparent;
+      margin-top:62px;
+    }
+    .arrow.left{ border-right:44px solid #0b3a70; }
+    .arrow.right{ border-left:44px solid #0b3a70; justify-self:end; }
+    .explain{
+      background:#fff3bf; /* 与英文版保持一致的柔和底色 */
+      border-radius:22px;
+      padding:18px 18px;
+      text-align:center;
+      font-weight:800;
+      font-size:18px;
+      line-height:1.25;
+      color:#2b2b2b;
+      margin:0 auto 12px;
+      max-width:260px;
+    }
+    .down-tri{
+      width:0;height:0;
+      border-left:12px solid transparent;
+      border-right:12px solid transparent;
+      border-top:18px solid #1f9b3a;
+      margin:2px auto 10px;
+    }
+    .sampleWrap{
+      position:relative;
+      background:#fff;
+      border:1px solid #d6d6d6;
+      width:100%;
+      height:210px;
+      overflow:hidden;
+    }
+    .sampleImg{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      background:#fff;
+    }
+    .playBtn{
+      position:absolute;
+      right:14px;
+      bottom:16px;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.22);
+      display:grid;
+      place-items:center;
+    }
+    .playBtn:before{
+      content:"";
+      width:0;height:0;
+      border-top:9px solid transparent;
+      border-bottom:9px solid transparent;
+      border-left:14px solid #111;
+      margin-left:3px;
+    }
+
+    .features{
+      text-align:center;
+      font-size:22px;
+      font-weight:800;
+      color:#1f1f1f;
+      line-height:1.25;
+      margin:18px 6px 16px;
+      letter-spacing:.2px;
+    }
+
+    .btnRow{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+      margin:8px 0 12px;
+    }
+    .btnSmall{
+      width:150px;
+      height:46px;
+      border-radius:24px;
+      border:1px solid rgba(0,0,0,.22);
+      background:linear-gradient(#f7d68a,#d8a940);
+      font-weight:900;
+      font-size:18px;
+      color:#1d1d1d;
+      display:grid;
+      place-items:center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .btnBig{
+      width:100%;
+      height:54px;
+      border-radius:28px;
+      border:1px solid rgba(0,0,0,.22);
+      background:linear-gradient(#f7d68a,#d8a940);
+      font-weight:900;
+      font-size:26px;
+      color:#1d1d1d;
+      display:grid;
+      place-items:center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+
   </style>
 </head>
-<body>
 
-  <!-- 只保留一个很小的语言切换条，不做大头部：防止“覆盖/变异” -->
-  <div class="langbar" id="langbar">
-    <!-- 简/繁/EN 用文字，避嫌；瑞典语用国旗 -->
-    <button class="btn" data-lang="cn">简</button>
-    <button class="btn" data-lang="tc">繁</button>
-    <button class="btn" data-lang="en">EN</button>
-    <button class="btn" data-lang="sv"><span class="flag sv-flag"></span>SV</button>
+<body>
+  <div class="phone">
+    <header>
+      <div class="brand">
+        <img class="logo" src="Logo.png" alt="Smart Postcard logo">
+        <div class="brandtext">
+          <div class="t1">Smart</div>
+          <div class="t2">Smart Postcard</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="circle" aria-label="cart">
+          <div class="badge">0</div>
+          <span style="font-size:22px;">🛒</span>
+        </div>
+
+        <!-- Language (in header) -->
+        <div class="langpill" id="lang-pill" aria-label="language">
+          <span class="caret"></span>
+          <span class="langlabel" id="lang-label"></span>
+          <div class="langmenu" id="lang-menu" role="menu" aria-label="Language menu">
+            <a class="langitem" role="menuitem" href="cn_v7.0.html" data-code="cn"><span class="langtag">简</span><span class="langname">简体中文</span></a>
+            <a class="langitem" role="menuitem" href="tc_v7.0.html" data-code="tc"><span class="langtag">繁</span><span class="langname">繁體中文</span></a>
+            <a class="langitem" role="menuitem" href="en_v7.0.html" data-code="en"><span class="langtag">EN</span><span class="langname">English</span></a>
+            <a class="langitem" role="menuitem" href="sv_v7.0.html" data-code="sv"><span class="langtag flag-sv" aria-hidden="true"></span><span class="langname">Svenska</span></a>
+          </div>
+        </div>
+
+        <div class="circle" aria-label="menu">
+          <div class="hamburger" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="title">Treasure Your One-Of-A-Kind<br>Souvenir Postcard</div>
+
+      <div class="carousel">
+        <div class="arrow left"></div>
+
+        <div>
+          <div class="explain">
+            Använd ditt eget foto!<br>
+            Ta vara på chansen.<br>
+            Unikt i världen!
+          </div>
+
+          <div class="down-tri"></div>
+
+          <div class="sampleWrap">
+            <img class="sampleImg" src="postcard_en.png" alt="Smart Postcard sample">
+            <div class="playBtn" aria-label="play"></div>
+          </div>
+        </div>
+
+        <div class="arrow right"></div>
+      </div>
+
+      <div class="features">
+        Easy to make · Physical printing<br>
+        Precious album · Worldwide delivery<br>
+        Travel souvenir · Philatelic collectible<br>
+        Photo printing · A5 large size · Great value
+      </div>
+
+      <div class="btnRow">
+        <div class="btnSmall">Souvenir postcard</div>
+        <div class="btnSmall">Traditional postcard</div>
+      </div>
+
+      <div class="btnBig">Treasure Now</div>
+    </main>
   </div>
 
-  <iframe id="frame" title="Smart Postcard Language Page"></iframe>
+<script>
+(function(){
+  const pill = document.getElementById('lang-pill');
+  const menu = document.getElementById('lang-menu');
+  const label = document.getElementById('lang-label');
+  const current = "sv";
+  const labelMap = {cn:"简", tc:"繁", en:"EN", sv:"SV"};
+  if(label) label.textContent = labelMap[current] || "EN";
+  try{ localStorage.setItem('sp_lang', current); }catch(e){}
 
-  <script>
-    // ====== 你只需要确认这 4 个文件名与仓库一致 ======
-    // 建议命名：cn_v7.0.html / tc_v7.0.html / en_v7.0.html / sv_v7.0.html（都小写）
-    const PAGES = {
-      cn: "cn_v7.0.html",  // ← 改成你的简体 v7.0 文件名（例如：251213_CN_v7.0_首页达标版.html）
-      tc: "tc_v7.0.html",  // ← 改成你的繁体 tc_v7.0 文件名
-      en: "en_v7.0.html",  // ← 改成你的英文 EN_v7.0 文件名
-      sv: "sv_v7.0.html"   // ← 改成你的瑞典 sv_v7.0 文件名
-    };
+  function closeMenu(){ if(menu) menu.classList.remove('open'); }
+  function toggleMenu(e){ e && e.preventDefault(); e && e.stopPropagation(); if(menu) menu.classList.toggle('open'); }
 
-    const frame = document.getElementById("frame");
-    const buttons = Array.from(document.querySelectorAll("#langbar .btn"));
-
-    function setActive(lang){
-      buttons.forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
-    }
-
-    function loadLang(lang, push=true){
-      if(!PAGES[lang]) lang = "en";
-      frame.src = PAGES[lang];
-      setActive(lang);
-
-      // 记住上次语言：再次打开仍是你上次选的
-      try{ localStorage.setItem("sp_lang", lang); }catch(e){}
-
-      // 允许从地址栏直接指定：?lang=tc
-      if(push){
-        const url = new URL(location.href);
-        url.searchParams.set("lang", lang);
-        history.pushState({lang}, "", url.toString());
+  if(pill) pill.addEventListener('click', toggleMenu);
+  document.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', (e)=>{ if(e.key==="Escape") closeMenu(); });
+  if(menu) {
+    menu.addEventListener('click', (e)=>{
+      const a = e.target.closest('a[data-code]');
+      if(a) {
+        const code = a.getAttribute('data-code');
+        try{ localStorage.setItem('sp_lang', code); }catch(e){}
       }
-    }
-
-    // 点击切换：无需回到默认英语，直接连续切换
-    buttons.forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        loadLang(btn.dataset.lang, true);
-      });
+      e.stopPropagation();
     });
+  }
+})();
+</script>
 
-    // 浏览器返回键也能切回前一语言
-    window.addEventListener("popstate", (e)=>{
-      const lang = (e.state && e.state.lang) || new URL(location.href).searchParams.get("lang") || "en";
-      loadLang(lang, false);
-    });
-
-    // 初始语言：URL > localStorage > 英语默认
-    (function init(){
-      const urlLang = new URL(location.href).searchParams.get("lang");
-      let lang = urlLang;
-      if(!lang){
-        try{ lang = localStorage.getItem("sp_lang"); }catch(e){}
-      }
-      if(!lang) lang = "en";
-      loadLang(lang, false);
-    })();
-  </script>
 </body>
 </html>
