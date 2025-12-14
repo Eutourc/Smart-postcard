@@ -1,30 +1,34 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — tc_v7.0</title>
+<title>Smart Postcard — EN v7.0</title>
 <meta http-equiv="Cache-Control" content="no-store" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
+
 <style>
   :root{
     --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
     --brandword-size:26px;
     --title-size:23px;
-    --gapTop:33.5px;
+    --gapTop:26px;
     --title-lh:1.06;
-    --gap2:31.0px;
-    --gap3:33.0px;
+    --gap2:28px;
+    --gap3:31.5px;
     --sideGapL:24px;
     --sideGapR:25px;
+
+    /* ✅ explain box background aligned to CN */
     --explain-bg:#FFF8D9;
+
     --card-border:1px;
     --card-border-color:#d1d5db;
     --arrow-fat:22px;
     --arrow-width:26px;
-    --ex-pad-y:12px;
-    --ex-pad-x:16px;
+    --ex-pad-y:10px;
+    --ex-pad-x:18px;
     --marker-fat:16px;
     --marker-base:13px;
     --marker-color:#16a34a;
@@ -45,18 +49,85 @@
     background:linear-gradient(90deg,var(--bw-c1),var(--bw-c2) 55%,var(--bw-c3));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   }
-  .actions{display:flex;align-items:center;gap:8px}
+  .actions{display:flex;align-items:center;gap:8px; position:relative;}
   .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .cart{position:relative}
   .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
-  .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .flag{width:22px;height:14px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+
+  /* ===== Language pill (avoid flags for CN/TC/EN) ===== */
+  .langpill{
+    display:flex;align-items:center;gap:8px;
+    padding:8px 10px;border-radius:999px;background:#fff;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+    cursor:pointer; user-select:none;
+  }
+  .langcode{
+    min-width:26px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:12px;
+    letter-spacing:.2px;
+    color:#111;
+  }
+  .flagemoji{
+    font-size:16px;
+    line-height:1;
+    transform:translateY(-.5px);
+  }
   .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
   .menu{font-size:22px;font-weight:900}
+
+  /* dropdown */
+  .langmenu{
+    position:absolute;
+    right:54px; /* aligns under pill, without overlapping menu icon */
+    top:54px;
+    width:180px;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 10px 24px rgba(0,0,0,.18);
+    padding:8px;
+    display:none;
+    z-index:50;
+  }
+  .langmenu.show{display:block;}
+  .langitem{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:800;
+    color:#111;
+    line-height:1.1;
+  }
+  .langitem:hover{background:rgba(245,184,0,.18);}
+  .langleft{display:flex; align-items:center; gap:10px;}
+  .pillmini{
+    min-width:30px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:12px;
+    border-radius:6px;
+    background:rgba(0,0,0,.06);
+    color:#111;
+  }
+  .langname{font-weight:800; font-size:13px;}
+  .langnote{font-weight:700; font-size:12px; color:#6b7280;}
+  .langsep{height:1px; background:rgba(0,0,0,.08); margin:6px 4px;}
+
   main{max-width:980px;margin:0 auto;min-height:100svh;display:flex;flex-direction:column;padding:0 14px 12px}
   .gapTop{height:var(--gapTop);}
   .gap2{height:var(--gap2);}
-  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:700;text-align:center;margin:0;color:#111111;}
+  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;}
   .stage{
     display:flex;flex-direction:column;
     background:#fff;border-radius:20px;
@@ -69,11 +140,14 @@
     padding:var(--ex-pad-y) var(--ex-pad-x);
     border-radius:14px;
     background:var(--explain-bg);
-    font-size:13.5px;
-    line-height:1.35;
+    font-size:14px;
+    line-height:1.16;
     text-align:center;
   }
-  .explain-keeper{visibility:hidden;white-space:normal;}
+  .explain-keeper{
+    visibility:hidden;
+    white-space:normal;
+  }
   #explain-text{
     position:absolute;
     left:var(--ex-pad-x);
@@ -84,10 +158,13 @@
     align-items:center;
     justify-content:center;
     text-align:center;
-    font-size:13.5px;
-    line-height:1.35;
+    font-size:14px;
+    line-height:1.16;
   }
-  .viewer{position:relative;margin-top:var(--gap3);}
+  .viewer{
+    position:relative;
+    margin-top:var(--gap3);
+  }
   .cardbox{
     position:relative;width:100%;margin:0;
     border-radius:0;overflow:visible;background:#fff;
@@ -96,17 +173,70 @@
   }
   .cardbox-inner{position:relative;width:100%;padding-top:70%;overflow:visible;background:#fff;}
   .cardbox-inner::before{content:none;}
-  .hotspot{position:absolute;border:none;background:transparent;padding:0;margin:0;cursor:pointer;z-index:3;}
+  .hotspot{
+    position:absolute;
+    border:none;
+    background:transparent;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    z-index:3;
+  }
   .hotspot:focus{outline:none;}
-  .hotspot-center{top:20.93%;left:46.00%;width:14.35%;height:58.41%;}
-  .hotspot-stamp{top:-12.00%;left:79.05%;width:20.00%;height:30.00%;}
-  .hotspot-qr1{top:-11.81%;left:48.07%;width:20.00%;height:30.00%;}
-  .hotspot-weather{top:-4.63%;left:8.13%;width:42.00%;height:22.82%;}
-  .hotspot-writing{top:27.00%;left:0.00%;width:44.50%;height:36.00%;}
-  .hotspot-qr2{top:73.30%;left:2.00%;width:20.00%;height:33.43%;}
-  .hotspot-seal{top:70.74%;left:19.00%;width:22.00%;height:35.43%;}
-  .hotspot-address{top:40.00%;left:64.94%;width:28.00%;height:36.00%;}
-  .hotspot-postmark{top:18.62%;left:64.51%;width:14.00%;height:16.00%;}
+  .hotspot-center{
+    top:25.09%;
+    left:46.00%;
+    width:14.35%;
+    height:51.20%;
+  }
+  .hotspot-stamp{
+    top:-12.00%;
+    left:79.05%;
+    width:20.00%;
+    height:30.00%;
+  }
+  .hotspot-qr1{
+    top:-11.81%;
+    left:48.07%;
+    width:20.00%;
+    height:30.55%;
+  }
+  .hotspot-weather{
+    top:-4.63%;
+    left:8.13%;
+    width:42.00%;
+    height:23.37%;
+  }
+  .hotspot-writing{
+    top:27.00%;
+    left:0.00%;
+    width:44.50%;
+    height:36.00%;
+  }
+  .hotspot-qr2{
+    top:73.30%;
+    left:2.00%;
+    width:20.00%;
+    height:33.43%;
+  }
+  .hotspot-seal{
+    top:70.74%;
+    left:19.00%;
+    width:22.00%;
+    height:35.43%;
+  }
+  .hotspot-address{
+    top:40.00%;
+    left:64.94%;
+    width:28.00%;
+    height:36.00%;
+  }
+  .hotspot-postmark{
+    top:18.62%;
+    left:64.51%;
+    width:14.00%;
+    height:16.00%;
+  }
   .big-arrow{
     position:absolute;
     width:0;height:0;border:0;background:transparent;padding:0;
@@ -129,20 +259,64 @@
     border-left:var(--arrow-width) solid #0b3a77;
   }
   .features{
-    margin-top:calc(var(--gap3) - 2px);
+    margin-top:calc(var(--gap3) - 4px);
     text-align:center;
-    font-size:13.5px;
-    line-height:1.35;
+    font-size:14px;
+    line-height:1.16;
     font-weight:700;
-    font-family:"LiSu","STLiti","隶书","Kaiti SC","KaiTi","Source Han Serif SC","Noto Serif SC",serif;
-    letter-spacing:0.2px;
-    color:#1a1a1a;
+    color:#000000;
   }
   .features-line{display:block;}
   .features-line + .features-line{margin-top:0;}
+  .cta{
+    margin-top:calc(var(--gap3) - 4px);
+    margin-bottom:12px;
+  }
+  .cta-row-top{
+    display:flex;
+    justify-content:center;
+    column-gap:14px;
+    width:100%;
+    margin:0 auto;
+  }
+  .btn-gold,
+  .btn-main{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:22px;
+    border:1px solid rgba(140,103,36,.45);
+    background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.85),
+      inset 0 -2px 0 rgba(0,0,0,.18),
+      0 8px 18px rgba(0,0,0,.14);
+    color:#2f2f2f;
+    text-shadow:0 1px 0 rgba(255,255,255,.75),0 -1px 0 rgba(0,0,0,.18);
+    font-family:inherit;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  .btn-gold{
+    flex:0 0 auto;
+    height:38px;
+    font-size:13px;
+    padding:0 16px;
+  }
+  .btn-main{
+    display:block;
+    width:100%;
+    margin:12px 0 0;
+    height:40px;
+    font-size:16px;
+    border-radius:24px;
+  }
+  .btn-primary{color:#1e56d6;}
 
   .marker{
-    position:absolute;width:0;height:0;
+    position:absolute;
+    width:0;
+    height:0;
     border-left:var(--marker-base) solid transparent;
     border-right:var(--marker-base) solid transparent;
     border-top:var(--marker-fat) solid var(--marker-color);
@@ -152,34 +326,31 @@
   }
 
   .auto-play{
-    position:absolute;right:10px;bottom:10px;
-    width:26px;height:26px;border-radius:999px;border:none;
-    background:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,.3);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    width:26px;
+    height:26px;
+    border-radius:999px;
+    border:none;
+    background:#ffffff;
+    box-shadow:0 2px 6px rgba(0,0,0,.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    padding:0;
   }
-  .auto-play::before{content:"▶";font-size:13px;transform:translateX(1px);}
-  .auto-play.playing::before{content:"Ⅱ";transform:translateX(0);font-size:12px;}
-</style>
-
-<style id="btn-fixed-v6.0-match">
-.btns{display:flex;justify-content:center;gap:31px;margin: calc(var(--gap3) - 2px) auto 0;}
-.btn{
-  flex:0 0 auto;min-width:108px;height:44px;padding:0 11px;border-radius:24px;
-  border:1px solid rgba(140,103,36,.45);
-  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.14);
-  color:#2f2f2f;text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
-  font-weight:700;font-size:15.5px;white-space:nowrap;
-}
-.btn.primary{color:#1e56d6;}
-.start{
-  display:flex;align-items:center;justify-content:center;height:44px;width:calc(100% - 24px);
-  margin:17px auto 0;padding:0 11px;border-radius:24px;border:1px solid rgba(140,103,36,.45);
-  background:linear-gradient(180deg,#ffe49b 0%, #e8be58 52%, #bf8f31 100%);
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 0 rgba(0,0,0,.18), 0 8px 18px rgba(0,0,0,.14);
-  color:#2f2f2f;text-shadow:0 1px 0 rgba(255,255,255,.75), 0 -1px 0 rgba(0,0,0,.18);
-  font-weight:700;font-size:17.5px;
-}
+  .auto-play::before{
+    content:"▶";
+    font-size:13px;
+    transform:translateX(1px);
+  }
+  .auto-play.playing::before{
+    content:"Ⅱ";
+    transform:translateX(0);
+    font-size:12px;
+  }
 </style>
 </head>
 
@@ -193,12 +364,64 @@
     <span class="l2">Postcard</span>
    </div>
   </div>
+
   <div class="actions">
-   <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
-   <div class="langpill" id="lang-pill">
-     <span class="flag" id="flag" style="background:linear-gradient(135deg,#de2910 0 60%, #de2910 60% 100%);"></span>
+   <div class="iconbtn cart">
+     <span style="font-size:18px">🛒</span>
+     <span class="badge" id="cart-badge">0</span>
+   </div>
+
+   <!-- Language pill (CN/TC/EN use text; Nordic can use flag in menu) -->
+   <div class="langpill" id="lang-pill" aria-label="Language">
+     <span class="langcode" id="lang-code">EN</span>
      <span class="caret"></span>
    </div>
+
+   <!-- Language dropdown -->
+   <div class="langmenu" id="lang-menu" role="menu" aria-label="Language menu">
+     <div class="langitem" data-href="en_v7.0.html">
+       <div class="langleft">
+         <span class="pillmini">EN</span>
+         <div>
+           <div class="langname">English</div>
+           <div class="langnote">Baseline</div>
+         </div>
+       </div>
+     </div>
+
+     <div class="langitem" data-href="cn_v7.0.html">
+       <div class="langleft">
+         <span class="pillmini">简</span>
+         <div>
+           <div class="langname">中文简体</div>
+           <div class="langnote">基准版</div>
+         </div>
+       </div>
+     </div>
+
+     <div class="langitem" data-href="tc_v7.0.html">
+       <div class="langleft">
+         <span class="pillmini">繁</span>
+         <div>
+           <div class="langname">中文繁體</div>
+           <div class="langnote">tc_v7.0</div>
+         </div>
+       </div>
+     </div>
+
+     <div class="langsep"></div>
+
+     <div class="langitem" data-href="sv_v7.0.html">
+       <div class="langleft">
+         <span class="flagemoji" aria-hidden="true">🇸🇪</span>
+         <div>
+           <div class="langname">Svenska</div>
+           <div class="langnote">sv_v7.0</div>
+         </div>
+       </div>
+     </div>
+   </div>
+
    <div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
   </div>
  </div>
@@ -206,19 +429,20 @@
 
 <main>
   <div class="gapTop"></div>
-  <h1 class="page-title">珍藏您舉世無雙的紀念明信片</h1>
+  <h1 class="page-title">Treasure Your One-Of-A-Kind<br/>Souvenir Postcard</h1>
   <div class="gap2"></div>
 
   <section class="stage">
     <div class="explain">
       <div class="explain-keeper">
-        記錄當時感言、日期、天氣與溫度！<br/>
-這也是您在地圖紀念點旁寫的留言！<br/>
-這等於洗了一張 A5 大尺碼的照片！
+        Please fill in the mailing address!<br/>
+        Country names must be English!<br/>
+        See example in the address field!
       </div>
       <div id="explain-text">
-        您的照片可成為郵票及明信片畫面！<br/>
- 珍惜當下！歷史佳機！獨特唯一！
+        Allow to use your own photo!<br/>
+        Treasure the historic chance!<br/>
+        It is one of a kind worldwide!
       </div>
     </div>
 
@@ -227,8 +451,7 @@
       <button aria-label="Next stop" class="big-arrow right" id="next"></button>
       <div class="cardbox" id="cardbox">
         <div class="cardbox-inner" id="cardbox-inner">
-          <!-- ✅ 默认先显示中文样图 -->
-          <img id="pc-img" src="postcard_cn.png"
+          <img id="pc-img" src="postcard_en.png"
                alt="Smart Postcard sample"
                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
@@ -248,18 +471,56 @@
     </div>
 
     <section class="features" aria-label="Smart Postcard features">
-      <div class="features-line">操作簡單 · 實體印刷 · 全球郵寄</div>
-      <div class="features-line">旅遊紀念 · 集郵佳品 · 珍貴相冊</div>
-      <div class="features-line">照片列印 · A5大尺碼 · 物超所值</div>
+      <div class="features-line">Easy to make · Physical printing</div>
+      <div class="features-line">Precious album · Worldwide delivery</div>
+      <div class="features-line">Travel souvenir · Philatelic collectible</div>
+      <div class="features-line">Photo printing · A5 large size · Great value</div>
     </section>
   </section>
 
-  <div class="btns">
-    <button class="btn primary">紀念明信片</button>
-    <button class="btn">傳統明信片</button>
-  </div>
-  <button class="start" id="start-btn">開始製作</button>
+  <section class="cta" aria-label="Choose postcard type">
+    <div class="cta-row-top">
+      <button class="btn-gold btn-primary" type="button">Souvenir postcard</button>
+      <button class="btn-gold" type="button">Traditional postcard</button>
+    </div>
+    <button class="btn-main" type="button">Treasure Now</button>
+  </section>
 </main>
+
+<script>
+/* ===== Language menu: click to switch to another HTML file (all deployed together) ===== */
+(function(){
+  var pill = document.getElementById('lang-pill');
+  var menu = document.getElementById('lang-menu');
+
+  function closeMenu(){
+    if(menu) menu.classList.remove('show');
+  }
+  function toggleMenu(){
+    if(!menu) return;
+    menu.classList.toggle('show');
+  }
+
+  if(pill){
+    pill.addEventListener('click', function(e){
+      e.stopPropagation();
+      toggleMenu();
+    });
+  }
+
+  if(menu){
+    menu.addEventListener('click', function(e){
+      var item = e.target.closest('.langitem');
+      if(!item) return;
+      var href = item.getAttribute('data-href');
+      if(!href) return;
+      window.location.href = href;
+    });
+  }
+
+  document.addEventListener('click', function(){ closeMenu(); });
+})();
+</script>
 
 <script>
 (function(){
@@ -286,16 +547,16 @@
 <script>
 (function(){
   var messages = {
-    1: "明信片背面圖案！可成為郵票圖案！<br/>您可以任選照片！可用您的自拍照！<br/>這等於洗了一張 A5 大尺碼的照片！",
-    2: "您的照片可成為郵票及明信片畫面！<br/> 珍惜當下！歷史佳機！獨特唯一！",
-    3: "到此一遊留念！紀念點載入地圖！<br/>掃二維碼或憑座標可回味和分享！<br/>長按紀念相冊內二維碼等於掃碼！",
-    4: "記錄當時感言、日期、天氣與溫度！<br/>這也是您在地圖紀念點旁寫的留言！",
-    5: "書寫您的明信內容！<br/>留下您美好的回憶！",
-    6: "留念一段錄像或錄音！<br/>    掃碼即可回放！<br/> 手機上長按=掃碼！",
-    7: "      加蓋國家或地方紀念戳！<br/>      這是您到此一遊的見證！<br/>手機上長按紀念戳，享受Ai解說！",
-    8: "填寫明信片的郵寄地址！<br/>國家名稱須用英文書寫！<br/>請參照地址欄中的範例！",
-    9: "留念日期即郵戳日期！<br/>蓋戳日與留念日同步！",
-    10:"電子明信片紀念冊！免費贈送！<br/>     起步五張，寄往郵箱！<br/>     以後再做，可聚一堂！"
+    1: "&nbsp;&nbsp;The postcard / stamp image!<br/>May replace it with your photo!<br/>A large A5 photo is developed!",
+    2: "Allow to use your own photo!<br/>Treasure the historic chance!<br/>It is one of a kind worldwide!",
+    3: "Your visiting commemoration!<br/>&nbsp;&nbsp;You can mark it on the map!<br/>Scan QR code to relive / share!",
+    4: "Record a feeling, date, weather, temperature! It is the postscript<br/>&nbsp;on your map memorial point!",
+    5: "&nbsp;&nbsp;&nbsp;&nbsp;Write your heartfelt words!<br/>Keep your cherished memories!",
+    6: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Record your video / audio!<br/>Scan QR code to play it back!<br/>Long-press QR code on phones!",
+    7: "Add a local memorial seal!<br/>It is a witness to your visit!<br/>Long-press for AI Commentary!",
+    8: "Please fill in the mailing address!<br/>Country names must be English!<br/>See example in the address field!",
+    9: "Commemoration and postmark<br/>dates are guaranteed to match!",
+    10:"Digital postcard album — free!<br/>Start with five! Emailed to you!<br/>If more later, may put all in one!"
   };
 
   var leftOrder  = [2,3,4,5,6,7,8,9,10,1];
@@ -321,9 +582,9 @@
     var img = document.getElementById('pc-img');
     if(img){
       var n = state.current;
-      var src = 'postcard_cn.png';              // ✅ 默认：中文版样图
+      var src = 'postcard_en.png';
       if(n === 1){
-        src = 'cn_v6.7B_bg_and_stamp.jpg';      // ✅ 只有序号1：背景/背面大图
+        src = 'oslo_ski_jump_background.jpg';
       }else if(n === 10){
         src = 'Memorial_Postcard_Album_cover_A5_landscape_plain.png';
       }
@@ -333,10 +594,21 @@
     }
   }
 
-  function syncMarker(){ if(window.SP10_render) window.SP10_render(); }
+  function syncMarker(){
+    if(window.SP10_render) window.SP10_render();
+  }
 
-  function goLeft(){ state.current = nextIn(leftOrder, state.current, 2); renderExplain(); syncMarker(); }
-  function goRight(){ state.current = nextIn(rightOrder, state.current, 2); renderExplain(); syncMarker(); }
+  function goLeft(){
+    state.current = nextIn(leftOrder, state.current, 2);
+    renderExplain();
+    syncMarker();
+  }
+
+  function goRight(){
+    state.current = nextIn(rightOrder, state.current, 2);
+    renderExplain();
+    syncMarker();
+  }
 
   var AUTO_SHORT = 10000;
   var AUTO_LONG  = 10000;
@@ -347,32 +619,51 @@
   var autoJustStarted = false;
   var lastAutoClick = 0;
 
-  function clearAuto(){ if(autoTimer){ clearTimeout(autoTimer); autoTimer=null; } }
+  function clearAuto(){
+    if(autoTimer){
+      clearTimeout(autoTimer);
+      autoTimer = null;
+    }
+  }
+
   function scheduleNext(){
     clearAuto();
     if(!window.SP_autoRunning) return;
     var delay = (state.current === 2 ? AUTO_LONG : AUTO_SHORT);
     autoTimer = setTimeout(stepAuto, delay);
   }
+
   function stepAuto(){
     if(!window.SP_autoRunning) return;
-    if(autoJustStarted){ autoJustStarted=false; state.current=1; }
-    else{
-      var idx = autoOrder.indexOf(state.current); if(idx===-1) idx=0;
-      state.current = autoOrder[(idx+1)%autoOrder.length];
+    if(autoJustStarted){
+      autoJustStarted = false;
+      state.current = 1;
+    }else{
+      var idx = autoOrder.indexOf(state.current);
+      if(idx === -1) idx = 0;
+      state.current = autoOrder[(idx + 1) % autoOrder.length];
     }
-    renderExplain(); syncMarker(); scheduleNext();
+    renderExplain();
+    syncMarker();
+    scheduleNext();
   }
+
   function startAuto(){
     if(window.SP_autoRunning) return;
-    window.SP_autoRunning = true; window.SP_autoPaused = false;
+    window.SP_autoRunning = true;
+    window.SP_autoPaused = false;
     if(autoBtn) autoBtn.classList.add('playing');
-    state.current = 2; renderExplain(); syncMarker();
-    autoJustStarted = true; scheduleNext();
+    state.current = 2;
+    renderExplain();
+    syncMarker();
+    autoJustStarted = true;
+    scheduleNext();
   }
+
   function stopAuto(){
     if(!window.SP_autoRunning && !window.SP_autoPaused) return;
-    window.SP_autoRunning = false; window.SP_autoPaused = false;
+    window.SP_autoRunning = false;
+    window.SP_autoPaused = false;
     if(autoBtn) autoBtn.classList.remove('playing');
     clearAuto();
   }
@@ -380,18 +671,28 @@
   left.addEventListener('click', function(){ stopAuto(); goLeft(); });
   right.addEventListener('click', function(){ stopAuto(); goRight(); });
 
-  function goTo(n){ if(typeof n!=='number') return; state.current=n; renderExplain(); syncMarker(); }
-  function bindHotspot(id,target){
-    var el=document.getElementById(id); if(!el) return;
+  function goTo(n){
+    if(typeof n !== 'number') return;
+    state.current = n;
+    renderExplain();
+    syncMarker();
+  }
+  function bindHotspot(id, target){
+    var el = document.getElementById(id);
+    if(!el) return;
     el.addEventListener('click', function(){ stopAuto(); goTo(target); });
   }
   function bindCenterHotspot(id){
-    var el=document.getElementById(id); if(!el) return;
-    var lastTap=0;
+    var el = document.getElementById(id);
+    if(!el) return;
+    var lastTap = 0;
     el.addEventListener('click', function(){
-      var now=Date.now(); var delta=now-lastTap; lastTap=now;
+      var now = Date.now();
+      var delta = now - lastTap;
+      lastTap = now;
       stopAuto();
-      if(delta>0 && delta<400){ goTo(10); } else { goTo(1); }
+      if(delta > 0 && delta < 400){ goTo(10); }
+      else{ goTo(1); }
     });
   }
 
@@ -407,17 +708,30 @@
 
   if(autoBtn){
     autoBtn.addEventListener('click', function(){
-      var now=Date.now(); var delta=now-lastAutoClick; lastAutoClick=now;
-      if(delta>0 && delta<400){ stopAuto(); startAuto(); return; }
+      var now = Date.now();
+      var delta = now - lastAutoClick;
+      lastAutoClick = now;
+
+      if(delta > 0 && delta < 400){
+        stopAuto();
+        startAuto();
+        return;
+      }
+
       if(window.SP_autoRunning){
-        window.SP_autoRunning=false; window.SP_autoPaused=true;
+        window.SP_autoRunning = false;
+        window.SP_autoPaused = true;
         if(autoBtn) autoBtn.classList.remove('playing');
         clearAuto();
       }else if(window.SP_autoPaused){
-        window.SP_autoRunning=true; window.SP_autoPaused=false;
+        window.SP_autoRunning = true;
+        window.SP_autoPaused = false;
         if(autoBtn) autoBtn.classList.add('playing');
-        autoJustStarted=false; scheduleNext();
-      }else startAuto();
+        autoJustStarted = false;
+        scheduleNext();
+      }else{
+        startAuto();
+      }
     });
   }
 
@@ -454,8 +768,8 @@
     var a = anchors.find(function(x){ return x.n === cur; }) || anchors[1];
     marker.style.left = (a.nx * 100) + '%';
     marker.style.top  = (a.ny * 100) + '%';
-
     var deg = (a.rot + 180) % 360;
+
     var offset = 9.5;
     var dx = 0, dy = 0;
     if(deg === 0){ dy = -offset; }
@@ -470,15 +784,6 @@
   window.addEventListener('load', renderMarker);
   window.addEventListener('resize', renderMarker);
   window.SP10_render = renderMarker;
-})();
-</script>
-
-<script>
-(function(){
-  var btn=document.getElementById('start-btn') || document.querySelector('.start');
-  if(btn){
-    btn.addEventListener('click', function(){ location.href='#start'; });
-  }
 })();
 </script>
 
