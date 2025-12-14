@@ -1,228 +1,137 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Smart Postcard — Language Hub</title>
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Smart Postcard — Language Router (Temporary)</title>
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    html,body{height:100%;margin:0;background:#fff;}
+    /* 全屏 iframe：只显示各语言“完整首页” */
+    #frame{
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      border:0; background:#fff;
+    }
 
-<style>
-  :root{
-    --topbar-bg:#F5B800;
-    --pill-bg:#ffffff;
-    --pill-border:rgba(0,0,0,.10);
-    --shadow:0 2px 12px rgba(0,0,0,.08);
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:#fff;color:#111;font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-  .top{
-    position:sticky;top:0;z-index:50;
-    background:var(--topbar-bg);
-    box-shadow:var(--shadow);
-  }
-  .bar{
-    max-width:980px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:10px;padding:10px 14px;
-  }
-  .brand{display:flex;align-items:center;gap:10px;min-width:0}
-  .brand img{width:64px;height:64px;object-fit:contain}
-  .brandword{display:flex;flex-direction:column;line-height:1;min-width:0}
-  .brandword .l1,.brandword .l2{
-    font-weight:900;font-size:26px;letter-spacing:.5px;
-    background:linear-gradient(90deg,#10b981,#22d3ee 55%,#34d399);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    white-space:nowrap;
-  }
+    /* 右上角极简语言条（避免与各语言页自身头部冲突） */
+    .langbar{
+      position:fixed;
+      top:10px; right:10px;
+      z-index:999999;
+      display:flex; gap:8px; align-items:center;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      box-shadow:0 6px 18px rgba(0,0,0,.12);
+      backdrop-filter:saturate(120%) blur(6px);
+      -webkit-backdrop-filter:saturate(120%) blur(6px);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif;
+    }
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:999px;
+      background:#f2f2f2;
+      font-size:14px;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .btn.active{ background:#222; color:#fff; }
+    .flag{
+      width:22px; height:16px; display:inline-block; vertical-align:-2px;
+      border-radius:3px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);
+      background-size:cover; background-position:center;
+      margin-right:6px;
+    }
+    /* 瑞典国旗（小语种可用国旗：你已同意） */
+    .sv-flag{
+      background-image:
+        linear-gradient(#006aa7 0 100%),
+        linear-gradient(to right, transparent 0 30%, #fecc00 30% 40%, transparent 40% 100%),
+        linear-gradient(to bottom, transparent 0 45%, #fecc00 45% 60%, transparent 60% 100%);
+      background-blend-mode:normal;
+    }
 
-  .actions{display:flex;align-items:center;gap:8px}
-  .iconbtn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-  .cart{position:relative}
-  .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
-
-  /* Language pill + dropdown */
-  .langwrap{position:relative}
-  .langpill{
-    display:flex;align-items:center;gap:8px;
-    padding:8px 10px;border-radius:999px;background:var(--pill-bg);
-    box-shadow:inset 0 0 0 1px var(--pill-border);
-    user-select:none;cursor:pointer;
-  }
-  .langmark{
-    width:28px;height:18px;border-radius:4px;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:900;font-size:12px;letter-spacing:.2px;
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);
-    background:#fff;
-  }
-  .caret{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #222}
-
-  .dropdown{
-    position:absolute;right:0;top:calc(100% + 8px);
-    background:#fff;border-radius:14px;
-    box-shadow:0 10px 30px rgba(0,0,0,.18), inset 0 0 0 1px rgba(0,0,0,.08);
-    overflow:hidden;min-width:180px;
-    display:none;
-  }
-  .dropdown.open{display:block}
-  .item{
-    display:flex;align-items:center;gap:10px;
-    padding:12px 14px;cursor:pointer;
-    font-weight:800;
-  }
-  .item:hover{background:rgba(0,0,0,.05)}
-  .mini{
-    width:28px;height:18px;border-radius:4px;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:900;font-size:12px;
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);
-    background:#fff;
-  }
-  .label{font-weight:800}
-  .sub{font-weight:700;opacity:.65;font-size:12px;margin-left:auto}
-
-  /* Page container */
-  .shell{
-    max-width:980px;margin:0 auto;
-    padding:0 14px 14px;
-  }
-  .frame{
-    width:100%;
-    border:none;
-    border-radius:18px;
-    box-shadow:0 2px 10px rgba(0,0,0,.10);
-    background:#fff;
-    height:calc(100svh - 96px);
-  }
-  @media (max-width:420px){
-    .frame{height:calc(100svh - 92px)}
-  }
-</style>
+    /* 小屏优化 */
+    @media (max-width:380px){
+      .langbar{ top:8px; right:8px; gap:6px; padding:7px 8px; }
+      .btn{ padding:7px 9px; font-size:13px; }
+    }
+  </style>
 </head>
-
 <body>
-<header class="top">
-  <div class="bar">
-    <div class="brand">
-      <img alt="Smart Postcard" src="Logo.png" />
-      <div class="brandword">
-        <span class="l1">Smart</span>
-        <span class="l2">Postcard</span>
-      </div>
-    </div>
 
-    <div class="actions">
-      <div class="iconbtn cart">
-        <span style="font-size:18px">🛒</span>
-        <span class="badge" id="cart-badge">0</span>
-      </div>
-
-      <div class="langwrap" id="langwrap">
-        <div class="langpill" id="langpill" aria-label="Language">
-          <div class="langmark" id="langmark">EN</div>
-          <div class="caret"></div>
-        </div>
-
-        <div class="dropdown" id="dropdown" role="menu" aria-label="Languages">
-          <div class="item" data-lang="en">
-            <div class="mini">EN</div>
-            <div class="label">English</div>
-            <div class="sub">en</div>
-          </div>
-          <div class="item" data-lang="cn">
-            <div class="mini">简</div>
-            <div class="label">简体中文</div>
-            <div class="sub">cn</div>
-          </div>
-          <div class="item" data-lang="tc">
-            <div class="mini">繁</div>
-            <div class="label">繁體中文</div>
-            <div class="sub">tc</div>
-          </div>
-          <div class="item" data-lang="sv">
-            <div class="mini">🇸🇪</div>
-            <div class="label">Svenska</div>
-            <div class="sub">sv</div>
-          </div>
-        </div>
-      </div>
-
-      <div aria-label="menu" class="iconbtn"><span style="font-size:22px;font-weight:900">≡</span></div>
-    </div>
+  <!-- 只保留一个很小的语言切换条，不做大头部：防止“覆盖/变异” -->
+  <div class="langbar" id="langbar">
+    <!-- 简/繁/EN 用文字，避嫌；瑞典语用国旗 -->
+    <button class="btn" data-lang="cn">简</button>
+    <button class="btn" data-lang="tc">繁</button>
+    <button class="btn" data-lang="en">EN</button>
+    <button class="btn" data-lang="sv"><span class="flag sv-flag"></span>SV</button>
   </div>
-</header>
 
-<div class="shell">
-  <iframe class="frame" id="frame" src="en_v7.0.html" title="Smart Postcard"></iframe>
-</div>
+  <iframe id="frame" title="Smart Postcard Language Page"></iframe>
 
-<script>
-(function(){
-  // 固定文件名：你只要把四个语言文件改成这些名字即可（不需要改代码）
-  var PAGES = {
-    en: { src: "en_v7.0.html", mark: "EN" },
-    cn: { src: "cn_v7.0.html", mark: "简" },
-    tc: { src: "tc_v7.0.html", mark: "繁" },
-    sv: { src: "sv_v7.0.html", mark: "🇸🇪" }
-  };
+  <script>
+    // ====== 你只需要确认这 4 个文件名与仓库一致 ======
+    // 建议命名：cn_v7.0.html / tc_v7.0.html / en_v7.0.html / sv_v7.0.html（都小写）
+    const PAGES = {
+      cn: "cn_v7.0.html",  // ← 改成你的简体 v7.0 文件名（例如：251213_CN_v7.0_首页达标版.html）
+      tc: "tc_v7.0.html",  // ← 改成你的繁体 tc_v7.0 文件名
+      en: "en_v7.0.html",  // ← 改成你的英文 EN_v7.0 文件名
+      sv: "sv_v7.0.html"   // ← 改成你的瑞典 sv_v7.0 文件名
+    };
 
-  var frame = document.getElementById("frame");
-  var langpill = document.getElementById("langpill");
-  var dropdown = document.getElementById("dropdown");
-  var langmark = document.getElementById("langmark");
-  var langwrap = document.getElementById("langwrap");
+    const frame = document.getElementById("frame");
+    const buttons = Array.from(document.querySelectorAll("#langbar .btn"));
 
-  function openMenu(){ dropdown.classList.add("open"); }
-  function closeMenu(){ dropdown.classList.remove("open"); }
-  function toggleMenu(){
-    if(dropdown.classList.contains("open")) closeMenu();
-    else openMenu();
-  }
+    function setActive(lang){
+      buttons.forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+    }
 
-  function setLang(code){
-    var p = PAGES[code] || PAGES.en;
+    function loadLang(lang, push=true){
+      if(!PAGES[lang]) lang = "en";
+      frame.src = PAGES[lang];
+      setActive(lang);
 
-    // 更新 pill 显示
-    langmark.textContent = p.mark;
+      // 记住上次语言：再次打开仍是你上次选的
+      try{ localStorage.setItem("sp_lang", lang); }catch(e){}
 
-    // 切换 iframe
-    // 加一个 cache-bust，避免你手机端缓存导致“看似没切换”
-    var bust = "v=" + Date.now();
-    frame.src = p.src + (p.src.indexOf("?")>=0 ? "&" : "?") + bust;
+      // 允许从地址栏直接指定：?lang=tc
+      if(push){
+        const url = new URL(location.href);
+        url.searchParams.set("lang", lang);
+        history.pushState({lang}, "", url.toString());
+      }
+    }
 
-    // 记住选择
-    try{ localStorage.setItem("sp_lang", code); }catch(e){}
-    closeMenu();
-  }
+    // 点击切换：无需回到默认英语，直接连续切换
+    buttons.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        loadLang(btn.dataset.lang, true);
+      });
+    });
 
-  // 关键：用 pointerdown + stopPropagation，避免“切换后菜单事件失效”
-  langpill.addEventListener("pointerdown", function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    toggleMenu();
-  });
+    // 浏览器返回键也能切回前一语言
+    window.addEventListener("popstate", (e)=>{
+      const lang = (e.state && e.state.lang) || new URL(location.href).searchParams.get("lang") || "en";
+      loadLang(lang, false);
+    });
 
-  dropdown.addEventListener("pointerdown", function(e){
-    e.stopPropagation();
-    var item = e.target.closest(".item");
-    if(!item) return;
-    var code = item.getAttribute("data-lang");
-    setLang(code);
-  });
-
-  // 点击页面其他地方关闭菜单
-  document.addEventListener("pointerdown", function(){
-    closeMenu();
-  });
-
-  // 初始语言：默认 EN；如果用户曾选过，自动恢复
-  var saved = null;
-  try{ saved = localStorage.getItem("sp_lang"); }catch(e){}
-  if(saved && PAGES[saved]) setLang(saved);
-  else setLang("en");
-})();
-</script>
+    // 初始语言：URL > localStorage > 英语默认
+    (function init(){
+      const urlLang = new URL(location.href).searchParams.get("lang");
+      let lang = urlLang;
+      if(!lang){
+        try{ lang = localStorage.getItem("sp_lang"); }catch(e){}
+      }
+      if(!lang) lang = "en";
+      loadLang(lang, false);
+    })();
+  </script>
 </body>
 </html>
