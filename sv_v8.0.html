@@ -11,11 +11,11 @@
   :root{
     --bw-c1:#10b981; --bw-c2:#22d3ee; --bw-c3:#34d399;
     --brandword-size:26px;
-    --title-size:20px;
-    --gapTop:26px;
+    --title-size:23px;
+    --gapTop:31.5px;
     --title-lh:1.06;
     --gap2:28px;
-    --gap3:31.5px;
+    --gap3:33px;
     --sideGapL:24px;
     --sideGapR:25px;
 
@@ -89,7 +89,7 @@
   /* ✅ 第一留白仍在，但因为整屏锁定，不会被上滑吃掉 */
   .gapTop{height:var(--gapTop);}
   .gap2{height:var(--gap2);}
-  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;}
+  h1.page-title{font-size:var(--title-size);line-height:var(--title-lh);font-weight:800;text-align:center;margin:0;letter-spacing:0.08em}
   .stage{
     display:flex;flex-direction:column;
     background:#fff;border-radius:20px;
@@ -169,7 +169,8 @@
   .features-line + .features-line{margin-top:0;}
 
   .cta{margin-top:calc(var(--gap3) - 4px);margin-bottom:12px;}
-  .cta-row-top{display:flex;justify-content:center;column-gap:14px;width:100%;margin:0 auto;}
+  /* ✅ ① 上面两键：等长（强制等宽）+ 三留白更均衡（限制总宽，居中）+ 塔形 */
+  .cta-row-top{display:flex;justify-content:center;column-gap:14px;width:100%;max-width:420px;margin:0 auto;}
   .btn-gold,.btn-main{
     display:flex;align-items:center;justify-content:center;
     border-radius:22px;border:1px solid rgba(140,103,36,.45);
@@ -179,7 +180,7 @@
     text-shadow:0 1px 0 rgba(255,255,255,.75),0 -1px 0 rgba(0,0,0,.18);
     font-family:inherit;font-weight:900;white-space:nowrap;
   }
-  .btn-gold{flex:0 0 auto;height:38px;font-size:13px;padding:0 16px;}
+  .btn-gold{flex:1 1 0;min-width:0;height:38px;font-size:13px;padding:0 12px;}
   .btn-main{display:block;width:100%;margin:12px 0 0;height:40px;font-size:16px;border-radius:24px;}
   .btn-primary{color:#1e56d6;}
 
@@ -258,7 +259,7 @@
   <main>
     <div class="gapTop"></div>
 
-    <h1 class="page-title">VÄRDESÄTT DITT UNIKA VYKORT</h1>
+    <h1 class="page-title">VÄRDESÄTT DITT UNIKA<br/>SOUVENIRVYKORT</h1>
     <div class="gap2"></div>
 
     <section class="stage">
@@ -309,7 +310,8 @@
 
     <section class="cta" aria-label="Choose postcard type">
       <div class="cta-row-top">
-        <button class="btn-gold btn-primary" type="button">Minnesvykort</button>
+        <!-- ✅ ① 文案修正：Minnesvykort → Souvenirvykort（其它不动） -->
+        <button class="btn-gold btn-primary" type="button">Souvenirvykort</button>
         <button class="btn-gold" type="button">Traditionellt vykort</button>
       </div>
       <button class="btn-main" type="button">Värdesätt nu</button>
@@ -561,12 +563,16 @@
   })();
   </script>
 
+  <!-- ✅ ②③④ 语言栏：SV 当前语言；每次打开回默认；当前语言第一+记忆第二+默认顺序补齐；CN/TC 绑定 -->
   <script>
   (function(){
     var pill = document.getElementById('lang-pill');
     var menu = document.getElementById('lang-menu');
     var ct   = document.getElementById('lang-ct');
     if(!pill || !menu || !ct) return;
+
+    var STORAGE_CUR  = 'sp_lang_current_v8';
+    var STORAGE_PREV = 'sp_lang_prev_v8';
 
     function detectBase(){
       try{
@@ -576,94 +582,175 @@
         if(host.endsWith('github.io') && parts.length >= 1){
           return '/' + parts[0] + '/';
         }
-        return '/';
-      }catch(e){ return '/'; }
+        return '';
+      }catch(e){ return ''; }
     }
     var base = detectBase();
 
-    /* ✅ v8.0 命名系列：xx_v8.0.html */
-    var LANGS = [
-      {code:'EN',  name:'English',         href: base + 'en_v8.0.html'},
-      {code:'简',  name:'简体中文',         href: base + 'cn_v8.0.html'},
-      {code:'繁',  name:'繁體中文',         href: base + 'tc_v8.0.html'},
+    // ✅ 26-language set (ID uses B. Indonesia)
+    var META = {
+      'EN':  {name:'English',      href: base + 'en_v8.0.html'},
+      '简':  {name:'简体中文',       href: base + 'cn_v8.0.html'},
+      '繁':  {name:'繁體中文',       href: base + 'tc_v8.0.html'},
+      'ES':  {name:'Español',      href: base + 'es_v8.0.html'},
+      'FR':  {name:'Français',     href: base + 'fr_v8.0.html'},
+      'RU':  {name:'Русский',      href: base + 'ru_v8.0.html'},
+      'DE':  {name:'Deutsch',      href: base + 'de_v8.0.html'},
+      'PT':  {name:'Português',    href: base + 'pt_v8.0.html'},
+      'IT':  {name:'Italiano',     href: base + 'it_v8.0.html'},
+      'TR':  {name:'Türkçe',       href: base + 'tr_v8.0.html'},
+      'PL':  {name:'Polski',       href: base + 'pl_v8.0.html'},
+      'NL':  {name:'Nederlands',   href: base + 'nl_v8.0.html'},
+      'SV':  {name:'Svenska',      href: base + 'sv_v8.0.html'},
+      'FI':  {name:'Suomi',        href: base + 'fi_v8.0.html'},
+      'DA':  {name:'Dansk',        href: base + 'da_v8.0.html'},
+      'NO':  {name:'Norsk',        href: base + 'no_v8.0.html'},
+      'IS':  {name:'Íslenska',     href: base + 'is_v8.0.html'},
+      'AR':  {name:'العربية',      href: base + 'ar_v8.0.html'},
+      'HI':  {name:'हिन्दी',       href: base + 'hi_v8.0.html'},
+      'JA':  {name:'日本語',         href: base + 'ja_v8.0.html'},
+      'KO':  {name:'한국어',         href: base + 'ko_v8.0.html'},
+      'TH':  {name:'ไทย',          href: base + 'th_v8.0.html'},
+      'VI':  {name:'Tiếng Việt',   href: base + 'vi_v8.0.html'},
+      'ID':  {name:'B. Indonesia', href: base + 'id_v8.0.html'},
+      'FIL': {name:'Filipino',     href: base + 'fil_v8.0.html'}
+    };
 
-      {code:'ES',  name:'Español',         href: base + 'es_v8.0.html'},
-      {code:'FR',  name:'Français',        href: base + 'fr_v8.0.html'},
+    // 默认顺序：EN、简、繁…（其余按既定）
+    var DEFAULT_ORDER = ['EN','简','繁','ES','FR','RU','DE','PT','IT','TR','PL','NL','SV','FI','DA','NO','IS','AR','HI','JA','KO','TH','VI','ID','FIL'];
 
-      {code:'RU',  name:'Русский',         href: base + 'ru_v8.0.html'},
-      {code:'DE',  name:'Deutsch',         href: base + 'de_v8.0.html'},
+    function getHtmlLang(){
+      return (document.documentElement.getAttribute('lang') || '').toLowerCase();
+    }
 
-      {code:'PT',  name:'Português',       href: base + 'pt_v8.0.html'},
-      {code:'IT',  name:'Italiano',        href: base + 'it_v8.0.html'},
-      {code:'TR',  name:'Türkçe',          href: base + 'tr_v8.0.html'},
-      {code:'PL',  name:'Polski',          href: base + 'pl_v8.0.html'},
-      {code:'NL',  name:'Nederlands',      href: base + 'nl_v8.0.html'},
+    // ✅ 当前语言优先从 <html lang=""> 判断，避免本地打开/软件打开导致 pathname 识别失败
+    function inferCurrentFromHtml(){
+      var l = getHtmlLang();
+      if(l === 'sv') return 'SV';
+      if(l === 'en') return 'EN';
+      if(l === 'zh-cn' || l === 'zh-hans' || l === 'zh') return '简';
+      if(l === 'zh-tw' || l === 'zh-hant' || l === 'zh-hk') return '繁';
+      if(l === 'fr') return 'FR';
+      if(l === 'es') return 'ES';
+      if(l === 'de') return 'DE';
+      if(l === 'ru') return 'RU';
+      if(l === 'pt') return 'PT';
+      if(l === 'it') return 'IT';
+      if(l === 'tr') return 'TR';
+      if(l === 'pl') return 'PL';
+      if(l === 'nl') return 'NL';
+      if(l === 'fi') return 'FI';
+      if(l === 'da') return 'DA';
+      if(l === 'no' || l === 'nb' || l === 'nn') return 'NO';
+      if(l === 'is') return 'IS';
+      if(l === 'ar') return 'AR';
+      if(l === 'hi') return 'HI';
+      if(l === 'ja') return 'JA';
+      if(l === 'ko') return 'KO';
+      if(l === 'th') return 'TH';
+      if(l === 'vi') return 'VI';
+      if(l === 'id') return 'ID';
+      if(l === 'fil') return 'FIL';
+      return 'SV';
+    }
 
-      {code:'SV',  name:'Svenska',         href: base + 'sv_v8.0.html'},
-      {code:'FI',  name:'Suomi',           href: base + 'fi_v8.0.html'},
-      {code:'DA',  name:'Dansk',           href: base + 'da_v8.0.html'},
-      {code:'NO',  name:'Norsk',           href: base + 'no_v8.0.html'},
-      {code:'IS',  name:'Íslenska',        href: base + 'is_v8.0.html'},
+    function safeGet(key){
+      try{ return localStorage.getItem(key) || ''; }catch(e){ return ''; }
+    }
+    function safeSet(key,val){
+      try{ localStorage.setItem(key, val); }catch(e){}
+    }
 
-      {code:'AR',  name:'العربية',         href: base + 'ar_v8.0.html'},
-      {code:'HI',  name:'हिन्दी',          href: base + 'hi_v8.0.html'},
-      {code:'JA',  name:'日本語',            href: base + 'ja_v8.0.html'},
-      {code:'KO',  name:'한국어',            href: base + 'ko_v8.0.html'},
-      {code:'TH',  name:'ไทย',             href: base + 'th_v8.0.html'},
-      {code:'VI',  name:'Tiếng Việt',      href: base + 'vi_v8.0.html'},
-      {code:'ID',  name:'B. Indonesia',    href: base + 'id_v8.0.html'},
-      {code:'FIL', name:'Filipino',        href: base + 'fil_v8.0.html'}
-    ];
+    function normalizeCode(code){
+      return META[code] ? code : 'SV';
+    }
+
+    function groupFor(code){
+      if(code === '简') return ['简','繁'];
+      if(code === '繁') return ['繁','简'];
+      return [code];
+    }
+
+    function buildOrder(cur, prev){
+      cur = normalizeCode(cur);
+      prev = prev ? normalizeCode(prev) : '';
+      var out = [];
+      var seen = new Set();
+
+      function addCode(c){
+        if(!META[c] || seen.has(c)) return;
+        out.push(c); seen.add(c);
+      }
+      function addGroup(code){
+        groupFor(code).forEach(addCode);
+      }
+
+      // ① 当前语言第一
+      addGroup(cur);
+
+      // ② 记忆语言第二（若不同）
+      if(prev && !seen.has(prev)){
+        addGroup(prev);
+      }
+
+      // ③ 其余按默认顺序补齐（中文视为一组，简繁形影相随）
+      for(var i=0;i<DEFAULT_ORDER.length;i++){
+        var c = DEFAULT_ORDER[i];
+        if(c === '简' || c === '繁'){
+          if(!seen.has('简') && !seen.has('繁')){
+            addCode('简'); addCode('繁');
+          }
+          continue;
+        }
+        addCode(c);
+      }
+      return out;
+    }
 
     function currentCode(){
-      var p = (window.location.pathname || '').toLowerCase();
-
-      if(p.indexOf('cn_v8.0')  !== -1) return '简';
-      if(p.indexOf('tc_v8.0')  !== -1) return '繁';
-
-      if(p.indexOf('es_v8.0')  !== -1) return 'ES';
-      if(p.indexOf('fr_v8.0')  !== -1) return 'FR';
-
-      if(p.indexOf('ru_v8.0')  !== -1) return 'RU';
-      if(p.indexOf('de_v8.0')  !== -1) return 'DE';
-
-      if(p.indexOf('pt_v8.0')  !== -1) return 'PT';
-      if(p.indexOf('it_v8.0')  !== -1) return 'IT';
-      if(p.indexOf('tr_v8.0')  !== -1) return 'TR';
-      if(p.indexOf('pl_v8.0')  !== -1) return 'PL';
-      if(p.indexOf('nl_v8.0')  !== -1) return 'NL';
-
-      if(p.indexOf('sv_v8.0')  !== -1) return 'SV';
-      if(p.indexOf('fi_v8.0')  !== -1) return 'FI';
-      if(p.indexOf('da_v8.0')  !== -1) return 'DA';
-      if(p.indexOf('no_v8.0')  !== -1) return 'NO';
-      if(p.indexOf('is_v8.0')  !== -1) return 'IS';
-
-      if(p.indexOf('ar_v8.0')  !== -1) return 'AR';
-      if(p.indexOf('hi_v8.0')  !== -1) return 'HI';
-      if(p.indexOf('ja_v8.0')  !== -1) return 'JA';
-      if(p.indexOf('ko_v8.0')  !== -1) return 'KO';
-      if(p.indexOf('th_v8.0')  !== -1) return 'TH';
-      if(p.indexOf('vi_v8.0')  !== -1) return 'VI';
-      if(p.indexOf('id_v8.0')  !== -1) return 'ID';
-      if(p.indexOf('fil_v8.0') !== -1) return 'FIL';
-
-      return 'EN';
+      // 以 html lang 为准，并同步存储，便于跨版本记忆排序
+      var cur = inferCurrentFromHtml();
+      var storedCur = safeGet(STORAGE_CUR);
+      // 若存储的 current 与 html 不一致，说明用户已跳转到本页：以本页为准
+      if(storedCur !== cur) safeSet(STORAGE_CUR, cur);
+      return cur;
     }
 
     function syncPill(){ ct.textContent = currentCode(); }
 
     function renderMenu(){
       var cur = currentCode();
-      menu.innerHTML = LANGS.map(function(x){
-        var cls = 'lang-item' + (x.code === cur ? ' current' : '');
+      var prev = safeGet(STORAGE_PREV);
+      var order = buildOrder(cur, prev);
+
+      menu.innerHTML = order.map(function(code){
+        var x = META[code];
+        if(!x) return '';
+        var cls = 'lang-item' + (code === cur ? ' current' : '');
         return (
-          '<a class="'+cls+'" href="'+x.href+'" role="menuitem" aria-label="'+x.name+'">' +
-            '<span class="lang-badge">'+x.code+'</span>' +
+          '<a class="'+cls+'" href="'+x.href+'" role="menuitem" data-code="'+code+'" aria-label="'+x.name+'">' +
+            '<span class="lang-badge">'+code+'</span>' +
             '<span class="lang-name">'+x.name+'</span>' +
           '</a>'
         );
       }).join('');
+
+      // 点击：写入记忆（prev/current），再跳转
+      var links = menu.querySelectorAll('a.lang-item');
+      links.forEach(function(a){
+        a.addEventListener('click', function(ev){
+          ev.preventDefault();
+          var to = a.getAttribute('data-code') || '';
+          to = normalizeCode(to);
+          var curNow = currentCode();
+
+          if(to !== curNow){
+            safeSet(STORAGE_PREV, curNow);
+            safeSet(STORAGE_CUR, to);
+          }
+          window.location.href = a.getAttribute('href');
+        }, {passive:false});
+      });
     }
 
     function positionMenu(){
@@ -683,12 +770,18 @@
       renderMenu();
       menu.classList.add('open');
       positionMenu();
+      // ✅ ③ 每次打开都回默认状态（顶部 + 当前语言在第一位）
+      menu.scrollTop = 0;
+
       document.addEventListener('click', onDoc, true);
       window.addEventListener('resize', positionMenu, {passive:true});
       window.addEventListener('scroll', positionMenu, {passive:true});
     }
     function closeMenu(){
       menu.classList.remove('open');
+      // ✅ ③ 关闭即复位，避免“停留在某一状态”
+      menu.scrollTop = 0;
+
       document.removeEventListener('click', onDoc, true);
       window.removeEventListener('resize', positionMenu);
       window.removeEventListener('scroll', positionMenu);
@@ -709,6 +802,7 @@
       toggleMenu();
     });
 
+    // 初始同步：确保 SV 显示在横幅语言栏里（不再出现 EN）
     syncPill();
   })();
   </script>
