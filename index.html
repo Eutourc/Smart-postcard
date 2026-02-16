@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html lang="zh-Hant">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>Smart Postcard — TC v8.0 — 定型基准版</title>
+<title>Smart Postcard — CN v8.0 — 定型基准版</title>
 <meta content="no-store" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
@@ -30,6 +30,7 @@
     --marker-base:13px;
     --marker-color:#16a34a;
 
+    /* v8.0 对齐：运行语言蓝色 */
     --active-blue:#1e56d6;
   }
   *{box-sizing:border-box}
@@ -39,6 +40,7 @@
   }
   img{max-width:100%;display:block}
 
+  /* ✅ v8.0：锁定横幅+第一留白（但 body 仍可滚动以隐藏浏览器搜索栏） */
   #app-fixed{
     position:fixed;
     inset:0;
@@ -64,6 +66,7 @@
   .cart{position:relative}
   .badge{position:absolute;right:-6px;top:-6px;background:#ff4d4f;color:#fff;border-radius:8px;padding:0 5px;font-size:10px;line-height:16px;min-width:16px;height:16px;font-weight:800}
 
+  /* ✅ v8.0：语言栏（无国旗，仅蓝色简/繁/EN + 小箭头） */
   .langpill{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08); cursor:pointer}
   .langtext{
     font-weight:900;
@@ -182,6 +185,7 @@
   .auto-play::before{content:"▶";font-size:13px;transform:translateX(1px);}
   .auto-play.playing::before{content:"Ⅱ";transform:translateX(0);font-size:12px;}
 
+  /* ✅ v8.0：语言下拉菜单（与英文基准一致） */
   .lang-menu{
     position:fixed;z-index:9999;right:8px;top:64px;
     width:fit-content;max-width:calc(100vw - 16px);max-height:52vh;overflow:auto;
@@ -264,7 +268,7 @@
 <div class="actions">
 <div class="iconbtn cart"><span style="font-size:18px">🛒</span><span class="badge" id="cart-badge">0</span></div>
 <div aria-label="Language" class="langpill" id="lang-pill">
-<span class="langtext" id="lang-ct">繁</span>
+<span class="langtext" id="lang-ct">简</span>
 <span class="caret"></span>
 </div>
 <div aria-label="menu" class="iconbtn"><span class="menu">≡</span></div>
@@ -274,18 +278,18 @@
 <div aria-label="Language menu" class="lang-menu" id="lang-menu" role="menu"></div>
 <main>
 <div class="gapTop"></div>
-<h1 class="page-title">珍惜您舉世無雙的紀念明信片</h1>
+<h1 class="page-title">珍惜您举世无双的纪念明信片</h1>
 <div class="gap2"></div>
 <section class="stage">
 <div class="explain">
 <div class="explain-keeper">
-        記錄當時感言、日期、天氣與溫度！<br/>
-這也是您在地圖紀念點旁寫的留言！<br/>
-這等於洗了一張 A5 大尺碼的照片！
+        记录当时感言、日期、天气与温度！<br/>
+这也是您在地图纪念点旁写的留言！<br/>
+这等于洗了一张 A5 大尺码的照片！
       </div>
 <div id="explain-text">
-        您的照片可成為郵票及明信片畫面！<br/>
- 珍惜當下！歷史佳機！獨特唯一！
+        您的照片可成为邮票及明信片画面！<br/>
+ 珍惜当下！历史佳机！独特唯一！
       </div>
 </div>
 <div class="viewer">
@@ -309,18 +313,17 @@
 </div>
 </div>
 <section aria-label="Smart Postcard features" class="features">
-<div class="features-line">操作簡單 · 實體印刷 · 全球郵寄</div>
-<div class="features-line">旅遊紀念 · 集郵佳品 · 珍貴相冊</div>
-<div class="features-line">照片列印 · A5大尺碼 · 物超所值</div>
+<div class="features-line">操作简单 · 实体印刷 · 全球邮寄</div>
+<div class="features-line">旅游纪念 · 集邮佳品 · 珍贵相册</div>
+<div class="features-line">照片打印 · A5大尺码 · 物超所值</div>
 </section>
 </section>
 <div class="btns">
-<button class="btn primary">紀念明信片</button>
-<button class="btn">傳統明信片</button>
+<button class="btn primary">纪念明信片</button>
+<button class="btn">传统明信片</button>
 </div>
-<button class="start" id="start-btn">開始製作</button>
+<button class="start" id="start-btn">开始制作</button>
 </main>
-<!-- ✅ 以下互动脚本保持你原版（不动） -->
 <script>
 (function(){
   function positionArrows(){
@@ -345,16 +348,16 @@
 <script>
 (function(){
   var messages = {
-    1: "明信片背面圖案！可成為郵票圖案！<br/>您可以任選照片！可用您的自拍照！<br/>這等於洗了一張 A5 大尺碼的照片！",
-    2: "您的照片可成為郵票及明信片畫面！<br/> 珍惜當下！歷史佳機！獨特唯一！",
-    3: "到此一遊留念！紀念點載入地圖！<br/>掃二維碼或憑座標可回味和分享！<br/>長按電子設備內二維碼等於掃碼！",
-    4: "記錄當時感言、日期、天氣與溫度！<br/>這也是您在地圖紀念點旁寫的留言！",
-    5: "書寫您的明信內容！<br/>留下您美好的回憶！",
-    6: "留念一段錄像或錄音！<br/>    掃碼即可回放！<br/> 手機上長按=掃碼！",
-    7: "      加蓋國家或地方紀念戳！<br/>      這是您到此一遊的見證！<br/>手機上長按紀念戳，享受Ai解說！",
-    8: "填寫明信片的郵寄地址！<br/>國家名稱須用英文書寫！<br/>請參照地址欄中的範例！",
-    9: "留念日期即郵戳日期！<br/>蓋戳日與留念日同步！",
-    10:"電子明信片紀念冊！免費贈送！<br/>     起步五張，寄往郵箱！<br/>     以後再做，可聚一堂！"
+    1: "明信片背面图案！可成为邮票图案！<br/>您可以任选照片！可用您的自拍照！<br/>这等于洗了一张 A5 大尺码的照片！",
+    2: "您的照片可成为邮票及明信片画面！<br/> 珍惜当下！历史佳机！独特唯一！",
+    3: "到此一游留念！纪念点载入地图！<br/>扫二维码或凭坐标可回味和分享！<br/>长按纪念相册内二维码等于扫码！",
+    4: "记录当时感言、日期、天气与温度！<br/>这也是您在地图纪念点旁写的留言！",
+    5: "书写您的明信内容！<br/>留下您美好的回忆！",
+    6: "留念一段录像或录音！<br/>    扫码即可回放！<br/> 手机上长按=扫码！",
+    7: "      加盖国家或地方纪念戳！<br/>      这是您到此一游的见证！<br/>手机上长按纪念戳，享受Ai解说！",
+    8: "填写明信片的邮寄地址！<br/>国家名称须用英文书写！<br/>请参照地址栏中的范例！",
+    9: "留念日期即邮戳日期！<br/>盖戳日与留念日同步！",
+    10:"电子明信片纪念册！免费赠送！<br/>     起步五张，寄往邮箱！<br/>     以后再做，可聚一堂！"
   };
 
   var leftOrder  = [2,3,4,5,6,7,8,9,10,1];
@@ -538,6 +541,7 @@
   }
 })();
 </script>
+<!-- ✅ v8.0：语言菜单脚本（xx_v8.0.html 跳转） -->
 <script>
 (function(){
   var pill = document.getElementById('lang-pill');
@@ -781,20 +785,20 @@ function detectBase(){
 </script>
 </div>
 <div aria-hidden="true" id="scroll-spacer"></div>
-<!-- 260104_tc_v8.0 定型基准版：对齐sv_v8.0，Logo内嵌 -->
+<!-- 260104_cn_v8.0 定型基准版：对齐sv_v8.0，Logo内嵌 -->
 <script>
 (function(){
   try{
     var btns = document.querySelectorAll('.btns .btn');
     if(btns && btns.length>=2){
-      btns[0].addEventListener('click', function(){ window.location.href = 'tc_v8.0.html'; });
-      btns[1].addEventListener('click', function(){ window.location.href = 'tc_traditional_v8.0.html'; });
+      btns[0].addEventListener('click', function(){ window.location.href = 'index.html'; });
+      btns[1].addEventListener('click', function(){ window.location.href = 'cn_traditional_v8.0.html'; });
     }
     var start = document.getElementById('start-btn') || document.querySelector('button.start');
     if(start){
       start.addEventListener('click', function(e){
-        if('tc_make_v8.0.html'==='#'){ e.preventDefault(); alert('Next step (placeholder)'); return; }
-        window.location.href = 'tc_make_v8.0.html';
+        if('cn_make_v8.0.html'==='#'){ e.preventDefault(); alert('Next step (placeholder)'); return; }
+        window.location.href = 'cn_make_v8.0.html';
       });
     }
   }catch(e){}
