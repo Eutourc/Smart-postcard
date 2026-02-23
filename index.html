@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>Smart Postcard — 制作平台</title>
+<title>Smart Postcard — CN v8.0 — 定型基准版</title>
 <meta content="no-store" http-equiv="Cache-Control"/>
 <meta content="no-cache" http-equiv="Pragma"/>
 <meta content="0" http-equiv="Expires"/>
@@ -211,8 +211,6 @@
   }
   .lang-item.current .lang-badge{ color:var(--active-blue); }
   .lang-item.current .lang-name{ color:var(--active-blue); }
-
-.start.primary{color:#1e56d6;}
 </style>
 <style id="btn-fixed-v6.0-match">
 .btns{display:flex;justify-content:center;gap:31px;margin: calc(var(--gap3) - 2px) auto 0;}
@@ -259,7 +257,7 @@
 <div aria-label="Language menu" class="lang-menu" id="lang-menu" role="menu"></div>
 <main>
 <div class="gapTop"></div>
-<h1 class="page-title">纪念明信片制作平台</h1>
+<h1 class="page-title">珍惜您举世无双的纪念明信片</h1>
 <div class="gap2"></div>
 <section class="stage">
 <div class="explain">
@@ -301,9 +299,9 @@
 </section>
 <div class="btns">
 <button class="btn primary">纪念明信片</button>
-<button class="btn">首页</button>
+<button class="btn">传统明信片</button>
 </div>
-<button class="start primary" id="start-btn">下一步</button>
+<button class="start" id="start-btn">开始制作</button>
 </main>
 <script>
 (function(){
@@ -331,7 +329,7 @@
   var messages = {
     1: "明信片背面图案！可成为邮票图案！<br/>您可以任选照片！可用您的自拍照！<br/>这等于洗了一张 A5 大尺码的照片！",
     2: "您的照片可成为邮票及明信片画面！<br/> 珍惜当下！历史佳机！独特唯一！",
-    3: "到此一游留念！纪念点载入地图！<br/>扫二维码或凭坐标可回味和分享！<br/>长按电子设备内二维码等于扫码！",
+    3: "到此一游留念！纪念点载入地图！<br/>扫二维码或凭坐标可回味和分享！<br/>长按纪念相册内二维码等于扫码！",
     4: "记录当时感言、日期、天气与温度！<br/>这也是您在地图纪念点旁写的留言！",
     5: "书写您的明信内容！<br/>留下您美好的回忆！",
     6: "留念一段录像或录音！<br/>    扫码即可回放！<br/> 手机上长按=扫码！",
@@ -772,14 +770,14 @@ function detectBase(){
   try{
     var btns = document.querySelectorAll('.btns .btn');
     if(btns && btns.length>=2){
-      btns[0].addEventListener('click', function(){ window.location.href = 'cn_make_v8.0.html'; });
-      btns[1].addEventListener('click', function(){ window.location.href = 'index.html'; });
+      btns[0].addEventListener('click', function(){ window.location.href = 'index.html'; });
+      btns[1].addEventListener('click', function(){ window.location.href = 'cn_traditional_v8.0.html'; });
     }
     var start = document.getElementById('start-btn') || document.querySelector('button.start');
     if(start){
       start.addEventListener('click', function(e){
-        if('#'==='#'){ e.preventDefault(); alert('Next step (placeholder)'); return; }
-        window.location.href = '#';
+        if('cn_make_v8.0.html'==='#'){ e.preventDefault(); alert('Next step (placeholder)'); return; }
+        window.location.href = 'cn_make_v8.0.html';
       });
     }
   }catch(e){}
