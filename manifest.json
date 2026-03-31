@@ -1,0 +1,11 @@
+{
+  "name": "Smart Postcard",
+  "short_name": "Postcard",
+  "start_url": "./index.html?auto=1",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "scope": "./",
+  "icons": []
+}

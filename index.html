@@ -252,12 +252,12 @@
   }
 
   .auto-play{
-    position:absolute;right:10px;bottom:10px;width:26px;height:26px;border-radius:999px;border:none;
-    background:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,.3);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+    position:absolute;right:10px;bottom:10px;width:44px;height:44px;border-radius:999px;border:none;
+    background:#ffffff;box-shadow:0 4px 12px rgba(0,0,0,.28);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;z-index:12;
   }
-  .auto-play::before{content:"▶";font-size:13px;transform:translateX(1px);}
-  .auto-play.playing::before{content:"Ⅱ";transform:translateX(0);font-size:12px;}
+  .auto-play::before{content:"⤢";font-size:24px;line-height:1;transform:none;}
+  .auto-play.playing::before{content:"⤢";font-size:24px;transform:none;}
 
   /* ✅ 语言菜单固定在视窗（独立于滚动） */
   .lang-menu{
@@ -322,28 +322,31 @@
 
 #sp-landscape-overlay .sp-btn{
   position:absolute;
-  top:8px;
-  right:8px;
-  width:40px; height:40px;
-  border:1px solid rgba(0,0,0,.25);
-  background:rgba(255,255,255,.9);
-  border-radius:8px;
+  right:16px;
+  bottom:16px;
+  width:72px; height:72px;
+  border:0;
+  background:#fff;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px;
+  font-size:36px;
   line-height:1;
   cursor:pointer;
   user-select:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.28);
 }
 #sp-landscape-overlay .sp-btn:active{ transform:scale(.98); }
+#sp-landscape-overlay .sp-btn svg{ width:34px;height:34px;display:block; }
 
 </style>
 
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta name="version" content="v8.0.1">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smart Postcard">
 
 </head>
 <body>
@@ -400,9 +403,9 @@ A One-of-a-Kind Commemorative<br/>Postcard For You</h1>
       <div class="cardbox" id="cardbox">
         <div class="cardbox-inner" id="cardbox-inner">
           <img id="pc-img" src="postcard_en.png" alt="Smart Postcard sample"
-               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:0;">
+               style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;border-radius:0;">
           <div class="marker" id="marker"></div>
-          <button class="auto-play" id="auto-play" aria-label="Auto demo"></button>
+          <button class="auto-play" id="auto-play" aria-label="Landscape view"></button>
 
           <button class="hotspot hotspot-center" id="hotspot-center" aria-label="Center hotspot (image / album)"></button>
           <button class="hotspot hotspot-stamp" id="hotspot-stamp" aria-label="Stamp hotspot"></button>
@@ -641,27 +644,10 @@ A One-of-a-Kind Commemorative<br/>Postcard For You</h1>
 
   if(autoBtn){
     autoBtn.addEventListener('click', function(){
-      var now = Date.now();
-      var delta = now - lastAutoClick;
-      lastAutoClick = now;
-
-      if(delta > 0 && delta < 400){
-        stopAuto(); startAuto(); return;
-      }
-      if(window.SP_autoRunning){
-        window.SP_autoRunning = false;
-        window.SP_autoPaused = true;
-        autoBtn.classList.remove('playing');
-        clearAuto();
-      }else if(window.SP_autoPaused){
-        window.SP_autoRunning = true;
-        window.SP_autoPaused = false;
-        autoBtn.classList.add('playing');
-        autoJustStarted = false;
-        scheduleNext();
-      }else{
-        startAuto();
-      }
+      try{
+        var fn = window.SP_landscapeEnter;
+        if(typeof fn === 'function'){ fn(true); }
+      }catch(e){}
     });
   }
 
@@ -671,7 +657,24 @@ A One-of-a-Kind Commemorative<br/>Postcard For You</h1>
   window.SP_startAuto = startAuto;
   window.SP_stopAuto = stopAuto;
 
+  function shouldAutoStart(){
+    try{
+      var params = new URLSearchParams(window.location.search);
+      if(params.get('auto') === '1') return true;
+      var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
+      if(standalone) return true;
+      var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
+      var fresh = !nav || nav.type === 'navigate';
+      return !document.referrer && fresh;
+    }catch(e){
+      return false;
+    }
+  }
+
   renderExplain();
+  setTimeout(function(){
+    if(shouldAutoStart()) startAuto();
+  }, 700);
 })();
 </script>
 
@@ -955,27 +958,29 @@ A One-of-a-Kind Commemorative<br/>Postcard For You</h1>
   const postcardImg = document.getElementById('pc-img');
   if(!postcardImg) return;
 
-  // Create overlay once
   const overlay = document.createElement('div');
   overlay.id = 'sp-landscape-overlay';
   overlay.innerHTML = `
     <div class="sp-frame">
       <img id="sp-landscape-img" alt="Postcard preview"/>
     </div>
-    <div class="sp-btn" id="sp-full-btn" title="Full screen" aria-label="Full screen">⛶</div>
+    <button class="sp-btn" id="sp-back-btn" title="Return" aria-label="Return">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 12h12"></path>
+        <path d="M13 5l7 7-7 7"></path>
+      </svg>
+    </button>
   `;
   document.body.appendChild(overlay);
 
   const oimg = overlay.querySelector('#sp-landscape-img');
-  const fullBtn = overlay.querySelector('#sp-full-btn');
+  const backBtn = overlay.querySelector('#sp-back-btn');
 
-  // Keep src synced with the currently displayed postcard image
   const syncSrc = () => {
     const src = postcardImg.getAttribute('src') || '';
     if(src && oimg.getAttribute('src') !== src) oimg.setAttribute('src', src);
   };
 
-  // Use real visual viewport height if available (prevents bottom edge cut by URL bar)
   const fitViewport = () => {
     if(window.visualViewport){
       overlay.style.height = window.visualViewport.height + 'px';
@@ -990,53 +995,65 @@ A One-of-a-Kind Commemorative<br/>Postcard For You</h1>
     }
   };
 
-  let prevOverflow = '';
-
-  const enter = () => {
+  const enter = (fromButton) => {
     syncSrc();
     fitViewport();
-    prevOverflow = document.documentElement.style.overflow || '';
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     overlay.classList.add('sp-show');
-overlay.style.pointerEvents='auto';
-    // Try to minimize browser bar (best-effort)
-    requestAnimationFrame(() => window.scrollTo(0, 1));
+    overlay.style.pointerEvents = 'auto';
+    if(fromButton){
+      try{
+        if(overlay.requestFullscreen && !document.fullscreenElement){ overlay.requestFullscreen(); }
+      }catch(e){}
+      try{
+        if(screen.orientation && screen.orientation.lock){ screen.orientation.lock('landscape').catch(function(){}); }
+      }catch(e){}
+    }
   };
 
   const exit = () => {
     overlay.classList.remove('sp-show');
-overlay.style.pointerEvents='none';
-    document.body.style.overflow = prevOverflow;
-    // If in fullscreen, exit automatically when back to portrait
-    if(document.fullscreenElement){
-      document.exitFullscreen().catch(()=>{});
-    }
+    overlay.style.pointerEvents = 'none';
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    requestAnimationFrame(() => {
+      window.scrollTo(0,0);
+      setTimeout(() => window.scrollTo(0,0), 60);
+      setTimeout(() => window.scrollTo(0,0), 180);
+    });
   };
 
   const isLandscape = () => window.matchMedia && window.matchMedia('(orientation: landscape)').matches;
 
   const check = () => {
     if(isLandscape()){
-      enter();
+      enter(false);
     }else{
       exit();
     }
   };
 
-  // Fullscreen button (user gesture required)
-  
-fullBtn.addEventListener('click', () => {
-
-    try{
-      if(!document.fullscreenElement && overlay.requestFullscreen){
-        overlay.requestFullscreen(); fullBtn.textContent='⛶';
-      }else if(document.fullscreenElement){
-        document.exitFullscreen(); fullBtn.textContent='⛶';
-      }
-    }catch(e){}
+  backBtn.addEventListener('click', () => {
+    overlay.classList.remove('sp-show');
+    overlay.style.pointerEvents = 'none';
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    if(document.fullscreenElement){
+      try{ document.exitFullscreen(); }catch(e){}
+    }
+    if(screen.orientation && screen.orientation.unlock){
+      try{ screen.orientation.unlock(); }catch(e){}
+    }
+    setTimeout(() => {
+      window.scrollTo(0,0);
+    }, 40);
   });
 
-  // Observe src changes (arrow cycling)
+  window.SP_landscapeEnter = function(fromButton){
+    enter(!!fromButton);
+  };
+
   const mo = new MutationObserver(syncSrc);
   mo.observe(postcardImg, { attributes:true, attributeFilter:['src'] });
 
@@ -1046,90 +1063,7 @@ fullBtn.addEventListener('click', () => {
     window.visualViewport.addEventListener('resize', () => { if(isLandscape()) fitViewport(); }, {passive:true});
   }
 
-  // Initial
   check();
-})();
-</script>
-
-<script>
-document.addEventListener("fullscreenchange", function(){
-  const btn=document.getElementById("fullscreenBtn");
-  if(!btn) return;
-  if(document.fullscreenElement){
-    btn.style.background="#444";
-    btn.style.color="#fff";
-  }else{
-    btn.style.background="#fff";
-    btn.style.color="#000";
-  }
-});
-</script>
-
-<style>
-#landBtn{
-position:fixed;
-right:20px;
-bottom:20px;
-width:70px;
-height:70px;
-border-radius:50%;
-background:#ffffff;
-box-shadow:0 4px 12px rgba(0,0,0,0.35);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-font-size:34px;
-}
-</style>
-
-<div id="landBtn">⤢</div>
-
-<script>
-const btn=document.getElementById("landBtn");
-let expanded=false;
-
-function checkOrientation(){
- if(window.innerWidth>window.innerHeight){
-   btn.style.display="flex";
- }else{
-   btn.style.display="none";
- }
-}
-
-window.addEventListener("resize",checkOrientation);
-window.addEventListener("orientationchange",checkOrientation);
-checkOrientation();
-
-btn.onclick=function(){
-
- const header=document.querySelector("header");
- 
- if(!expanded){
-   if(header){header.style.display="none";}
-   btn.innerHTML="→";
-   expanded=true;
- }else{
-   location.reload();
- }
-
-}
-</script>
-
-
-<script>
-(function() {
-    const version = document.querySelector('meta[name="version"]').content;
-    const lastVersion = localStorage.getItem("site_version");
-
-    if (lastVersion !== version) {
-        localStorage.setItem("site_version", version);
-
-        if (!sessionStorage.getItem("reloaded")) {
-            sessionStorage.setItem("reloaded", "true");
-            location.reload(true);
-        }
-    }
 })();
 </script>
 
