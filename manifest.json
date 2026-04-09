@@ -1,0 +1,9 @@
+{
+"name": "Smart Postcard",
+"short_name": "Postcard",
+"start_url": "./",
+"display": "standalone",
+"background_color": "#ffffff",
+"theme_color": "#f4b400",
+"icons": []
+}
